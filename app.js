@@ -7,28 +7,28 @@ const data = {
     icon: "📘",
     subjects: {
       "Xətti cəbr və riyazi analiz": [
-        { name: "Xətti Cəbr və Riyazi Analiz (Q26)", file: "xcraQ26.pdf" }
+        { name: "Xətti Cəbr və Riyazi Analiz Q26", file: "xcraQ26.pdf" }
       ],
       "İKT - Baza kompüter bilikləri": [
-        { name: "İKT - Baza Kompüter Bilikləri (Q26)", file: "iktQ26.pdf" }
+        { name: "İKT - Baza Kompüter Bilikləri Q26", file: "iktQ26.pdf" }
       ],
       "Azərbaycanın tarixi": [
-        { name: "Azərbaycanın Tarixi (Q26)", file: "aztarixiQ26.pdf" }
+        { name: "Azərbaycanın Tarixi Q26", file: "aztarixiQ26.pdf" }
       ],
       "Karyera planlaması": [
-        { name: "Karyera Planlaması (Q26)", file: "karyeraQ26.pdf" }
+        { name: "Karyera Planlaması Q26", file: "karyeraQ26.pdf" }
       ],
       "Azərbaycan dilində işgüzar və akademik kommunikasiya": [
-        { name: "ADİAK (Q26)", file: "adiakQ26.pdf" },
-        { name: "ADİAK (Y25)", file: "adiakY25.pdf" },
-        { name: "ADİAK (Y23)", file: "adiakY23.pdf" }
+        { name: "ADİAK Q26", file: "adiakQ26.pdf" },
+        { name: "ADİAK Y25", file: "adiakY25.pdf" },
+        { name: "ADİAK Y23", file: "adiakY23.pdf" }
       ],
       "Ehtimal nəzəriyyəsi və riyazi statistika": [
-        { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika (Y25)", file: "enrsY25.pdf" },
-        { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika (Y23)", file: "enrsY23.pdf" }
+        { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika Y25", file: "enrsY25.pdf" },
+        { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika Y23", file: "enrsY23.pdf" }
       ],
-      "Yumşaq bacarıqlar (Soft skills) Y25": [
-        { name: "Soft Skills material", file: "softskillsY25.pdf" }
+      "Yumşaq bacarıqlar (Soft skills)": [
+        { name: "Soft Skills Y25", file: "softskillsY25.pdf" }
       ],
       "İqtisadiyyata giriş": [
         { name: "İqtisadiyyata Giriş - 1", file: "iqtisadiyyat1.pdf" }
@@ -38,6 +38,12 @@ const data = {
       ],
       "Azerbaycanın tarihi": [
         { name: "Azerbaycanın Tarihi Q26", file: "aztarihiQ26.pdf" }
+      ],
+      "Bilgi işlem teknolojileri": [
+        { name: "Bilgi İşlem Teknolojileri - 1", file: "bit1.pdf" }
+      ],
+      "Yönetim ve organizasyon": [
+        { name: "Yönetim ve Organizasyon Q25", file: "yonetimorganizasyonQ25.pdf" }
       ]
     }
   },
