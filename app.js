@@ -7,28 +7,29 @@ const data = {
     icon: "📘",
     subjects: {
       "Xətti cəbr və riyazi analiz": [
-        { name: "XCRA — Əsas material", file: "xcra.pdf" }
+        { name: "Xətti Cəbr və Riyazi Analiz (Q26)", file: "xcra26.pdf" }
       ],
-      "İKT - baza kompüter bilikləri": [
-        { name: "İKT — Mühazirə konspekti", file: "ikt.pdf" }
+      "İKT - Baza kompüter bilikləri": [
+        { name: "İKT - Baza Kompüter Bilikləri (Q26)", file: "ikt26.pdf" }
       ],
       "Azərbaycanın tarixi": [
-        { name: "Azərbaycan Tarixi", file: "aztarixi.pdf" }
+        { name: "Azərbaycanın Tarixi (Q26)", file: "aztarixi26.pdf" }
       ],
       "Karyera planlaması": [
-        { name: "Karyera planlaması materialı", file: "karyera.pdf" }
+        { name: "Karyera Planlaması (Q26)", file: "karyera26.pdf" }
       ],
       "Azərbaycan dilində işgüzar və akademik kommunikasiya": [
-        { name: "ADIAK material", file: "adiak.pdf" }
+        { name: "ADİAK (Q26)", file: "adiakQ26.pdf" },
+        { name: "ADİAK (Y23)", file: "adiakY23.pdf" }
       ],
       "Ehtimal nəzəriyyəsi və riyazi statistika": [
-        { name: "ENRS — Mühazirə", file: "enrs.pdf" }
+        { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika (Y25)", file: "enrsY25.pdf" }
       ],
       "Yumşaq bacarıqlar (Soft skills) Y25": [
-        { name: "Soft Skills material", file: "softskills.pdf" }
+        { name: "Soft Skills material", file: "softskillsY25.pdf" }
       ],
       "İqtisadiyyata giriş": [
-        { name: "İqtisadiyyata Giriş", file: "iqtisadiyyat.pdf" }
+        { name: "İqtisadiyyata Giriş - 1", file: "iqtisadiyyat1.pdf" }
       ]
     }
   },
