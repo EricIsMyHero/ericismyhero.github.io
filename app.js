@@ -1,0 +1,264 @@
+// ============================================================
+// DATA — hər fənn üçün istədiyiniz qədər PDF əlavə edə bilərsiniz
+// Format: "Fənn adı": [ {name: "Fayl adı", file: "fayl.pdf"}, ... ]
+// ============================================================
+const data = {
+  "1-ci kurs": {
+    icon: "📘",
+    subjects: {
+      "Xətti cəbr və riyazi analiz": [
+        { name: "XCRA — Əsas material", file: "xcra.pdf" }
+      ],
+      "İKT - baza kompüter bilikləri": [
+        { name: "İKT — Mühazirə konspekti", file: "ikt.pdf" }
+      ],
+      "Azərbaycanın tarixi": [
+        { name: "Azərbaycan Tarixi", file: "aztarixi.pdf" }
+      ],
+      "Karyera planlaması": [
+        { name: "Karyera planlaması materialı", file: "karyera.pdf" }
+      ],
+      "Azərbaycan dilində işgüzar və akademik kommunikasiya": [
+        { name: "ADIAK material", file: "adiak.pdf" }
+      ],
+      "Ehtimal nəzəriyyəsi və riyazi statistika": [
+        { name: "ENRS — Mühazirə", file: "enrs.pdf" }
+      ],
+      "Yumşaq bacarıqlar (Soft skills) Y25": [
+        { name: "Soft Skills material", file: "softskills.pdf" }
+      ],
+      "İqtisadiyyata giriş": [
+        { name: "İqtisadiyyata Giriş", file: "iqtisadiyyat.pdf" }
+      ]
+    }
+  },
+  "2-ci kurs": {
+    icon: "📗",
+    subjects: {
+      "Mikroiqtisadiyyat": [
+        { name: "Mikroiqtisadiyyat", file: "mikroiqt.pdf" }
+      ],
+      "Qiymət siyasəti": [
+        { name: "Qiymət Siyasəti", file: "qiymet.pdf" }
+      ],
+      "Əməyin iqtisadiyyatı": [
+        { name: "Əməyin İqtisadiyyatı", file: "emek.pdf" }
+      ],
+      "Ətraf mühitin iqtisadiyyatı": [
+        { name: "Ətraf Mühitin İqtisadiyyatı", file: "emi.pdf" }
+      ],
+      "Azərbaycan iqtisadiyyatı": [
+        { name: "Azərbaycan İqtisadiyyatı", file: "aziqt.pdf" }
+      ],
+      "Makroiqtisadiyyat": [
+        { name: "Makroiqtisadiyyat", file: "makroiqt.pdf" }
+      ],
+      "Maliyyə uçotu": [
+        { name: "Maliyyə Uçotu", file: "maliyye.pdf" }
+      ],
+      "İqtisadi fikir tarixi": [
+        { name: "İqtisadi Fikir Tarixi", file: "iqtfkrtrx.pdf" }
+      ]
+    }
+  },
+  "3-cü kurs": {
+    icon: "📙",
+    subjects: {
+      "Maliyyə": [
+        { name: "Finance — Əsas material", file: "Finance.pdf" }
+      ]
+    }
+  },
+  "4-cü kurs": {
+    icon: "📕",
+    subjects: {
+      "Menecment": [
+        { name: "Management material", file: "Manage.pdf" }
+      ]
+    }
+  }
+};
+
+// ============================================================
+const translations = {
+  az: {
+    badge: "İmtahan Materialları",
+    heroTitle: 'UNEC <span>İmtahan</span><br>Materialları',
+    heroDesc: "Bütün kurslar üzrə imtahan materiallarına tez çatın. Fənni seçin, PDF-i açın.",
+    coursesLabel: "Kurslar",
+    subjectsLabel: "Fənlər",
+    pdfsLabel: "PDF Materiallar",
+    back1: "Kurslara qayıt",
+    back2: "Fənlərə qayıt",
+    bcHome: "Ana səhifə",
+    subjects: "fənn",
+    pdfs: "material",
+    openPdf: "Aç",
+    statCourses: "Kurs",
+    statSubjects: "Fənn",
+    statPdfs: "PDF",
+    footer: "Bu sayt rəsmi deyil. Yalnız tələbələrin imtahan zamanı materialları daha rahat tapması üçün hazırlanıb."
+  },
+  en: {
+    badge: "Exam Materials",
+    heroTitle: 'UNEC <span>Exam</span><br>Materials',
+    heroDesc: "Quick access to exam materials for all courses. Select a subject, open the PDF.",
+    coursesLabel: "Courses",
+    subjectsLabel: "Subjects",
+    pdfsLabel: "PDF Materials",
+    back1: "Back to Courses",
+    back2: "Back to Subjects",
+    bcHome: "Home",
+    subjects: "subjects",
+    pdfs: "files",
+    openPdf: "Open",
+    statCourses: "Courses",
+    statSubjects: "Subjects",
+    statPdfs: "PDFs",
+    footer: "This site is unofficial. Created to help students find exam materials more easily."
+  }
+};
+
+let lang = 'az';
+let currentCourse = null;
+let currentSubject = null;
+
+function setLang(l) {
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.lang-btn:${l === 'az' ? 'first' : 'last'}-child`).classList.add('active');
+  applyTranslations();
+  const view = getCurrentView();
+  if (view === 'subjects') renderSubjects(currentCourse);
+  else if (view === 'home') renderCourses();
+}
+
+function getCurrentView() {
+  if (!document.getElementById('view-home').classList.contains('hidden')) return 'home';
+  if (!document.getElementById('view-subjects').classList.contains('hidden')) return 'subjects';
+  return 'pdfs';
+}
+
+function applyTranslations() {
+  const t = translations[lang];
+  document.getElementById('hero-badge').textContent = t.badge;
+  document.getElementById('hero-title').innerHTML = t.heroTitle;
+  document.getElementById('hero-desc').textContent = t.heroDesc;
+  document.getElementById('label-courses').textContent = t.coursesLabel;
+  document.getElementById('label-subjects').textContent = t.subjectsLabel;
+  document.getElementById('label-pdfs').textContent = t.pdfsLabel;
+  document.getElementById('back1-text').textContent = t.back1;
+  document.getElementById('back2-text').textContent = t.back2;
+  document.getElementById('bc-home').textContent = t.bcHome;
+  document.getElementById('bc-home2').textContent = t.bcHome;
+  document.getElementById('stat-courses-label').textContent = t.statCourses;
+  document.getElementById('stat-subjects-label').textContent = t.statSubjects;
+  document.getElementById('stat-pdfs-label').textContent = t.statPdfs;
+  document.getElementById('footer-text').textContent = t.footer;
+}
+
+function computeStats() {
+  let totalSubjects = 0, totalPdfs = 0;
+  Object.values(data).forEach(course => {
+    const subs = Object.values(course.subjects);
+    totalSubjects += subs.length;
+    subs.forEach(pdfs => totalPdfs += pdfs.length);
+  });
+  document.getElementById('stat-courses').textContent = Object.keys(data).length;
+  document.getElementById('stat-subjects').textContent = totalSubjects;
+  document.getElementById('stat-pdfs').textContent = totalPdfs;
+}
+
+function goTo(view) {
+  ['home', 'subjects', 'pdfs'].forEach(v => {
+    document.getElementById('view-' + v).classList.add('hidden');
+  });
+  document.getElementById('view-' + view).classList.remove('hidden');
+  if (view === 'home') renderCourses();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderCourses() {
+  const t = translations[lang];
+  const grid = document.getElementById('courses-grid');
+  grid.innerHTML = '';
+  Object.entries(data).forEach(([courseName, courseData]) => {
+    const subCount = Object.keys(courseData.subjects).length;
+    const pdfCount = Object.values(courseData.subjects).reduce((a, b) => a + b.length, 0);
+    const div = document.createElement('div');
+    div.className = 'course-card animate-in';
+    div.innerHTML = `
+      <span class="course-icon">${courseData.icon}</span>
+      <h3>${courseName}</h3>
+      <div class="sub-count">${subCount} ${t.subjects} · ${pdfCount} ${t.pdfs}</div>
+      <div class="tag">${courseName}</div>
+    `;
+    div.onclick = () => openSubjects(courseName);
+    grid.appendChild(div);
+  });
+}
+
+function openSubjects(courseName) {
+  currentCourse = courseName;
+  document.getElementById('bc-course').textContent = courseName;
+  document.getElementById('bc-course2').textContent = courseName;
+  goTo('subjects');
+  renderSubjects(courseName);
+}
+
+function renderSubjects(courseName) {
+  const t = translations[lang];
+  const grid = document.getElementById('subjects-grid');
+  grid.innerHTML = '';
+  const icons = ['📊','📐','🗓','💡','📝','📈','🔬','⚙️','🎯','📌','🏛','💰','📉','🌿','🔗','📋','🧮','🏆'];
+  Object.entries(data[courseName].subjects).forEach(([subjectName, pdfs], i) => {
+    const div = document.createElement('div');
+    div.className = 'subject-card animate-in';
+    div.innerHTML = `
+      <div class="subject-icon">${icons[i % icons.length]}</div>
+      <div class="subject-info">
+        <h4>${subjectName}</h4>
+        <div class="pdf-count"><span class="pdf-badge">PDF ${pdfs.length}</span></div>
+      </div>
+    `;
+    div.onclick = () => openPDFs(subjectName);
+    grid.appendChild(div);
+  });
+}
+
+function openPDFs(subjectName) {
+  currentSubject = subjectName;
+  const t = translations[lang];
+  const pdfs = data[currentCourse].subjects[subjectName];
+
+  document.getElementById('bc-subject').textContent = subjectName;
+  document.getElementById('pdf-subject-title').textContent = subjectName;
+
+  const list = document.getElementById('pdf-items');
+  list.innerHTML = '';
+
+  pdfs.forEach((pdf) => {
+    const div = document.createElement('div');
+    div.className = 'pdf-item animate-in';
+    div.innerHTML = `
+      <div class="pdf-file-icon">
+        <span>PDF</span>
+      </div>
+      <div class="pdf-info">
+        <div class="pdf-name">${pdf.name}</div>
+        <div class="pdf-meta">${pdf.file}</div>
+      </div>
+      <a class="pdf-open-btn" href="pdf/${pdf.file}" target="_blank">
+        ↗ ${t.openPdf}
+      </a>
+    `;
+    list.appendChild(div);
+  });
+
+  goTo('pdfs');
+}
+
+// Init
+computeStats();
+applyTranslations();
+renderCourses();
