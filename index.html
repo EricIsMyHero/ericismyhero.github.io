@@ -25,11 +25,63 @@
 
 <header>
   <div class="logo">UNEC · İMTAHAN</div>
-  <div class="lang-toggle">
-    <button class="lang-btn active" onclick="setLang('az')">AZ</button>
-    <button class="lang-btn" onclick="setLang('en')">EN</button>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <button class="theme-toggle-btn" onclick="toggleThemePanel()" title="Tema seç">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+    </button>
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('az')">AZ</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
   </div>
 </header>
+
+<!-- Theme Panel -->
+<div id="theme-panel" class="theme-panel hidden">
+  <div class="theme-panel-inner">
+    <p class="theme-panel-title">Tema seç</p>
+    <div class="theme-options">
+      <button class="theme-opt active" data-theme="ocean" onclick="applyTheme('ocean',this)">
+        <span class="theme-dot" style="background:#3b82f6"></span>
+        <span class="theme-dot" style="background:#06b6d4"></span>
+        <span class="theme-dot" style="background:#8b5cf6"></span>
+        <span class="theme-opt-name">Ocean</span>
+      </button>
+      <button class="theme-opt" data-theme="forest" onclick="applyTheme('forest',this)">
+        <span class="theme-dot" style="background:#22c55e"></span>
+        <span class="theme-dot" style="background:#4ade80"></span>
+        <span class="theme-dot" style="background:#86efac"></span>
+        <span class="theme-opt-name">Forest</span>
+      </button>
+      <button class="theme-opt" data-theme="sunset" onclick="applyTheme('sunset',this)">
+        <span class="theme-dot" style="background:#f97316"></span>
+        <span class="theme-dot" style="background:#ec4899"></span>
+        <span class="theme-dot" style="background:#fbbf24"></span>
+        <span class="theme-opt-name">Sunset</span>
+      </button>
+      <button class="theme-opt" data-theme="midnight" onclick="applyTheme('midnight',this)">
+        <span class="theme-dot" style="background:#ffffff"></span>
+        <span class="theme-dot" style="background:#a3a3a3"></span>
+        <span class="theme-dot" style="background:#737373"></span>
+        <span class="theme-opt-name">Midnight</span>
+      </button>
+      <button class="theme-opt" data-theme="candy" onclick="applyTheme('candy',this)">
+        <span class="theme-dot" style="background:#a855f7"></span>
+        <span class="theme-dot" style="background:#ec4899"></span>
+        <span class="theme-dot" style="background:#8b5cf6"></span>
+        <span class="theme-opt-name">Candy</span>
+      </button>
+      <button class="theme-opt" data-theme="arctic" onclick="applyTheme('arctic',this)">
+        <span class="theme-dot" style="background:#0284c7"></span>
+        <span class="theme-dot" style="background:#0ea5e9"></span>
+        <span class="theme-dot" style="background:#38bdf8"></span>
+        <span class="theme-opt-name">Arctic</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+
 
 <div class="container">
 
