@@ -60,10 +60,11 @@ const data = {
         { name: "Mikroiqtisadiyyat - 2 - Məsələlər", file: "mikroiqtmesele2.pdf" }
       ],
       "Qiymət siyasəti": [
-        { name: "Qiymət Siyasəti", file: "qiymet.pdf" }
+        { name: "Qiymət Siyasəti", file: "qiymet1.pdf" }
       ],
       "Əməyin iqtisadiyyatı": [
-        { name: "Əməyin İqtisadiyyatı", file: "emek.pdf" }
+        { name: "Əməyin İqtisadiyyatı - 1", file: "emek1.pdf" },
+        { name: "Əməyin İqtisadiyyatı - 1 - Kollekvium", file: "emekkollek1.pdf" }
       ],
       "Ətraf mühitin iqtisadiyyatı": [
         { name: "Ətraf Mühitin İqtisadiyyatı - 1", file: "emi1.pdf" },
