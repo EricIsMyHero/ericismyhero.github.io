@@ -7,28 +7,45 @@ const data = {
     icon: "📘",
     subjects: {
       "Xətti cəbr və riyazi analiz": [
-        { name: "XCRA — Əsas material", file: "xcra.pdf" }
+        { name: "Xətti Cəbr və Riyazi Analiz Q26", file: "xcraQ26.pdf" }
       ],
-      "İKT - baza kompüter bilikləri": [
-        { name: "İKT — Mühazirə konspekti", file: "ikt.pdf" }
+      "İKT - Baza kompüter bilikləri": [
+        { name: "İKT - Baza Kompüter Bilikləri Q26", file: "iktQ26.pdf" }
       ],
       "Azərbaycanın tarixi": [
-        { name: "Azərbaycan Tarixi", file: "aztarixi.pdf" }
+        { name: "Azərbaycanın Tarixi Q26", file: "aztarixiQ26.pdf" }
       ],
       "Karyera planlaması": [
-        { name: "Karyera planlaması materialı", file: "karyera.pdf" }
+        { name: "Karyera Planlaması Q26", file: "karyeraQ26.pdf" }
       ],
       "Azərbaycan dilində işgüzar və akademik kommunikasiya": [
-        { name: "ADIAK material", file: "adiak.pdf" }
+        { name: "ADİAK Q26", file: "adiakQ26.pdf" },
+        { name: "ADİAK Y25", file: "adiakY25.pdf" },
+        { name: "ADİAK Y23", file: "adiakY23.pdf" }
       ],
       "Ehtimal nəzəriyyəsi və riyazi statistika": [
-        { name: "ENRS — Mühazirə", file: "enrs.pdf" }
+        { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika Y25", file: "enrsY25.pdf" },
+        { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika Y23", file: "enrsY23.pdf" }
       ],
-      "Yumşaq bacarıqlar (Soft skills) Y25": [
-        { name: "Soft Skills material", file: "softskills.pdf" }
+      "Yumşaq bacarıqlar (Soft skills)": [
+        { name: "Soft Skills Y25", file: "softskillsY25.pdf" }
       ],
       "İqtisadiyyata giriş": [
-        { name: "İqtisadiyyata Giriş", file: "iqtisadiyyat.pdf" }
+        { name: "İqtisadiyyata Giriş - 1", file: "iqtisadiyyat1.pdf" }
+      ],
+      "Liner cebir ve matematiksel analiz": [
+        { name: "Liner Cebir ve Matematiksel Analiz Q26", file: "lcmaQ26.pdf" },
+        { name: "Liner Cebir ve Matematiksel Analiz Q23", file: "lcmaQ23.pdf" }
+      ],
+      "Azerbaycanın tarihi": [
+        { name: "Azerbaycanın Tarihi Q26", file: "aztarihiQ26.pdf" },
+        { name: "Azerbaycanın Tarihi Q25", file: "aztarihiQ25.pdf" }
+      ],
+      "Bilgi işlem teknolojileri": [
+        { name: "Bilgi İşlem Teknolojileri - 1", file: "bit1.pdf" }
+      ],
+      "Yönetim ve organizasyon": [
+        { name: "Yönetim ve Organizasyon Q25", file: "yonetimorganizasyonQ25.pdf" }
       ]
     }
   },
@@ -36,7 +53,11 @@ const data = {
     icon: "📗",
     subjects: {
       "Mikroiqtisadiyyat": [
-        { name: "Mikroiqtisadiyyat", file: "mikroiqt.pdf" }
+        { name: "Mikroiqtisadiyyat - 1", file: "mikroiqt1.pdf" },
+        { name: "Mikroiqtisadiyyat - 2", file: "mikroiqt2.pdf" },
+        { name: "Mikroiqtisadiyyat - 3", file: "mikroiqt3.pdf" },
+        { name: "Mikroiqtisadiyyat - 1 - Məsələlər", file: "mikroiqtmesele1.pdf" },
+        { name: "Mikroiqtisadiyyat - 2 - Məsələlər", file: "mikroiqtmesele2.pdf" }
       ],
       "Qiymət siyasəti": [
         { name: "Qiymət Siyasəti", file: "qiymet.pdf" }
@@ -45,16 +66,20 @@ const data = {
         { name: "Əməyin İqtisadiyyatı", file: "emek.pdf" }
       ],
       "Ətraf mühitin iqtisadiyyatı": [
-        { name: "Ətraf Mühitin İqtisadiyyatı", file: "emi.pdf" }
+        { name: "Ətraf Mühitin İqtisadiyyatı - 1", file: "emi1.pdf" },
+        { name: "Ətraf Mühitin İqtisadiyyatı - 2", file: "emi2.pdf" },
+        { name: "Ətraf Mühitin İqtisadiyyatı - 1 - Kollekvium", file: "emikollek1.pdf" },
+        { name: "Ətraf Mühitin İqtisadiyyatı - 2 - Kollekvium", file: "emikollek2.pdf" }
       ],
       "Azərbaycan iqtisadiyyatı": [
         { name: "Azərbaycan İqtisadiyyatı", file: "aziqt.pdf" }
       ],
       "Makroiqtisadiyyat": [
-        { name: "Makroiqtisadiyyat", file: "makroiqt.pdf" }
+        { name: "Makroiqtisadiyyat - 1", file: "makroiqt1.pdf" },
+        { name: "Makroiqtisadiyyat - 1 - Məsələlər", file: "makroiqtmesele1.pdf" }
       ],
       "Maliyyə uçotu": [
-        { name: "Maliyyə Uçotu", file: "maliyye.pdf" }
+        { name: "Maliyyə Uçotu Q26", file: "maliyyeQ26.pdf" }
       ],
       "İqtisadi fikir tarixi": [
         { name: "İqtisadi Fikir Tarixi", file: "iqtfkrtrx.pdf" }
