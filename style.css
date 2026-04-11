@@ -509,3 +509,29 @@ h1 span {
   color: var(--muted);
   letter-spacing: 0.05em;
 }
+
+/* Footer Credits */
+.footer-credits {
+  margin-top: 5px;
+  font-size: 0.72rem;
+  color: var(--muted);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.footer-credits a {
+  color: var(--accent2);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-credits a:hover {
+  color: var(--accent);
+}
+
+.footer-sep {
+  opacity: 0.3;
+}
