@@ -3,7 +3,7 @@
   "short_name": "UNEC",
   "start_url": "/unecimtahanmateriallari/",
   "display": "standalone",
-  "orientation": "portrait"
+  "orientation": "portrait",
   "background_color": "#070d1a",
   "theme_color": "#3b82f6",
   "icons": [
