@@ -334,7 +334,7 @@ function openPDFs(subjectName) {
 }
 
 // ============================================================
-// BAŞLAT
+// BAŞLAT ==
 // ============================================================
 // Saxlanılmış temanı yüklə
 (function loadSavedTheme() {
