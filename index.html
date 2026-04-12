@@ -121,8 +121,23 @@
       <span class="breadcrumb-sep">›</span>
       <span class="breadcrumb-current" id="bc-course"></span>
     </div>
-    <p class="section-label" id="label-subjects">Fənlər</p>
-    <div class="subjects-grid" id="subjects-grid"></div>
+    <!-- Tab düymələri -->
+    <div class="tab-bar">
+      <button class="tab-btn active" id="tab-subjects-btn" onclick="switchTab('subjects')">
+        📚 <span id="label-subjects">Fənlər</span>
+      </button>
+      <button class="tab-btn" id="tab-favorites-btn" onclick="switchTab('favorites')">
+        ★ <span id="label-favorites">Sevimlilər</span>
+      </button>
+    </div>
+    <!-- Fənlər -->
+    <div id="tab-subjects-content">
+      <div class="subjects-grid" id="subjects-grid"></div>
+    </div>
+    <!-- Sevimlilər -->
+    <div id="tab-favorites-content" class="hidden">
+      <div class="pdf-items" id="favorites-list"></div>
+    </div>
   </div>
 
   <!-- PDFS -->
