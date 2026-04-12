@@ -729,3 +729,54 @@ h1 span {
   color: #f59e0b;
   background: rgba(245,158,11,0.12);
 }
+
+/* Tab Bar */
+.tab-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 5px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 600;
+  font-family: 'Arial Nova', 'Arial', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.tab-btn.active {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 4px 12px rgba(59,130,246,0.3);
+}
+
+.tab-btn:not(.active):hover {
+  background: var(--surface2);
+  color: var(--text);
+}
+
+/* Empty favorites */
+.empty-favs {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+  padding: 48px 20px;
+  border: 1px dashed var(--border);
+  border-radius: 16px;
+  line-height: 1.6;
+}
