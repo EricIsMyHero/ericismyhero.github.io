@@ -117,6 +117,7 @@ const translations = {
     heroDesc: "Bütün kurslar üzrə imtahan materiallarına tez çatın. Fənni seçin, PDF-i açın.",
     coursesLabel: "Kurslar",
     subjectsLabel: "Fənlər",
+    favoritesLabel: "Sevimlilər",
     pdfsLabel: "PDF Materiallar",
     back1: "Kurslara qayıt",
     back2: "Fənlərə qayıt",
@@ -127,6 +128,7 @@ const translations = {
     statCourses: "Kurs",
     statSubjects: "Fənn",
     statPdfs: "PDF",
+    noFavorites: "Hələ sevilməyən PDF yoxdur. ★ basaraq əlavə edin.",
     footer: "Bu sayt rəsmi deyil. Yalnız tələbələrin imtahan zamanı materialları daha rahat tapması üçün hazırlanıb."
   },
   en: {
@@ -135,6 +137,7 @@ const translations = {
     heroDesc: "Quick access to exam materials for all courses. Select a subject, open the PDF.",
     coursesLabel: "Courses",
     subjectsLabel: "Subjects",
+    favoritesLabel: "Favorites",
     pdfsLabel: "PDF Materials",
     back1: "Back to Courses",
     back2: "Back to Subjects",
@@ -145,6 +148,7 @@ const translations = {
     statCourses: "Courses",
     statSubjects: "Subjects",
     statPdfs: "PDFs",
+    noFavorites: "No favorites yet. Tap ★ to add one.",
     footer: "This site is unofficial. Created to help students find exam materials more easily."
   }
 };
@@ -212,6 +216,7 @@ function applyTranslations() {
   document.getElementById('hero-desc').textContent           = t.heroDesc;
   document.getElementById('label-courses').textContent       = t.coursesLabel;
   document.getElementById('label-subjects').textContent      = t.subjectsLabel;
+  document.getElementById('label-favorites').textContent     = t.favoritesLabel;
   document.getElementById('label-pdfs').textContent          = t.pdfsLabel;
   document.getElementById('back1-text').textContent          = t.back1;
   document.getElementById('back2-text').textContent          = t.back2;
@@ -281,8 +286,70 @@ function openSubjects(courseName) {
   currentCourse = courseName;
   document.getElementById('bc-course').textContent  = courseName;
   document.getElementById('bc-course2').textContent = courseName;
+  switchTab('subjects'); // hər dəfə fənlər tabından başla
   goTo('subjects');
   renderSubjects(courseName);
+}
+
+function switchTab(tab) {
+  const isSubjects = tab === 'subjects';
+  document.getElementById('tab-subjects-btn').classList.toggle('active', isSubjects);
+  document.getElementById('tab-favorites-btn').classList.toggle('active', !isSubjects);
+  document.getElementById('tab-subjects-content').classList.toggle('hidden', !isSubjects);
+  document.getElementById('tab-favorites-content').classList.toggle('hidden', isSubjects);
+  if (!isSubjects) renderFavorites();
+}
+
+function renderFavorites() {
+  const t = translations[lang];
+  const favs = getFavorites();
+  const list = document.getElementById('favorites-list');
+  list.innerHTML = '';
+
+  // Cari kursun bütün PDF-lərini yığ
+  const coursePdfs = [];
+  if (currentCourse) {
+    Object.entries(data[currentCourse].subjects).forEach(([subjectName, pdfs]) => {
+      pdfs.forEach(pdf => {
+        if (favs.includes(pdf.file)) {
+          coursePdfs.push({ ...pdf, subjectName });
+        }
+      });
+    });
+  }
+
+  if (coursePdfs.length === 0) {
+    list.innerHTML = `<div class="empty-favs">${t.noFavorites}</div>`;
+    return;
+  }
+
+  coursePdfs.forEach(pdf => {
+    const div = document.createElement('div');
+    div.className = 'pdf-item animate-in';
+    div.innerHTML = `
+      <div class="pdf-file-icon">
+        <span>PDF</span>
+      </div>
+      <div class="pdf-info">
+        <div class="pdf-name">${pdf.name}</div>
+        <div class="pdf-meta">${pdf.subjectName}</div>
+      </div>
+      <div class="pdf-actions">
+        <button class="fav-btn active" onclick="removeFavAndRefresh('${pdf.file}', this)" title="Sil">★</button>
+        <a class="pdf-open-btn" href="/unecimtahanmateriallari/pdf/${pdf.file}" target="_blank">
+          ↗ ${t.openPdf}
+        </a>
+      </div>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function removeFavAndRefresh(file, btn) {
+  let favs = getFavorites().filter(f => f !== file);
+  localStorage.setItem("favorites", JSON.stringify(favs));
+  removeFromCache(file);
+  renderFavorites(); // siyahını yenilə
 }
 
 function renderSubjects(courseName) {
