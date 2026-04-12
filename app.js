@@ -316,6 +316,7 @@ function openPDFs(subjectName) {
   list.innerHTML = '';
 
   pdfs.forEach(pdf => {
+    const isFav = getFavorites().includes(pdf.file);
     const div = document.createElement('div');
     div.className = 'pdf-item animate-in';
     div.innerHTML = `
@@ -326,9 +327,14 @@ function openPDFs(subjectName) {
         <div class="pdf-name">${pdf.name}</div>
         <div class="pdf-meta">${pdf.file}</div>
       </div>
-      <a class="pdf-open-btn" href="pdf/${pdf.file}" target="_blank">
-        ↗ ${t.openPdf}
-      </a>
+      <div class="pdf-actions">
+        <button class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite('${pdf.file}', this)" title="Sevimlilərə əlavə et">
+          ${isFav ? '★' : '☆'}
+        </button>
+        <a class="pdf-open-btn" href="/unecimtahanmateriallari/pdf/${pdf.file}" target="_blank">
+          ↗ ${t.openPdf}
+        </a>
+      </div>
     `;
     list.appendChild(div);
   });
@@ -337,7 +343,56 @@ function openPDFs(subjectName) {
 }
 
 // ============================================================
-// BAŞLAT ==
+// SEVİMLİLƏR + CACHE
+// ============================================================
+const PDF_BASE = "/unecimtahanmateriallari/pdf/";
+
+function getFavorites() {
+  return JSON.parse(localStorage.getItem("favorites")) || [];
+}
+
+async function toggleFavorite(file, btn) {
+  let favs = getFavorites();
+
+  if (favs.includes(file)) {
+    // Sevimlilərden sil + cache-dən sil
+    favs = favs.filter(f => f !== file);
+    removeFromCache(file);
+    btn.textContent = '☆';
+    btn.classList.remove('active');
+  } else {
+    // Sevimlilərə əlavə et + cache et
+    favs.push(file);
+    cacheOnePDF(file);
+    btn.textContent = '★';
+    btn.classList.add('active');
+  }
+
+  localStorage.setItem("favorites", JSON.stringify(favs));
+}
+
+async function cacheOnePDF(file) {
+  if (!("caches" in window)) return;
+  try {
+    const cache = await caches.open("pdf-cache");
+    await cache.add(PDF_BASE + file);
+  } catch (e) {
+    console.warn("Cache xətası:", e);
+  }
+}
+
+async function removeFromCache(file) {
+  if (!("caches" in window)) return;
+  try {
+    const cache = await caches.open("pdf-cache");
+    await cache.delete(PDF_BASE + file);
+  } catch (e) {
+    console.warn("Cache silmə xətası:", e);
+  }
+}
+
+// ============================================================
+// BAŞLAT
 // ============================================================
 // Saxlanılmış temanı yüklə
 (function loadSavedTheme() {
