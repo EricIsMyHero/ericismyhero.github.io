@@ -22,6 +22,9 @@ const data = {
         { name: "ADİAK Y25", file: "adiakY25.pdf" },
         { name: "ADİAK Y23", file: "adiakY23.pdf" }
       ],
+      "Xarici dilində işgüzar və akademik kommunikasiya": [
+        { name: "White Death A1", file: "whitedeathA1.pdf" }
+      ],
       "Ehtimal nəzəriyyəsi və riyazi statistika": [
         { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika Y25", file: "enrsY25.pdf" },
         { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika Y23", file: "enrsY23.pdf" }
@@ -31,6 +34,9 @@ const data = {
       ],
       "İqtisadiyyata giriş": [
         { name: "İqtisadiyyata Giriş - 1", file: "iqtisadiyyat1.pdf" }
+      ],
+      "Xarici dilində işgüzar və akademik kommunikasiya": [
+        { name: "Robinson Crusoe A2", file: "robinsoncrusoeA2.pdf" }
       ],
       "Liner cebir ve matematiksel analiz": [
         { name: "Liner Cebir ve Matematiksel Analiz Q26", file: "lcmaQ26.pdf" },
@@ -84,7 +90,9 @@ const data = {
         { name: "Maliyyə Uçotu Q26", file: "maliyyeQ26.pdf" }
       ],
       "İqtisadi fikir tarixi": [
-        { name: "İqtisadi Fikir Tarixi", file: "iqtfkrtrx.pdf" }
+        { name: "İqtisadi Fikir Tarixi - 1", file: "iqtfkrtrx1.pdf" },
+        { name: "İqtisadi Fikir Tarixi - 2", file: "iqtfkrtrx2.pdf" },
+        { name: "İqtisadi Fikir Tarixi - 3", file: "iqtfkrtrx3.pdf" }
       ]
     }
   },
@@ -113,7 +121,7 @@ const extrasData = {
     { name: "Nümunə Material", file: "numune1.pdf", desc: "Əlavə qeydlər" }
   ],
   "2-ci kurs": [
-    { name: "Nümunə Material", file: "numune2.pdf", desc: "Əlavə qeydlər" }
+    { name: "Robinson Crusoe - Azərbaycan", file: "robinsonazeA2.pdf", desc: "Robinson Crusoe Azərbaycan dilindəki versiyası" }
   ],
   "3-cü kurs": [
     { name: "Nümunə Material", file: "numune3.pdf", desc: "Əlavə qeydlər" }
