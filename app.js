@@ -130,10 +130,10 @@ const translations = {
   az: {
     badge: "İmtahan Materialları",
     heroTitle: 'UNEC <span>İmtahan</span><br>Materialları',
-    heroDesc: "Bütün kurslar üzrə imtahan materiallarına tez çatın. Fənni seçin, PDF-i açın.",
+    heroDesc: "Bütün kurslar üzrə imtahan materiallarına tez çatın. Fənni seçərək, PDF-i açın.",
     coursesLabel: "Kurslar",
     subjectsLabel: "Fənlər",
-    extrasLabel: "Əlavə",
+    extrasLabel: "Əlavə Materiallar",
     favoritesLabel: "Sevimlilər",
     pdfsLabel: "PDF Materiallar",
     back1: "Kurslara qayıt",
@@ -145,9 +145,9 @@ const translations = {
     statCourses: "Kurs",
     statSubjects: "Fənn",
     statPdfs: "PDF",
-    noFavorites: "Hələ sevilməyən PDF yoxdur. ★ basaraq əlavə edin.",
+    noFavorites: "Hələ seçilən PDF yoxdur. ★ basaraq əlavə edin.",
     noExtras: "Bu kurs üçün hələ əlavə material yoxdur.",
-    footer: "Bu sayt rəsmi deyil. Yalnız tələbələrin imtahan zamanı materialları daha rahat tapması üçün hazırlanıb."
+    footer: "Bu sayt rəsmi deyil. Yalnız tələbələrin imtahan zamanı materialları daha rahat və əlçatan tapması üçün hazırlanıb."
   },
   en: {
     badge: "Exam Materials",
@@ -155,7 +155,7 @@ const translations = {
     heroDesc: "Quick access to exam materials for all courses. Select a subject, open the PDF.",
     coursesLabel: "Courses",
     subjectsLabel: "Subjects",
-    extrasLabel: "Extras",
+    extrasLabel: "Extra Materials",
     favoritesLabel: "Favorites",
     pdfsLabel: "PDF Materials",
     back1: "Back to Courses",
