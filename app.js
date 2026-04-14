@@ -17,17 +17,17 @@ const data = {
       "Karyera planlaması": [
         { name: "Karyera Planlaması Q26", file: "karyeraQ26.pdf" }
       ],
-      "Azərbaycan dilində işgüzar və akademik kommunikasiya": [
-        { name: "ADİAK Q26", file: "adiakQ26.pdf" },
-        { name: "ADİAK Y25", file: "adiakY25.pdf" },
-        { name: "ADİAK Y23", file: "adiakY23.pdf" }
-      ],
       "Xarici dildə işgüzar və akademik kommunikasiya A1": [
         { name: "White Death A1", file: "whitedeathA1.pdf" }
       ],
       "Ehtimal nəzəriyyəsi və riyazi statistika": [
         { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika Y25", file: "enrsY25.pdf" },
         { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika Y23", file: "enrsY23.pdf" }
+      ],
+      "Azərbaycan dilində işgüzar və akademik kommunikasiya": [
+        { name: "ADİAK Q26", file: "adiakQ26.pdf" },
+        { name: "ADİAK Y25", file: "adiakY25.pdf" },
+        { name: "ADİAK Y23", file: "adiakY23.pdf" }
       ],
       "Yumşaq bacarıqlar (Soft skills)": [
         { name: "Soft Skills Y25", file: "softskillsY25.pdf" }
