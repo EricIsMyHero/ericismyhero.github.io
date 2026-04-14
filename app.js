@@ -1,6 +1,124 @@
 // DATA — hər fənn üçün istədiyiniz qədər PDF əlavə edə bilərsiniz
 // Format: "Fənn adı": [ {name: "Fayl adı", file: "fayl.pdf"}, ... ]
 // ============================================================
+// ============================================================
+// FƏNN HAQQINDA QEYDLƏR
+// Hər fənn üçün "?" düyməsində göstəriləcək məlumatlar
+// "Fənn adı": ["Cümlə 1", "Cümlə 2", ...]
+// ============================================================
+const subjectNotes = {
+  "Xətti cəbr və riyazi analiz": [
+    "⚠️ Bu material köhnə ola bilər, müəllimin dediyi mövzularla müqayisə edin.",
+    "📅 Material ən gec Q26 (payız) sessiyasına aiddir.",
+    "💡 Sualların sırası dəyişmiş ola bilər."
+  ],
+  "İKT - Baza kompüter bilikləri": [
+    "⚠️ Bu material köhnə ola bilər.",
+    "📅 Material ən gec Q26 (payız) sessiyasına aiddir.",
+    "💡 Sualların sırası dəyişmiş ola bilər."
+  ],
+  "Azərbaycanın tarixi": [
+    "⚠️ Bu material köhnə ola bilər.",
+    "📅 Material ən gec Q26 (payız) sessiyasına aiddir.",
+    "💡 Sualların sırası dəyişmiş ola bilər."
+  ],
+  "Karyera planlaması": [
+    "⚠️ Bu material köhnə ola bilər.",
+    "📅 Material ən gec Q26 (payız) sessiyasına aiddir."
+  ],
+  "Xarici dildə işgüzar və akademik kommunikasiya A1": [
+    "⚠️ Bu materialdakı mətn dəyişdirilə bilər."
+  ],
+  "Azərbaycan dilində işgüzar və akademik kommunikasiya": [
+    "⚠️ Bu materiallar köhnə ola bilər.",
+    "💡 Müxtəlif illərin suallarını müqayisə etmək faydalıdır."
+  ],
+  "Ehtimal nəzəriyyəsi və riyazi statistika": [
+    "⚠️ Bu material köhnə ola bilər.",
+    "📅 Ən gec Y23 sessiyasına aid materiallar mövcuddur.",
+    "💡 Məsələləri mütləq özünüz həll etməyə çalışın."
+  ],
+  "Yumşaq bacarıqlar (Soft skills)": [
+    "⚠️ Bu material köhnə ola bilər.",
+    "📅 Material ən gec Y25 sessiyasına aiddir."
+  ],
+  "İqtisadiyyata giriş": [
+    "⚠️ Bu material köhnə ola bilər.",
+    "⁉️ Sillabusunuzla mütləq uyğunlaşdırın.",
+    "💡 Əlavə mənbələrdən də istifadə etməyi tövsiyə edirik."
+  ],
+  "Xarici dildə işgüzar və akademik kommunikasiya A1": [
+    "⚠️ Bu materialdakı mətn dəyişdirilə bilər."
+  ],
+  "Liner cebir ve matematiksel analiz": [
+    "⚠️ Bu material köhnə ola bilər.",
+    "📅 Ən gec Q23 sessiyasına aid materiallar mövcuddur.",
+    "🇹🇷 Materiallar türk dilindədir."
+  ],
+  "Azerbaycanın tarihi": [
+    "⚠️ Bu materiallar köhnə ola bilər.",
+    "📅 Ən gec Q25 sessiyasına aid materiallar mövcuddur.",
+    "🇹🇷 Material türk dilindədir."
+  ],
+  "Bilgi işlem teknolojileri": [
+    "⚠️ Bu material köhnə ola bilər.",
+    "🇹🇷 Material türk dilindədir."
+  ],
+  "Yönetim ve organizasyon": [
+    "⚠️ Bu material köhnə ola bilər.",
+    "📅 Material ən gec Q25 sessiyasına aiddir.",
+    "🇹🇷 Material türk dilindədir."
+  ],
+  "Mikroiqtisadiyyat": [
+    "⚠️ Bu materiallar köhnə ola bilər.",
+    "⁉️ Sillabusunuzla mütləq uyğunlaşdırın.",
+    "📝 Həm nəzəri, həm də məsələ materialları mövcuddur.",
+    "💡 Məsələləri mütləq özünüz həll etməyə çalışın."
+  ],
+  "Qiymət siyasəti": [
+    "⚠️ Bu material köhnə ola bilər.",
+    "⁉️ Sillabusunuzla mütləq uyğunlaşdırın.",
+    "💡 Əlavə mənbələrdən də istifadə etməyi tövsiyə edirik."
+  ],
+  "Əməyin iqtisadiyyatı": [
+    "⚠️ Bu materiallar köhnə ola bilər.",
+    "⁉️ Sillabusunuzla mütləq uyğunlaşdırın.",
+    "📝 İmtahan və kollekvium materialları mövcuddur."
+  ],
+  "Ətraf mühitin iqtisadiyyatı": [
+    "⚠️ Bu materiallar köhnə ola bilər.",
+    "⁉️ Sillabusunuzla mütləq uyğunlaşdırın.",
+    "📝 İmtahan və kollekvium materialları mövcuddur."
+  ],
+  "Azərbaycan iqtisadiyyatı": [
+    "⚠️ Bu materiallar köhnə ola bilər.",
+    "⁉️ Sillabusunuzla mütləq uyğunlaşdırın.",
+    "📝 İmtahan üzrə 3 fərqli material mövcuddur."
+  ],
+  "Makroiqtisadiyyat": [
+    "⚠️ Bu materiallar köhnə ola bilər.",
+    "⁉️ Sillabusunuzla mütləq uyğunlaşdırın.",
+    "📝 Həm nəzəri, həm də məsələ materialları mövcuddur."
+  ],
+  "Maliyyə uçotu": [
+    "⚠️ Bu material köhnə ola bilər.",
+    "📅 Material ən gec Q26 sessiyasına aiddir."
+  ],
+  "İqtisadi fikir tarixi": [
+    "⚠️ Bu material köhnə ola bilər.",
+    "⁉️ Sillabusunuzla mütləq uyğunlaşdırın.",
+    "💡 Əlavə mənbələrdən də istifadə etməyi tövsiyə edirik."
+  ],
+  "Maliyyə": [
+    "⚠️ Bu material köhnə ola bilər.",
+    "💡 Əlavə mənbələrdən də istifadə etməyi tövsiyə edirik."
+  ],
+  "Menecment": [
+    "⚠️ Bu material köhnə ola bilər.",
+    "💡 Əlavə mənbələrdən də istifadə etməyi tövsiyə edirik."
+  ]
+};
+
 const data = {
   "1-ci kurs": {
     icon: "📘",
@@ -528,13 +646,65 @@ function renderSubjects(courseName) {
   });
 }
 
+// ============================================================
+// INFO PANEL — fənn haqqında qeydlər
+// ============================================================
+function toggleInfoPanel() {
+  const panel = document.getElementById('subject-info-panel');
+  if (panel) panel.classList.toggle('hidden');
+}
+
+function closeInfoPanel() {
+  const panel = document.getElementById('subject-info-panel');
+  if (panel) panel.classList.add('hidden');
+}
+
+// Paneli kənara klikləyərək bağla — aşağıdakı listener artıq yuxarıda təyin edilib
+document.addEventListener('click', function(e) {
+  const panel = document.getElementById('subject-info-panel');
+  if (panel && !panel.classList.contains('hidden') &&
+      !panel.contains(e.target) &&
+      !e.target.closest('.info-btn')) {
+    panel.classList.add('hidden');
+  }
+});
+
 function openPDFs(subjectName) {
   currentSubject = subjectName;
   const t = translations[lang];
   const pdfs = data[currentCourse].subjects[subjectName];
 
-  document.getElementById('bc-subject').textContent        = subjectName;
-  document.getElementById('pdf-subject-title').textContent = subjectName;
+  document.getElementById('bc-subject').textContent = subjectName;
+
+  // Fənn başlığı + "?" düyməsi
+  const titleEl = document.getElementById('pdf-subject-title');
+  const notes = subjectNotes[subjectName] || [];
+  titleEl.innerHTML = `
+    <span>${subjectName}</span>
+    ${notes.length > 0 ? `<button class="info-btn" onclick="toggleInfoPanel()" title="Bu fənn haqqında">?</button>` : ''}
+  `;
+
+  // Köhnə paneli sil, yenisini yarat
+  const existing = document.getElementById('subject-info-panel');
+  if (existing) existing.remove();
+
+  if (notes.length > 0) {
+    const panel = document.createElement('div');
+    panel.id = 'subject-info-panel';
+    panel.className = 'info-panel hidden';
+    panel.innerHTML = `
+      <div class="info-panel-inner">
+        <div class="info-panel-header">
+          <span class="info-panel-title">ℹ️ Bu fənn haqqında</span>
+          <button class="info-panel-close" onclick="closeInfoPanel()">✕</button>
+        </div>
+        <ul class="info-panel-list">
+          ${notes.map(n => `<li>${n}</li>`).join('')}
+        </ul>
+      </div>
+    `;
+    document.querySelector('.pdf-section-header').appendChild(panel);
+  }
 
   const list = document.getElementById('pdf-items');
   list.innerHTML = '';
