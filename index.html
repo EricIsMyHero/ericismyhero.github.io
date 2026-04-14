@@ -12,7 +12,6 @@
 </head>
 <body>
 
-<!-- PWA Install Banner -->
 <div id="installBanner">
   <span>📱 Bu saytı tətbiq kimi əlavə et</span>
   <div class="banner-actions">
@@ -36,7 +35,6 @@
   </div>
 </header>
 
-<!-- Theme Panel -->
 <div id="theme-panel" class="theme-panel hidden">
   <div class="theme-panel-inner">
     <p class="theme-panel-title">Tema seç</p>
@@ -81,11 +79,19 @@
   </div>
 </div>
 
+<div class="search-bar-container" id="searchBarContainer">
+  <div class="search-bar-wrapper">
+    <div class="search-icon">🔍</div>
+    <input type="text" id="searchInput" placeholder="PDF axtar..." autocomplete="off">
+    <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
+  </div>
+  <div class="search-results-info" id="searchResultsInfo"></div>
+</div>
+
 
 
 <div class="container">
 
-  <!-- HOME -->
   <div id="view-home">
     <div class="hero">
       <div class="hero-badge" id="hero-badge">İmtahan Materialları</div>
@@ -109,9 +115,13 @@
 
     <p class="section-label" id="label-courses">Kurslar</p>
     <div class="courses-grid" id="courses-grid"></div>
+    
+    <div id="global-search-results" class="hidden">
+      <p class="section-label" id="label-search-results">Axtarış Nəticələri</p>
+      <div class="pdf-items" id="search-results-list"></div>
+    </div>
   </div>
 
-  <!-- SUBJECTS -->
   <div id="view-subjects" class="hidden">
     <div class="back-btn" onclick="goTo('home')">
       <span>←</span> <span id="back1-text">Kurslara qayıt</span>
@@ -121,7 +131,6 @@
       <span class="breadcrumb-sep">›</span>
       <span class="breadcrumb-current" id="bc-course"></span>
     </div>
-    <!-- Tab düymələri -->
     <div class="tab-bar">
       <button class="tab-btn active" id="tab-subjects-btn" onclick="switchTab('subjects')">
         📚 <span id="label-subjects">Fənlər</span>
@@ -133,21 +142,17 @@
         ★ <span id="label-favorites">Seçilmişlər</span>
       </button>
     </div>
-    <!-- Fənlər -->
     <div id="tab-subjects-content">
       <div class="subjects-grid" id="subjects-grid"></div>
     </div>
-    <!-- Əlavə materiallar -->
     <div id="tab-extras-content" class="hidden">
       <div class="pdf-items" id="extras-list"></div>
     </div>
-    <!-- Sevimlilər -->
     <div id="tab-favorites-content" class="hidden">
       <div class="pdf-items" id="favorites-list"></div>
     </div>
   </div>
 
-  <!-- PDFS -->
   <div id="view-pdfs" class="hidden">
     <div class="back-btn" onclick="goTo('subjects')">
       <span>←</span> <span id="back2-text">Fənlərə qayıt</span>
