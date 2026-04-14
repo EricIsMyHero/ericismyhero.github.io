@@ -122,6 +122,7 @@ const extrasData = {
     { name: "Nümunə Material", file: "numune4.pdf", desc: "Əlavə qeydlər" }
   ]
 };
+
 // ============================================================
 // TƏRCÜMƏ
 // ============================================================
@@ -135,7 +136,7 @@ const translations = {
     extrasLabel: "Əlavələr",
     favoritesLabel: "Seçilmişlər",
     pdfsLabel: "PDF Materiallar",
-    searchPlaceholder: "PDF axtar...",
+    searchPlaceholder: "Fənn axtar...",
     searchResults: "Axtarış Nəticələri",
     noResults: "Heç bir nəticə tapılmadı",
     back1: "Kurslara qayıt",
@@ -160,7 +161,7 @@ const translations = {
     extrasLabel: "Extras",
     favoritesLabel: "Favorites",
     pdfsLabel: "PDF Materials",
-    searchPlaceholder: "Search PDFs...",
+    searchPlaceholder: "Search subjects...",
     searchResults: "Search Results",
     noResults: "No results found",
     back1: "Back to Courses",
@@ -226,7 +227,6 @@ function setLang(l) {
   const view = getCurrentView();
   if (view === 'subjects') renderSubjects(currentCourse);
   else if (view === 'home') renderCourses();
-  // Update search placeholder
   const searchInput = document.getElementById('searchInput');
   if (searchInput) {
     searchInput.placeholder = translations[lang].searchPlaceholder;
@@ -257,12 +257,7 @@ function applyTranslations() {
   document.getElementById('stat-subjects-label').textContent = t.statSubjects;
   document.getElementById('stat-pdfs-label').textContent     = t.statPdfs;
   document.getElementById('footer-text').textContent         = t.footer;
-  
-  // Update search-related translations
-  const searchLabel = document.getElementById('label-search-results');
-  if (searchLabel) searchLabel.textContent = t.searchResults;
 
-  // Aktiv dil düyməsini işarələ
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.lang-btn')[lang === 'az' ? 0 : 1].classList.add('active');
 }
@@ -290,240 +285,78 @@ function goTo(view) {
     document.getElementById('view-' + v).classList.add('hidden');
   });
   document.getElementById('view-' + view).classList.remove('hidden');
-  
-  // Clear search when navigating
+
+  // Search-i təmizlə
   clearSearch();
-  
+
   if (view === 'home') renderCourses();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ============================================================
-// AXTARIŞ FUNKSİYASI
+// AXTARIŞ — yalnız view-subjects daxilində fənn filtri
 // ============================================================
-
-// Get all PDFs from all courses for global search
-function getAllPDFs() {
-  const allPdfs = [];
-  
-  Object.entries(data).forEach(([courseName, courseData]) => {
-    Object.entries(courseData.subjects).forEach(([subjectName, pdfs]) => {
-      pdfs.forEach(pdf => {
-        allPdfs.push({
-          name: pdf.name,
-          file: pdf.file,
-          subject: subjectName,
-          course: courseName,
-          path: 'pdf/' + pdf.file,
-          isExtra: false
-        });
-      });
-    });
-    
-    // Add extras
-    (extrasData[courseName] || []).forEach(pdf => {
-      allPdfs.push({
-        name: pdf.name,
-        file: pdf.file,
-        subject: pdf.desc || 'Əlavə material',
-        course: courseName,
-        path: 'pdf-extra/' + pdf.file,
-        isExtra: true
-      });
-    });
-  });
-  
-  return allPdfs;
-}
-
-// Search functionality
 function initSearch() {
   const searchInput = document.getElementById('searchInput');
   const searchClear = document.getElementById('searchClear');
-  const searchResultsInfo = document.getElementById('searchResultsInfo');
-  
+
   if (!searchInput) return;
-  
-  // Update placeholder based on language
+
   searchInput.placeholder = translations[lang].searchPlaceholder;
-  
+
   searchInput.addEventListener('input', (e) => {
     const query = e.target.value.trim().toLowerCase();
-    
-    // Show/hide clear button
+
     if (query.length > 0) {
       searchClear.classList.add('visible');
     } else {
       searchClear.classList.remove('visible');
     }
-    
-    performSearch(query);
-  });
-  
-  // Handle scroll effect for search bar
-  const searchContainer = document.getElementById('searchBarContainer');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 10) {
-      searchContainer.classList.add('scrolled');
-    } else {
-      searchContainer.classList.remove('scrolled');
-    }
+
+    filterSubjects(query);
   });
 }
 
 function clearSearch() {
   const searchInput = document.getElementById('searchInput');
   const searchClear = document.getElementById('searchClear');
-  
+  const searchResultsInfo = document.getElementById('searchResultsInfo');
+
   if (searchInput) {
     searchInput.value = '';
-    searchClear.classList.remove('visible');
-    performSearch('');
-  }
-}
-
-function performSearch(query) {
-  const view = getCurrentView();
-  const searchResultsSection = document.getElementById('global-search-results');
-  const coursesGrid = document.getElementById('courses-grid');
-  const labelCourses = document.getElementById('label-courses');
-  const searchResultsInfo = document.getElementById('searchResultsInfo');
-  
-  if (!query) {
-    // Clear search - show normal view
-    if (searchResultsSection) searchResultsSection.classList.add('hidden');
-    if (coursesGrid) coursesGrid.classList.remove('hidden');
-    if (labelCourses) labelCourses.classList.remove('hidden');
+    if (searchClear) searchClear.classList.remove('visible');
     if (searchResultsInfo) searchResultsInfo.textContent = '';
-    
-    // Re-render current view
-    if (view === 'home') renderCourses();
-    else if (view === 'subjects') renderSubjects(currentCourse);
-    else if (view === 'pdfs') openPDFs(currentSubject);
-    
-    return;
+    filterSubjects('');
   }
-  
-  // Only show global search on home view
-  if (view !== 'home') {
-    // Filter current view
-    filterCurrentView(query);
-    return;
-  }
-  
-  // Global search on home
-  const allPdfs = getAllPDFs();
-  const results = allPdfs.filter(pdf => 
-    pdf.name.toLowerCase().includes(query) ||
-    pdf.subject.toLowerCase().includes(query) ||
-    pdf.course.toLowerCase().includes(query)
-  );
-  
-  // Show results section, hide courses
-  if (searchResultsSection) searchResultsSection.classList.remove('hidden');
-  if (coursesGrid) coursesGrid.classList.add('hidden');
-  if (labelCourses) labelCourses.classList.add('hidden');
-  
-  // Update results info
-  if (searchResultsInfo) {
-    const t = translations[lang];
-    searchResultsInfo.textContent = `${results.length} ${results.length === 1 ? 'nəticə' : 'nəticə'} tapıldı`;
-  }
-  
-  // Render results
-  renderSearchResults(results, query);
 }
 
-function renderSearchResults(results, query) {
-  const container = document.getElementById('search-results-list');
-  const t = translations[lang];
-  
-  if (!container) return;
-  
-  container.innerHTML = '';
-  
-  if (results.length === 0) {
-    container.innerHTML = `
-      <div class="no-results">
-        <div class="no-results-icon">🔍</div>
-        <div>${t.noResults}</div>
-      </div>
-    `;
-    return;
-  }
-  
-  results.forEach((pdf, index) => {
-    const isFav = getFavorites().includes(pdf.path);
-    const div = document.createElement('div');
-    div.className = 'pdf-item animate-in';
-    div.style.animationDelay = `${index * 50}ms`;
-    
-    // Highlight matching text
-    const highlightedName = highlightText(pdf.name, query);
-    
-    div.innerHTML = `
-      <div class="pdf-file-icon" ${pdf.isExtra ? 'style="background:linear-gradient(135deg,#f59e0b,#d97706);"' : ''}>
-        <span>PDF</span>
-      </div>
-      <div class="pdf-info">
-        <div class="pdf-name">${highlightedName}</div>
-        <div class="pdf-meta">${pdf.course} › ${pdf.subject}</div>
-      </div>
-      <div class="pdf-actions">
-        <button class="fav-btn ${isFav ? 'active' : ''}" 
-          onclick="toggleFavorite('${pdf.path}', this)" 
-          title="Seçilmişlərə əlavə et">
-          ${isFav ? '★' : '☆'}
-        </button>
-        <a class="pdf-open-btn" href="${BASE}${pdf.path}" target="_blank">
-          ↗ ${t.openPdf}
-        </a>
-      </div>
-    `;
-    container.appendChild(div);
+// Yalnız fənn kartlarını filtr edir (view-subjects / subjects tab)
+function filterSubjects(query) {
+  const grid = document.getElementById('subjects-grid');
+  if (!grid) return;
+
+  const cards = grid.querySelectorAll('.subject-card');
+  const searchResultsInfo = document.getElementById('searchResultsInfo');
+  let visibleCount = 0;
+
+  cards.forEach(card => {
+    const subjectName = card.querySelector('h4').textContent.toLowerCase();
+    const matches = !query || subjectName.includes(query);
+    card.style.display = matches ? 'flex' : 'none';
+    if (matches) visibleCount++;
   });
-}
 
-function highlightText(text, query) {
-  if (!query) return text;
-  const regex = new RegExp(`(${escapeRegex(query)})`, 'gi');
-  return text.replace(regex, '<span class="search-highlight">$1</span>');
+  if (searchResultsInfo) {
+    if (query) {
+      searchResultsInfo.textContent = `${visibleCount} nəticə tapıldı`;
+    } else {
+      searchResultsInfo.textContent = '';
+    }
+  }
 }
 
 function escapeRegex(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
-function filterCurrentView(query) {
-  const view = getCurrentView();
-  
-  if (view === 'subjects') {
-    // Filter subjects in current course
-    const grid = document.getElementById('subjects-grid');
-    const cards = grid.querySelectorAll('.subject-card');
-    
-    cards.forEach(card => {
-      const subjectName = card.querySelector('h4').textContent.toLowerCase();
-      if (subjectName.includes(query)) {
-        card.style.display = 'flex';
-      } else {
-        card.style.display = 'none';
-      }
-    });
-  } else if (view === 'pdfs') {
-    // Filter PDFs in current subject
-    const list = document.getElementById('pdf-items');
-    const items = list.querySelectorAll('.pdf-item');
-    
-    items.forEach(item => {
-      const pdfName = item.querySelector('.pdf-name').textContent.toLowerCase();
-      if (pdfName.includes(query)) {
-        item.style.display = 'flex';
-      } else {
-        item.style.display = 'none';
-      }
-    });
-  }
 }
 
 // ============================================================
@@ -553,7 +386,7 @@ function openSubjects(courseName) {
   currentCourse = courseName;
   document.getElementById('bc-course').textContent  = courseName;
   document.getElementById('bc-course2').textContent = courseName;
-  switchTab('subjects'); // hər dəfə fənlər tabından başla
+  switchTab('subjects');
   goTo('subjects');
   renderSubjects(courseName);
 }
@@ -563,6 +396,10 @@ function switchTab(tab) {
     document.getElementById(`tab-${t}-btn`).classList.toggle('active', t === tab);
     document.getElementById(`tab-${t}-content`).classList.toggle('hidden', t !== tab);
   });
+
+  // Axtarışı tab dəyişdikdə sıfırla
+  clearSearch();
+
   if (tab === 'favorites') renderFavorites();
   if (tab === 'extras')    renderExtras();
 }
@@ -611,11 +448,9 @@ function renderFavorites() {
   const list = document.getElementById('favorites-list');
   list.innerHTML = '';
 
-  // Cari kursun bütün PDF-lərini (pdf/ + pdf-extra/) yığ
   const allPdfs = [];
 
   if (currentCourse) {
-    // Fənn PDF-ləri
     Object.entries(data[currentCourse].subjects).forEach(([subjectName, pdfs]) => {
       pdfs.forEach(pdf => {
         const path = 'pdf/' + pdf.file;
@@ -624,7 +459,6 @@ function renderFavorites() {
         }
       });
     });
-    // Əlavə materiallar
     (extrasData[currentCourse] || []).forEach(pdf => {
       const path = 'pdf-extra/' + pdf.file;
       if (favs.includes(path)) {
@@ -725,8 +559,7 @@ function openPDFs(subjectName) {
 }
 
 // ============================================================
-// SEVİMLİLƏR + CACHE (universal — pdf/ və pdf-extra/ dəstəklənir)
-// filePath → "pdf/iktQ26.pdf" və ya "pdf-extra/cheat.pdf"
+// SEVİMLİLƏR + CACHE
 // ============================================================
 const BASE = "/unecimtahanmateriallari/";
 
@@ -773,7 +606,6 @@ async function removeFromCache(filePath) {
 // ============================================================
 // BAŞLAT
 // ============================================================
-// Saxlanılmış temanı yüklə
 (function loadSavedTheme() {
   const saved = localStorage.getItem('theme');
   if (saved && themes[saved]) {
@@ -785,4 +617,4 @@ async function removeFromCache(filePath) {
 computeStats();
 applyTranslations();
 renderCourses();
-initSearch(); // Initialize search functionality
+initSearch();
