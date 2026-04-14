@@ -22,7 +22,7 @@ const data = {
         { name: "ADİAK Y25", file: "adiakY25.pdf" },
         { name: "ADİAK Y23", file: "adiakY23.pdf" }
       ],
-      "Xarici dilində işgüzar və akademik kommunikasiya": [
+      "Xarici dildə işgüzar və akademik kommunikasiya A1": [
         { name: "White Death A1", file: "whitedeathA1.pdf" }
       ],
       "Ehtimal nəzəriyyəsi və riyazi statistika": [
@@ -35,7 +35,7 @@ const data = {
       "İqtisadiyyata giriş": [
         { name: "İqtisadiyyata Giriş - 1", file: "iqtisadiyyat1.pdf" }
       ],
-      "Xarici dilində işgüzar və akademik kommunikasiya": [
+      "Xarici dildə işgüzar və akademik kommunikasiya A2": [
         { name: "Robinson Crusoe A2", file: "robinsoncrusoeA2.pdf" }
       ],
       "Liner cebir ve matematiksel analiz": [
