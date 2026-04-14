@@ -396,6 +396,7 @@ h1 span {
   font-size: 1.4rem;
   font-weight: 700;
   margin-bottom: 6px;
+  /* flex layout info-btn ilə birlikdə ── bax: Info Button & Panel */
 }
 
 .pdf-items {
@@ -879,6 +880,111 @@ h1 span {
   font-size: 3rem;
   margin-bottom: 12px;
   opacity: 0.5;
+}
+
+/* ─── Info Button & Panel ─────────────────────────────────── */
+
+.pdf-subject-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.info-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent);
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.info-btn:hover {
+  background: var(--accent);
+  color: #fff;
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+}
+
+/* Üzən panel */
+.info-panel {
+  margin-top: 12px;
+  animation: fadeUp 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.info-panel.hidden {
+  display: none;
+}
+
+.info-panel-inner {
+  background: var(--surface);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-left: 3px solid var(--accent);
+  border-radius: 14px;
+  padding: 16px 18px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+  max-width: 600px;
+}
+
+.info-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.info-panel-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--accent2);
+  letter-spacing: 0.03em;
+}
+
+.info-panel-close {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.info-panel-close:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.info-panel-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0;
+}
+
+.info-panel-list li {
+  font-size: 0.87rem;
+  color: var(--text);
+  line-height: 1.5;
+  padding: 6px 10px;
+  background: var(--surface2);
+  border-radius: 8px;
 }
 
 /* Empty state */
