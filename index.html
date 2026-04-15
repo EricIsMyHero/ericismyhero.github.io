@@ -26,8 +26,8 @@
   <div class="logo">UNEC · İMTAHAN</div>
   <div style="display:flex;align-items:center;gap:10px;">
     <button class="thanks-btn" onclick="openThanks()" title="Təşəkkürlər">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-      Təşəkkürlər
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <span class="thanks-btn-text">Təşəkkürlər</span>
     </button>
     <button class="theme-toggle-btn" onclick="toggleThemePanel()" title="Tema seç">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
@@ -47,41 +47,8 @@
       <h2 class="thanks-modal-title">Təşəkkürlər</h2>
       <button class="thanks-modal-close" onclick="closeThanks()">✕</button>
     </div>
-    <p class="thanks-modal-desc">Aşağıdakı şəxslər PDF materialları paylaşdıqları üçün onlara böyük təşəkkürümüzü bildiririk:</p>
-    <ul class="thanks-list">
-      <li>
-        <span class="thanks-avatar">E</span>
-        <div class="thanks-person">
-          <span class="thanks-name">Nərimanov Elnur</span>
-          <span class="thanks-role">Kod töhfəçisi</span>
-        </div>
-        <span class="thanks-heart">♥</span>
-      </li>
-      <li>
-        <span class="thanks-avatar">G</span>
-        <div class="thanks-person">
-          <span class="thanks-name">Şükürova Güləyar</span>
-          <span class="thanks-role">PDF töhfəçisi</span>
-        </div>
-        <span class="thanks-heart">♥</span>
-      </li>
-      <li>
-        <span class="thanks-avatar">T</span>
-        <div class="thanks-person">
-          <span class="thanks-name">Hacıyev Tofiq</span>
-          <span class="thanks-role">PDF töhfəçisi</span>
-        </div>
-        <span class="thanks-heart">♥</span>
-      </li>
-      <li>
-        <span class="thanks-avatar">H</span>
-        <div class="thanks-person">
-          <span class="thanks-name">İslamlı Həsən</span>
-          <span class="thanks-role">PDF töhfəçisi</span>
-        </div>
-        <span class="thanks-heart">♥</span>
-      </li>
-    </ul>
+    <p class="thanks-modal-desc">Bu layihəyə töhfə verən hər kəsə ürəkdən təşəkkür edirik:</p>
+    <ul class="thanks-list" id="thanks-list"></ul>
     <div class="thanks-footer-note">Bu sayt tələbələr üçün, tələbələr tərəfindən hazırlanıb 🎓</div>
   </div>
 </div>
@@ -178,7 +145,6 @@
       </button>
     </div>
 
-    <!-- Search bar buradadır — tab barın altında, yalnız bu view-də görünür -->
     <div class="search-bar-container" id="searchBarContainer">
       <div class="search-bar-wrapper">
         <div class="search-icon">🔍</div>
@@ -229,6 +195,7 @@
     <a href="mailto:ericismyhero2467@gmail.com">Təklif və İradlarınız üçün</a>
   </div>
 </footer>
+
 <script src="app.js"></script>
 <script>
   if ("serviceWorker" in navigator) {
