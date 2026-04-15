@@ -396,7 +396,6 @@ h1 span {
   font-size: 1.4rem;
   font-weight: 700;
   margin-bottom: 6px;
-  /* flex layout info-btn ilə birlikdə ── bax: Info Button & Panel */
 }
 
 .pdf-items {
@@ -738,7 +737,7 @@ h1 span {
   box-shadow: 0 4px 12px rgba(59,130,246,0.4);
 }
 
-/* PDF Actions (open + favorite) */
+/* PDF Actions */
 .pdf-actions {
   display: flex;
   align-items: center;
@@ -774,7 +773,7 @@ h1 span {
   background: rgba(245,158,11,0.12);
 }
 
-/* Search Bar — sticky deyil, tab barın altında sadə blok */
+/* Search Bar */
 .search-bar-container {
   position: relative;
   z-index: 10;
@@ -859,7 +858,6 @@ h1 span {
   min-height: 18px;
 }
 
-/* Highlight search matches */
 .search-highlight {
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(139, 92, 246, 0.2));
   color: var(--text);
@@ -868,7 +866,6 @@ h1 span {
   font-weight: 600;
 }
 
-/* No results message */
 .no-results {
   text-align: center;
   padding: 40px 20px;
@@ -887,6 +884,7 @@ h1 span {
 .thanks-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   padding: 6px 14px;
   background: rgba(245, 158, 11, 0.12);
@@ -899,6 +897,7 @@ h1 span {
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
+  height: 36px;
 }
 
 .thanks-btn:hover {
@@ -908,8 +907,17 @@ h1 span {
   box-shadow: 0 4px 14px rgba(245, 158, 11, 0.2);
 }
 
-.thanks-btn svg {
-  flex-shrink: 0;
+/* Telefonda yalnız ürək ikon göstər */
+@media (max-width: 520px) {
+  .thanks-btn-text {
+    display: none;
+  }
+  .thanks-btn {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border-radius: 50%;
+  }
 }
 
 /* ─── Overlay ──────────────────────────────────────────────── */
@@ -1019,11 +1027,28 @@ h1 span {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   margin-bottom: 20px;
+  padding: 0;
 }
 
-.thanks-list li {
+/* Qrup başlığı */
+.thanks-section-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 6px 4px 2px;
+  margin-top: 6px;
+}
+
+.thanks-section-label:first-child {
+  margin-top: 0;
+}
+
+/* Şəxs sətri */
+.thanks-list li:not(.thanks-section-label) {
   display: flex;
   align-items: center;
   gap: 14px;
@@ -1034,19 +1059,19 @@ h1 span {
   transition: border-color 0.2s;
 }
 
-.thanks-list li:hover {
+.thanks-list li:not(.thanks-section-label):hover {
   border-color: rgba(245, 158, 11, 0.35);
 }
 
 .thanks-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
   background: linear-gradient(135deg, #f59e0b, #d97706);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 800;
   color: white;
   flex-shrink: 0;
@@ -1065,11 +1090,6 @@ h1 span {
   font-weight: 700;
   color: var(--text);
   font-family: 'Arial Nova', 'Nunito', 'Arial', sans-serif;
-}
-
-.thanks-role {
-  font-size: 0.72rem;
-  color: var(--muted);
 }
 
 .thanks-heart {
@@ -1122,7 +1142,6 @@ h1 span {
   box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
 }
 
-/* Üzən panel */
 .info-panel {
   margin-top: 12px;
   animation: fadeUp 0.25s cubic-bezier(0.22, 1, 0.36, 1);
