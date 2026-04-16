@@ -23,7 +23,7 @@
 <div class="grid-bg"></div>
 
 <header>
-  <div class="logo">UNEC · İMTAHAN</div>
+  <div class="logo" id="logo-easter" onclick="easterEggClick()">UNEC · İMTAHAN</div>
   <div style="display:flex;align-items:center;gap:10px;">
     <button class="thanks-btn" onclick="openThanks()" title="Təşəkkürlər">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
@@ -39,6 +39,39 @@
   </div>
 </header>
 
+<!-- Easter Egg Modal -->
+<div id="easterOverlay" class="thanks-overlay hidden" onclick="closeEasterIfOutside(event)">
+  <div class="thanks-modal" id="easterModal">
+    <div class="thanks-modal-header">
+      <span class="thanks-modal-icon" style="animation:none">🫥</span>
+      <h2 class="thanks-modal-title" style="font-size:1rem">Gizli Bölmə</h2>
+      <button class="thanks-modal-close" onclick="closeEaster()">✕</button>
+    </div>
+    <div class="easter-body">
+      <div class="easter-icon">🏆</div>
+      <h3 class="easter-title">Xüsusi Təşəkkürlər</h3>
+      <p class="easter-desc">
+        Bu sayta <strong>heç bir töhfə vermədiyiniz</strong> üçün sizə xüsusi minnətdarlığımızı bildiririk.
+      </p>
+      <div class="easter-list">
+        <div class="easter-person">
+          <span class="easter-num">🥇</span>
+          <span>Heç nə etməyənlər</span>
+        </div>
+        <div class="easter-person">
+          <span class="easter-num">🥈</span>
+          <span>Sadəcə izləyənlər</span>
+        </div>
+        <div class="easter-person">
+          <span class="easter-num">🥉</span>
+          <span>Hələ də izləməyənlər</span>
+        </div>
+      </div>
+      <p class="easter-footer">Siz olmadan bu sayt tamamilə eyni olardı 💅</p>
+    </div>
+  </div>
+</div>
+  
 <!-- Təşəkkürlər Modalı -->
 <div id="thanksOverlay" class="thanks-overlay hidden" onclick="closeThanksIfOutside(event)">
   <div class="thanks-modal" id="thanksModal">
