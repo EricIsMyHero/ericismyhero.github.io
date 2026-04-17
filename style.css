@@ -1211,81 +1211,53 @@ h1 span {
   background: var(--surface2);
   border-radius: 8px;
 }
-/* ─── Easter Egg Modal ─────────────────────────────────────── */
-.easter-body {
-  text-align: center;
-  padding: 8px 0 4px;
-}
 
-.easter-icon {
-  font-size: 3rem;
-  margin-bottom: 12px;
-  animation: spin 3s linear infinite;
-}
+/* ─── İmtahan Tipi Badge ───────────────────────────────────── */
 
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-
-.easter-title {
-  font-family: 'Arial Nova', 'Nunito', 'Arial', sans-serif;
-  font-size: 1.1rem;
-  font-weight: 800;
-  margin-bottom: 12px;
-  background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.easter-desc {
-  font-size: 0.88rem;
-  color: var(--muted);
-  line-height: 1.6;
-  margin-bottom: 20px;
-}
-
-.easter-desc strong {
-  color: var(--text);
-}
-
-.easter-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 20px;
-}
-
-.easter-person {
-  display: flex;
+.exam-type-badge {
+  display: inline-flex;
   align-items: center;
-  gap: 12px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 10px 16px;
-  font-size: 0.88rem;
-  color: var(--text);
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.67rem;
+  font-weight: 700;
+  font-family: 'Arial Nova', 'Nunito', 'Arial', sans-serif;
+  letter-spacing: 0.03em;
+  flex-shrink: 0;
 }
 
-.easter-num {
-  font-size: 1.1rem;
+.exam-type-test {
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  color: #60a5fa;
 }
 
-.easter-footer {
-  font-size: 0.8rem;
-  color: var(--muted);
-  border-top: 1px solid var(--border);
-  padding-top: 14px;
-  margin-top: 4px;
+.exam-type-yazili {
+  background: rgba(168, 85, 247, 0.12);
+  border: 1px solid rgba(168, 85, 247, 0.25);
+  color: #c084fc;
 }
 
-/* Logo kliklenebilir görünsün */
-#logo-easter {
-  cursor: pointer;
-  user-select: none;
+/* Info panel rəng variantları */
+.info-panel-test {
+  border-left-color: #3b82f6;
+  border-color: rgba(59, 130, 246, 0.3);
 }
+
+.info-panel-test .info-panel-title {
+  color: #60a5fa;
+}
+
+.info-panel-yazili {
+  border-left-color: #a855f7;
+  border-color: rgba(168, 85, 247, 0.3);
+}
+
+.info-panel-yazili .info-panel-title {
+  color: #c084fc;
+}
+
 /* Empty state */
 .empty-favs {
   text-align: center;
