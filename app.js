@@ -1,230 +1,210 @@
-// DATA — hər fənn üçün istədiyiniz qədər PDF əlavə edə bilərsiniz
-// Format: "Fənn adı": [ {name: "Fayl adı", file: "fayl.pdf"}, ... ]
 // ============================================================
-// FƏNN HAQQINDA QEYDLƏR
+// İMTAHAN TİPİNƏ GÖRƏ OTOMATİK QEYDLƏR
+// type: "test"   → Elektron-test fənni
+// type: "yazili" → Elektron-yazılı fənni
+// Hər fənnə data obyektinin içində "type" yazın, qalanını sistem edir.
 // ============================================================
-const subjectNotes = {
-  "Xətti cəbr və riyazi analiz": [
-    "⚠️ Bu material köhnə ola bilər, müəllimin dediyi mövzularla müqayisə edin.",
-    "📅 Material ən gec Q26 (payız) sessiyasına aiddir.",
-    "💡 Sualların sırası dəyişmiş ola bilər."
+const EXAM_NOTES = {
+  test: [
+    "🖥️ Bu fənn <strong>elektron-test</strong> formatındadır.",
+    "🔀 Sualların sırası hər dəfə fərqli olur — cavabları sıraya görə deyil, mənaya görə öyrənin.",
+    "⚠️ Materialdakı cavablar köhnə ola bilər, müəllimin dediyi mövzularla müqayisə edin.",
+    "💡 Bütün variantları nəzərdən keçirin, tələ suallarına diqqət edin."
   ],
-  "İKT - Baza kompüter bilikləri": [
-    "⚠️ Bu material köhnə ola bilər.",
-    "📅 Material ən gec Q26 (payız) sessiyasına aiddir.",
-    "💡 Sualların sırası dəyişmiş ola bilər."
-  ],
-  "Azərbaycanın tarixi": [
-    "⚠️ Bu material köhnə ola bilər.",
-    "📅 Material ən gec Q26 (payız) sessiyasına aiddir.",
-    "💡 Sualların sırası dəyişmiş ola bilər."
-  ],
-  "Karyera planlaması": [
-    "⚠️ Bu material köhnə ola bilər.",
-    "📅 Material ən gec Q26 (payız) sessiyasına aiddir."
-  ],
-  "Xarici dildə işgüzar və akademik kommunikasiya A1": [
-    "⚠️ Bu materialdakı mətn dəyişdirilə bilər."
-  ],
-  "Azərbaycan dilində işgüzar və akademik kommunikasiya": [
-    "⚠️ Bu materiallar köhnə ola bilər.",
-    "💡 Müxtəlif illərin suallarını müqayisə etmək faydalıdır."
-  ],
-  "Ehtimal nəzəriyyəsi və riyazi statistika": [
-    "⚠️ Bu material köhnə ola bilər.",
-    "📅 Ən gec Y23 sessiyasına aid materiallar mövcuddur.",
-    "💡 Məsələləri mütləq özünüz həll etməyə çalışın."
-  ],
-  "Yumşaq bacarıqlar (Soft skills)": [
-    "⚠️ Bu material köhnə ola bilər.",
-    "📅 Material ən gec Y25 sessiyasına aiddir."
-  ],
-  "İqtisadiyyata giriş": [
-    "⚠️ Bu material köhnə ola bilər.",
-    "⁉️ Sillabusunuzla mütləq uyğunlaşdırın.",
-    "💡 Əlavə mənbələrdən də istifadə etməyi tövsiyə edirik."
-  ],
-  "Xarici dildə işgüzar və akademik kommunikasiya A1": [
-    "⚠️ Bu materialdakı mətn dəyişdirilə bilər."
-  ],
-  "Liner cebir ve matematiksel analiz": [
-    "⚠️ Bu material köhnə ola bilər.",
-    "📅 Ən gec Q23 sessiyasına aid materiallar mövcuddur.",
-    "🇹🇷 Materiallar türk dilindədir."
-  ],
-  "Azerbaycanın tarihi": [
-    "⚠️ Bu materiallar köhnə ola bilər.",
-    "📅 Ən gec Q25 sessiyasına aid materiallar mövcuddur.",
-    "🇹🇷 Material türk dilindədir."
-  ],
-  "Bilgi işlem teknolojileri": [
-    "⚠️ Bu material köhnə ola bilər.",
-    "🇹🇷 Material türk dilindədir."
-  ],
-  "Yönetim ve organizasyon": [
-    "⚠️ Bu material köhnə ola bilər.",
-    "📅 Material ən gec Q25 sessiyasına aiddir.",
-    "🇹🇷 Material türk dilindədir."
-  ],
-  "Mikroiqtisadiyyat": [
-    "⚠️ Bu materiallar köhnə ola bilər.",
-    "⁉️ Sillabusunuzla mütləq uyğunlaşdırın.",
-    "📝 Həm nəzəri, həm də məsələ materialları mövcuddur.",
-    "💡 Məsələləri mütləq özünüz həll etməyə çalışın."
-  ],
-  "Qiymət siyasəti": [
-    "⚠️ Bu material köhnə ola bilər.",
-    "⁉️ Sillabusunuzla mütləq uyğunlaşdırın.",
-    "💡 Əlavə mənbələrdən də istifadə etməyi tövsiyə edirik."
-  ],
-  "Əməyin iqtisadiyyatı": [
-    "⚠️ Bu materiallar köhnə ola bilər.",
-    "⁉️ Sillabusunuzla mütləq uyğunlaşdırın.",
-    "📝 İmtahan və kollekvium materialları mövcuddur."
-  ],
-  "Ətraf mühitin iqtisadiyyatı": [
-    "⚠️ Bu materiallar köhnə ola bilər.",
-    "⁉️ Sillabusunuzla mütləq uyğunlaşdırın.",
-    "📝 İmtahan və kollekvium materialları mövcuddur."
-  ],
-  "Azərbaycan iqtisadiyyatı": [
-    "⚠️ Bu materiallar köhnə ola bilər.",
-    "⁉️ Sillabusunuzla mütləq uyğunlaşdırın.",
-    "📝 İmtahan üzrə 3 fərqli material mövcuddur."
-  ],
-  "Makroiqtisadiyyat": [
-    "⚠️ Bu materiallar köhnə ola bilər.",
-    "⁉️ Sillabusunuzla mütləq uyğunlaşdırın.",
-    "📝 Həm nəzəri, həm də məsələ materialları mövcuddur."
-  ],
-  "Maliyyə uçotu": [
-    "⚠️ Bu material köhnə ola bilər.",
-    "📅 Material ən gec Q26 sessiyasına aiddir."
-  ],
-  "İqtisadi fikir tarixi": [
-    "⚠️ Bu material köhnə ola bilər.",
-    "⁉️ Sillabusunuzla mütləq uyğunlaşdırın.",
-    "💡 Əlavə mənbələrdən də istifadə etməyi tövsiyə edirik."
-  ],
-  "Maliyyə": [
-    "⚠️ Bu material köhnə ola bilər.",
-    "💡 Əlavə mənbələrdən də istifadə etməyi tövsiyə edirik."
-  ],
-  "Menecment": [
-    "⚠️ Bu material köhnə ola bilər.",
+  yazili: [
+    "✍️ Bu fənn <strong>elektron-yazılı</strong> formatındadır.",
+    "📝 Cavablarınızı tam və əsaslandırılmış şəkildə yazın.",
+    "⚠️ Materialdakı suallar köhnə ola bilər, sillabusla mütləq uyğunlaşdırın.",
     "💡 Əlavə mənbələrdən də istifadə etməyi tövsiyə edirik."
   ]
 };
 
+// ============================================================
+// DATA
+// Hər fənnə mütləq "type" yazın: "test" və ya "yazili"
+// subjects altında: { type: "test", pdfs: [...] }
+// ============================================================
 const data = {
   "1-ci kurs": {
     icon: "📘",
     subjects: {
-      "Xətti cəbr və riyazi analiz": [
-        { name: "Xətti Cəbr və Riyazi Analiz Q26", file: "xcraQ26.pdf" }
-      ],
-      "İKT - Baza kompüter bilikləri": [
-        { name: "İKT - Baza Kompüter Bilikləri Q26", file: "iktQ26.pdf" }
-      ],
-      "Azərbaycanın tarixi": [
-        { name: "Azərbaycanın Tarixi Q26", file: "aztarixiQ26.pdf" }
-      ],
-      "Karyera planlaması": [
-        { name: "Karyera Planlaması Q26", file: "karyeraQ26.pdf" }
-      ],
-      "Xarici dildə işgüzar və akademik kommunikasiya A1": [
-        { name: "White Death A1", file: "whitedeathA1.pdf" }
-      ],
-      "Ehtimal nəzəriyyəsi və riyazi statistika": [
-        { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika Y25", file: "enrsY25.pdf" },
-        { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika Y23", file: "enrsY23.pdf" }
-      ],
-      "Azərbaycan dilində işgüzar və akademik kommunikasiya": [
-        { name: "ADİAK Q26", file: "adiakQ26.pdf" },
-        { name: "ADİAK Y25", file: "adiakY25.pdf" },
-        { name: "ADİAK Y23", file: "adiakY23.pdf" }
-      ],
-      "Yumşaq bacarıqlar (Soft skills)": [
-        { name: "Soft Skills Y25", file: "softskillsY25.pdf" }
-      ],
-      "İqtisadiyyata giriş": [
-        { name: "İqtisadiyyata Giriş - 1", file: "iqtisadiyyat1.pdf" }
-      ],
-      "Xarici dildə işgüzar və akademik kommunikasiya A2": [
-        { name: "Robinson Crusoe A2", file: "robinsoncrusoeA2.pdf" }
-      ],
-      "Liner cebir ve matematiksel analiz": [
-        { name: "Liner Cebir ve Matematiksel Analiz Q26", file: "lcmaQ26.pdf" },
-        { name: "Liner Cebir ve Matematiksel Analiz Q23", file: "lcmaQ23.pdf" }
-      ],
-      "Azerbaycanın tarihi": [
-        { name: "Azerbaycanın Tarihi Q26", file: "aztarihiQ26.pdf" },
-        { name: "Azerbaycanın Tarihi Q25", file: "aztarihiQ25.pdf" }
-      ],
-      "Bilgi işlem teknolojileri": [
-        { name: "Bilgi İşlem Teknolojileri - 1", file: "bit1.pdf" }
-      ],
-      "Yönetim ve organizasyon": [
-        { name: "Yönetim ve Organizasyon Q25", file: "yonetimorganizasyonQ25.pdf" }
-      ]
+      "Xətti cəbr və riyazi analiz": {
+        type: "test",
+        pdfs: [
+          { name: "Xətti Cəbr və Riyazi Analiz Q26", file: "xcraQ26.pdf" }
+        ]
+      },
+      "İKT - Baza kompüter bilikləri": {
+        type: "test",
+        pdfs: [
+          { name: "İKT - Baza Kompüter Bilikləri Q26", file: "iktQ26.pdf" }
+        ]
+      },
+      "Azərbaycanın tarixi": {
+        type: "test",
+        pdfs: [
+          { name: "Azərbaycanın Tarixi Q26", file: "aztarixiQ26.pdf" }
+        ]
+      },
+      "Karyera planlaması": {
+        type: "test",
+        pdfs: [
+          { name: "Karyera Planlaması Q26", file: "karyeraQ26.pdf" }
+        ]
+      },
+      "Xarici dildə işgüzar və akademik kommunikasiya A1": {
+        type: "yazili",
+        pdfs: [
+          { name: "White Death A1", file: "whitedeathA1.pdf" }
+        ]
+      },
+      "Ehtimal nəzəriyyəsi və riyazi statistika": {
+        type: "yazili",
+        pdfs: [
+          { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika Y25", file: "enrsY25.pdf" },
+          { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika Y23", file: "enrsY23.pdf" }
+        ]
+      },
+      "Xarici dildə işgüzar və akademik kommunikasiya A2": {
+        type: "yazili",
+        pdfs: [
+          { name: "Robinson Crusoe A2", file: "robinsoncrusoeA2.pdf" }
+        ]
+      },
+      "Azərbaycan dilində işgüzar və akademik kommunikasiya": {
+        type: "test",
+        pdfs: [
+          { name: "ADİAK Q26", file: "adiakQ26.pdf" },
+          { name: "ADİAK Y25", file: "adiakY25.pdf" },
+          { name: "ADİAK Y23", file: "adiakY23.pdf" }
+        ]
+      },
+      "Yumşaq bacarıqlar (Soft skills)": {
+        type: "test",
+        pdfs: [
+          { name: "Soft Skills Y25", file: "softskillsY25.pdf" }
+        ]
+      },
+      "İqtisadiyyata giriş": {
+        type: "yazili",
+        pdfs: [
+          { name: "İqtisadiyyata Giriş - 1", file: "iqtisadiyyat1.pdf" }
+        ]
+      },
+      "Liner cebir ve matematiksel analiz": {
+        type: "test",
+        pdfs: [
+          { name: "Liner Cebir ve Matematiksel Analiz Q26", file: "lcmaQ26.pdf" },
+          { name: "Liner Cebir ve Matematiksel Analiz Q23", file: "lcmaQ23.pdf" }
+        ]
+      },
+      "Azerbaycanın tarihi": {
+        type: "test",
+        pdfs: [
+          { name: "Azerbaycanın Tarihi Q26", file: "aztarihiQ26.pdf" },
+          { name: "Azerbaycanın Tarihi Q25", file: "aztarihiQ25.pdf" }
+        ]
+      },
+      "Bilgi işlem teknolojileri": {
+        type: "test",
+        pdfs: [
+          { name: "Bilgi İşlem Teknolojileri - 1", file: "bit1.pdf" }
+        ]
+      },
+      "Yönetim ve organizasyon": {
+        type: "test",
+        pdfs: [
+          { name: "Yönetim ve Organizasyon Q25", file: "yonetimorganizasyonQ25.pdf" }
+        ]
+      }
     }
   },
   "2-ci kurs": {
     icon: "📗",
     subjects: {
-      "Mikroiqtisadiyyat": [
-        { name: "Mikroiqtisadiyyat - 1", file: "mikroiqt1.pdf" },
-        { name: "Mikroiqtisadiyyat - 2", file: "mikroiqt2.pdf" },
-        { name: "Mikroiqtisadiyyat - 3", file: "mikroiqt3.pdf" },
-        { name: "Mikroiqtisadiyyat - 1 - Məsələlər", file: "mikroiqtmesele1.pdf" },
-        { name: "Mikroiqtisadiyyat - 2 - Məsələlər", file: "mikroiqtmesele2.pdf" }
-      ],
-      "Qiymət siyasəti": [
-        { name: "Qiymət Siyasəti", file: "qiymet1.pdf" }
-      ],
-      "Əməyin iqtisadiyyatı": [
-        { name: "Əməyin İqtisadiyyatı - 1", file: "emek1.pdf" },
-        { name: "Əməyin İqtisadiyyatı - 1 - Kollekvium", file: "emekkollek1.pdf" }
-      ],
-      "Ətraf mühitin iqtisadiyyatı": [
-        { name: "Ətraf Mühitin İqtisadiyyatı - 1", file: "emi1.pdf" },
-        { name: "Ətraf Mühitin İqtisadiyyatı - 2", file: "emi2.pdf" },
-        { name: "Ətraf Mühitin İqtisadiyyatı - 1 - Kollekvium", file: "emikollek1.pdf" },
-        { name: "Ətraf Mühitin İqtisadiyyatı - 2 - Kollekvium", file: "emikollek2.pdf" }
-      ],
-      "Azərbaycan iqtisadiyyatı": [
-        { name: "Azərbaycan İqtisadiyyatı - 1", file: "aziqt1.pdf" },
-        { name: "Azərbaycan İqtisadiyyatı - 2", file: "aziqt2.pdf" },
-        { name: "Azərbaycan İqtisadiyyatı - 3", file: "aziqt3.pdf" }
-      ],
-      "Makroiqtisadiyyat": [
-        { name: "Makroiqtisadiyyat - 1", file: "makroiqt1.pdf" },
-        { name: "Makroiqtisadiyyat - 1 - Məsələlər", file: "makroiqtmesele1.pdf" }
-      ],
-      "Maliyyə uçotu": [
-        { name: "Maliyyə Uçotu Q26", file: "maliyyeQ26.pdf" }
-      ],
-      "İqtisadi fikir tarixi": [
-        { name: "İqtisadi Fikir Tarixi - 1", file: "iqtfkrtrx1.pdf" },
-        { name: "İqtisadi Fikir Tarixi - 2", file: "iqtfkrtrx2.pdf" },
-        { name: "İqtisadi Fikir Tarixi - 3", file: "iqtfkrtrx3.pdf" }
-      ]
+      "Mikroiqtisadiyyat": {
+        type: "yazili",
+        pdfs: [
+          { name: "Mikroiqtisadiyyat - 1", file: "mikroiqt1.pdf" },
+          { name: "Mikroiqtisadiyyat - 2", file: "mikroiqt2.pdf" },
+          { name: "Mikroiqtisadiyyat - 3", file: "mikroiqt3.pdf" },
+          { name: "Mikroiqtisadiyyat - 1 - Məsələlər", file: "mikroiqtmesele1.pdf" },
+          { name: "Mikroiqtisadiyyat - 2 - Məsələlər", file: "mikroiqtmesele2.pdf" }
+        ]
+      },
+      "Qiymət siyasəti": {
+        type: "yazili",
+        pdfs: [
+          { name: "Qiymət Siyasəti", file: "qiymet1.pdf" }
+        ]
+      },
+      "Əməyin iqtisadiyyatı": {
+        type: "yazili",
+        pdfs: [
+          { name: "Əməyin İqtisadiyyatı - 1", file: "emek1.pdf" },
+          { name: "Əməyin İqtisadiyyatı - 1 - Kollekvium", file: "emekkollek1.pdf" }
+        ]
+      },
+      "Ətraf mühitin iqtisadiyyatı": {
+        type: "yazili",
+        pdfs: [
+          { name: "Ətraf Mühitin İqtisadiyyatı - 1", file: "emi1.pdf" },
+          { name: "Ətraf Mühitin İqtisadiyyatı - 2", file: "emi2.pdf" },
+          { name: "Ətraf Mühitin İqtisadiyyatı - 1 - Kollekvium", file: "emikollek1.pdf" },
+          { name: "Ətraf Mühitin İqtisadiyyatı - 2 - Kollekvium", file: "emikollek2.pdf" }
+        ]
+      },
+      "Azərbaycan iqtisadiyyatı": {
+        type: "yazili",
+        pdfs: [
+          { name: "Azərbaycan İqtisadiyyatı - 1", file: "aziqt1.pdf" },
+          { name: "Azərbaycan İqtisadiyyatı - 2", file: "aziqt2.pdf" },
+          { name: "Azərbaycan İqtisadiyyatı - 3", file: "aziqt3.pdf" }
+        ]
+      },
+      "Makroiqtisadiyyat": {
+        type: "yazili",
+        pdfs: [
+          { name: "Makroiqtisadiyyat - 1", file: "makroiqt1.pdf" },
+          { name: "Makroiqtisadiyyat - 1 - Məsələlər", file: "makroiqtmesele1.pdf" }
+        ]
+      },
+      "Maliyyə uçotu": {
+        type: "test",
+        pdfs: [
+          { name: "Maliyyə Uçotu Q26", file: "maliyyeQ26.pdf" }
+        ]
+      },
+      "İqtisadi fikir tarixi": {
+        type: "yazili",
+        pdfs: [
+          { name: "İqtisadi Fikir Tarixi - 1", file: "iqtfkrtrx1.pdf" },
+          { name: "İqtisadi Fikir Tarixi - 2", file: "iqtfkrtrx2.pdf" },
+          { name: "İqtisadi Fikir Tarixi - 3", file: "iqtfkrtrx3.pdf" }
+        ]
+      }
     }
   },
   "3-cü kurs": {
     icon: "📙",
     subjects: {
-      "Maliyyə": [
-        { name: "Finance — Əsas material", file: "Finance.pdf" }
-      ]
+      "Maliyyə": {
+        type: "yazili",
+        pdfs: [
+          { name: "Finance — Əsas material", file: "Finance.pdf" }
+        ]
+      }
     }
   },
   "4-cü kurs": {
     icon: "📕",
     subjects: {
-      "Menecment": [
-        { name: "Management material", file: "Manage.pdf" }
-      ]
+      "Menecment": {
+        type: "test",
+        pdfs: [
+          { name: "Management material", file: "Manage.pdf" }
+        ]
+      }
     }
   }
 };
@@ -248,7 +228,6 @@ const extrasData = {
 
 // ============================================================
 // TƏŞƏKKÜRLƏr DATA
-// Yeni şəxs əlavə etmək üçün yalnız bura yazın.
 // role: 'code' — kod töhfəçisi, 'pdf' — PDF töhfəçisi
 // ============================================================
 const thanksData = [
@@ -262,33 +241,36 @@ function renderThanks() {
   const ul = document.getElementById('thanks-list');
   if (!ul) return;
   ul.innerHTML = '';
-
   const groups = [
     { key: 'code', label: '💻 Kod töhfəçiləri' },
     { key: 'pdf',  label: '📄 PDF töhfəçiləri' }
   ];
-
   groups.forEach(group => {
     const people = thanksData.filter(p => p.role === group.key);
     if (people.length === 0) return;
-
     const header = document.createElement('li');
     header.className = 'thanks-section-label';
     header.textContent = group.label;
     ul.appendChild(header);
-
     people.forEach(p => {
       const li = document.createElement('li');
       li.innerHTML = `
         <span class="thanks-avatar">${p.initial}</span>
-        <div class="thanks-person">
-          <span class="thanks-name">${p.name}</span>
-        </div>
+        <div class="thanks-person"><span class="thanks-name">${p.name}</span></div>
         <span class="thanks-heart">♥</span>
       `;
       ul.appendChild(li);
     });
   });
+}
+
+// ============================================================
+// FƏNN TİPİ BADGEI
+// ============================================================
+function getTypeBadgeHTML(type) {
+  if (type === 'test')   return `<span class="exam-type-badge exam-type-test">🖥️ Test</span>`;
+  if (type === 'yazili') return `<span class="exam-type-badge exam-type-yazili">✍️ Yazılı</span>`;
+  return '';
 }
 
 // ============================================================
@@ -305,8 +287,6 @@ const translations = {
     favoritesLabel: "Seçilmişlər",
     pdfsLabel: "PDF Materiallar",
     searchPlaceholder: "Fənn axtar...",
-    searchResults: "Axtarış Nəticələri",
-    noResults: "Heç bir nəticə tapılmadı",
     back1: "Kurslara qayıt",
     back2: "Fənlərə qayıt",
     bcHome: "Ana səhifə",
@@ -330,8 +310,6 @@ const translations = {
     favoritesLabel: "Favorites",
     pdfsLabel: "PDF Materials",
     searchPlaceholder: "Search subjects...",
-    searchResults: "Search Results",
-    noResults: "No results found",
     back1: "Back to Courses",
     back2: "Back to Subjects",
     bcHome: "Home",
@@ -396,9 +374,7 @@ function setLang(l) {
   if (view === 'subjects') renderSubjects(currentCourse);
   else if (view === 'home') renderCourses();
   const searchInput = document.getElementById('searchInput');
-  if (searchInput) {
-    searchInput.placeholder = translations[lang].searchPlaceholder;
-  }
+  if (searchInput) searchInput.placeholder = translations[lang].searchPlaceholder;
 }
 
 function getCurrentView() {
@@ -425,7 +401,6 @@ function applyTranslations() {
   document.getElementById('stat-subjects-label').textContent = t.statSubjects;
   document.getElementById('stat-pdfs-label').textContent     = t.statPdfs;
   document.getElementById('footer-text').textContent         = t.footer;
-
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.lang-btn')[lang === 'az' ? 0 : 1].classList.add('active');
 }
@@ -438,7 +413,7 @@ function computeStats() {
   Object.values(data).forEach(course => {
     const subs = Object.values(course.subjects);
     totalSubjects += subs.length;
-    subs.forEach(pdfs => totalPdfs += pdfs.length);
+    subs.forEach(subj => totalPdfs += subj.pdfs.length);
   });
   document.getElementById('stat-courses').textContent  = Object.keys(data).length;
   document.getElementById('stat-subjects').textContent = totalSubjects;
@@ -453,9 +428,7 @@ function goTo(view) {
     document.getElementById('view-' + v).classList.add('hidden');
   });
   document.getElementById('view-' + view).classList.remove('hidden');
-
   clearSearch();
-
   if (view === 'home') renderCourses();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -466,20 +439,11 @@ function goTo(view) {
 function initSearch() {
   const searchInput = document.getElementById('searchInput');
   const searchClear = document.getElementById('searchClear');
-
   if (!searchInput) return;
-
   searchInput.placeholder = translations[lang].searchPlaceholder;
-
   searchInput.addEventListener('input', (e) => {
     const query = e.target.value.trim().toLowerCase();
-
-    if (query.length > 0) {
-      searchClear.classList.add('visible');
-    } else {
-      searchClear.classList.remove('visible');
-    }
-
+    searchClear.classList.toggle('visible', query.length > 0);
     filterSubjects(query);
   });
 }
@@ -488,7 +452,6 @@ function clearSearch() {
   const searchInput = document.getElementById('searchInput');
   const searchClear = document.getElementById('searchClear');
   const searchResultsInfo = document.getElementById('searchResultsInfo');
-
   if (searchInput) {
     searchInput.value = '';
     if (searchClear) searchClear.classList.remove('visible');
@@ -500,29 +463,18 @@ function clearSearch() {
 function filterSubjects(query) {
   const grid = document.getElementById('subjects-grid');
   if (!grid) return;
-
   const cards = grid.querySelectorAll('.subject-card');
   const searchResultsInfo = document.getElementById('searchResultsInfo');
   let visibleCount = 0;
-
   cards.forEach(card => {
     const subjectName = card.querySelector('h4').textContent.toLowerCase();
     const matches = !query || subjectName.includes(query);
     card.style.display = matches ? 'flex' : 'none';
     if (matches) visibleCount++;
   });
-
   if (searchResultsInfo) {
-    if (query) {
-      searchResultsInfo.textContent = `${visibleCount} nəticə tapıldı`;
-    } else {
-      searchResultsInfo.textContent = '';
-    }
+    searchResultsInfo.textContent = query ? `${visibleCount} nəticə tapıldı` : '';
   }
-}
-
-function escapeRegex(string) {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 // ============================================================
@@ -534,7 +486,7 @@ function renderCourses() {
   grid.innerHTML = '';
   Object.entries(data).forEach(([courseName, courseData]) => {
     const subCount = Object.keys(courseData.subjects).length;
-    const pdfCount = Object.values(courseData.subjects).reduce((a, b) => a + b.length, 0);
+    const pdfCount = Object.values(courseData.subjects).reduce((a, subj) => a + subj.pdfs.length, 0);
     const div = document.createElement('div');
     div.className = 'course-card animate-in';
     div.innerHTML = `
@@ -562,9 +514,7 @@ function switchTab(tab) {
     document.getElementById(`tab-${t}-btn`).classList.toggle('active', t === tab);
     document.getElementById(`tab-${t}-content`).classList.toggle('hidden', t !== tab);
   });
-
   clearSearch();
-
   if (tab === 'favorites') renderFavorites();
   if (tab === 'extras')    renderExtras();
 }
@@ -574,12 +524,10 @@ function renderExtras() {
   const list = document.getElementById('extras-list');
   list.innerHTML = '';
   const items = (extrasData[currentCourse] || []);
-
   if (items.length === 0) {
     list.innerHTML = `<div class="empty-favs">${t.noExtras}</div>`;
     return;
   }
-
   items.forEach(pdf => {
     const isFav = getFavorites().includes('pdf-extra/' + pdf.file);
     const div = document.createElement('div');
@@ -612,16 +560,12 @@ function renderFavorites() {
   const favs = getFavorites();
   const list = document.getElementById('favorites-list');
   list.innerHTML = '';
-
   const allPdfs = [];
-
   if (currentCourse) {
-    Object.entries(data[currentCourse].subjects).forEach(([subjectName, pdfs]) => {
-      pdfs.forEach(pdf => {
+    Object.entries(data[currentCourse].subjects).forEach(([subjectName, subj]) => {
+      subj.pdfs.forEach(pdf => {
         const path = 'pdf/' + pdf.file;
-        if (favs.includes(path)) {
-          allPdfs.push({ name: pdf.name, meta: subjectName, path, color: '' });
-        }
+        if (favs.includes(path)) allPdfs.push({ name: pdf.name, meta: subjectName, path, color: '' });
       });
     });
     (extrasData[currentCourse] || []).forEach(pdf => {
@@ -631,28 +575,22 @@ function renderFavorites() {
       }
     });
   }
-
   if (allPdfs.length === 0) {
     list.innerHTML = `<div class="empty-favs">${t.noFavorites}</div>`;
     return;
   }
-
   allPdfs.forEach(item => {
     const div = document.createElement('div');
     div.className = 'pdf-item animate-in';
     div.innerHTML = `
-      <div class="pdf-file-icon" ${item.color ? `style="${item.color}"` : ''}>
-        <span>PDF</span>
-      </div>
+      <div class="pdf-file-icon" ${item.color ? `style="${item.color}"` : ''}><span>PDF</span></div>
       <div class="pdf-info">
         <div class="pdf-name">${item.name}</div>
         <div class="pdf-meta">${item.meta}</div>
       </div>
       <div class="pdf-actions">
         <button class="fav-btn active" onclick="removeFavAndRefresh('${item.path}')" title="Sil">★</button>
-        <a class="pdf-open-btn" href="${BASE}${item.path}" target="_blank">
-          ↗ ${t.openPdf}
-        </a>
+        <a class="pdf-open-btn" href="${BASE}${item.path}" target="_blank">↗ ${t.openPdf}</a>
       </div>
     `;
     list.appendChild(div);
@@ -670,14 +608,17 @@ function renderSubjects(courseName) {
   const grid = document.getElementById('subjects-grid');
   grid.innerHTML = '';
   const icons = ['📊','📐','🗓','💡','📝','📈','🔬','⚙️','🎯','📌','🏛','💰','📉','🌿','🔗','📋','🧮','🏆'];
-  Object.entries(data[courseName].subjects).forEach(([subjectName, pdfs], i) => {
+  Object.entries(data[courseName].subjects).forEach(([subjectName, subj], i) => {
     const div = document.createElement('div');
     div.className = 'subject-card animate-in';
     div.innerHTML = `
       <div class="subject-icon">${icons[i % icons.length]}</div>
       <div class="subject-info">
         <h4>${subjectName}</h4>
-        <div class="pdf-count"><span class="pdf-badge">PDF ${pdfs.length}</span></div>
+        <div class="pdf-count">
+          ${getTypeBadgeHTML(subj.type)}
+          <span class="pdf-badge">PDF ${subj.pdfs.length}</span>
+        </div>
       </div>
     `;
     div.onclick = () => openPDFs(subjectName);
@@ -700,14 +641,8 @@ function closeThanks() {
 }
 
 function closeThanksIfOutside(e) {
-  if (e.target === document.getElementById('thanksOverlay')) {
-    closeThanks();
-  }
+  if (e.target === document.getElementById('thanksOverlay')) closeThanks();
 }
-
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeThanks();
-});
 
 // ============================================================
 // EASTER EGG — logoya 3 dəfə bas
@@ -717,13 +652,8 @@ let easterTimer = null;
 
 function easterEggClick() {
   easterClickCount++;
-
-  // Timer: 2 saniyə ərzində 3 dəfə basılmazsa sıfırla
   clearTimeout(easterTimer);
-  easterTimer = setTimeout(() => {
-    easterClickCount = 0;
-  }, 2000);
-
+  easterTimer = setTimeout(() => { easterClickCount = 0; }, 2000);
   if (easterClickCount >= 3) {
     easterClickCount = 0;
     clearTimeout(easterTimer);
@@ -742,17 +672,15 @@ function closeEaster() {
 }
 
 function closeEasterIfOutside(e) {
-  if (e.target === document.getElementById('easterOverlay')) {
-    closeEaster();
-  }
+  if (e.target === document.getElementById('easterOverlay')) closeEaster();
 }
 
-// Esc ilə bağlamaq (mövcud keydown listener-ə əlavə edin):
-// document.addEventListener('keydown', function(e) {
-//   if (e.key === 'Escape') { closeThanks(); closeEaster(); }
-// });
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') { closeThanks(); closeEaster(); }
+});
+
 // ============================================================
-// INFO PANEL
+// INFO PANEL — imtahan tipinə görə avtomatik notlar
 // ============================================================
 function toggleInfoPanel() {
   const panel = document.getElementById('subject-info-panel');
@@ -776,49 +704,47 @@ document.addEventListener('click', function(e) {
 function openPDFs(subjectName) {
   currentSubject = subjectName;
   const t = translations[lang];
-  const pdfs = data[currentCourse].subjects[subjectName];
+  const subj = data[currentCourse].subjects[subjectName];
+  const pdfs  = subj.pdfs;
+  const type  = subj.type;
+  const notes = EXAM_NOTES[type] || [];
 
   document.getElementById('bc-subject').textContent = subjectName;
 
   const titleEl = document.getElementById('pdf-subject-title');
-  const notes = subjectNotes[subjectName] || [];
   titleEl.innerHTML = `
     <span>${subjectName}</span>
-    ${notes.length > 0 ? `<button class="info-btn" onclick="toggleInfoPanel()" title="Bu fənn haqqında">?</button>` : ''}
+    ${getTypeBadgeHTML(type)}
+    <button class="info-btn" onclick="toggleInfoPanel()" title="Bu fənn haqqında">?</button>
   `;
 
   const existing = document.getElementById('subject-info-panel');
   if (existing) existing.remove();
 
-  if (notes.length > 0) {
-    const panel = document.createElement('div');
-    panel.id = 'subject-info-panel';
-    panel.className = 'info-panel hidden';
-    panel.innerHTML = `
-      <div class="info-panel-inner">
-        <div class="info-panel-header">
-          <span class="info-panel-title">ℹ️ Bu fənn haqqında</span>
-          <button class="info-panel-close" onclick="closeInfoPanel()">✕</button>
-        </div>
-        <ul class="info-panel-list">
-          ${notes.map(n => `<li>${n}</li>`).join('')}
-        </ul>
+  const panel = document.createElement('div');
+  panel.id = 'subject-info-panel';
+  panel.className = 'info-panel hidden';
+  panel.innerHTML = `
+    <div class="info-panel-inner info-panel-${type}">
+      <div class="info-panel-header">
+        <span class="info-panel-title">${type === 'test' ? '🖥️ Elektron-test haqqında' : '✍️ Elektron-yazılı haqqında'}</span>
+        <button class="info-panel-close" onclick="closeInfoPanel()">✕</button>
       </div>
-    `;
-    document.querySelector('.pdf-section-header').appendChild(panel);
-  }
+      <ul class="info-panel-list">
+        ${notes.map(n => `<li>${n}</li>`).join('')}
+      </ul>
+    </div>
+  `;
+  document.querySelector('.pdf-section-header').appendChild(panel);
 
   const list = document.getElementById('pdf-items');
   list.innerHTML = '';
-
   pdfs.forEach(pdf => {
     const isFav = getFavorites().includes('pdf/' + pdf.file);
     const div = document.createElement('div');
     div.className = 'pdf-item animate-in';
     div.innerHTML = `
-      <div class="pdf-file-icon">
-        <span>PDF</span>
-      </div>
+      <div class="pdf-file-icon"><span>PDF</span></div>
       <div class="pdf-info">
         <div class="pdf-name">${pdf.name}</div>
         <div class="pdf-meta">${pdf.file}</div>
@@ -849,7 +775,6 @@ function getFavorites() {
 
 async function toggleFavorite(filePath, btn) {
   let favs = getFavorites();
-
   if (favs.includes(filePath)) {
     favs = favs.filter(f => f !== filePath);
     removeFromCache(filePath);
@@ -859,7 +784,6 @@ async function toggleFavorite(filePath, btn) {
     cacheOnePDF(filePath);
     if (btn) { btn.textContent = '★'; btn.classList.add('active'); }
   }
-
   localStorage.setItem("favorites", JSON.stringify(favs));
 }
 
@@ -868,9 +792,7 @@ async function cacheOnePDF(filePath) {
   try {
     const cache = await caches.open("pdf-cache");
     await cache.add(BASE + filePath);
-  } catch (e) {
-    console.warn("Cache xətası:", e);
-  }
+  } catch (e) { console.warn("Cache xətası:", e); }
 }
 
 async function removeFromCache(filePath) {
@@ -878,9 +800,7 @@ async function removeFromCache(filePath) {
   try {
     const cache = await caches.open("pdf-cache");
     await cache.delete(BASE + filePath);
-  } catch (e) {
-    console.warn("Cache silmə xətası:", e);
-  }
+  } catch (e) { console.warn("Cache silmə xətası:", e); }
 }
 
 // ============================================================
