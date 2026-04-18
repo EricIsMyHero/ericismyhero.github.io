@@ -597,6 +597,20 @@ function renderFavorites() {
   });
 }
 
+// PDF-lər render olduqdan sonra "Xəta Göndər" düyməsini əlavə et
+const reportBtn = document.createElement('button');
+reportBtn.className = 'report-error-btn';
+reportBtn.innerHTML = `
+  <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+    <circle cx="8" cy="8" r="7"/>
+    <line x1="8" y1="5" x2="8" y2="8.5"/>
+    <circle cx="8" cy="11.5" r="0.6" fill="currentColor" stroke="none"/>
+  </svg>
+  Xəta Göndər
+`;
+reportBtn.onclick = () => openReportModal(subjectName, currentCourse);
+list.appendChild(reportBtn);
+
 function removeFavAndRefresh(filePath) {
   let favs = getFavorites().filter(f => f !== filePath);
   localStorage.setItem("favorites", JSON.stringify(favs));
@@ -802,6 +816,96 @@ async function removeFromCache(filePath) {
     await cache.delete(BASE + filePath);
   } catch (e) { console.warn("Cache silmə xətası:", e); }
 }
+
+// ============================================================
+// XƏTA BİLDİRİŞ SİSTEMİ
+// ============================================================
+
+let reportSubjectName = '';
+let reportCourseName  = '';
+
+function openReportModal(subjectName, courseName) {
+  reportSubjectName = subjectName;
+  reportCourseName  = courseName;
+
+  const overlay = document.getElementById('reportOverlay');
+  const ctx = document.getElementById('report-context');
+  const form = document.getElementById('report-form');
+  const success = document.getElementById('report-success');
+  const textarea = document.getElementById('report-message');
+  const select = document.getElementById('report-type');
+
+  if (ctx) ctx.textContent = `${courseName} · ${subjectName}`;
+  if (form) form.classList.remove('hidden');
+  if (success) success.classList.add('hidden');
+  if (textarea) textarea.value = '';
+  if (select) select.selectedIndex = 0;
+
+  overlay.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeReportModal() {
+  document.getElementById('reportOverlay').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+function closeReportIfOutside(e) {
+  if (e.target === document.getElementById('reportOverlay')) closeReportModal();
+}
+
+async function sendReport() {
+  const type    = document.getElementById('report-type').value;
+  const message = document.getElementById('report-message').value.trim();
+  const sendBtn = document.getElementById('report-send-btn');
+
+  if (!message) {
+    document.getElementById('report-message').focus();
+    return;
+  }
+
+  sendBtn.disabled = true;
+  sendBtn.textContent = 'Göndərilir...';
+
+  try {
+    const response = await fetch('/api/send-report', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        course:  reportCourseName,
+        subject: reportSubjectName,
+        type:    type,
+        message: message
+      })
+    });
+
+    if (response.ok) {
+      document.getElementById('report-form').classList.add('hidden');
+      document.getElementById('report-success').classList.remove('hidden');
+      setTimeout(closeReportModal, 2800);
+    } else {
+      throw new Error('Server error');
+    }
+  } catch (err) {
+    // Fallback: mailto linki aç
+    const body = encodeURIComponent(
+      `Kurs: ${reportCourseName}\nFənn: ${reportSubjectName}\nXəta növü: ${type}\n\n${message}`
+    );
+    window.open(`mailto:ericismyhero2467@gmail.com?subject=UNEC%20Xəta%20Bildirişi&body=${body}`, '_blank');
+    closeReportModal();
+  } finally {
+    sendBtn.disabled = false;
+    sendBtn.innerHTML = '↗ Göndər';
+  }
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeThanks();
+    closeEaster();
+    closeReportModal();  // ← bu sətri mövcud keydown listener-inə əlavə et
+  }
+});
 
 // ============================================================
 // BAŞLAT
