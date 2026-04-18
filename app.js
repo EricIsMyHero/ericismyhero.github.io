@@ -871,10 +871,10 @@ async function sendReport() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        kurs:       reportCourseName,
-        fenn:       reportSubjectName,
-        xeta_novu:  type,
-        mexmun:     message
+      "Kurs":      reportCourseName,
+      "Fənn":      reportSubjectName,
+      "Xəta növü": type,
+      "Məzmun":    message
       })
     });
 
