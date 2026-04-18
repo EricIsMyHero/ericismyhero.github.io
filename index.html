@@ -71,6 +71,46 @@
     </div>
   </div>
 </div>
+
+  <!-- Xəta Bildiriş Modalı -->
+<div id="reportOverlay" class="thanks-overlay hidden" onclick="closeReportIfOutside(event)">
+  <div class="report-modal">
+    <div class="report-modal-header">
+      <div class="report-modal-icon">⚠️</div>
+      <h2 class="report-modal-title">Xəta Bildir</h2>
+      <button class="report-modal-close" onclick="closeReportModal()">✕</button>
+    </div>
+    <p class="report-modal-subject" id="report-context"></p>
+
+    <div id="report-form">
+      <div class="report-field">
+        <label>Xəta növü</label>
+        <select id="report-type">
+          <option>PDF açılmır</option>
+          <option>PDF yanlış fəndədir</option>
+          <option>Görünüş xətası</option>
+          <option>Köhnə / yanlış material</option>
+          <option>Düymə işləmir</option>
+          <option>Digər</option>
+        </select>
+      </div>
+      <div class="report-field">
+        <label>Xətanın məzmunu</label>
+        <textarea id="report-message" placeholder="Xətanı qısa izah edin..."></textarea>
+      </div>
+      <div class="report-modal-footer">
+        <button class="report-cancel-btn" onclick="closeReportModal()">Ləğv et</button>
+        <button class="report-send-btn" id="report-send-btn" onclick="sendReport()">↗ Göndər</button>
+      </div>
+    </div>
+
+    <div id="report-success" class="report-success hidden">
+      <div class="report-success-icon">✅</div>
+      <div class="report-success-title">Təşəkkür edirik!</div>
+      <p class="report-success-desc">Xəta bildirişiniz alındı.<br>Ən qısa zamanda düzəldiləcək.</p>
+    </div>
+  </div>
+</div>
   
 <!-- Təşəkkürlər Modalı -->
 <div id="thanksOverlay" class="thanks-overlay hidden" onclick="closeThanksIfOutside(event)">
