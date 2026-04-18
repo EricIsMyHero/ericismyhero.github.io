@@ -597,20 +597,6 @@ function renderFavorites() {
   });
 }
 
-// PDF-lər render olduqdan sonra "Xəta Göndər" düyməsini əlavə et
-const reportBtn = document.createElement('button');
-reportBtn.className = 'report-error-btn';
-reportBtn.innerHTML = `
-  <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-    <circle cx="8" cy="8" r="7"/>
-    <line x1="8" y1="5" x2="8" y2="8.5"/>
-    <circle cx="8" cy="11.5" r="0.6" fill="currentColor" stroke="none"/>
-  </svg>
-  Xəta Göndər
-`;
-reportBtn.onclick = () => openReportModal(subjectName, currentCourse);
-list.appendChild(reportBtn);
-
 function removeFavAndRefresh(filePath) {
   let favs = getFavorites().filter(f => f !== filePath);
   localStorage.setItem("favorites", JSON.stringify(favs));
@@ -689,10 +675,6 @@ function closeEasterIfOutside(e) {
   if (e.target === document.getElementById('easterOverlay')) closeEaster();
 }
 
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') { closeThanks(); closeEaster(); }
-});
-
 // ============================================================
 // INFO PANEL — imtahan tipinə görə avtomatik notlar
 // ============================================================
@@ -715,6 +697,9 @@ document.addEventListener('click', function(e) {
   }
 });
 
+// ============================================================
+// PDF SƏHİFƏSİ
+// ============================================================
 function openPDFs(subjectName) {
   currentSubject = subjectName;
   const t = translations[lang];
@@ -753,6 +738,7 @@ function openPDFs(subjectName) {
 
   const list = document.getElementById('pdf-items');
   list.innerHTML = '';
+
   pdfs.forEach(pdf => {
     const isFav = getFavorites().includes('pdf/' + pdf.file);
     const div = document.createElement('div');
@@ -774,6 +760,20 @@ function openPDFs(subjectName) {
     `;
     list.appendChild(div);
   });
+
+  // Xəta Göndər düyməsi — PDF-lərin ən altında
+  const reportBtn = document.createElement('button');
+  reportBtn.className = 'report-error-btn';
+  reportBtn.innerHTML = `
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="8" cy="8" r="7"/>
+      <line x1="8" y1="5" x2="8" y2="8.5"/>
+      <circle cx="8" cy="11.5" r="0.6" fill="currentColor" stroke="none"/>
+    </svg>
+    Xəta Göndər
+  `;
+  reportBtn.onclick = () => openReportModal(subjectName, currentCourse);
+  list.appendChild(reportBtn);
 
   goTo('pdfs');
 }
@@ -820,7 +820,6 @@ async function removeFromCache(filePath) {
 // ============================================================
 // XƏTA BİLDİRİŞ SİSTEMİ
 // ============================================================
-
 let reportSubjectName = '';
 let reportCourseName  = '';
 
@@ -828,18 +827,18 @@ function openReportModal(subjectName, courseName) {
   reportSubjectName = subjectName;
   reportCourseName  = courseName;
 
-  const overlay = document.getElementById('reportOverlay');
-  const ctx = document.getElementById('report-context');
-  const form = document.getElementById('report-form');
-  const success = document.getElementById('report-success');
+  const overlay  = document.getElementById('reportOverlay');
+  const ctx      = document.getElementById('report-context');
+  const form     = document.getElementById('report-form');
+  const success  = document.getElementById('report-success');
   const textarea = document.getElementById('report-message');
-  const select = document.getElementById('report-type');
+  const select   = document.getElementById('report-type');
 
-  if (ctx) ctx.textContent = `${courseName} · ${subjectName}`;
-  if (form) form.classList.remove('hidden');
-  if (success) success.classList.add('hidden');
-  if (textarea) textarea.value = '';
-  if (select) select.selectedIndex = 0;
+  if (ctx)      ctx.textContent    = `${courseName} · ${subjectName}`;
+  if (form)     form.classList.remove('hidden');
+  if (success)  success.classList.add('hidden');
+  if (textarea) textarea.value     = '';
+  if (select)   select.selectedIndex = 0;
 
   overlay.classList.remove('hidden');
   document.body.style.overflow = 'hidden';
@@ -864,7 +863,7 @@ async function sendReport() {
     return;
   }
 
-  sendBtn.disabled = true;
+  sendBtn.disabled    = true;
   sendBtn.textContent = 'Göndərilir...';
 
   try {
@@ -891,19 +890,22 @@ async function sendReport() {
     const body = encodeURIComponent(
       `Kurs: ${reportCourseName}\nFənn: ${reportSubjectName}\nXəta növü: ${type}\n\n${message}`
     );
-    window.open(`mailto:ericismyhero2467@gmail.com?subject=UNEC%20Xəta%20Bildirişi&body=${body}`, '_blank');
+    window.open(`mailto:ericismyhero2467@gmail.com?subject=UNEC%20X%C9%99ta%20Bildiri%C5%9Fi&body=${body}`, '_blank');
     closeReportModal();
   } finally {
-    sendBtn.disabled = false;
+    sendBtn.disabled  = false;
     sendBtn.innerHTML = '↗ Göndər';
   }
 }
 
+// ============================================================
+// KLAVIATURA — ESC ilə bütün modalları bağla
+// ============================================================
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
     closeThanks();
     closeEaster();
-    closeReportModal();  // ← bu sətri mövcud keydown listener-inə əlavə et
+    closeReportModal();
   }
 });
 
