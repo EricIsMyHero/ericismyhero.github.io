@@ -420,7 +420,7 @@ function applyTheme(name, btn) {
   const root = document.documentElement;
   Object.entries(vars).forEach(([k, v]) => root.style.setProperty(k, v));
   localStorage.setItem('theme', name);
-  document.querySelectorAll('.theme-opt').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.theme-opt, .sidebar-theme-opt').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
 }
 
@@ -1016,12 +1016,58 @@ document.addEventListener('keydown', function(e) {
     closeThanks();
     closeEaster();
     closeReportModal();
+    closeSidebar();
+    closeAboutModal();
+    closePrivacyModal();
   }
 });
 
 // ============================================================
 // BAŞLAT
 // ============================================================
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  const btn     = document.getElementById('hamburgerBtn');
+  if (sidebar.classList.contains('is-open')) {
+    closeSidebar();
+  } else {
+    sidebar.classList.add('is-open');
+    overlay.classList.add('active');
+    btn.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('is-open');
+  document.getElementById('sidebarOverlay').classList.remove('active');
+  document.getElementById('hamburgerBtn').classList.remove('is-open');
+  document.body.style.overflow = '';
+}
+
+function openAboutModal() {
+  closeSidebar();
+  document.getElementById('aboutOverlay').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAboutModal() {
+  document.getElementById('aboutOverlay').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+function openPrivacyModal() {
+  closeSidebar();
+  document.getElementById('privacyOverlay').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePrivacyModal() {
+  document.getElementById('privacyOverlay').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
 (function loadSavedTheme() {
   const saved = localStorage.getItem('theme');
   if (saved && themes[saved]) {
