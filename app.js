@@ -180,6 +180,13 @@ const data = {
           { name: "Əməyin İqtisadiyyatı - 1 - Kollekvium", file: "emekkollek1.pdf" }
         ]
       },
+      "Xarici dildə işgüzar və akademik kommunikasiya B1": {
+        type: "test",
+        semester: 1,
+        pdfs: [
+          { name: "Forrest Gump B1", file: "forrestgumpB1.pdf" }
+        ]
+      },
       "Ətraf mühitin iqtisadiyyatı": {
         type: "yazili",
         semester: 1,
@@ -214,6 +221,13 @@ const data = {
           { name: "Maliyyə Uçotu Q26", file: "maliyyeQ26.pdf" }
         ]
       },
+      "Xarici dildə işgüzar və akademik kommunikasiya B1+": {
+        type: "test",
+        semester: 2,
+        pdfs: [
+          { name: "Sherlock Holmes B1+", file: "sherlockholmesB1+.pdf" }
+        ]
+      },
       "İqtisadi fikir tarixi": {
         type: "yazili",
         semester: 2,
@@ -235,11 +249,19 @@ const data = {
   "3-cü kurs": {
     icon: "📙",
     subjects: {
-      "Maliyyə": {
+      "Mülki müdafiə": {
+        type: "test",
+        semester: 1,
+        pdfs: [
+          { name: "Mülki Müdafiə Q26", file: "mulkimudafieQ26.pdf" },
+          { name: "Mülki Müdafiə Y24", file: "mulkimudafieY24.pdf" }
+        ]
+      },
+      "Statistika": {
         type: "yazili",
         semester: 1,
         pdfs: [
-          { name: "Finance — Əsas material", file: "Finance.pdf" }
+          { name: "Statistika", file: "statistika.pdf" }
         ]
       }
     }
