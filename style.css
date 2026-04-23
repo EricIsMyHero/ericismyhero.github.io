@@ -2057,3 +2057,29 @@ h1 span {
 .semester-header:first-child {
   padding-top: 4px;
 }
+
+/* ─── Privacy / Terms Link ──────────────────────────────────── */
+
+.privacy-link {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.privacy-link:hover {
+  color: var(--accent2);
+}
+
+/* ─── Footer Legal Links ────────────────────────────────────── */
+
+.footer-legal-link {
+  color: var(--accent2);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.footer-legal-link:hover {
+  color: var(--accent);
+}
+
