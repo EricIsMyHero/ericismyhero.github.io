@@ -1,13 +1,14 @@
 const CACHE_NAME = "unec-app-v1";
 const urlsToCache = [
-  "/unecimtahanmateriallari/",
-  "/unecimtahanmateriallari/index.html",
-  "/unecimtahanmateriallari/style.css",
-  "/unecimtahanmateriallari/app.js",
-  "/unecimtahanmateriallari/manifest.json",
-  "/unecimtahanmateriallari/icon-192.png",
-  "/unecimtahanmateriallari/icon-512.png",
-  "/unecimtahanmateriallari/apple-touch-icon.png"
+  "/",
+  "/index.html",
+  "/style.css",
+  "/app.js",
+  "/pdfs.js",
+  "/manifest.json",
+  "/icon-192.png",
+  "/icon-512.png",
+  "/apple-touch-icon.png"
 ];
 
 self.addEventListener("install", event => {
