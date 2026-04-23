@@ -1014,11 +1014,12 @@ async function sendReport() {
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
     closeThanks();
-    closeEaster();
-    closeReportModal();
-    closeSidebar();
-    closeAboutModal();
-    closePrivacyModal();
+     closeEaster();
+     closeReportModal();
+     closeSidebar();
+     closeAboutModal();
+     closePrivacyModal();
+     closeTermsModal();
   }
 });
 
@@ -1046,25 +1047,39 @@ function closeSidebar() {
   document.body.style.overflow = '';
 }
 
+// ─── About ────────────────────────────────────────────────────
 function openAboutModal() {
   closeSidebar();
   document.getElementById('aboutOverlay').classList.remove('hidden');
   document.body.style.overflow = 'hidden';
 }
-
+ 
 function closeAboutModal() {
   document.getElementById('aboutOverlay').classList.add('hidden');
   document.body.style.overflow = '';
 }
-
+ 
+// ─── Privacy ──────────────────────────────────────────────────
 function openPrivacyModal() {
   closeSidebar();
   document.getElementById('privacyOverlay').classList.remove('hidden');
   document.body.style.overflow = 'hidden';
 }
-
+ 
 function closePrivacyModal() {
   document.getElementById('privacyOverlay').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+ 
+// ─── Terms ────────────────────────────────────────────────────
+function openTermsModal() {
+  closeSidebar();
+  document.getElementById('termsOverlay').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+ 
+function closeTermsModal() {
+  document.getElementById('termsOverlay').classList.add('hidden');
   document.body.style.overflow = '';
 }
 
