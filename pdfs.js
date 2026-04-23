@@ -5,7 +5,7 @@
 // ============================================================
 
 const BASE = "/";
-const EXTRAS_BASE = "/pdf-extra";
+const EXTRAS_BASE = "/pdf-extra/";
 
 const data = {
   "1-ci kurs": {
