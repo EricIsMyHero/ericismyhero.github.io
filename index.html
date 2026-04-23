@@ -91,7 +91,7 @@
 
   <div class="sidebar-divider"></div>
 
-  <!-- About -->
+  <!-- About, Privacy, Terms -->
   <div class="sidebar-section">
     <div class="sidebar-section-label">ℹ️ Sayt haqqında</div>
     <button class="sidebar-menu-item" onclick="openAboutModal()">
@@ -108,6 +108,13 @@
       Privacy Policy
       <span class="sidebar-menu-arrow">›</span>
     </button>
+    <button class="sidebar-menu-item" onclick="openTermsModal()">
+      <span class="sidebar-menu-icon">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+      </span>
+      İstifadə Şərtləri
+      <span class="sidebar-menu-arrow">›</span>
+    </button>
   </div>
 
   <div class="sidebar-footer">
@@ -117,7 +124,6 @@
 
 <header>
   <div style="display:flex;align-items:center;gap:12px;">
-    <!-- Hamburger düyməsi -->
     <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleSidebar()" title="Menyu" aria-label="Menyu aç">
       <span class="hamburger-line"></span>
       <span class="hamburger-line"></span>
@@ -146,18 +152,9 @@
         Bu sayta <strong>heç bir töhfə vermədiyiniz</strong> üçün sizə xüsusi minnətdarlığımızı bildiririk.
       </p>
       <div class="easter-list">
-        <div class="easter-person">
-          <span class="easter-num">🥇</span>
-          <span>Vəlizadə Kərim</span>
-        </div>
-        <div class="easter-person">
-          <span class="easter-num">🥈</span>
-          <span>Atakişiyev Xəzər</span>
-        </div>
-        <div class="easter-person">
-          <span class="easter-num">🥉</span>
-          <span>Paşayev Səid</span>
-        </div>
+        <div class="easter-person"><span class="easter-num">🥇</span><span>Vəlizadə Kərim</span></div>
+        <div class="easter-person"><span class="easter-num">🥈</span><span>Atakişiyev Xəzər</span></div>
+        <div class="easter-person"><span class="easter-num">🥉</span><span>Paşayev Səid</span></div>
       </div>
       <p class="easter-footer">Siz olmadan bu sayt tamamilə eyni olardı 💅</p>
     </div>
@@ -227,22 +224,10 @@
     <div class="about-body">
       <p>Bu sayt UNEC tələbələrinin imtahan materiallarına daha rahat çatması üçün <strong>tələbələr tərəfindən</strong> hazırlanmış qeyri-rəsmi bir resursdur.</p>
       <div class="about-list">
-        <div class="about-item">
-          <span class="about-item-icon">📚</span>
-          <span>Bütün kurslar üzrə PDF materiallar</span>
-        </div>
-        <div class="about-item">
-          <span class="about-item-icon">🔍</span>
-          <span>Sürətli axtarış və filtrasiya</span>
-        </div>
-        <div class="about-item">
-          <span class="about-item-icon">★</span>
-          <span>Seçilmişlərə əlavə etmə funksiyası</span>
-        </div>
-        <div class="about-item">
-          <span class="about-item-icon">📱</span>
-          <span>Mobil tətbiq kimi quraşdırma (PWA)</span>
-        </div>
+        <div class="about-item"><span class="about-item-icon">📚</span><span>Bütün kurslar üzrə PDF materiallar</span></div>
+        <div class="about-item"><span class="about-item-icon">🔍</span><span>Sürətli axtarış və filtrasiya</span></div>
+        <div class="about-item"><span class="about-item-icon">★</span><span>Seçilmişlərə əlavə etmə funksiyası</span></div>
+        <div class="about-item"><span class="about-item-icon">📱</span><span>Mobil tətbiq kimi quraşdırma (PWA)</span></div>
       </div>
       <p class="about-note">⚠️ Bu sayt UNEC-in rəsmi saytı deyildir. Materiallardakı məlumatların dəqiqliyinə görə məsuliyyət daşımırıq.</p>
       <div class="about-contact">
@@ -262,29 +247,106 @@
       <button class="thanks-modal-close" onclick="closePrivacyModal()">✕</button>
     </div>
     <div class="privacy-body">
+
       <div class="privacy-section">
         <h3>Toplanan məlumatlar</h3>
-        <p>Bu sayt heç bir şəxsi məlumat toplamır. Yalnız aşağıdakı məlumatlar <strong>cihazınızda</strong> saxlanılır:</p>
+        <p>Bu sayt istifadəçilərdən birbaşa şəxsi məlumat toplamır. Aşağıdakı məlumatlar yalnız brauzerinizdə (local storage) saxlanılır:</p>
         <ul>
           <li>Seçilmiş tema</li>
           <li>Dil seçimi</li>
-          <li>Seçilmiş PDF-lər (sevimlilər)</li>
+          <li>Seçilmiş PDF-lər</li>
+          <li>Əvvəlcədən açılmış materiallar</li>
         </ul>
+        <p style="margin-top:8px;">Bu məlumatlar serverə göndərilmir və yalnız sizin cihazınızda qalır.</p>
       </div>
+
       <div class="privacy-section">
         <h3>Xəta bildirişləri</h3>
-        <p>Xəta göndərdikdə yalnız daxil etdiyiniz mətn və fənn adı Formspree xidməti vasitəsilə bizə ötürülür. Bu məlumatlar üçüncü tərəflərlə paylaşılmır.</p>
+        <p>Saytda xəta göndərdiyiniz zaman daxil etdiyiniz mətn və seçdiyiniz fənn adı <strong>Formspree</strong> vasitəsilə bizə ötürülür. Bu məlumatlar yalnız problemi həll etmək üçün istifadə olunur və üçüncü tərəflərlə paylaşılmır.</p>
       </div>
+
       <div class="privacy-section">
         <h3>Üçüncü tərəf xidmətlər</h3>
-        <p>Saytda Google Fonts və Formspree xidmətlərindən istifadə edilir. Bu xidmətlər öz məxfilik siyasətlərinə tabedir.</p>
+        <p>Saytda aşağıdakı xidmətlər istifadə olunur:</p>
+        <ul>
+          <li><strong>Google Fonts</strong> — şriftlərin göstərilməsi üçün</li>
+          <li><strong>Formspree</strong> — form məlumatlarının göndərilməsi üçün</li>
+        </ul>
+        <p style="margin-top:8px;">Bu xidmətlər öz məxfilik siyasətlərinə malikdir və məlumatların emalı onların qaydalarına uyğun aparılır.</p>
       </div>
+
+      <div class="privacy-section">
+        <h3>Cookies</h3>
+        <p>Bu sayt birbaşa cookie istifadə etmir. Lakin üçüncü tərəf xidmətlər öz cookie-lərini istifadə edə bilər.</p>
+      </div>
+
+      <div class="privacy-section">
+        <h3>Gələcək dəyişikliklər</h3>
+        <p>Bu siyasət zamanla yenilənə bilər. Dəyişikliklər bu səhifədə paylaşılır.</p>
+      </div>
+
+      <div class="privacy-section">
+        <h3>Əlaqə</h3>
+        <p>Hər hansı sual üçün sayt üzərindən <a href="mailto:ericismyhero2467@gmail.com" class="privacy-link">əlaqə bölməsindən</a> istifadə edin.</p>
+      </div>
+
       <p class="privacy-updated">Son yenilənmə: Aprel 2026</p>
     </div>
   </div>
 </div>
 
-<!-- Köhnə theme-panel — artıq lazım deyil, saxla ama gizlət -->
+<!-- İstifadə Şərtləri Modalı -->
+<div id="termsOverlay" class="thanks-overlay hidden" onclick="if(event.target===this)closeTermsModal()">
+  <div class="thanks-modal privacy-modal">
+    <div class="thanks-modal-header">
+      <span class="thanks-modal-icon" style="animation:none">📄</span>
+      <h2 class="thanks-modal-title">İstifadə Şərtləri</h2>
+      <button class="thanks-modal-close" onclick="closeTermsModal()">✕</button>
+    </div>
+    <div class="privacy-body">
+
+      <div class="privacy-section">
+        <h3>Saytdan istifadə</h3>
+        <p>Bu saytdan istifadə etməklə aşağıdakı şərtlərlə razılaşırsınız. Əgər razı deyilsinizsə, saytdan istifadə etməyin.</p>
+      </div>
+
+      <div class="privacy-section">
+        <h3>Məzmun və məqsəd</h3>
+        <p>Bu sayt tələbələr üçün imtahan materiallarını bir yerdə toplamaq məqsədi daşıyır. Sayt rəsmi qurum deyil və heç bir universitetlə rəsmi əlaqəsi yoxdur.</p>
+      </div>
+
+      <div class="privacy-section">
+        <h3>PDF materiallar</h3>
+        <p>Saytda yerləşdirilən PDF fayllar istifadəçilər tərəfindən paylaşılmış və ya açıq mənbələrdən götürülmüşdür. Bütün hüquqlar orijinal müəlliflərə aiddir.</p>
+        <p style="margin-top:8px;">Əgər hər hansı materialın sizə məxsus olduğunu və saytda yerləşdirilməsinin uyğun olmadığını düşünürsünüzsə, <a href="mailto:ericismyhero2467@gmail.com" class="privacy-link">əlaqə bölməsi</a> vasitəsilə bildirin. Sorğuya baxıldıqdan sonra müvafiq tədbir görüləcək.</p>
+      </div>
+
+      <div class="privacy-section">
+        <h3>Məsuliyyətin məhdudlaşdırılması</h3>
+        <p>Saytda yerləşdirilən məlumatların dəqiqliyinə tam zəmanət verilmir. İstifadə zamanı yaranan hər hansı zərərə görə sayt sahibi məsuliyyət daşımır.</p>
+      </div>
+
+      <div class="privacy-section">
+        <h3>Üçüncü tərəf xidmətlər</h3>
+        <p>Saytda bəzi üçüncü tərəf xidmətlər istifadə olunur, o cümlədən <strong>Formspree</strong> və <strong>Google Fonts</strong>. Bu xidmətlər öz qaydalarına əsasən işləyir.</p>
+      </div>
+
+      <div class="privacy-section">
+        <h3>Dəyişikliklər</h3>
+        <p>Bu şərtlər istənilən vaxt yenilənə bilər. Yenilənmiş versiya bu səhifədə paylaşılır.</p>
+      </div>
+
+      <div class="privacy-section">
+        <h3>Əlaqə</h3>
+        <p>Hər hansı sual və ya şikayət üçün <a href="mailto:ericismyhero2467@gmail.com" class="privacy-link">əlaqə bölməsindən</a> istifadə edin.</p>
+      </div>
+
+      <p class="privacy-updated">Son yenilənmə: Aprel 2026</p>
+    </div>
+  </div>
+</div>
+
+<!-- Köhnə theme-panel — saxla ama gizlət -->
 <div id="theme-panel" class="theme-panel hidden"></div>
 
 <div class="container">
@@ -383,6 +445,10 @@
     <a href="https://ericismyhero.github.io/my-portfolio/" target="_blank">Əlaqə</a>
     <span class="footer-sep">|</span>
     <a href="mailto:ericismyhero2467@gmail.com">Təklif və İradlarınız üçün</a>
+    <span class="footer-sep">|</span>
+    <span class="footer-legal-link" onclick="openPrivacyModal()">Privacy Policy</span>
+    <span class="footer-sep">|</span>
+    <span class="footer-legal-link" onclick="openTermsModal()">İstifadə Şərtləri</span>
   </div>
 </footer>
 
