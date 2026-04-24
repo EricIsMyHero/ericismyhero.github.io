@@ -512,6 +512,16 @@ h1 span {
   box-shadow: 0 4px 12px rgba(59,130,246,0.4);
 }
 
+/* ─── PDF Endir düyməsi ───────────────────────────────────── */
+.pdf-download-btn {
+  background: #ef4444;
+}
+
+.pdf-download-btn:hover {
+  background: #dc2626 !important;
+  box-shadow: 0 4px 12px rgba(239,68,68,0.4) !important;
+}
+
 /* ─── PDF Type Badge (YENI) ───────────────────────────────── */
 .pdf-type-badge {
   display: inline-flex;
@@ -1504,9 +1514,8 @@ h1 span {
 
 .pdf-subject-title {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .info-btn {
@@ -1676,11 +1685,13 @@ h1 span {
     font-size: 0.72rem;
     padding: 0 5px;
   }
-}
 
-/* ================================================================
-   Bu hissəni style.css faylının SONUNA əlavə edin
-   ================================================================ */
+  /* Mobilde düymələri kiçilt */
+  .pdf-open-btn {
+    padding: 8px 12px;
+    font-size: 0.78rem;
+  }
+}
 
 /* ─── Hamburger Düyməsi ─────────────────────────────────────── */
 
@@ -2083,24 +2094,6 @@ h1 span {
   text-align: right;
   padding-top: 4px;
   border-top: 1px solid var(--border);
-}
-
-/* ─── Semester Başlığı ─────────────────────────────────────── */
-
-.semester-header {
-  grid-column: 1 / -1;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  padding: 18px 4px 8px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 4px;
-}
-
-.semester-header:first-child {
-  padding-top: 4px;
 }
 
 /* ─── Privacy / Terms Link ──────────────────────────────────── */
