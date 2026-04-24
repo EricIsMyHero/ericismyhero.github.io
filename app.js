@@ -23,7 +23,8 @@ const thanksData = [
   { name: "Nərimanov Elnur",  initial: "E", role: "code" },
   { name: "Şükürova Güləyar", initial: "G", role: "pdf"  },
   { name: "Hacıyev Tofiq",    initial: "T", role: "pdf"  },
-  { name: "İslamlı Həsən",    initial: "H", role: "pdf"  }
+  { name: "İslamlı Həsən",    initial: "H", role: "pdf"  },
+  { name: "Həsənli Əsmər",    initial: "Ə", role: "pdf"  },
 ];
 
 function renderThanks() {
@@ -91,6 +92,7 @@ const translations = {
     subjects: "fənn",
     pdfs: "material",
     openPdf: "Aç",
+    downloadPdf: "Endir",
     statCourses: "Kurs",
     statSubjects: "Fənn",
     statPdfs: "PDF",
@@ -116,6 +118,7 @@ const translations = {
     subjects: "subjects",
     pdfs: "files",
     openPdf: "Open",
+    downloadPdf: "Download",
     statCourses: "Courses",
     statSubjects: "Subjects",
     statPdfs: "PDFs",
@@ -277,7 +280,6 @@ function filterSubjects(query) {
     if (matches) visibleCount++;
   });
 
-  // Axtarış aktiv olduqda semester başlıqlarını gizlət
   semesterHeaders.forEach(header => {
     header.style.display = query ? 'none' : '';
   });
@@ -349,7 +351,7 @@ function renderExtras() {
       </div>
       <div class="pdf-info">
         <div class="pdf-name"><span class="pdf-number">${index + 1}.</span> ${pdf.name}</div>
-        <div class="pdf-meta">${pdf.desc || pdf.file} ${typeBadge}</div>
+        <div class="pdf-meta">Fayl adı:${pdf.desc || pdf.file} ${typeBadge}</div>
       </div>
       <div class="pdf-actions">
         <button class="fav-btn ${isFav ? 'active' : ''}"
@@ -358,8 +360,12 @@ function renderExtras() {
           ${isFav ? '★' : '☆'}
         </button>
         <a class="pdf-open-btn" href="${EXTRAS_BASE}${pdf.file}" target="_blank"
-   onclick="gtag('event','pdf_click',{event_category:'PDF-Extra',event_label:'${pdf.file}',value:'köməkçi'})">
+          onclick="gtag('event','pdf_click',{event_category:'PDF-Extra',event_label:'${pdf.file}',value:'köməkçi'})">
           ↗ ${t.openPdf}
+        </a>
+        <a class="pdf-open-btn pdf-download-btn" href="${EXTRAS_BASE}${pdf.file}" download
+          onclick="gtag('event','pdf_download',{event_category:'PDF-Extra',event_label:'${pdf.file}'})">
+          ↗ ${t.downloadPdf}
         </a>
       </div>
     `;
@@ -399,12 +405,18 @@ function renderFavorites() {
       <div class="pdf-file-icon" ${item.color ? `style="${item.color}"` : ''}><span>PDF</span></div>
       <div class="pdf-info">
         <div class="pdf-name"><span class="pdf-number">${index + 1}.</span> ${item.name}</div>
-        <div class="pdf-meta">${item.meta} ${typeBadge}</div>
+        <div class="pdf-meta">Fayl adı:${item.meta} ${typeBadge}</div>
       </div>
       <div class="pdf-actions">
         <button class="fav-btn active" onclick="removeFavAndRefresh('${item.path}')" title="Sil">★</button>
         <a class="pdf-open-btn" href="${BASE}${item.path}" target="_blank"
-   onclick="gtag('event','pdf_click',{event_category:'PDF-Favorite',event_label:'${item.path}'})">
+          onclick="gtag('event','pdf_click',{event_category:'PDF-Favorite',event_label:'${item.path}'})">
+          ↗ ${t.openPdf}
+        </a>
+        <a class="pdf-open-btn pdf-download-btn" href="${BASE}${item.path}" download
+          onclick="gtag('event','pdf_download',{event_category:'PDF-Favorite',event_label:'${item.path}'})">
+          ↗ ${t.downloadPdf}
+        </a>
       </div>
     `;
     list.appendChild(div);
@@ -536,7 +548,10 @@ document.addEventListener('click', function(e) {
 });
 
 // ============================================================
-// PDF SƏHİFƏSİ — AUTO-NUMBERING + PDF TYPE BADGES
+// PDF SƏHİFƏSİ — YENILƏNMIŞ DİZAYN
+// "?" başlıqla eyni sətirdə, badge ayrı sətirdə
+// Fayl adı "Fayl adı:xcraQ26.pdf" formatında
+// "Endir" düyməsi əlavə edilib
 // ============================================================
 function openPDFs(subjectName) {
   currentSubject = subjectName;
@@ -548,11 +563,16 @@ function openPDFs(subjectName) {
 
   document.getElementById('bc-subject').textContent = subjectName;
 
+  // ── Başlıq: ad + "?" eyni sətirdə, badge altında ayrı sətirdə ──
   const titleEl = document.getElementById('pdf-subject-title');
   titleEl.innerHTML = `
-    <span>${subjectName}</span>
-    ${getTypeBadgeHTML(type)}
-    <button class="info-btn" onclick="toggleInfoPanel()" title="Bu fənn haqqında">?</button>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <span>${subjectName}</span>
+      <button class="info-btn" onclick="toggleInfoPanel()" title="Bu fənn haqqında">?</button>
+    </div>
+    <div style="margin-top:6px;">
+      ${getTypeBadgeHTML(type)}
+    </div>
   `;
 
   const existing = document.getElementById('subject-info-panel');
@@ -586,15 +606,21 @@ function openPDFs(subjectName) {
       <div class="pdf-file-icon"><span>PDF</span></div>
       <div class="pdf-info">
         <div class="pdf-name"><span class="pdf-number">${index + 1}.</span> ${pdf.name}</div>
-        <div class="pdf-meta">${pdf.file} ${typeBadge}</div>
+        <div class="pdf-meta">Fayl adı:${pdf.file} ${typeBadge}</div>
       </div>
       <div class="pdf-actions">
-        <button class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite('pdf/${pdf.file}', this)" title="Seçilmişlərə əlavə et">
+        <button class="fav-btn ${isFav ? 'active' : ''}"
+          onclick="toggleFavorite('pdf/${pdf.file}', this)"
+          title="Seçilmişlərə əlavə et">
           ${isFav ? '★' : '☆'}
         </button>
         <a class="pdf-open-btn" href="/pdf/${pdf.file}" target="_blank"
-   onclick="gtag('event','pdf_click',{event_category:'PDF',event_label:'${pdf.file}',value:'əsas'})">
+          onclick="gtag('event','pdf_click',{event_category:'PDF',event_label:'${pdf.file}',value:'əsas'})">
           ↗ ${t.openPdf}
+        </a>
+        <a class="pdf-open-btn pdf-download-btn" href="/pdf/${pdf.file}" download
+          onclick="gtag('event','pdf_download',{event_category:'PDF',event_label:'${pdf.file}'})">
+          ↗ ${t.downloadPdf}
         </a>
       </div>
     `;
@@ -725,7 +751,6 @@ async function sendReport() {
       throw new Error('Formspree error');
     }
   } catch (err) {
-    // Fallback: mailto
     const body = encodeURIComponent(
       `Kurs: ${reportCourseName}\nFənn: ${reportSubjectName}\nXəta növü: ${type}\n\n${message}`
     );
@@ -743,12 +768,12 @@ async function sendReport() {
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
     closeThanks();
-     closeEaster();
-     closeReportModal();
-     closeSidebar();
-     closeAboutModal();
-     closePrivacyModal();
-     closeTermsModal();
+    closeEaster();
+    closeReportModal();
+    closeSidebar();
+    closeAboutModal();
+    closePrivacyModal();
+    closeTermsModal();
   }
 });
 
