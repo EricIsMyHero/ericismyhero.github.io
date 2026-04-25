@@ -27,20 +27,20 @@ function showPdfLoading(isDownload) {
   const fill    = document.getElementById('pdfProgressFill');
 
   title.textContent = isDownload ? 'PDF Endirilir...' : 'PDF Açılır...';
-  fill.style.width  = '5%';
+  fill.style.width  = '0%';
   overlay.classList.remove('hidden');
   document.body.style.overflow = 'hidden';
 
-  let progress = 5;
+  let progress = 0;
   clearInterval(pdfProgressInterval);
   pdfProgressInterval = setInterval(() => {
-    if (progress < 85) {
-      progress += Math.random() * 8 + 2;
-      fill.style.width = Math.min(progress, 85) + '%';
+    if (progress < 90) {
+      progress += 30; // sürətli artım
+      fill.style.width = Math.min(progress, 90) + '%';
     }
-  }, 400);
+  }, 100); // ← 400 → 100ms interval
 
-  setTimeout(hidePdfLoading, 6000);
+  setTimeout(hidePdfLoading, 4000); // fallback
 }
 
 function hidePdfLoading() {
@@ -419,7 +419,7 @@ function renderExtras() {
       setTimeout(() => {
         window.open(url, '_blank');
         hidePdfLoading();
-      }, 1200);
+      }, 400);
 
     } else if (action === 'download') {
       showPdfLoading(true);
@@ -430,7 +430,7 @@ function renderExtras() {
         a.download = '';
         a.click();
         hidePdfLoading();
-      }, 1200);
+      }, 400);
     }
   });
 }
@@ -503,7 +503,7 @@ function renderFavorites() {
       setTimeout(() => {
         window.open(url, '_blank');
         hidePdfLoading();
-      }, 1200);
+      }, 400);
 
     } else if (action === 'download') {
       showPdfLoading(true);
@@ -514,7 +514,7 @@ function renderFavorites() {
         a.download = '';
         a.click();
         hidePdfLoading();
-      }, 1200);
+      }, 400);
     }
   });
 }
@@ -666,7 +666,7 @@ function openPDFs(subjectName) {
       setTimeout(() => {
         window.open(url, '_blank');
         hidePdfLoading();
-      }, 1200);
+      }, 400);
 
     } else if (action === 'download') {
       showPdfLoading(true);
@@ -677,7 +677,7 @@ function openPDFs(subjectName) {
         a.download = '';
         a.click();
         hidePdfLoading();
-      }, 1200);
+      }, 400);
     }
   });
   
