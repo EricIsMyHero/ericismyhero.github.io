@@ -352,12 +352,12 @@ function renderExtras() {
           ${isFav ? '★' : '☆'}
         </button>
         <a class="pdf-open-btn" href="${EXTRAS_BASE}${pdf.file}" target="_blank"
-          onclick="gtag('event','pdf_click',{event_category:'PDF-Extra',event_label:'${pdf.file}',value:'köməkçi'})">
-          ↗ ${t.openPdf}
+          onclick="showPdfLoading(false); gtag('event','pdf_click',{event_category:'PDF-Extra',event_label:'${pdf.file}',value:'köməkçi'})">
+        ↗ ${t.openPdf}
         </a>
         <a class="pdf-download-btn" href="${EXTRAS_BASE}${pdf.file}" download
-          onclick="gtag('event','pdf_download',{event_category:'PDF-Extra',event_label:'${pdf.file}'})">
-          ↓ ${t.downloadPdf}
+         onclick="showPdfLoading(true); gtag('event','pdf_download',{event_category:'PDF-Extra',event_label:'${pdf.file}'})">
+        ↓ ${t.downloadPdf}
         </a>
       </div>
     `;
@@ -407,12 +407,12 @@ function renderFavorites() {
       <div class="pdf-actions">
         <button class="fav-btn active" onclick="removeFavAndRefresh('${item.path}')" title="Sil">★</button>
         <a class="pdf-open-btn" href="${BASE}${item.path}" target="_blank"
-          onclick="gtag('event','pdf_click',{event_category:'PDF-Favorite',event_label:'${item.path}'})">
-          ↗ ${t.openPdf}
+          onclick="showPdfLoading(false); gtag('event','pdf_click',{event_category:'PDF-Favorite',event_label:'${item.path}'})">
+         ↗ ${t.openPdf}
         </a>
         <a class="pdf-download-btn" href="${BASE}${item.path}" download
-          onclick="gtag('event','pdf_download',{event_category:'PDF-Favorite',event_label:'${item.path}'})">
-          ↓ ${t.downloadPdf}
+          onclick="showPdfLoading(true); gtag('event','pdf_download',{event_category:'PDF-Favorite',event_label:'${item.path}'})">
+         ↓ ${t.downloadPdf}
         </a>
       </div>
     `;
@@ -542,11 +542,11 @@ function openPDFs(subjectName) {
           ${isFav ? '★' : '☆'}
         </button>
         <a class="pdf-open-btn" href="/pdf/${pdf.file}" target="_blank"
-          onclick="gtag('event','pdf_click',{event_category:'PDF',event_label:'${pdf.file}',value:'əsas'})">
+          onclick="showPdfLoading(false); gtag('event','pdf_click',{event_category:'PDF',event_label:'${pdf.file}',value:'əsas'})">
           ↗ ${t.openPdf}
         </a>
         <a class="pdf-download-btn" href="/pdf/${pdf.file}" download
-          onclick="gtag('event','pdf_download',{event_category:'PDF',event_label:'${pdf.file}'})">
+          onclick="showPdfLoading(true); gtag('event','pdf_download',{event_category:'PDF',event_label:'${pdf.file}'})">
           ↓ ${t.downloadPdf}
         </a>
       </div>
@@ -554,6 +554,49 @@ function openPDFs(subjectName) {
     list.appendChild(div);
   });
 
+  // ============================================================
+// PDF YÜKLƏMƏ OVERLAY
+// ============================================================
+let pdfProgressInterval = null;
+
+function showPdfLoading(isDownload) {
+  const overlay = document.getElementById('pdfLoadingOverlay');
+  const title   = document.getElementById('pdfLoadingTitle');
+  const fill    = document.getElementById('pdfProgressFill');
+
+  title.textContent = isDownload ? 'PDF Endirilir...' : 'PDF Açılır...';
+  fill.style.width  = '5%';
+  overlay.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+
+  // Progress bar animasiyası
+  let progress = 5;
+  clearInterval(pdfProgressInterval);
+  pdfProgressInterval = setInterval(() => {
+    if (progress < 85) {
+      progress += Math.random() * 8 + 2;
+      fill.style.width = Math.min(progress, 85) + '%';
+    }
+  }, 400);
+
+  // 6 saniyə sonra avtomatik bağla
+  setTimeout(hidePdfLoading, 6000);
+}
+
+function hidePdfLoading() {
+  const overlay = document.getElementById('pdfLoadingOverlay');
+  const fill    = document.getElementById('pdfProgressFill');
+
+  clearInterval(pdfProgressInterval);
+  fill.style.width = '100%';
+
+  setTimeout(() => {
+    overlay.classList.add('hidden');
+    document.body.style.overflow = '';
+    fill.style.width = '5%';
+  }, 300);
+}
+  
   // Xəta Göndər düyməsi
   const reportBtn = document.createElement('button');
   reportBtn.className = 'report-error-btn';
