@@ -439,6 +439,7 @@ function renderExtras() {
     `;
     list.appendChild(div);
   });
+  }
 
 // ============================================================
 // RENDER — SEÇİLMİŞLƏR
@@ -491,6 +492,7 @@ function renderFavorites() {
     `;
     list.appendChild(div);
   });
+  }
 
 function removeFavAndRefresh(filePath) {
   let favs = getFavorites().filter(f => f !== filePath);
