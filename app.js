@@ -1,23 +1,23 @@
 // ============================================================
 // İMTAHAN TİPİNƏ GÖRƏ OTOMATİK QEYDLƏR
-// type: "test"   → Elektron-test fənni
-// type: "yazili" → Elektron-yazılı fənni
-// Hər fənnə data obyektinin içində "type" yazın, qalanını sistem edir.
 // ============================================================
 const EXAM_NOTES = {
   test: [
-    "🖥️ Bu fənn <strong>Elektron-Test</strong> formatındadır.", "🔀 Sualların sırası fərqli ola bilər. Cavabları sıraya görə deyil, mənaya görə öyrənin.",
-    "⚠️ Materiallardakı cavablar köhnə ola bilər, müəllimin dediyi mövzularla müqayisə edin.", "💡 Bütün variantları nəzərdən keçirin, bəzən test tipli fənnlər yazılıya çevrilə bilər."
+    "🖥️ Bu fənn <strong>Elektron-Test</strong> formatındadır.",
+    "🔀 Sualların sırası fərqli ola bilər. Cavabları sıraya görə deyil, mənaya görə öyrənin.",
+    "⚠️ Materiallardakı cavablar köhnə ola bilər, müəllimin dediyi mövzularla müqayisə edin.",
+    "💡 Bütün variantları nəzərdən keçirin, bəzən test tipli fənnlər yazılıya çevrilə bilər."
   ],
   yazili: [
-    "✍️ Bu fənn <strong>Elektron-Yazılı</strong> formatındadır.", "📝 Cavablarınızı tam, əsaslandırılmış və ən önəmlisi fərqli şəkildə yazmağa diqqət göstərin.",
-    "⚠️ Materiallardakı suallar köhnə ola bilər, sillabusunuzla mütləq uyğunlaşdırın.", "💡 Əlavə mənbələrdən də istifadə etməyi tövsiyə edirik, bəzən yazılı tipli fənnlər testə çevrilə bilər."
+    "✍️ Bu fənn <strong>Elektron-Yazılı</strong> formatındadır.",
+    "📝 Cavablarınızı tam, əsaslandırılmış və ən önəmlisi fərqli şəkildə yazmağa diqqət göstərin.",
+    "⚠️ Materiallardakı suallar köhnə ola bilər, sillabusunuzla mütləq uyğunlaşdırın.",
+    "💡 Əlavə mənbələrdən də istifadə etməyi tövsiyə edirik, bəzən yazılı tipli fənnlər testə çevrilə bilər."
   ]
 };
 
 // ============================================================
 // TƏŞƏKKÜRLƏR DATA
-// role: 'code' — kod töhfəçisi, 'pdf' — PDF töhfəçisi
 // ============================================================
 const thanksData = [
   { name: "Nərimanov Elnur",  initial: "E", role: "code" },
@@ -55,7 +55,7 @@ function renderThanks() {
 }
 
 // ============================================================
-// FƏNN TİPİ BADGEI
+// FƏNN TİPİ BADGEİ
 // ============================================================
 function getTypeBadgeHTML(type) {
   if (type === 'test')   return `<span class="exam-type-badge exam-type-test">🖥️ Test</span>`;
@@ -64,7 +64,7 @@ function getTypeBadgeHTML(type) {
 }
 
 // ============================================================
-// PDF TİPİ BADGEI (YENI)
+// PDF TİPİ BADGEİ
 // ============================================================
 function getPdfTypeBadgeHTML(pdfType) {
   if (!pdfType || !PDF_TYPES[pdfType]) return '';
@@ -150,19 +150,6 @@ function applyTheme(name, btn) {
   document.querySelectorAll('.theme-opt, .sidebar-theme-opt').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
 }
-
-function toggleThemePanel() {
-  document.getElementById('theme-panel').classList.toggle('hidden');
-}
-
-document.addEventListener('click', function (e) {
-  const panel = document.getElementById('theme-panel');
-  if (!panel.classList.contains('hidden') &&
-      !panel.contains(e.target) &&
-      !e.target.closest('.theme-toggle-btn')) {
-    panel.classList.add('hidden');
-  }
-});
 
 // ============================================================
 // DİL
@@ -290,7 +277,7 @@ function filterSubjects(query) {
 }
 
 // ============================================================
-// RENDER
+// RENDER — KURSLAR
 // ============================================================
 function renderCourses() {
   const t = translations[lang];
@@ -331,6 +318,9 @@ function switchTab(tab) {
   if (tab === 'extras')    renderExtras();
 }
 
+// ============================================================
+// RENDER — ƏLAVƏLƏR
+// ============================================================
 function renderExtras() {
   const t = translations[lang];
   const list = document.getElementById('extras-list');
@@ -346,12 +336,14 @@ function renderExtras() {
     const div = document.createElement('div');
     div.className = 'pdf-item animate-in';
     div.innerHTML = `
-      <div class="pdf-file-icon" style="background:linear-gradient(135deg,#f59e0b,#d97706);">
-        <span>PDF</span>
-      </div>
-      <div class="pdf-info">
-        <div class="pdf-name"><span class="pdf-number">${index + 1}.</span> ${pdf.name}</div>
-        <div class="pdf-meta">Fayl adı:${pdf.desc || pdf.file} ${typeBadge}</div>
+      <div class="pdf-top-row">
+        <div class="pdf-file-icon" style="background:linear-gradient(135deg,#f59e0b,#d97706);">
+          <span>PDF</span>
+        </div>
+        <div class="pdf-info">
+          <div class="pdf-name"><span class="pdf-number">${index + 1}.</span> ${pdf.name}</div>
+          <div class="pdf-meta">Fayl adı: ${pdf.desc || pdf.file} ${typeBadge}</div>
+        </div>
       </div>
       <div class="pdf-actions">
         <button class="fav-btn ${isFav ? 'active' : ''}"
@@ -363,9 +355,9 @@ function renderExtras() {
           onclick="gtag('event','pdf_click',{event_category:'PDF-Extra',event_label:'${pdf.file}',value:'köməkçi'})">
           ↗ ${t.openPdf}
         </a>
-        <a class="pdf-open-btn pdf-download-btn" href="${EXTRAS_BASE}${pdf.file}" download
+        <a class="pdf-download-btn" href="${EXTRAS_BASE}${pdf.file}" download
           onclick="gtag('event','pdf_download',{event_category:'PDF-Extra',event_label:'${pdf.file}'})">
-          ↗ ${t.downloadPdf}
+          ↓ ${t.downloadPdf}
         </a>
       </div>
     `;
@@ -373,6 +365,9 @@ function renderExtras() {
   });
 }
 
+// ============================================================
+// RENDER — SEÇİLMİŞLƏR
+// ============================================================
 function renderFavorites() {
   const t = translations[lang];
   const favs = getFavorites();
@@ -402,10 +397,12 @@ function renderFavorites() {
     const div = document.createElement('div');
     div.className = 'pdf-item animate-in';
     div.innerHTML = `
-      <div class="pdf-file-icon" ${item.color ? `style="${item.color}"` : ''}><span>PDF</span></div>
-      <div class="pdf-info">
-        <div class="pdf-name"><span class="pdf-number">${index + 1}.</span> ${item.name}</div>
-        <div class="pdf-meta">Fayl adı:${item.meta} ${typeBadge}</div>
+      <div class="pdf-top-row">
+        <div class="pdf-file-icon" ${item.color ? `style="${item.color}"` : ''}><span>PDF</span></div>
+        <div class="pdf-info">
+          <div class="pdf-name"><span class="pdf-number">${index + 1}.</span> ${item.name}</div>
+          <div class="pdf-meta">Fayl adı: ${item.meta} ${typeBadge}</div>
+        </div>
       </div>
       <div class="pdf-actions">
         <button class="fav-btn active" onclick="removeFavAndRefresh('${item.path}')" title="Sil">★</button>
@@ -413,9 +410,9 @@ function renderFavorites() {
           onclick="gtag('event','pdf_click',{event_category:'PDF-Favorite',event_label:'${item.path}'})">
           ↗ ${t.openPdf}
         </a>
-        <a class="pdf-open-btn pdf-download-btn" href="${BASE}${item.path}" download
+        <a class="pdf-download-btn" href="${BASE}${item.path}" download
           onclick="gtag('event','pdf_download',{event_category:'PDF-Favorite',event_label:'${item.path}'})">
-          ↗ ${t.downloadPdf}
+          ↓ ${t.downloadPdf}
         </a>
       </div>
     `;
@@ -431,7 +428,7 @@ function removeFavAndRefresh(filePath) {
 }
 
 // ============================================================
-// SEMESTER QRUPLAŞDIRMASİ İLƏ FƏNN RENDER
+// RENDER — FƏNNLƏR (Semester qrupları ilə)
 // ============================================================
 function renderSubjects(courseName) {
   const t = translations[lang];
@@ -477,81 +474,7 @@ function renderSubjects(courseName) {
 }
 
 // ============================================================
-// TƏŞƏKKÜRLƏr MODALI
-// ============================================================
-function openThanks() {
-  renderThanks();
-  document.getElementById('thanksOverlay').classList.remove('hidden');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeThanks() {
-  document.getElementById('thanksOverlay').classList.add('hidden');
-  document.body.style.overflow = '';
-}
-
-function closeThanksIfOutside(e) {
-  if (e.target === document.getElementById('thanksOverlay')) closeThanks();
-}
-
-// ============================================================
-// EASTER EGG — logoya 3 dəfə bas
-// ============================================================
-let easterClickCount = 0;
-let easterTimer = null;
-
-function easterEggClick() {
-  easterClickCount++;
-  clearTimeout(easterTimer);
-  easterTimer = setTimeout(() => { easterClickCount = 0; }, 2000);
-  if (easterClickCount >= 3) {
-    easterClickCount = 0;
-    clearTimeout(easterTimer);
-    openEaster();
-  }
-}
-
-function openEaster() {
-  document.getElementById('easterOverlay').classList.remove('hidden');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeEaster() {
-  document.getElementById('easterOverlay').classList.add('hidden');
-  document.body.style.overflow = '';
-}
-
-function closeEasterIfOutside(e) {
-  if (e.target === document.getElementById('easterOverlay')) closeEaster();
-}
-
-// ============================================================
-// INFO PANEL — imtahan tipinə görə avtomatik notlar
-// ============================================================
-function toggleInfoPanel() {
-  const panel = document.getElementById('subject-info-panel');
-  if (panel) panel.classList.toggle('hidden');
-}
-
-function closeInfoPanel() {
-  const panel = document.getElementById('subject-info-panel');
-  if (panel) panel.classList.add('hidden');
-}
-
-document.addEventListener('click', function(e) {
-  const panel = document.getElementById('subject-info-panel');
-  if (panel && !panel.classList.contains('hidden') &&
-      !panel.contains(e.target) &&
-      !e.target.closest('.info-btn')) {
-    panel.classList.add('hidden');
-  }
-});
-
-// ============================================================
-// PDF SƏHİFƏSİ — YENILƏNMIŞ DİZAYN
-// "?" başlıqla eyni sətirdə, badge ayrı sətirdə
-// Fayl adı "Fayl adı:xcraQ26.pdf" formatında
-// "Endir" düyməsi əlavə edilib
+// PDF SƏHİFƏSİ — pdf-top-row wrapper ilə
 // ============================================================
 function openPDFs(subjectName) {
   currentSubject = subjectName;
@@ -563,7 +486,7 @@ function openPDFs(subjectName) {
 
   document.getElementById('bc-subject').textContent = subjectName;
 
-  // ── Başlıq: ad + "?" eyni sətirdə, badge altında ayrı sətirdə ──
+  // ── Başlıq: ad + "?" eyni sətirdə, badge altında ayrı ──
   const titleEl = document.getElementById('pdf-subject-title');
   titleEl.innerHTML = `
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
@@ -575,6 +498,7 @@ function openPDFs(subjectName) {
     </div>
   `;
 
+  // Info panel
   const existing = document.getElementById('subject-info-panel');
   if (existing) existing.remove();
 
@@ -594,6 +518,7 @@ function openPDFs(subjectName) {
   `;
   document.querySelector('.pdf-section-header').appendChild(panel);
 
+  // PDF siyahısı
   const list = document.getElementById('pdf-items');
   list.innerHTML = '';
 
@@ -603,10 +528,12 @@ function openPDFs(subjectName) {
     const div = document.createElement('div');
     div.className = 'pdf-item animate-in';
     div.innerHTML = `
-      <div class="pdf-file-icon"><span>PDF</span></div>
-      <div class="pdf-info">
-        <div class="pdf-name"><span class="pdf-number">${index + 1}.</span> ${pdf.name}</div>
-        <div class="pdf-meta">Fayl adı:${pdf.file} ${typeBadge}</div>
+      <div class="pdf-top-row">
+        <div class="pdf-file-icon"><span>PDF</span></div>
+        <div class="pdf-info">
+          <div class="pdf-name"><span class="pdf-number">${index + 1}.</span> ${pdf.name}</div>
+          <div class="pdf-meta">Fayl adı: ${pdf.file} ${typeBadge}</div>
+        </div>
       </div>
       <div class="pdf-actions">
         <button class="fav-btn ${isFav ? 'active' : ''}"
@@ -618,16 +545,16 @@ function openPDFs(subjectName) {
           onclick="gtag('event','pdf_click',{event_category:'PDF',event_label:'${pdf.file}',value:'əsas'})">
           ↗ ${t.openPdf}
         </a>
-        <a class="pdf-open-btn pdf-download-btn" href="/pdf/${pdf.file}" download
+        <a class="pdf-download-btn" href="/pdf/${pdf.file}" download
           onclick="gtag('event','pdf_download',{event_category:'PDF',event_label:'${pdf.file}'})">
-          ↗ ${t.downloadPdf}
+          ↓ ${t.downloadPdf}
         </a>
       </div>
     `;
     list.appendChild(div);
   });
 
-  // Xəta Göndər düyməsi — PDF-lərin ən altında
+  // Xəta Göndər düyməsi
   const reportBtn = document.createElement('button');
   reportBtn.className = 'report-error-btn';
   reportBtn.innerHTML = `
@@ -647,7 +574,6 @@ function openPDFs(subjectName) {
 // ============================================================
 // SEVİMLİLƏR + CACHE
 // ============================================================
-
 function getFavorites() {
   return JSON.parse(localStorage.getItem("favorites")) || [];
 }
@@ -683,7 +609,7 @@ async function removeFromCache(filePath) {
 }
 
 // ============================================================
-// XƏTA BİLDİRİŞ SİSTEMİ
+// XƏTA BİLDİRİŞ
 // ============================================================
 let reportSubjectName = '';
 let reportCourseName  = '';
@@ -763,7 +689,78 @@ async function sendReport() {
 }
 
 // ============================================================
-// KLAVIATURA — ESC ilə bütün modalları bağla
+// MƏLUMAT PANELİ
+// ============================================================
+function toggleInfoPanel() {
+  const panel = document.getElementById('subject-info-panel');
+  if (panel) panel.classList.toggle('hidden');
+}
+
+function closeInfoPanel() {
+  const panel = document.getElementById('subject-info-panel');
+  if (panel) panel.classList.add('hidden');
+}
+
+document.addEventListener('click', function(e) {
+  const panel = document.getElementById('subject-info-panel');
+  if (panel && !panel.classList.contains('hidden') &&
+      !panel.contains(e.target) &&
+      !e.target.closest('.info-btn')) {
+    panel.classList.add('hidden');
+  }
+});
+
+// ============================================================
+// EASTER EGG — logoya 3 dəfə bas
+// ============================================================
+let easterClickCount = 0;
+let easterTimer = null;
+
+function easterEggClick() {
+  easterClickCount++;
+  clearTimeout(easterTimer);
+  easterTimer = setTimeout(() => { easterClickCount = 0; }, 2000);
+  if (easterClickCount >= 3) {
+    easterClickCount = 0;
+    clearTimeout(easterTimer);
+    openEaster();
+  }
+}
+
+function openEaster() {
+  document.getElementById('easterOverlay').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeEaster() {
+  document.getElementById('easterOverlay').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+function closeEasterIfOutside(e) {
+  if (e.target === document.getElementById('easterOverlay')) closeEaster();
+}
+
+// ============================================================
+// TƏŞƏKKÜRLƏr MODALI
+// ============================================================
+function openThanks() {
+  renderThanks();
+  document.getElementById('thanksOverlay').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeThanks() {
+  document.getElementById('thanksOverlay').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+function closeThanksIfOutside(e) {
+  if (e.target === document.getElementById('thanksOverlay')) closeThanks();
+}
+
+// ============================================================
+// KLAVIATURA — ESC
 // ============================================================
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
@@ -778,7 +775,7 @@ document.addEventListener('keydown', function(e) {
 });
 
 // ============================================================
-// BAŞLAT
+// SİDEBAR
 // ============================================================
 function toggleSidebar() {
   const sidebar = document.getElementById('sidebar');
@@ -837,6 +834,9 @@ function closeTermsModal() {
   document.body.style.overflow = '';
 }
 
+// ============================================================
+// BAŞLAT
+// ============================================================
 (function loadSavedTheme() {
   const saved = localStorage.getItem('theme');
   if (saved && themes[saved]) {
