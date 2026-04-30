@@ -31,7 +31,7 @@ const data = {
       "İKT - Baza kompüter bilikləri": {
         type: "test", semester: 1, pdfs: [
           { name: "İKT - Baza Kompüter Bilikləri Q26", file: "iktQ26.pdf", pdfType: "semester"},
-          { name: "İKT - Baza Kompüter Bilikləri Q25", file: "iktQ25.pdf", pdfType: "old"}
+          { name: "İKT - Baza Kompüter Bilikləri Q25", file: "iktQ25.pdf", pdfType: "semester"}
         ]
       },
       "Azərbaycanın tarixi": {
@@ -42,7 +42,7 @@ const data = {
       "Karyera planlaması": {
         type: "test", semester: 1, pdfs: [
           { name: "Karyera Planlaması Q26", file: "karyeraQ26.pdf", pdfType: "semester"},
-          { name: "Karyera Planlaması Q25", file: "karyeraQ25.pdf", pdfType: "old"}
+          { name: "Karyera Planlaması Q25", file: "karyeraQ25.pdf", pdfType: "semester"}
         ]
       },
       "Xarici dildə işgüzar və akademik kommunikasiya A1": {
@@ -57,24 +57,24 @@ const data = {
       },
       "Hidrologiya": {
         type: "yazili", semester: 1, pdfs: [
-          { name: "Hidrologiya - 1", file: "hidrologiya1.pdf", pdfType: "semester"}
+          { name: "Hidrologiya", file: "hidrologiya1.pdf", pdfType: "semester"}
         ]
       },
       "Fizikanın əsasları": {
         type: "yazili", semester: 1, pdfs: [
-          { name: "Fizikanın Əsasları - Kollekvium", file: "fizikaninesaslarikollek1.pdf", pdfType: "midterm"}
+          { name: "Fizikanın Əsasları", file: "fizikaninesaslarikollek1.pdf", pdfType: "midterm"}
         ]
       },
       "Ümumi kimya": {
         type: "yazili", semester: 1, pdfs: [
-          { name: "Ümumi Kimya - Kollekvium", file: "umumikimyakollek1.pdf", pdfType: "midterm"},
-          { name: "Ümumi Kimya - 36-75", file: "umumikimya36-75.pdf", pdfType: "semester"},
+          { name: "Ümumi Kimya", file: "umumikimyakollek1.pdf", pdfType: "midterm"},
+          { name: "Ümumi Kimya - 36-75", file: "umumikimya36-75.pdf", pdfType: "semester"}
         ]
       },
       "Ehtimal nəzəriyyəsi və riyazi statistika": {
         type: "test", semester: 2, pdfs: [
           { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika Y25", file: "enrsY25.pdf", pdfType: "semester"},
-          { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika Y23", file: "enrsY23.pdf", pdfType: "old"}
+          { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika Y23", file: "enrsY23.pdf", pdfType: "semester"}
         ]
       },
       "Xarici dildə işgüzar və akademik kommunikasiya A2": {
@@ -96,24 +96,24 @@ const data = {
       },
       "İqtisadiyyata giriş": {
         type: "yazili", semester: 2, pdfs: [
-          { name: "İqtisadiyyata Giriş - 1", file: "iqtisadiyyat1.pdf", pdfType: "semester"}
+          { name: "İqtisadiyyata Giriş", file: "iqtisadiyyat1.pdf", pdfType: "semester"}
         ]
       },
       "Mülki müdafiə": {
         type: "test", semester: 2, pdfs: [
           { name: "Mülki Müdafiə Q26", file: "mulkimudafieQ26.pdf", pdfType: "semester"},
-          { name: "Mülki Müdafiə Y24", file: "mulkimudafieY24.pdf", pdfType: "old"},
-          { name: "Mülki Müdafiə Q23", file: "mulkimudafieQ23.pdf", pdfType: "old"}
+          { name: "Mülki Müdafiə Y24", file: "mulkimudafieY24.pdf", pdfType: "semester"},
+          { name: "Mülki Müdafiə Q23", file: "mulkimudafieQ23.pdf", pdfType: "semester"}
         ]
       },
       "Mühəndis qrafikası": {
         type: "yazili", semester: 2, pdfs: [
-          { name: "Mühəndis Qrafikası - 1", file: "muhendisqrafikasi1.pdf", pdfType: "semester"}
+          { name: "Mühəndis Qrafikası", file: "muhendisqrafikasi1.pdf", pdfType: "semester"}
         ]
       },
       "Ümumi ekologiya": {
         type: "yazili", semester: 2, pdfs: [
-          { name: "Ümumi Ekologiya - 1", file: "umumiekologiya1.pdf", pdfType: "semester"}
+          { name: "Ümumi Ekologiya", file: "umumiekologiya1.pdf", pdfType: "semester"}
         ]
       },
       "Riyaziyyat-2": {
@@ -123,52 +123,52 @@ const data = {
       },
       "Analitik kimya və instrumental analiz": {
         type: "yazili", semester: 2, pdfs: [
-          { name: "Analitik Kimya və İnstrumental Analiz - 1 - Kollekvium", file: "akiakollek1.pdf", pdfType: "midterm"}
+          { name: "Analitik Kimya və İnstrumental Analiz", file: "akiakollek1.pdf", pdfType: "midterm"}
         ]
       },
       "Sosial işdə idarəetmə": {
         type: "yazili", semester: 2, pdfs: [
-          { name: "Sosial İşdə İdarəetmə - 1 - Kollekvium", file: "sosialisdeidareetmekollek1.pdf", pdfType: "midterm"}
+          { name: "Sosial İşdə İdarəetmə", file: "sosialisdeidareetmekollek1.pdf", pdfType: "midterm"}
         ]
       },
       "Sosial iş təcrübəsində etik prinsiplər": {
         type: "yazili", semester: 2, pdfs: [
-          { name: "Sosial İş Təcrübəsində Etik Prinsiplər - 1 - Kollekvium", file: "sitepkollek1.pdf", pdfType: "midterm"},
-          { name: "Sosial İş Təcrübəsində Etik Prinsiplər - 2 - Kollekvium", file: "sitepkollek2.pdf", pdfType: "optional"}
+          { name: "Sosial İş Təcrübəsində Etik Prinsiplər", file: "sitepkollek1.pdf", pdfType: "midterm"},
+          { name: "Sosial İş Təcrübəsində Etik Prinsiplər", file: "sitepkollek2.pdf", pdfType: "midterm"}
         ]
       },
       "Psixologiya": {
         type: "test", semester: 2, pdfs: [
           { name: "Psixologiya Y23", file: "psixologiyaY23.pdf", pdfType: "semester"},
-          { name: "Psixologiya - 1 - Kollekvium", file: "psixologiyakollek1.pdf", pdfType: "midterm"}
+          { name: "Psixologiya", file: "psixologiyakollek1.pdf", pdfType: "midterm"}
         ]
       },
     "Sosial işin nəzəriyyəsi və təcrübəsi-2": {
         type: "yazili", semester: 2, pdfs: [
-          { name: "Sosial işin nəzəriyyəsi və təcrübəsi-2 - 1 - Semester", file: "sint1.pdf", pdfType: "semester"},
-          { name: "Sosial işin nəzəriyyəsi və təcrübəsi-2 - 1 - Kollekvium", file: "sintkollek1.pdf", pdfType: "midterm"}
+          { name: "Sosial işin nəzəriyyəsi və təcrübəsi-2", file: "sint1.pdf", pdfType: "semester"},
+          { name: "Sosial işin nəzəriyyəsi və təcrübəsi-2", file: "sintkollek1.pdf", pdfType: "midterm"}
         ]
       },
       "Sosial işdə riyazi metodlar": {
         type: "test", semester: 2, pdfs: [
-          { name: "Sosial İşdə Riyazi Metodlar - 1 - Kollekvium", file: "sirmkollek1.pdf", pdfType: "midterm"}
+          { name: "Sosial İşdə Riyazi Metodlar", file: "sirmkollek1.pdf", pdfType: "midterm"}
         ]
       },
       "Liner cebir ve matematiksel analiz": {
         type: "test", semester: 1, pdfs: [
           { name: "Liner Cebir ve Matematiksel Analiz Q26", file: "lcmaQ26.pdf" , pdfType: "semester"},
-          { name: "Liner Cebir ve Matematiksel Analiz Q23", file: "lcmaQ23.pdf" , pdfType: "old"}
+          { name: "Liner Cebir ve Matematiksel Analiz Q23", file: "lcmaQ23.pdf" , pdfType: "semester"}
         ]
       },
       "Azerbaycanın tarihi": {
         type: "test", semester: 1, pdfs: [
           { name: "Azerbaycanın Tarihi Q26", file: "aztarihiQ26.pdf", pdfType: "semester"},
-          { name: "Azerbaycanın Tarihi Q25", file: "aztarihiQ25.pdf", pdfType: "old"}
+          { name: "Azerbaycanın Tarihi Q25", file: "aztarihiQ25.pdf", pdfType: "semester"}
         ]
       },
       "Bilgi işlem teknolojileri": {
         type: "test", semester: 1, pdfs: [
-          { name: "Bilgi İşlem Teknolojileri - 1", file: "bit1.pdf", pdfType: "semester"}
+          { name: "Bilgi İşlem Teknolojileri", file: "bit1.pdf", pdfType: "semester"}
         ]
       },
       "Yönetim ve organizasyon": {
@@ -188,22 +188,22 @@ const data = {
     subjects: {
       "Mikroiqtisadiyyat": {
         type: "yazili", semester: 1, pdfs: [
-          { name: "Mikroiqtisadiyyat - 1", file: "mikroiqt1.pdf" , pdfType: "semester"},
-          { name: "Mikroiqtisadiyyat - 2", file: "mikroiqt2.pdf" , pdfType: "semester"},
-          { name: "Mikroiqtisadiyyat - 3", file: "mikroiqt3.pdf" , pdfType: "semester"},
-          { name: "Mikroiqtisadiyyat - 1 - Məsələlər", file: "mikroiqtmesele1.pdf" , pdfType: "task"},
-          { name: "Mikroiqtisadiyyat - 2 - Məsələlər", file: "mikroiqtmesele2.pdf" , pdfType: "task"}
+          { name: "Mikroiqtisadiyyat", file: "mikroiqt1.pdf" , pdfType: "semester"},
+          { name: "Mikroiqtisadiyyat ", file: "mikroiqt2.pdf" , pdfType: "semester"},
+          { name: "Mikroiqtisadiyyat", file: "mikroiqt3.pdf" , pdfType: "semester"},
+          { name: "Mikroiqtisadiyyat", file: "mikroiqtmesele1.pdf" , pdfType: "task"},
+          { name: "Mikroiqtisadiyyat", file: "mikroiqtmesele2.pdf" , pdfType: "task"}
         ]
       },
       "Qiymət siyasəti": {
         type: "yazili", semester: 1, pdfs: [
-          { name: "Qiymət Siyasəti", file: "qiymet1.pdf", pdfType: "semester"}
+          { name: "Qiymət Siyasəti", file: "qiymetkollek1.pdf", pdfType: "midterm"}
         ]
       },
       "Əməyin iqtisadiyyatı": {
         type: "yazili", semester: 1, pdfs: [
-          { name: "Əməyin İqtisadiyyatı - 1", file: "emek1.pdf", pdfType: "semester"},
-          { name: "Əməyin İqtisadiyyatı - 1 - Kollekvium", file: "emekkollek1.pdf", pdfType: "midterm"}
+          { name: "Əməyin İqtisadiyyatı", file: "emek1.pdf", pdfType: "semester"},
+          { name: "Əməyin İqtisadiyyatı", file: "emekkollek1.pdf", pdfType: "midterm"}
         ]
       },
       "Xarici dildə işgüzar və akademik kommunikasiya B1": {
@@ -213,29 +213,29 @@ const data = {
       },
       "Ətraf mühitin iqtisadiyyatı": {
         type: "yazili", semester: 1, pdfs: [
-          { name: "Ətraf Mühitin İqtisadiyyatı - 1", file: "emi1.pdf", pdfType: "semester"},
-          { name: "Ətraf Mühitin İqtisadiyyatı - 2", file: "emi2.pdf", pdfType: "semester"},
-          { name: "Ətraf Mühitin İqtisadiyyatı - 1 - Kollekvium", file: "emikollek1.pdf", pdfType: "midterm"},
-          { name: "Ətraf Mühitin İqtisadiyyatı - 2 - Kollekvium", file: "emikollek2.pdf", pdfType: "midterm"}
+          { name: "Ətraf Mühitin İqtisadiyyatı", file: "emi1.pdf", pdfType: "semester"},
+          { name: "Ətraf Mühitin İqtisadiyyatı", file: "emi2.pdf", pdfType: "semester"},
+          { name: "Ətraf Mühitin İqtisadiyyatı", file: "emikollek1.pdf", pdfType: "midterm"},
+          { name: "Ətraf Mühitin İqtisadiyyatı", file: "emikollek2.pdf", pdfType: "midterm"}
         ]
       },
       "Azərbaycan iqtisadiyyatı": {
         type: "yazili", semester: 2, pdfs: [
-          { name: "Azərbaycan İqtisadiyyatı - 1", file: "aziqt1.pdf", pdfType: "semester"},
-          { name: "Azərbaycan İqtisadiyyatı - 2", file: "aziqt2.pdf", pdfType: "semester"},
-          { name: "Azərbaycan İqtisadiyyatı - 3", file: "aziqt3.pdf", pdfType: "semester"}
+          { name: "Azərbaycan İqtisadiyyatı", file: "aziqt1.pdf", pdfType: "semester"},
+          { name: "Azərbaycan İqtisadiyyatı", file: "aziqt2.pdf", pdfType: "semester"},
+          { name: "Azərbaycan İqtisadiyyatı", file: "aziqt3.pdf", pdfType: "semester"}
         ]
       },
       "Makroiqtisadiyyat": {
         type: "yazili", semester: 2, pdfs: [
-          { name: "Makroiqtisadiyyat - 1", file: "makroiqt1.pdf", pdfType: "semester"},
-          { name: "Makroiqtisadiyyat - 1 - Məsələlər", file: "makroiqtmesele1.pdf", pdfType: "task"}
+          { name: "Makroiqtisadiyyat", file: "makroiqt1.pdf", pdfType: "semester"},
+          { name: "Makroiqtisadiyyat", file: "makroiqtmesele1.pdf", pdfType: "task"}
         ]
       },
       "Maliyyə uçotu": {
         type: "test", semester: 2, pdfs: [
           { name: "Maliyyə Uçotu Q26", file: "maliyyeQ26.pdf", pdfType: "semester"},
-          { name: "Maliyyə Uçotu - 1 - Kollekvium", file: "maliyyekollek1.pdf", pdfType: "midterm"},
+          { name: "Maliyyə Uçotu", file: "maliyyekollek1.pdf", pdfType: "midterm"},
         ]
       },
       "Xarici dildə işgüzar və akademik kommunikasiya B1+": {
@@ -245,9 +245,9 @@ const data = {
       },
       "İqtisadi fikir tarixi": {
         type: "yazili", semester: 2, pdfs: [
-          { name: "İqtisadi Fikir Tarixi - 1", file: "iqtfkrtrx1.pdf", pdfType: "semester"},
-          { name: "İqtisadi Fikir Tarixi - 2", file: "iqtfkrtrx2.pdf", pdfType: "semester"},
-          { name: "İqtisadi Fikir Tarixi - 3", file: "iqtfkrtrx3.pdf", pdfType: "semester"}
+          { name: "İqtisadi Fikir Tarixi", file: "iqtfkrtrx1.pdf", pdfType: "semester"},
+          { name: "İqtisadi Fikir Tarixi", file: "iqtfkrtrx2.pdf", pdfType: "semester"},
+          { name: "İqtisadi Fikir Tarixi", file: "iqtfkrtrx3.pdf", pdfType: "semester"}
         ]
       },
       "Xərclərin idarə edilməsi": { 
