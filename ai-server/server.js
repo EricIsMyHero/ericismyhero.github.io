@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import fetch from "node-fetch";
 import dotenv from "dotenv";
 import rateLimit from "express-rate-limit";
 
@@ -18,7 +17,7 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// API
+// GEMINI API
 app.post("/api/ask", async (req, res) => {
   const { question, context } = req.body;
 
@@ -27,32 +26,40 @@ app.post("/api/ask", async (req, res) => {
   }
 
   try {
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        model: "gpt-4.1-mini",
-        messages: [
-          {
-            role: "system",
-            content: "Sən UNEC tələbələrinə kömək edən assistentsən. Yalnız verilən material ilə cavab ver."
-          },
-          {
-            role: "user",
-            content: `Material:\n${context}\n\nSual:\n${question}`
-          }
-        ]
-      })
-    });
+    const response = await fetch(
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + process.env.GEMINI_API_KEY,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                {
+                  text: `Sən UNEC tələbələrinə kömək edən assistentsən. Yalnız verilən material ilə cavab ver.
+
+Material:
+${context}
+
+Sual:
+${question}`
+                }
+              ]
+            }
+          ]
+        })
+      }
+    );
 
     const data = await response.json();
 
-    res.json({
-      reply: data.choices?.[0]?.message?.content || "Cavab tapılmadı"
-    });
+    const reply =
+      data.candidates?.[0]?.content?.parts?.[0]?.text ||
+      "Cavab tapılmadı";
+
+    res.json({ reply });
 
   } catch (err) {
     res.status(500).json({ error: "Server xətası" });
@@ -60,7 +67,7 @@ app.post("/api/ask", async (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.send("AI Server işləyir");
+  res.send("Gemini AI server işləyir");
 });
 
 const PORT = process.env.PORT || 3000;
