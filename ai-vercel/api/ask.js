@@ -1,24 +1,22 @@
 export default async function handler(req, res) {
-  // Allow the specific origin of your GitHub Pages site
+  // 1. CORS Headers - Bütün sorğular üçün aktiv edilir
   res.setHeader('Access-Control-Allow-Origin', 'https://ericismyhero.github.io');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  // Handle the preflight OPTIONS request
+  // 2. Preflight OPTIONS sorğusunu dərhal cavablandır
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
-  // Your existing API logic goes here...
-  res.status(200).json({ message: "Success" });
-}
-
+  // 3. Yalnız POST sorğularına icazə ver
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Yalnız POST icazəlidir" });
   }
 
   const { question, context } = req.body || {};
 
+  // 4. Giriş məlumatlarının yoxlanılması
   if (!question || typeof question !== "string" || !question.trim()) {
     return res.status(400).json({ error: "Sual boşdur" });
   }
@@ -28,19 +26,10 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "API açarı konfiqurasiya edilməyib" });
   }
 
-  // Prompt: context varsa material əsasında, yoxsa ümumi kömək
+  // 5. Sistem Promptunun hazırlanması
   const systemPrompt = context
-    ? `Sən UNEC tələbələrinə kömək edən AI köməkçisisən.
-Aşağıdakı material əsasında tələbənin sualını cavablandır.
-Cavabı Azərbaycan dilində, qısa və aydın şəkildə ver.
-Material mövcud deyilsə və ya sual materiala aid deyilsə, bunu bildirirsən.
-
-Mövcud materiallar:
-${context}
-
-Sualı cavablandır.`
-    : `Sən UNEC (Azərbaycan Dövlət İqtisad Universiteti) tələbələrinə kömək edən AI köməkçisisən.
-Azərbaycan dilində qısa, dəqiq cavab ver.`;
+    ? `Sən UNEC tələbələrinə kömək edən AI köməkçisisən. Aşağıdakı material əsasında tələbənin sualını cavablandır. Cavabı Azərbaycan dilində, qısa və aydın şəkildə ver. Material mövcud deyilsə və ya sual materiala aid deyilsə, bunu bildirirsən.\n\nMövcud materiallar:\n${context}\n\nSualı cavablandır.`
+    : `Sən UNEC (Azərbaycan Dövlət İqtisad Universiteti) tələbələrinə kömək edən AI köməkçisisən. Azərbaycan dilində qısa, dəqiq cavab ver.`;
 
   try {
     const geminiRes = await fetch(
@@ -51,9 +40,7 @@ Azərbaycan dilində qısa, dəqiq cavab ver.`;
         body: JSON.stringify({
           contents: [
             {
-              parts: [
-                { text: `${systemPrompt}\n\nSual: ${question.trim()}` }
-              ]
+              parts: [{ text: `${systemPrompt}\n\nSual: ${question.trim()}` }]
             }
           ],
           generationConfig: {
@@ -76,6 +63,7 @@ Azərbaycan dilində qısa, dəqiq cavab ver.`;
       "Cavab alınmadı. Sualı başqa cür soruşmağa çalış.";
 
     return res.status(200).json({ reply });
+
   } catch (e) {
     console.error("Server xəta:", e);
     return res.status(500).json({ error: "Server xətası baş verdi" });
