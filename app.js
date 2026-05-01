@@ -906,6 +906,19 @@ function closeTermsModal() {
   document.body.style.overflow = '';
 }
 
+const res = await fetch("https://ai-server.up.railway.app/api/ask", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    question: userText,
+    context: findBestMatch(userText)
+  })
+});
+
+const data = await res.json();
+const reply = data.reply;
 // ============================================================
 // BAŞLAT
 // ============================================================
