@@ -35,12 +35,12 @@ function showPdfLoading(isDownload) {
   clearInterval(pdfProgressInterval);
   pdfProgressInterval = setInterval(() => {
     if (progress < 90) {
-      progress += 30; // sürətli artım
+      progress += 30;
       fill.style.width = Math.min(progress, 90) + '%';
     }
-  }, 100); // ← 400 → 100ms interval
+  }, 100);
 
-  setTimeout(hidePdfLoading, 4000); // fallback
+  setTimeout(hidePdfLoading, 4000);
 }
 
 function hidePdfLoading() {
@@ -439,7 +439,7 @@ function renderExtras() {
     `;
     list.appendChild(div);
   });
-  }
+}
 
 // ============================================================
 // RENDER — SEÇİLMİŞLƏR
@@ -492,7 +492,7 @@ function renderFavorites() {
     `;
     list.appendChild(div);
   });
-  }
+}
 
 function removeFavAndRefresh(filePath) {
   let favs = getFavorites().filter(f => f !== filePath);
@@ -548,7 +548,7 @@ function renderSubjects(courseName) {
 }
 
 // ============================================================
-// PDF SƏHİFƏSİ — pdf-top-row wrapper ilə
+// PDF SƏHİFƏSİ
 // ============================================================
 function openPDFs(subjectName) {
   currentSubject = subjectName;
@@ -560,7 +560,6 @@ function openPDFs(subjectName) {
 
   document.getElementById('bc-subject').textContent = subjectName;
 
-  // ── Başlıq: ad + "?" eyni sətirdə, badge altında ayrı ──
   const titleEl = document.getElementById('pdf-subject-title');
   titleEl.innerHTML = `
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
@@ -572,7 +571,6 @@ function openPDFs(subjectName) {
     </div>
   `;
 
-  // Info panel
   const existing = document.getElementById('subject-info-panel');
   if (existing) existing.remove();
 
@@ -592,7 +590,6 @@ function openPDFs(subjectName) {
   `;
   document.querySelector('.pdf-section-header').appendChild(panel);
 
-  // PDF siyahısı
   const list = document.getElementById('pdf-items');
   list.innerHTML = '';
 
@@ -626,7 +623,6 @@ function openPDFs(subjectName) {
     list.appendChild(div);
   });
 
-  // Xəta Göndər düyməsi
   const reportBtn = document.createElement('button');
   reportBtn.className = 'report-error-btn';
   reportBtn.innerHTML = `
@@ -641,6 +637,25 @@ function openPDFs(subjectName) {
   list.appendChild(reportBtn);
 
   goTo('pdfs');
+}
+
+// ============================================================
+// AI SORĞU FUNKSİYASI
+// ============================================================
+async function askAI(userText) {
+  const res = await fetch("https://ai-server.up.railway.app/api/ask", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      question: userText,
+      context: findBestMatch(userText)
+    })
+  });
+
+  const data = await res.json();
+  return data.reply;
 }
 
 // ============================================================
@@ -906,19 +921,6 @@ function closeTermsModal() {
   document.body.style.overflow = '';
 }
 
-const res = await fetch("https://ai-server.up.railway.app/api/ask", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    question: userText,
-    context: findBestMatch(userText)
-  })
-});
-
-const data = await res.json();
-const reply = data.reply;
 // ============================================================
 // BAŞLAT
 // ============================================================
