@@ -643,7 +643,7 @@ function openPDFs(subjectName) {
 // AI SORĞU FUNKSİYASI
 // ============================================================
 async function askAI(userText) {
-  const res = await fetch("https://ericismyhero-github-ayv8iglso.vercel.app/api/ask.js", {
+  const res = await fetch("https://ericismyhero-github-o8p936xnx-ericismyheros-projects.vercel.app/ai-vercel/api/ask.js", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
