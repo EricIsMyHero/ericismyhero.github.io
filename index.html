@@ -89,48 +89,7 @@
       <svg id="themeExpandIcon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
     </button>
   </div>
-
-  <style>
-    .theme-extra {
-      display: none;
-      animation: themeFadeIn 0.22s ease;
-    }
-    .theme-extra.theme-extra-visible {
-      display: flex;
-    }
-    @keyframes themeFadeIn {
-      from { opacity: 0; transform: translateY(-4px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .theme-expand-btn {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      background: none;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--muted);
-      font-size: 0.75rem;
-      font-family: 'Arial Nova', 'Nunito', Arial, sans-serif;
-      padding: 5px 10px;
-      cursor: pointer;
-      margin-top: 6px;
-      width: 100%;
-      justify-content: center;
-      transition: color 0.2s, border-color 0.2s;
-    }
-    .theme-expand-btn:hover {
-      color: var(--text);
-      border-color: rgba(59,130,246,0.4);
-    }
-    #themeExpandIcon {
-      transition: transform 0.25s ease;
-    }
-    #themeExpandIcon.rotated {
-      transform: rotate(180deg);
-    }
-  </style>
-
+  
   <script>
     function toggleExtraThemes() {
       const extras  = document.querySelectorAll('.theme-extra');
