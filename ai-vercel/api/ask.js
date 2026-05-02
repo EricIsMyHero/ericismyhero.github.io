@@ -1,4 +1,4 @@
-// api/ask.js — Vercel Serverless Function (OpenRouter)
+// api/ask.js — Vercel Serverless Function (Gemini)
 export default async function handler(req, res) {
 
   const allowedOrigins = [
@@ -12,17 +12,11 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'OPTIONS') {
-    return res.status(204).end();
-  }
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+  if (req.method === 'OPTIONS') return res.status(204).end();
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { question, context } = req.body;
-  if (!question) {
-    return res.status(400).json({ error: 'Missing question' });
-  }
+  if (!question) return res.status(400).json({ error: 'Missing question' });
 
   try {
     const prompt = `Sen UNEC (Azərbaycan Dövlət İqtisad Universiteti) üzrə bir köməkçisən.
@@ -31,30 +25,27 @@ Kontekst:
 ${context}
 Sual: ${question}`;
 
-    const orRes = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
-        'HTTP-Referer': 'https://ericismyhero.github.io',
-        'X-Title': 'UNEC AI Köməkçi'
-      },
-      body: JSON.stringify({
-        model: 'mistralai/mistral-7b-instruct:free',
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
+    const geminiRes = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }]
+        })
+      }
+    );
 
-    const orData = await orRes.json();
-    console.log('OPENROUTER RAW:', JSON.stringify(orData));
+    const geminiData = await geminiRes.json();
+    console.log('GEMINI RAW:', JSON.stringify(geminiData));
 
-    const reply = orData?.choices?.[0]?.message?.content
+    const reply = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text
       ?? 'Cavab alınmadı.';
 
     return res.status(200).json({ reply });
 
   } catch (err) {
-    console.error('OpenRouter error:', err);
+    console.error('Gemini error:', err);
     return res.status(500).json({ error: 'Server xətası' });
   }
 }
