@@ -40,7 +40,7 @@ Sual: ${question}`;
     console.log('GEMINI RAW:', JSON.stringify(geminiData));
 
     const reply = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text
-      ?? 'Cavab alınmadı.';
+      ?? 'Hələlik AI aktiv deyildir.';
 
     return res.status(200).json({ reply });
 
