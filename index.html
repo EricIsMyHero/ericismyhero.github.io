@@ -7,6 +7,7 @@
   <title>UNEC İmtahan Materialları</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="support.css">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#3b82f6">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -89,31 +90,8 @@
       <svg id="themeExpandIcon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
     </button>
   </div>
-  
-  <script>
-    function toggleExtraThemes() {
-      const extras  = document.querySelectorAll('.theme-extra');
-      const icon    = document.getElementById('themeExpandIcon');
-      const label   = document.getElementById('themeExpandLabel');
-      const isOpen  = extras[0].classList.contains('theme-extra-visible');
-      extras.forEach(el => el.classList.toggle('theme-extra-visible', !isOpen));
-      icon.classList.toggle('rotated', !isOpen);
-      label.textContent = isOpen ? 'Daha çox tema' : 'Daha az tema';
-    }
 
-    // Seçili tema gizli temalardan birirsə avtomatik aç
-    (function () {
-      const saved = localStorage.getItem('theme') || 'ocean';
-      const hiddenThemes = ['midnight', 'candy', 'arctic'];
-      if (hiddenThemes.includes(saved)) {
-        document.querySelectorAll('.theme-extra').forEach(el => el.classList.add('theme-extra-visible'));
-        const icon = document.getElementById('themeExpandIcon');
-        const label = document.getElementById('themeExpandLabel');
-        if (icon)  icon.classList.add('rotated');
-        if (label) label.textContent = 'Daha az tema';
-      }
-    })();
-  </script>
+  
 
   <div class="sidebar-divider"></div>
 
@@ -163,6 +141,11 @@
   <div class="sidebar-section sidebar-support-block">
     <div class="sidebar-section-label">☕ Dəstək Ol</div>
     <p class="sidebar-support-desc">Server xərclərini ödəyərək layihəni aktiv saxla.</p>
+
+    <!-- Birbank -->
+    <div class="ssb-method-label">
+      <span class="ssb-method-dot ssb-dot-birbank"></span>Birbank / Kart
+    </div>
     <div class="sidebar-support-btns">
       <a href="https://app.birbank.az/qp?t=2&id=3F12353F2088F167E0634C0214ACD220" target="_blank" rel="noopener" class="sidebar-support-btn">
         <span class="ssb-amount">1 ₼</span>
@@ -178,9 +161,19 @@
         <span class="ssb-label">Server</span>
       </a>
     </div>
-    <div class="sidebar-support-trust">
+
+    <!-- m10 -->
+    <div class="ssb-method-label" style="margin-top:10px;">
+      <span class="ssb-method-dot ssb-dot-m10"></span>m10 ilə sürətli
+    </div>
+    <a href="https://m10.onelink.me/g54T/cw5bg1gx" target="_blank" rel="noopener" class="ssb-m10-btn">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      İstənilən məbləğ göndər
+    </a>
+
+    <div class="sidebar-support-trust" style="margin-top:10px;">
       <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      Birbank · Təhlükəsiz ödəniş
+      Visa · Mastercard · m10 dəstəklənir
     </div>
   </div>
 
@@ -197,54 +190,15 @@
     <div class="st-icon">☕</div>
     <div class="st-text">
       <span class="st-title">Layihəyə dəstək ol</span>
-      <span class="st-sub">3 ₼ ilə serverə töhfə ver</span>
+      <span class="st-sub">Birbank və ya m10 ilə töhfə ver</span>
     </div>
   </div>
   <div class="st-right">
-    <a href="https://app.birbank.az/qp?t=2&id=3F12353F2088F167E0634C0214ACD220" target="_blank" rel="noopener" class="st-btn" onclick="dismissToast()">Dəstək ol</a>
+    <a href="https://app.birbank.az/qp?t=2&id=3F12353F2088F167E0634C0214ACD220" target="_blank" rel="noopener" class="st-btn st-btn-birbank" onclick="dismissToast()">Birbank</a>
+    <a href="https://m10.onelink.me/g54T/cw5bg1gx" target="_blank" rel="noopener" class="st-btn st-btn-m10" onclick="dismissToast()">m10</a>
     <button class="st-close" onclick="dismissToast()" aria-label="Bağla">✕</button>
   </div>
 </div>
-
-<script>
-  /* ── Support Toast ──────────────────────────────────────── */
-  (function () {
-    const SHOW_DELAY   = 8000;   // ilk göstərmə gecikməsi (ms)
-    const INTERVAL     = 30000;  // sonrakı göstərmələr (ms)
-    const VISIBLE_TIME = 5000;   // görünmə müddəti (ms)
-
-    let toastTimer   = null;
-    let intervalTimer = null;
-
-    function showToast() {
-      const toast = document.getElementById('supportToast');
-      if (!toast) return;
-      // reset animation
-      toast.classList.remove('st-visible');
-      void toast.offsetWidth; // reflow
-      toast.classList.add('st-visible');
-
-      toastTimer = setTimeout(() => {
-        toast.classList.remove('st-visible');
-      }, VISIBLE_TIME);
-    }
-
-    function dismissToast() {
-      const toast = document.getElementById('supportToast');
-      if (toast) toast.classList.remove('st-visible');
-      clearTimeout(toastTimer);
-    }
-
-    // İlk göstərmə
-    setTimeout(showToast, SHOW_DELAY);
-
-    // Hər 30 saniyə
-    setInterval(showToast, INTERVAL);
-
-    // Globalə export et (HTML onclick üçün)
-    window.dismissToast = dismissToast;
-  })();
-</script>
 
 <header>
   <div style="display:flex;align-items:center;gap:12px;">
@@ -637,188 +591,10 @@
   </div>
 </div>
 
-<script>
-  /* ══════════════════════════════════════════════════════════════
-     AI Widget — Vercel + Gemini backend
-     Deploy etdikdən sonra BACKEND_URL-i öz Vercel URL-inlə əvəz et
-  ══════════════════════════════════════════════════════════════ */
-  const BACKEND_URL = "https://ericismyhero-github-io.vercel.app"; // ← buraya Vercel URL-ini yaz
-
-  let aiOpen = false;
-
-  /* ── UI helpers ────────────────────────────────────────────── */
-  function toggleAI() {
-    aiOpen = !aiOpen;
-    const chat = document.getElementById('ai-chat');
-    if (aiOpen) {
-      chat.classList.add('ai-open');
-      document.getElementById('ai-input').focus();
-      if (!document.getElementById('ai-messages').children.length) {
-        addBotMsg('Salam! 👋 UNEC materialları haqqında sualını ver — cavablayayım.');
-      }
-    } else {
-      chat.classList.remove('ai-open');
-    }
-  }
-
-  function addBotMsg(text) {
-    const wrap = document.getElementById('ai-messages');
-    const div = document.createElement('div');
-    div.className = 'ai-msg bot';
-    div.textContent = text;
-    wrap.appendChild(div);
-    wrap.scrollTop = wrap.scrollHeight;
-  }
-
-  function addUserMsg(text) {
-    const wrap = document.getElementById('ai-messages');
-    const div = document.createElement('div');
-    div.className = 'ai-msg user';
-    div.textContent = text;
-    wrap.appendChild(div);
-    wrap.scrollTop = wrap.scrollHeight;
-  }
-
-  function showTyping() {
-    const wrap = document.getElementById('ai-messages');
-    const el = document.createElement('div');
-    el.className = 'ai-msg bot typing';
-    el.id = 'ai-typing';
-    el.innerHTML = '<span></span><span></span><span></span>';
-    wrap.appendChild(el);
-    wrap.scrollTop = wrap.scrollHeight;
-  }
-
-  function removeTyping() {
-    const el = document.getElementById('ai-typing');
-    if (el) el.remove();
-  }
-
-  /* ── Context Builder — pdfs.js data-sını oxuyur ───────────── */
-  function buildContext(question) {
-    if (typeof data === 'undefined') return '';
-
-    const q = question.toLowerCase();
-
-    // Bütün fənn adlarını topla, sualda keçənləri tap
-    const matched = [];
-
-    for (const [course, courseObj] of Object.entries(data)) {
-      for (const [subject, subObj] of Object.entries(courseObj.subjects || {})) {
-        const subLower = subject.toLowerCase();
-        // Sualda fənn adının hissəsi varsa uy
-        const words = subLower.split(/\s+/).filter(w => w.length > 3);
-        const hits  = words.filter(w => q.includes(w)).length;
-        if (hits > 0) {
-          const pdfNames = (subObj.pdfs || []).map(p => p.name).join(', ');
-          matched.push(
-            `Kurs: ${course} | Fənn: ${subject} | Növ: ${subObj.type} | ` +
-            `Semestr: ${subObj.semester} | Materiallar: ${pdfNames}`
-          );
-        }
-      }
-    }
-
-    if (!matched.length) {
-      // Uyğun fənn tapılmadı — bütün fənnlərin siyahısını ver
-      const allSubjects = [];
-      for (const [course, courseObj] of Object.entries(data)) {
-        for (const subject of Object.keys(courseObj.subjects || {})) {
-          allSubjects.push(`${course}: ${subject}`);
-        }
-      }
-      return `Saytda mövcud fənlər:\n${allSubjects.join('\n')}`;
-    }
-
-    return matched.join('\n');
-  }
-
-  /* ── Main send ─────────────────────────────────────────────── */
-  async function sendMessage() {
-    const input = document.getElementById('ai-input');
-    const text  = input.value.trim();
-    if (!text) return;
-
-    input.value = '';
-    input.disabled = true;
-    addUserMsg(text);
-    showTyping();
-
-    // Backend hazır deyilsə (placeholder URL)
-    if (BACKEND_URL.includes('YOUR-PROJECT')) {
-      await new Promise(r => setTimeout(r, 700));
-      removeTyping();
-      addBotMsg('Backend hələ qoşulmayıb. index.html-də BACKEND_URL-i Vercel URL-inlə əvəz et.');
-      input.disabled = false;
-      input.focus();
-      return;
-    }
-
-    try {
-      const context = buildContext(text);
-
-      const res = await fetch(`${BACKEND_URL}/api/ask`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: text, context })
-      });
-
-      removeTyping();
-
-      if (!res.ok) {
-        addBotMsg('Server xəta verdi (' + res.status + '). Bir az sonra yenidən cəhd et.');
-      } else {
-        const data_r = await res.json();
-        addBotMsg(data_r.reply || 'Cavab alınmadı.');
-      }
-    } catch (e) {
-      removeTyping();
-      addBotMsg('Bağlantı xətası. İnternet bağlantını və ya backend URL-ini yoxla.');
-    } finally {
-      input.disabled = false;
-      input.focus();
-    }
-  }
-
-  /* Enter ilə göndər */
-  document.getElementById('ai-input').addEventListener('keydown', e => {
-    if (e.key === 'Enter') sendMessage();
-  });
-</script>
-
 <script src="pdfs.js"></script>
 <script src="app.js"></script>
-<script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("sw.js");
-  }
 
-  let deferredPrompt;
-
-  window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    document.getElementById("installBanner").classList.add("visible");
-  });
-
-  function installApp() {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then(() => {
-        deferredPrompt = null;
-        dismissBanner();
-      });
-    }
-  }
-
-  function dismissBanner() {
-    document.getElementById("installBanner").classList.remove("visible");
-  }
-
-  window.addEventListener("appinstalled", () => {
-    dismissBanner();
-  });
-</script>
      
+  <script src="support.js"></script>
 </body>
 </html>
