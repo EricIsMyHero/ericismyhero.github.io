@@ -2393,7 +2393,53 @@ h1 span {
   #ai-button { right: 16px; bottom: 16px; }
 }
 
-  /* ── Sidebar Support Block ─────────────────────────────── */
+/* ================================================================
+   support.css — Sidebar Support Block + Toast Notification Styles
+   Bağlantı: <link rel="stylesheet" href="support.css">
+   ================================================================ */
+
+.theme-extra {
+      display: none;
+      animation: themeFadeIn 0.22s ease;
+    }
+    .theme-extra.theme-extra-visible {
+      display: flex;
+    }
+    @keyframes themeFadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .theme-expand-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-family: 'Arial Nova', 'Nunito', Arial, sans-serif;
+      padding: 5px 10px;
+      cursor: pointer;
+      margin-top: 6px;
+      width: 100%;
+      justify-content: center;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .theme-expand-btn:hover {
+      color: var(--text);
+      border-color: rgba(59,130,246,0.4);
+    }
+    #themeExpandIcon {
+      transition: transform 0.25s ease;
+    }
+    #themeExpandIcon.rotated {
+      transform: rotate(180deg);
+    }
+
+/* ─────────────────────────────────────────── */
+
+/* ── Sidebar Support Block ─────────────────────────────── */
   .sidebar-support-block { padding-bottom: 4px; }
 
   .sidebar-support-desc {
@@ -2474,6 +2520,55 @@ h1 span {
 
   .sidebar-support-trust svg { color: var(--accent2); flex-shrink: 0; }
 
+  /* ── Method labels ─────────────────────────────────────── */
+  .ssb-method-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 7px;
+  }
+
+  .ssb-method-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .ssb-dot-birbank { background: #e31e24; }
+  .ssb-dot-m10     { background: #00df8b; }
+
+  /* ── m10 full-width button ─────────────────────────────── */
+  .ssb-m10-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    width: 100%;
+    padding: 9px 12px;
+    text-decoration: none;
+    background: rgba(0, 223, 139, 0.1);
+    border: 1px solid rgba(0, 223, 139, 0.35);
+    border-radius: 10px;
+    color: #00df8b;
+    font-family: 'Arial Nova', 'Nunito', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+    box-sizing: border-box;
+  }
+
+  .ssb-m10-btn:hover {
+    transform: translateY(-2px);
+    background: rgba(0, 223, 139, 0.18);
+    border-color: rgba(0, 223, 139, 0.6);
+  }
+
   /* ── Support Toast ─────────────────────────────────────── */
   .support-toast {
     position: fixed;
@@ -2550,18 +2645,27 @@ h1 span {
 
   .st-btn {
     text-decoration: none;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    color: white;
     font-family: 'Arial Nova', 'Nunito', Arial, sans-serif;
     font-weight: 700;
-    font-size: 0.78rem;
-    padding: 6px 14px;
+    font-size: 0.76rem;
+    padding: 6px 12px;
     border-radius: 8px;
     white-space: nowrap;
     transition: opacity 0.2s;
   }
 
-  .st-btn:hover { opacity: 0.88; }
+  .st-btn-birbank {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: white;
+  }
+
+  .st-btn-m10 {
+    background: rgba(0, 223, 139, 0.15);
+    border: 1px solid rgba(0, 223, 139, 0.45);
+    color: #00df8b;
+  }
+
+  .st-btn:hover { opacity: 0.85; }
 
   .st-close {
     background: none;
@@ -2599,42 +2703,3 @@ h1 span {
     from { transform: scaleX(1); }
     to   { transform: scaleX(0); }
   }
-
-  .theme-extra {
-      display: none;
-      animation: themeFadeIn 0.22s ease;
-    }
-  .theme-extra.theme-extra-visible {
-      display: flex;
-    }
-  @keyframes themeFadeIn {
-      from { opacity: 0; transform: translateY(-4px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-  .theme-expand-btn {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      background: none;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--muted);
-      font-size: 0.75rem;
-      font-family: 'Arial Nova', 'Nunito', Arial, sans-serif;
-      padding: 5px 10px;
-      cursor: pointer;
-      margin-top: 6px;
-      width: 100%;
-      justify-content: center;
-      transition: color 0.2s, border-color 0.2s;
-    }
-  .theme-expand-btn:hover {
-     color: var(--text);
-      border-color: rgba(59,130,246,0.4);
-    }
-  #themeExpandIcon {
-      transition: transform 0.25s ease;
-    }
-  #themeExpandIcon.rotated {
-      transform: rotate(180deg);
-    }
