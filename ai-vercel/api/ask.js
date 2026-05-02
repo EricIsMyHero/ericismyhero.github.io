@@ -19,7 +19,7 @@ export default async function handler(req, res) {
   if (!question) return res.status(400).json({ error: 'Missing question' });
 
   try {
-    const prompt = `Sen UNEC (Azərbaycan Dövlət İqtisad Universiteti) üzrə bir köməkçisən.
+    const prompt = `Sən UNEC (Azərbaycan Dövlət İqtisad Universiteti) üzrə bir köməkçisən.
 Yalnız aşağıdakı kontekst əsasında cavab ver. Kontekstdən kənar sualları rədd et.
 Kontekst:
 ${context}
