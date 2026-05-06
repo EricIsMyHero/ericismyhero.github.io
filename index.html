@@ -589,6 +589,96 @@
   </div>
 </div>
 
+<!-- ── TAB 4: TESTLƏR ─────────────────────────────────────── -->
+<div id="main-tests" class="main-tab" style="display:none;">
+  <div class="container">
+
+    <!-- Landing screen -->
+    <div id="test-landing">
+      <div class="test-hero">
+        <div class="test-hero-icon">🎯</div>
+        <h2 id="test-hero-title">UNEC <span>Test</span><br>Sistemi ᵇᵉᵗᵃ</h2>
+        <p class="test-hero-desc">Bu sistem beta versiyada olduğu üçün cavabların səhv olma ehtimalı vardır.</p>
+      </div>
+
+      <div class="test-subject-selector">
+        <div class="test-selector-label">Fənn seçin</div>
+        <div class="test-subject-grid" id="testSubjectGrid"></div>
+      </div>
+
+      <div class="test-config-section" id="testConfigSection" style="display:none;">
+        <div class="test-selected-info" id="testSelectedInfo"></div>
+        <div class="test-count-row">
+          <div class="test-count-label">Sual sayı</div>
+          <div class="test-count-btns">
+            <button class="test-count-btn active" data-count="10" onclick="selectCount(this)">10</button>
+            <button class="test-count-btn" data-count="20" onclick="selectCount(this)">20</button>
+            <button class="test-count-btn" data-count="30" onclick="selectCount(this)">30</button>
+            <button class="test-count-btn" data-count="50" onclick="selectCount(this)">50</button>
+          </div>
+        </div>
+        <button class="test-start-btn" onclick="startTest()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Testi Başlat
+        </button>
+      </div>
+    </div>
+
+    <!-- Quiz screen -->
+    <div id="test-quiz" style="display:none;">
+      <div class="test-quiz-header">
+        <div class="test-quiz-progress-text">
+          Sual <span id="qCurrentNum">1</span> / <span id="qTotalNum">30</span>
+        </div>
+        <div class="test-timer" id="testTimer">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span id="timerDisplay">--:--</span>
+        </div>
+      </div>
+      <div class="test-progress-bar-wrap">
+        <div class="test-progress-bar-fill" id="testProgressFill"></div>
+      </div>
+
+      <div class="test-question-card" id="testQuestionCard">
+        <div class="test-q-number" id="testQNumber"></div>
+        <div class="test-q-text" id="testQText"></div>
+        <div class="test-options" id="testOptions"></div>
+      </div>
+
+      <div class="test-nav-row">
+        <button class="test-nav-btn" id="testPrevBtn" onclick="quizNav(-1)">← Əvvəlki</button>
+        <button class="test-nav-btn test-nav-next" id="testNextBtn" onclick="quizNav(1)">Növbəti →</button>
+        <button class="test-finish-btn" id="testFinishBtn" onclick="confirmFinishTest()" style="display:none;">✓ Bitir</button>
+      </div>
+
+      <div class="test-answered-info" id="testAnsweredInfo"></div>
+    </div>
+
+    <!-- Result screen -->
+    <div id="test-result" style="display:none;">
+      <div class="test-result-card">
+        <div class="test-result-emoji" id="resultEmoji">🏆</div>
+        <h2 class="test-result-title" id="resultTitle">Nəticə</h2>
+        <div class="test-result-score" id="resultScore"></div>
+        <div class="test-result-percent" id="resultPercent"></div>
+        <div class="test-result-bar-wrap">
+          <div class="test-result-bar-fill" id="resultBarFill"></div>
+        </div>
+        <div class="test-result-stats" id="resultStats"></div>
+        <button class="test-start-btn" style="margin-top:24px;" onclick="resetTest()">
+          🔄 Yenidən Başla
+        </button>
+      </div>
+
+      <div class="test-review-section">
+        <h3 class="test-review-title">Cavabların Baxışı</h3>
+        <div id="testReviewList"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <!-- ═══════════════════════════════════════════════════════════ -->
 <!-- AI WIDGET                                                  -->
 <!-- ═══════════════════════════════════════════════════════════ -->
@@ -636,6 +726,16 @@
     <span class="bottom-nav-dot"></span>
   </button>
 
+  <button class="bottom-nav-btn" id="btn-tests" onclick="switchBottomTab('tests')">
+    <span class="bottom-nav-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+      </svg>
+    </span>
+    <span class="bottom-nav-label">Testlər</span>
+    <span class="bottom-nav-dot"></span>
+  </button>
+
   <button class="bottom-nav-btn" id="btn-support" onclick="switchBottomTab('support')">
     <span class="bottom-nav-icon">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -648,7 +748,8 @@
 </nav>
 
 <script src="pdfs.js"></script>
-<script src="app.js"></script>
+<script src="tests.js"></script>
+  <script src="app.js"></script>
 
 </body>
 </html>
