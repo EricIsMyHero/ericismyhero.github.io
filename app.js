@@ -942,6 +942,7 @@ initSearch();
 // ============================================================
 const TAB_MAP = {
   home:    { main: 'main-home',    btn: 'btn-home'    },
+  tests:   { main: 'main-tests',   btn: 'btn-tests'   },
   courses: { main: 'main-courses', btn: 'btn-courses' },
   support: { main: 'main-support', btn: 'btn-support' },
 };
@@ -974,6 +975,9 @@ function switchBottomTab(tab) {
     renderCourses();
     goTo('home');
   }
+  if (tab === 'tests') {
+    initTestSystem();
+  }
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -982,7 +986,7 @@ function switchBottomTab(tab) {
 (function initBottomNav() {
   const homeEl = document.getElementById('main-home');
   if (homeEl) { homeEl.style.display = ''; homeEl.classList.add('active-tab'); }
-  ['main-courses', 'main-support'].forEach(id => {
+  ['main-courses', 'main-support', 'main-tests'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = 'none';
   });
@@ -1171,3 +1175,327 @@ function installApp() {
 
 function dismissBanner() { document.getElementById("installBanner").classList.remove("visible"); }
 window.addEventListener("appinstalled", dismissBanner);
+
+// ============================================================
+// TEST SİSTEMİ
+// ============================================================
+
+
+// ── TEST STATE ───────────────────────────────────────────────
+let testState = {
+  initialized: false,
+  selectedSubject: null,
+  selectedCount: 10,
+  currentQuiz: [],
+  userAnswers: [],
+  currentIndex: 0,
+  timerInterval: null,
+  timeLeft: 0
+};
+
+// ── INIT ─────────────────────────────────────────────────────
+function initTestSystem() {
+  if (testState.initialized) return;
+  testState.initialized = true;
+  renderTestSubjects();
+}
+
+function renderTestSubjects() {
+  const grid = document.getElementById('testSubjectGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  const icons = { "Mühasibat Uçotu": "📊", "İqtisadiyyat": "📈", "Marketinq": "🎯", "Menеcment": "🏛" };
+  Object.keys(QUESTION_BANK).forEach(subject => {
+    const count = QUESTION_BANK[subject].length;
+    const btn = document.createElement('button');
+    btn.className = 'test-subject-btn';
+    btn.setAttribute('data-subject', subject);
+    btn.innerHTML = `
+      <span class="tsb-icon">${icons[subject] || '📚'}</span>
+      <span class="tsb-name">${subject}</span>
+      <span class="tsb-count">${count} sual</span>
+    `;
+    btn.onclick = () => selectSubject(subject, btn);
+    grid.appendChild(btn);
+  });
+}
+
+function selectSubject(subject, btn) {
+  document.querySelectorAll('.test-subject-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  testState.selectedSubject = subject;
+
+  const config = document.getElementById('testConfigSection');
+  const info   = document.getElementById('testSelectedInfo');
+  const total  = QUESTION_BANK[subject].length;
+
+  info.innerHTML = `<span class="tsi-label">Seçildi:</span> <strong>${subject}</strong> · <span class="tsi-count">${total} sual mövcuddur</span>`;
+
+  // Disable count buttons if not enough questions
+  document.querySelectorAll('.test-count-btn').forEach(b => {
+    const n = parseInt(b.dataset.count);
+    b.disabled = n > total;
+    if (n > total) b.classList.add('disabled');
+    else b.classList.remove('disabled');
+  });
+
+  // Auto select valid count
+  const activeBtn = document.querySelector('.test-count-btn.active:not(.disabled)');
+  if (!activeBtn) {
+    const first = document.querySelector('.test-count-btn:not(.disabled)');
+    if (first) { first.classList.add('active'); testState.selectedCount = parseInt(first.dataset.count); }
+  }
+
+  config.style.display = '';
+  config.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function selectCount(btn) {
+  document.querySelectorAll('.test-count-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  testState.selectedCount = parseInt(btn.dataset.count);
+}
+
+// ── START TEST ───────────────────────────────────────────────
+function startTest() {
+  const subject = testState.selectedSubject;
+  const count   = testState.selectedCount;
+  if (!subject) return;
+
+  const pool = QUESTION_BANK[subject];
+  if (pool.length < count) {
+    alert(`Yalnız ${pool.length} sual mövcuddur. Sual sayını azaldın.`);
+    return;
+  }
+
+  // Shuffle questions and slice
+  const shuffled = [...pool].sort(() => Math.random() - 0.5).slice(0, count);
+
+  // Shuffle options once per question, update answer index accordingly
+  testState.currentQuiz = shuffled.map(q => {
+    const optionsWithIndex = q.options.map((opt, i) => ({ opt, i }));
+    optionsWithIndex.sort(() => Math.random() - 0.5);
+    return {
+      question: q.question,
+      options: optionsWithIndex.map(o => o.opt),
+      answer: optionsWithIndex.findIndex(o => o.i === q.answer)
+    };
+  });
+  testState.userAnswers   = new Array(count).fill(null);
+  testState.currentIndex  = 0;
+
+  // Timer: 1 dəq per question
+  testState.timeLeft = count * 60;
+
+  document.getElementById('test-landing').style.display = 'none';
+  document.getElementById('test-result').style.display  = 'none';
+  document.getElementById('test-quiz').style.display    = '';
+
+  document.getElementById('qTotalNum').textContent = count;
+  renderQuizQuestion();
+  startTimer();
+}
+
+// ── TIMER ────────────────────────────────────────────────────
+function startTimer() {
+  clearInterval(testState.timerInterval);
+  updateTimerDisplay();
+  testState.timerInterval = setInterval(() => {
+    testState.timeLeft--;
+    updateTimerDisplay();
+    if (testState.timeLeft <= 0) {
+      clearInterval(testState.timerInterval);
+      finishTest();
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const m = Math.floor(testState.timeLeft / 60);
+  const s = testState.timeLeft % 60;
+  const display = document.getElementById('timerDisplay');
+  if (display) {
+    display.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    const timerEl = document.getElementById('testTimer');
+    if (testState.timeLeft <= 60) timerEl.classList.add('timer-urgent');
+    else timerEl.classList.remove('timer-urgent');
+  }
+}
+
+// ── RENDER QUESTION ──────────────────────────────────────────
+function renderQuizQuestion() {
+  const idx = testState.currentIndex;
+  const q   = testState.currentQuiz[idx];
+  const total = testState.currentQuiz.length;
+
+  document.getElementById('qCurrentNum').textContent = idx + 1;
+
+  // Progress bar
+  const pct = ((idx + 1) / total) * 100;
+  document.getElementById('testProgressFill').style.width = pct + '%';
+
+  document.getElementById('testQNumber').textContent = `Sual ${idx + 1}`;
+  document.getElementById('testQText').textContent = q.question;
+
+  const optContainer = document.getElementById('testOptions');
+  optContainer.innerHTML = '';
+  const letters = ['A', 'B', 'C', 'D', 'E'];
+
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'test-option-btn';
+    if (testState.userAnswers[idx] === i) btn.classList.add('selected');
+    btn.innerHTML = `<span class="tob-letter">${letters[i]}</span><span class="tob-text">${opt}</span>`;
+    btn.onclick = () => selectAnswer(i);
+    optContainer.appendChild(btn);
+  });
+
+  // Nav buttons
+  const prevBtn   = document.getElementById('testPrevBtn');
+  const nextBtn   = document.getElementById('testNextBtn');
+  const finishBtn = document.getElementById('testFinishBtn');
+
+  prevBtn.style.display   = idx === 0 ? 'none' : '';
+  nextBtn.style.display   = idx === total - 1 ? 'none' : '';
+  finishBtn.style.display = idx === total - 1 ? '' : 'none';
+
+  updateAnsweredInfo();
+}
+
+function selectAnswer(optIndex) {
+  testState.userAnswers[testState.currentIndex] = optIndex;
+  document.querySelectorAll('.test-option-btn').forEach((btn, i) => {
+    btn.classList.toggle('selected', i === optIndex);
+  });
+  updateAnsweredInfo();
+
+  // Auto advance after 400ms if not last question
+  if (testState.currentIndex < testState.currentQuiz.length - 1) {
+    setTimeout(() => quizNav(1), 380);
+  }
+}
+
+function updateAnsweredInfo() {
+  const answered = testState.userAnswers.filter(a => a !== null).length;
+  const total = testState.currentQuiz.length;
+  const el = document.getElementById('testAnsweredInfo');
+  if (el) el.textContent = `${answered} / ${total} sual cavablandı`;
+}
+
+function quizNav(dir) {
+  const newIdx = testState.currentIndex + dir;
+  if (newIdx < 0 || newIdx >= testState.currentQuiz.length) return;
+  testState.currentIndex = newIdx;
+
+  const card = document.getElementById('testQuestionCard');
+  card.classList.add('quiz-slide-out');
+  setTimeout(() => {
+    renderQuizQuestion();
+    card.classList.remove('quiz-slide-out');
+    card.classList.add('quiz-slide-in');
+    setTimeout(() => card.classList.remove('quiz-slide-in'), 300);
+  }, 150);
+}
+
+function confirmFinishTest() {
+  const unanswered = testState.userAnswers.filter(a => a === null).length;
+  if (unanswered > 0 && !confirm(`${unanswered} sual cavabsız qalıb. Yenə də bitirmək istəyirsiniz?`)) return;
+  finishTest();
+}
+
+// ── FINISH ───────────────────────────────────────────────────
+function finishTest() {
+  clearInterval(testState.timerInterval);
+
+  let correct = 0;
+  testState.currentQuiz.forEach((q, i) => {
+    if (testState.userAnswers[i] === q.answer) correct++;
+  });
+  const total   = testState.currentQuiz.length;
+  const pct     = Math.round((correct / total) * 100);
+  const wrong   = total - correct - testState.userAnswers.filter(a => a === null).length;
+  const skipped = testState.userAnswers.filter(a => a === null).length;
+
+  document.getElementById('test-quiz').style.display   = 'none';
+  document.getElementById('test-result').style.display = '';
+
+  // Emoji & title
+  let emoji, title;
+  if (pct >= 90)      { emoji = '🏆'; title = 'Əla nəticə!'; }
+  else if (pct >= 75) { emoji = '🎉'; title = 'Yaxşı nəticə!'; }
+  else if (pct >= 50) { emoji = '👍'; title = 'Orta nəticə'; }
+  else                { emoji = '📚'; title = 'Daha çox məşq lazımdır'; }
+
+  document.getElementById('resultEmoji').textContent   = emoji;
+  document.getElementById('resultTitle').textContent   = title;
+  document.getElementById('resultScore').textContent   = `${correct} / ${total}`;
+  document.getElementById('resultPercent').textContent = `${pct}%`;
+  document.getElementById('resultStats').innerHTML =
+    `<span class="rs-correct">✓ ${correct} düzgün</span>` +
+    `<span class="rs-wrong">✗ ${wrong} yanlış</span>` +
+    (skipped ? `<span class="rs-skip">– ${skipped} keçildi</span>` : '');
+
+  // Animate bar
+  setTimeout(() => {
+    const bar = document.getElementById('resultBarFill');
+    if (bar) {
+      bar.style.width = pct + '%';
+      bar.style.background = pct >= 75 ? 'var(--accent2)' : pct >= 50 ? 'var(--accent)' : '#ef4444';
+    }
+  }, 100);
+
+  // Review
+  renderReview();
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderReview() {
+  const list = document.getElementById('testReviewList');
+  list.innerHTML = '';
+  const letters = ['A', 'B', 'C', 'D', 'E'];
+
+  testState.currentQuiz.forEach((q, i) => {
+    const ua = testState.userAnswers[i];
+    const isCorrect = ua === q.answer;
+    const isSkipped = ua === null;
+
+    const card = document.createElement('div');
+    card.className = `review-item ${isCorrect ? 'ri-correct' : isSkipped ? 'ri-skip' : 'ri-wrong'}`;
+
+    let optHtml = '';
+    q.options.forEach((opt, j) => {
+      let cls = 'ro-opt';
+      if (j === q.answer) cls += ' ro-correct';
+      else if (j === ua && !isCorrect) cls += ' ro-wrong';
+      optHtml += `<div class="${cls}"><span class="ro-letter">${letters[j]}</span>${opt}</div>`;
+    });
+
+    card.innerHTML = `
+      <div class="ri-header">
+        <span class="ri-num">${i + 1}</span>
+        <span class="ri-badge">${isCorrect ? '✓ Düzgün' : isSkipped ? '— Keçildi' : '✗ Yanlış'}</span>
+      </div>
+      <div class="ri-question">${q.question}</div>
+      <div class="ri-options">${optHtml}</div>
+    `;
+    list.appendChild(card);
+  });
+}
+
+// ── RESET ────────────────────────────────────────────────────
+function resetTest() {
+  clearInterval(testState.timerInterval);
+  testState.currentQuiz  = [];
+  testState.userAnswers  = [];
+  testState.currentIndex = 0;
+
+  document.getElementById('test-quiz').style.display   = 'none';
+  document.getElementById('test-result').style.display = 'none';
+  document.getElementById('test-landing').style.display = '';
+
+  // Reset progress bar fill
+  const fill = document.getElementById('resultBarFill');
+  if (fill) fill.style.width = '0%';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
