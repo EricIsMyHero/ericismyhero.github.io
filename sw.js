@@ -8,6 +8,8 @@ const urlsToCache = [
   "/scripts/data-utils.js",
   "/scripts/ui.js",
   "/scripts/features.js",
+  "/scripts/pdf-loader.js",
+  "/data/subjects.json",
   "/pdfs.js",
   "/manifest.json",
   "/icon-192.png",
