@@ -2,8 +2,12 @@ const CACHE_NAME = "unec-app-v1";
 const urlsToCache = [
   "/",
   "/index.html",
-  "/style.css",
-  "/app.js",
+  "/styles/base.css",
+  "/styles/components.css",
+  "/styles/features.css",
+  "/scripts/data-utils.js",
+  "/scripts/ui.js",
+  "/scripts/features.js"
   "/pdfs.js",
   "/manifest.json",
   "/icon-192.png",
