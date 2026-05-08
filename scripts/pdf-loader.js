@@ -1,6 +1,10 @@
 // ============================================================
-// PDF-LOADER.JS  —  v1.7  (Production)
+// PDF-LOADER.JS  —  v1.8  (Production)
 // ============================================================
+// Düzəlişlər (v1.8):
+//   • Sütun aşkarlaması: X boşluq analizi ilə 1 vs 2 sütun
+//   • İki sütunlu PDF-lərdə sol sütun → sağ sütun ardıcıllığı
+//   • _detectColumns, _buildLinesFromItems ayrıldı
 // Düzəlişlər (v1.7):
 //   • Koordinat əsaslı text extraction (_rebuildPageLines)
 //   • Smart space: X boşluğuna görə avtomatik boşluq əlavə edir
@@ -33,35 +37,46 @@ if (typeof QUESTION_BANK === 'undefined') {
 // 1. PDF-dən tam mətn çıxar  (koordinat əsaslı)
 // ============================================================
 
-// ── 1a. Bir səhifənin items-ini sətirləre çevir ──────────────
-// Alqoritm:
-//   1) Hər item-i (str, x, y, width) olaraq saxla
-//   2) Y-ə görə azalan, eyni Y-də X-ə görə artan sırala
-//   3) Y_TOLERANCE px fərq olan item-ləri eyni sətirə birləşdir
-//   4) Item-ləri birləşdirərkən X boşluğuna baxaraq smart space
-//      əlavə et (geniş boşluq → mütləq space)
-function _rebuildPageLines(items) {
-  const valid = items.filter(item => item.str && item.str.trim() !== '');
-  if (!valid.length) return [];
+// ── 1a. Sütun aşkarlaması ────────────────────────────────────
+// PDF-də bəzən iki sütunlu layout olur: sol sütun – sual mətni,
+// sağ sütun – cavab açarı və ya başqa sualın mətni.
+// Eyni Y koordinatında iki fərqli sütunun mətni birləşərsə,
+// parsing xəta verir. Bu funksiya X paylanmasına baxaraq
+// sütunları aşkarlayır.
+//
+// Qayda: X qiymətlərini sıralayıb ardıcıl elementlər arasındakı
+// boşluqlara baxırıq. Ən böyük boşluq > səhifə eninin 15%-i
+// olduqda iki sütun var deyirik.
+function _detectColumns(tagged, pageWidth) {
+  if (!pageWidth || tagged.length < 6) return null;
 
-  const tagged = valid.map(item => ({
-    str  : item.str,
-    x    : item.transform[4],
-    y    : item.transform[5],
-    width: item.width || 0,
-  }));
+  const xs = tagged.map(t => t.x).sort((a, b) => a - b);
+  let maxGap = 0, splitX = -1;
+
+  for (let i = 1; i < xs.length; i++) {
+    const gap = xs[i] - xs[i - 1];
+    if (gap > maxGap) { maxGap = gap; splitX = (xs[i - 1] + xs[i]) / 2; }
+  }
+
+  // Boşluq səhifə eninin 15%-dən böyükdürsə → iki sütun
+  return maxGap > pageWidth * 0.15 ? splitX : null;
+}
+
+// ── 1b. Bir sütunun items-ini sətirləre çevir ─────────────────
+function _buildLinesFromItems(items) {
+  if (!items.length) return [];
+
+  const Y_TOLERANCE = 5;
+  const lineGroups  = [];
 
   // Y azalan (üst sətir əvvəl), eyni Y-də X artan
-  tagged.sort((a, b) => {
+  const sorted = [...items].sort((a, b) => {
     const dy = b.y - a.y;
     if (Math.abs(dy) > 4) return dy;
     return a.x - b.x;
   });
 
-  const Y_TOLERANCE = 5;
-  const lineGroups = [];
-
-  for (const item of tagged) {
+  for (const item of sorted) {
     const existing = lineGroups.find(g => Math.abs(g.y - item.y) <= Y_TOLERANCE);
     if (existing) {
       existing.parts.push(item);
@@ -90,6 +105,36 @@ function _rebuildPageLines(items) {
     }
     return result.trim();
   }).filter(Boolean);
+}
+
+// ── 1c. Ana sətir qurucusu (sütun-aware) ─────────────────────
+// Əgər iki sütun aşkarlanırsa: sol sütun üst-aşağı, sonra sağ
+// sütun üst-aşağı işlənir. Tək sütunda birbaşa işlənir.
+function _rebuildPageLines(items, pageWidth) {
+  const valid = items.filter(item => item.str && item.str.trim() !== '');
+  if (!valid.length) return [];
+
+  const tagged = valid.map(item => ({
+    str  : item.str,
+    x    : item.transform[4],
+    y    : item.transform[5],
+    width: item.width || 0,
+  }));
+
+  const splitX = _detectColumns(tagged, pageWidth);
+
+  if (splitX !== null) {
+    // İki sütun: sol → sağ
+    const left  = tagged.filter(t => t.x < splitX);
+    const right = tagged.filter(t => t.x >= splitX);
+    return [
+      ..._buildLinesFromItems(left),
+      ..._buildLinesFromItems(right),
+    ];
+  }
+
+  // Tək sütun
+  return _buildLinesFromItems(tagged);
 }
 
 // ── 1b. Orphan simvol normalizasiyası ────────────────────────
@@ -129,9 +174,11 @@ async function extractPdfText(url) {
   for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
     try {
       const page    = await pdf.getPage(pageNum);
-      const content = await page.getTextContent();
+      const content  = await page.getTextContent();
+      const viewport  = page.getViewport({ scale: 1 });
+      const pageWidth = viewport.width;
 
-      const rawLines   = _rebuildPageLines(content.items);
+      const rawLines   = _rebuildPageLines(content.items, pageWidth);
       const cleanLines = _mergeOrphanSymbols(rawLines);
 
       fullText += cleanLines.join('\n') + '\n';
