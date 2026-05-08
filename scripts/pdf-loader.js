@@ -11,21 +11,6 @@
 //   • Blok bölücü yeniləndi: tək rəqəmli suallar (1-9) artıq düzgün tanınır
 //   • Böyük hərf yoxlaması: Format C siyahısı ilə sual nömrəsi fərqləndirilir
 //   • seenSymbol flag: sual bitənə qədər növbəti blok başlamır
-// Düzəlişlər (v1.8):
-//   • Sütun aşkarlaması: X boşluq analizi ilə 1 vs 2 sütun
-//   • İki sütunlu PDF-lərdə sol sütun → sağ sütun ardıcıllığı
-//   • _detectColumns, _buildLinesFromItems ayrıldı
-// Düzəlişlər (v1.7):
-//   • Koordinat əsaslı text extraction (_rebuildPageLines)
-//   • Smart space: X boşluğuna görə avtomatik boşluq əlavə edir
-//   • Orphan simvol birləşdirmə (_mergeOrphanSymbols)
-//   • Sətir sırası: Y azalan, eyni Y-də X artan
-// Düzəlişlər (v1.6):
-//   • Dublikat sual filtri silindi — bütün suallar saxlanılır.
-// Düzəlişlər (v1.5):
-//   • Qırıq sual filtri: sual mətni <10 simvol olan bloklar
-//     atılır (PDF-də sual nömrəsi ayrı sətirdə render olunduqda
-//     yaranan qırıq bloklar).
 // ============================================================
 
 // ── Qlobal QUESTION_BANK (əgər hələ yoxdursa) ────────────────
@@ -507,11 +492,15 @@ async function loadQuestionsFromPDF(url, subjectName) {
   // Nəticədə qırıq bloklar yaranır: sual mətni ya çox qısadır,
   // ya da rəqəm+nöqtə ilə başlayan siyahı elementi olur.
   // Bu sualları buraxırıq.
-  const MIN_QUESTION_LENGTH = 10;
+  const MIN_QUESTION_LENGTH = 15;
   const valid = parsed.filter(q => {
     const t = q.question.trim();
     if (t.length < MIN_QUESTION_LENGTH) {
       console.warn(`[pdf-loader] Çox qısa sual atlandı: "${t}"`);
+      return false;
+    }
+    if (q.answer === -1) {
+      console.warn(`[pdf-loader] Düzgün cavabsız sual atlandı: "${t.slice(0, 40)}…"`);
       return false;
     }
     return true;
