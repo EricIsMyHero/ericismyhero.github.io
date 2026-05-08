@@ -1,6 +1,9 @@
 // ============================================================
-// PDF-LOADER.JS  —  v1.9  (Production)
+// PDF-LOADER.JS  —  v2.0  (Production)
 // ============================================================
+// Düzəlişlər (v2.0):
+//   • Blok bölücü sadələşdirildi: QNUM + seenSymbol, böyük hərf şərti silindi
+//   • Tək rəqəmli suallar düzgün tanınır, Format C siyahısı bölünmür
 // Düzəlişlər (v1.9):
 //   • Blok bölücü yeniləndi: tək rəqəmli suallar (1-9) artıq düzgün tanınır
 //   • Böyük hərf yoxlaması: Format C siyahısı ilə sual nömrəsi fərqləndirilir
@@ -9,17 +12,6 @@
 //   • Sütun aşkarlaması: X boşluq analizi ilə 1 vs 2 sütun
 //   • İki sütunlu PDF-lərdə sol sütun → sağ sütun ardıcıllığı
 //   • _detectColumns, _buildLinesFromItems ayrıldı
-// Düzəlişlər (v1.7):
-//   • Koordinat əsaslı text extraction (_rebuildPageLines)
-//   • Smart space: X boşluğuna görə avtomatik boşluq əlavə edir
-//   • Orphan simvol birləşdirmə (_mergeOrphanSymbols)
-//   • Sətir sırası: Y azalan, eyni Y-də X artan
-// Düzəlişlər (v1.6):
-//   • Dublikat sual filtri silindi — bütün suallar saxlanılır.
-// Düzəlişlər (v1.5):
-//   • Qırıq sual filtri: sual mətni <10 simvol olan bloklar
-//     atılır (PDF-də sual nömrəsi ayrı sətirdə render olunduqda
-//     yaranan qırıq bloklar).
 // ============================================================
 
 // ── Qlobal QUESTION_BANK (əgər hələ yoxdursa) ────────────────
@@ -242,25 +234,27 @@ function parseQuestionsFromText(text) {
   // Güvənli qayda: ≥2 rəqəmli nömrələr həmişə sual nömrəsidir.
   // Tək rəqəmli (1–9) nömrələri blok ayırıcı ETMƏYƏK — bunlar
   // Format C-nin siyahı elementləridir.
-  // Sual nömrəsi: istənilən rəqəm + ". " + böyük hərflə başlayan mətn
-  // Format C-nin siyahı elementlərindən (1. kiçik hərf) fərqləndirilir:
-  // sual nömrəsi HƏMİŞƏ böyük hərflə (A-Z, Ə, İ, Ö, Ü, Ğ, Ş, Ç, and etc) başlayır.
-  const QUESTION_START = /^\d+\.\s+[A-ZƏİÖÜĞŞÇАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ]/;
+  // ── Blok bölmə məntiqi ───────────────────────────────────────
+  // Sual nömrəsi: istənilən rəqəm + ". " (1. 2. ... 10. 100.)
+  // Format C siyahısından fərq: blok yalnız əvvəlki blokda ən
+  // azı bir simvol variant (• √) görüldükdən SONRA bölünür.
+  // Bu sayədə:
+  //  • Tək rəqəmli suallar (1–9) düzgün tanınır
+  //  • Format C siyahı elementləri (1. 2. 3.) sual kimi bölünmür
+  //  • Çox sətirli sual mətni sehvən bölünmür
+  const QNUM = /^\d+\.\s+/;   // sual nömrəsi prefiksi
 
-  // Sətirləri əl ilə blok-blok böl: yeni blok o zaman başlayır ki,
-  // sətir QUESTION_START-a uyğundur VƏ həmin sətirdən əvvəl artıq
-  // ən azı bir simvol variant (• √) keçib (yəni əvvəlki sual bitib).
   const allLines = normalised.split('\n');
   const questionBlocks = [];
   let   currentBlock   = [];
-  let   seenSymbol     = false;   // cari blokda variant simvolu gördükmi?
+  let   seenSymbol     = false;
 
   for (const line of allLines) {
     const trimmed = line.trim();
     if (!trimmed) continue;
 
-    if (QUESTION_START.test(trimmed) && seenSymbol) {
-      // Yeni sual başlayır — əvvəlki bloku saxla
+    if (QNUM.test(trimmed) && seenSymbol) {
+      // Əvvəlki blokda variant simvolu görülüb → yeni sual başlayır
       if (currentBlock.length) questionBlocks.push(currentBlock.join('\n'));
       currentBlock = [trimmed];
       seenSymbol   = false;
