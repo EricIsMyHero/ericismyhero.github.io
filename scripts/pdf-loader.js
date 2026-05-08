@@ -1,6 +1,11 @@
 // ============================================================
-// PDF-LOADER.JS  —  v1.6  (Production)
+// PDF-LOADER.JS  —  v1.7  (Production)
 // ============================================================
+// Düzəlişlər (v1.7):
+//   • Koordinat əsaslı text extraction (_rebuildPageLines)
+//   • Smart space: X boşluğuna görə avtomatik boşluq əlavə edir
+//   • Orphan simvol birləşdirmə (_mergeOrphanSymbols)
+//   • Sətir sırası: Y azalan, eyni Y-də X artan
 // Düzəlişlər (v1.6):
 //   • Dublikat sual filtri silindi — bütün suallar saxlanılır.
 // Düzəlişlər (v1.5):
@@ -25,8 +30,88 @@ if (typeof QUESTION_BANK === 'undefined') {
 })();
 
 // ============================================================
-// 1. PDF-dən tam mətn çıxar
+// 1. PDF-dən tam mətn çıxar  (koordinat əsaslı)
 // ============================================================
+
+// ── 1a. Bir səhifənin items-ini sətirləre çevir ──────────────
+// Alqoritm:
+//   1) Hər item-i (str, x, y, width) olaraq saxla
+//   2) Y-ə görə azalan, eyni Y-də X-ə görə artan sırala
+//   3) Y_TOLERANCE px fərq olan item-ləri eyni sətirə birləşdir
+//   4) Item-ləri birləşdirərkən X boşluğuna baxaraq smart space
+//      əlavə et (geniş boşluq → mütləq space)
+function _rebuildPageLines(items) {
+  const valid = items.filter(item => item.str && item.str.trim() !== '');
+  if (!valid.length) return [];
+
+  const tagged = valid.map(item => ({
+    str  : item.str,
+    x    : item.transform[4],
+    y    : item.transform[5],
+    width: item.width || 0,
+  }));
+
+  // Y azalan (üst sətir əvvəl), eyni Y-də X artan
+  tagged.sort((a, b) => {
+    const dy = b.y - a.y;
+    if (Math.abs(dy) > 4) return dy;
+    return a.x - b.x;
+  });
+
+  const Y_TOLERANCE = 5;
+  const lineGroups = [];
+
+  for (const item of tagged) {
+    const existing = lineGroups.find(g => Math.abs(g.y - item.y) <= Y_TOLERANCE);
+    if (existing) {
+      existing.parts.push(item);
+    } else {
+      lineGroups.push({ y: item.y, parts: [item] });
+    }
+  }
+
+  lineGroups.sort((a, b) => b.y - a.y);
+
+  return lineGroups.map(group => {
+    group.parts.sort((a, b) => a.x - b.x);
+
+    let result = '';
+    for (let i = 0; i < group.parts.length; i++) {
+      const cur  = group.parts[i];
+      const prev = group.parts[i - 1];
+
+      if (i === 0) { result += cur.str; continue; }
+
+      const gap      = cur.x - (prev.x + prev.width);
+      const avgCharW = prev.width / (prev.str.length || 1);
+      const needsSp  = gap > avgCharW * 0.3;
+
+      result += (needsSp && !result.endsWith(' ') ? ' ' : '') + cur.str;
+    }
+    return result.trim();
+  }).filter(Boolean);
+}
+
+// ── 1b. Orphan simvol normalizasiyası ────────────────────────
+// pdf.js bəzən "•" və ya "√" simvolunu ayrı item kimi qaytarır,
+// növbəti sətirdə isə variantın mətni gəlir.
+// Əgər sətir yalnız simvoldan ibarətdirsə VƏ növbəti sətir
+// simvolsuz başlayırsa → ikisini birləşdir.
+function _mergeOrphanSymbols(lines) {
+  const LONE_SYMBOL = /^[\u2022\u221A\u25CF\u25AA\u25A0\u25C6•√●▪■◆✓✔]\s*$/;
+  const result = [];
+  for (let i = 0; i < lines.length; i++) {
+    if (LONE_SYMBOL.test(lines[i]) && i + 1 < lines.length) {
+      result.push(lines[i].trim() + ' ' + lines[i + 1].trim());
+      i++;
+    } else {
+      result.push(lines[i]);
+    }
+  }
+  return result;
+}
+
+// ── 1c. Ana funksiya ──────────────────────────────────────────
 async function extractPdfText(url) {
   if (typeof pdfjsLib === 'undefined') {
     throw new Error('[pdf-loader] pdfjsLib tapılmadı. HTML-ə pdf.js CDN əlavə edin.');
@@ -46,34 +131,10 @@ async function extractPdfText(url) {
       const page    = await pdf.getPage(pageNum);
       const content = await page.getTextContent();
 
-      // Y_TOLERANCE: pdf.js bəzən eyni vizual sətirdəki elementləri
-      // bir neçə pixel fərqlə render edir (xüsusilə √ simvolu).
-      // 6px daha etibarlıdır.
-      const Y_TOLERANCE = 6;
+      const rawLines   = _rebuildPageLines(content.items);
+      const cleanLines = _mergeOrphanSymbols(rawLines);
 
-      const lines = [];
-      for (const item of content.items) {
-        if (!item.str) continue;
-        const y = Math.round(item.transform[5]);
-        const existing = lines.find(l => Math.abs(l.y - y) <= Y_TOLERANCE);
-        if (existing) {
-          existing.parts.push({ x: item.transform[4], str: item.str });
-        } else {
-          lines.push({ y, parts: [{ x: item.transform[4], str: item.str }] });
-        }
-      }
-
-      lines.sort((a, b) => b.y - a.y);
-
-      const pageText = lines
-        .map(line => {
-          line.parts.sort((a, b) => a.x - b.x);
-          return line.parts.map(p => p.str).join(' ').trim();
-        })
-        .filter(Boolean)
-        .join('\n');
-
-      fullText += pageText + '\n';
+      fullText += cleanLines.join('\n') + '\n';
     } catch (pageErr) {
       console.warn(`[pdf-loader] Səhifə ${pageNum} oxunmadı:`, pageErr.message);
     }
