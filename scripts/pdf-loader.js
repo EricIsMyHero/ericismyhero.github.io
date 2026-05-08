@@ -1,6 +1,9 @@
 // ============================================================
-// PDF-LOADER.JS  —  v2.0  (Production)
+// PDF-LOADER.JS  —  v2.1  (Production)
 // ============================================================
+// Düzəlişlər (v2.1):
+//   • CORRECT_CHARS: ☑ (U+2611) və digər "düzgün" simvollar əlavə edildi
+//   • Başlıq sətri problemi həll edildi: ilk QNUM-a qədər bütün sətrlər atlanır
 // Düzəlişlər (v2.0):
 //   • Blok bölücü sadələşdirildi: QNUM + seenSymbol, böyük hərf şərti silindi
 //   • Tək rəqəmli suallar düzgün tanınır, Format C siyahısı bölünmür
@@ -12,6 +15,17 @@
 //   • Sütun aşkarlaması: X boşluq analizi ilə 1 vs 2 sütun
 //   • İki sütunlu PDF-lərdə sol sütun → sağ sütun ardıcıllığı
 //   • _detectColumns, _buildLinesFromItems ayrıldı
+// Düzəlişlər (v1.7):
+//   • Koordinat əsaslı text extraction (_rebuildPageLines)
+//   • Smart space: X boşluğuna görə avtomatik boşluq əlavə edir
+//   • Orphan simvol birləşdirmə (_mergeOrphanSymbols)
+//   • Sətir sırası: Y azalan, eyni Y-də X artan
+// Düzəlişlər (v1.6):
+//   • Dublikat sual filtri silindi — bütün suallar saxlanılır.
+// Düzəlişlər (v1.5):
+//   • Qırıq sual filtri: sual mətni <10 simvol olan bloklar
+//     atılır (PDF-də sual nömrəsi ayrı sətirdə render olunduqda
+//     yaranan qırıq bloklar).
 // ============================================================
 
 // ── Qlobal QUESTION_BANK (əgər hələ yoxdursa) ────────────────
@@ -192,8 +206,10 @@ async function extractPdfText(url) {
 
 // ── Sabitlər ─────────────────────────────────────────────────
 // Format A/C: simvol əsaslı variant işarələri
-const CORRECT_CHARS  = /^[\u221A√✓✔]/;
-const SYMBOL_OPTION  = /^[\u2022\u221A\u25CF\u25AA\u25A0\u25C6•√●▪■◆✓✔]\s*/;
+// Düzgün cavab işarələri (√ ✓ ✔ ☑ və oxşarları)
+const CORRECT_CHARS  = /^[\u221A\u2713\u2714\u2611\u2612√✓✔☑]/;
+// Bütün variant simvolları (• ● ▪ ■ ◆ + düzgün cavab simvolları)
+const SYMBOL_OPTION  = /^[\u2022\u221A\u2713\u2714\u2611\u2612\u25CF\u25AA\u25A0\u25C6•√✓✔☑●▪■◆]\s*/;
 
 // ──────────────────────────────────────────────────────────────
 // FORMATLAR:
@@ -249,11 +265,26 @@ function parseQuestionsFromText(text) {
   let   currentBlock   = [];
   let   seenSymbol     = false;
 
+  // İlk sual tapılana qədər başlıq sətrlərini atla
+  let foundFirstQuestion = false;
+
   for (const line of allLines) {
     const trimmed = line.trim();
     if (!trimmed) continue;
 
-    if (QNUM.test(trimmed) && seenSymbol) {
+    const isQNum = QNUM.test(trimmed);
+
+    if (!foundFirstQuestion) {
+      // Hələ ilk suala çatmamışıq — yalnız QNUM sətri ilk sualdır
+      if (isQNum) {
+        foundFirstQuestion = true;
+        currentBlock = [trimmed];
+      }
+      // Başlıq sətrlərini (PDF adı, fənn adı və s.) atla
+      continue;
+    }
+
+    if (isQNum && seenSymbol) {
       // Əvvəlki blokda variant simvolu görülüb → yeni sual başlayır
       if (currentBlock.length) questionBlocks.push(currentBlock.join('\n'));
       currentBlock = [trimmed];
