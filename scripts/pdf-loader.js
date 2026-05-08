@@ -1,5 +1,5 @@
 // ============================================================
-// PDF-LOADER.JS  —  v2.1  (Production)
+// PDF-LOADER.JS  —  v2.2  (Production)
 // ============================================================
 // Düzəlişlər (v2.1):
 //   • CORRECT_CHARS: ☑ (U+2611) və digər "düzgün" simvollar əlavə edildi
@@ -11,6 +11,10 @@
 //   • Blok bölücü yeniləndi: tək rəqəmli suallar (1-9) artıq düzgün tanınır
 //   • Böyük hərf yoxlaması: Format C siyahısı ilə sual nömrəsi fərqləndirilir
 //   • seenSymbol flag: sual bitənə qədər növbəti blok başlamır
+// Düzəlişlər (v1.8):
+//   • Sütun aşkarlaması: X boşluq analizi ilə 1 vs 2 sütun
+//   • İki sütunlu PDF-lərdə sol sütun → sağ sütun ardıcıllığı
+//   • _detectColumns, _buildLinesFromItems ayrıldı
 // ============================================================
 
 // ── Qlobal QUESTION_BANK (əgər hələ yoxdursa) ────────────────
@@ -54,7 +58,7 @@ function _detectColumns(tagged, pageWidth) {
   }
 
   // Boşluq səhifə eninin 15%-dən böyükdürsə → iki sütun
-  return maxGap > pageWidth * 0.15 ? splitX : null;
+  return maxGap > pageWidth * 0.25 ? splitX : null;
 }
 
 // ── 1b. Bir sütunun items-ini sətirləre çevir ─────────────────
@@ -360,6 +364,9 @@ function _parseFormatA(lines, blockIdx, questions) {
     const isOption  = SYMBOL_OPTION.test(line);
     nextIsCorrect   = false;
 
+    // Növbəti sualın başlanğıcı → bu blok bitdi
+    if (/^\d+\.\s+\S/.test(line) && !SYMBOL_OPTION.test(line)) break;
+
     if (!isOption) {
       // Bu sətir simvol prefiksi olmayan mətndir.
       // Əgər isCorrect=true (orphan √-dan gəlir) → bu sətir √-ın mətn
@@ -441,6 +448,9 @@ function _parseFormatC(lines, blockIdx, questions) {
     const isCorrect = nextIsCorrect || CORRECT_CHARS.test(line);
     const isOption  = SYMBOL_OPTION.test(line);
     nextIsCorrect   = false;
+
+    // Növbəti sualın başlanğıcı → bu blok bitdi
+    if (/^\d+\.\s+\S/.test(line) && !SYMBOL_OPTION.test(line)) break;
 
     if (!isOption) {
       if (isCorrect && options.length >= 0) {
