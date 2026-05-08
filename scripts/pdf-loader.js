@@ -1,6 +1,10 @@
 // ============================================================
-// PDF-LOADER.JS  —  v1.8  (Production)
+// PDF-LOADER.JS  —  v1.9  (Production)
 // ============================================================
+// Düzəlişlər (v1.9):
+//   • Blok bölücü yeniləndi: tək rəqəmli suallar (1-9) artıq düzgün tanınır
+//   • Böyük hərf yoxlaması: Format C siyahısı ilə sual nömrəsi fərqləndirilir
+//   • seenSymbol flag: sual bitənə qədər növbəti blok başlamır
 // Düzəlişlər (v1.8):
 //   • Sütun aşkarlaması: X boşluq analizi ilə 1 vs 2 sütun
 //   • İki sütunlu PDF-lərdə sol sütun → sağ sütun ardıcıllığı
@@ -238,12 +242,38 @@ function parseQuestionsFromText(text) {
   // Güvənli qayda: ≥2 rəqəmli nömrələr həmişə sual nömrəsidir.
   // Tək rəqəmli (1–9) nömrələri blok ayırıcı ETMƏYƏK — bunlar
   // Format C-nin siyahı elementləridir.
-  const questionBlocks = normalised
-    .split(/\n(?=\d{2,}\.\s)/g)   // yalnız 10+ nömrəli suallar blok başladır
-    .map(b => b.trim())
-    .filter(Boolean);
+  // Sual nömrəsi: istənilən rəqəm + ". " + böyük hərflə başlayan mətn
+  // Format C-nin siyahı elementlərindən (1. kiçik hərf) fərqləndirilir:
+  // sual nömrəsi HƏMİŞƏ böyük hərflə (A-Z, Ə, İ, Ö, Ü, Ğ, Ş, Ç, and etc) başlayır.
+  const QUESTION_START = /^\d+\.\s+[A-ZƏİÖÜĞŞÇАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ]/;
 
-  questionBlocks.forEach((block, blockIdx) => {
+  // Sətirləri əl ilə blok-blok böl: yeni blok o zaman başlayır ki,
+  // sətir QUESTION_START-a uyğundur VƏ həmin sətirdən əvvəl artıq
+  // ən azı bir simvol variant (• √) keçib (yəni əvvəlki sual bitib).
+  const allLines = normalised.split('\n');
+  const questionBlocks = [];
+  let   currentBlock   = [];
+  let   seenSymbol     = false;   // cari blokda variant simvolu gördükmi?
+
+  for (const line of allLines) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+
+    if (QUESTION_START.test(trimmed) && seenSymbol) {
+      // Yeni sual başlayır — əvvəlki bloku saxla
+      if (currentBlock.length) questionBlocks.push(currentBlock.join('\n'));
+      currentBlock = [trimmed];
+      seenSymbol   = false;
+    } else {
+      currentBlock.push(trimmed);
+      if (SYMBOL_OPTION.test(trimmed)) seenSymbol = true;
+    }
+  }
+  if (currentBlock.length) questionBlocks.push(currentBlock.join('\n'));
+
+  const filteredBlocks = questionBlocks.map(b => b.trim()).filter(Boolean);
+
+  filteredBlocks.forEach((block, blockIdx) => {
     const lines = block
       .split('\n')
       .map(l => l.trim())
