@@ -591,3 +591,31 @@ document.addEventListener('DOMContentLoaded', () => {
     autoLoadAllSubjects();
   }
 });
+
+// ============================================================
+// 6. Debug yardımçısı  (brauzer konsolundan çağırmaq üçün)
+// ============================================================
+// İstifadə: window.debugPdf('./pdf/maliyyeQ26.pdf', 1)
+//   → 1-ci səhifənin extraction nəticəsini konsola yazır
+window.debugPdf = async function (url, pageNum = 1) {
+  if (typeof pdfjsLib === 'undefined') {
+    console.error('[debugPdf] pdfjsLib yoxdur');
+    return;
+  }
+  const pdf      = await pdfjsLib.getDocument(url).promise;
+  const page     = await pdf.getPage(pageNum);
+  const content  = await page.getTextContent();
+  const viewport = page.getViewport({ scale: 1 });
+
+  console.group(`[debugPdf] ${url} — Səhifə ${pageNum}  (${viewport.width.toFixed(0)}×${viewport.height.toFixed(0)})`);
+  console.log('Raw items:', content.items.length);
+
+  const rawLines   = _rebuildPageLines(content.items, viewport.width);
+  const cleanLines = _mergeOrphanSymbols(rawLines);
+
+  console.log('Lines after rebuild:', cleanLines.length);
+  cleanLines.forEach((l, i) => console.log(`  ${String(i + 1).padStart(3, ' ')}: ${l}`));
+  console.groupEnd();
+
+  return cleanLines;
+};
