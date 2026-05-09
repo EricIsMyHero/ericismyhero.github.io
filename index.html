@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="styles/base.css">
   <link rel="stylesheet" href="styles/components.css">
   <link rel="stylesheet" href="styles/features.css">
+  <link rel="stylesheet" href="styles/gpa.css">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#3b82f6">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -747,13 +748,66 @@
     <span class="bottom-nav-label">Dəstək</span>
     <span class="bottom-nav-dot"></span>
   </button>
+
+  <button class="bottom-nav-btn" id="btn-gpa" onclick="switchBottomTab('gpa')">
+    <span class="bottom-nav-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="3"/>
+        <path d="M8 12h4m0 0h4m-4 0V8m0 4v4"/>
+      </svg>
+    </span>
+    <span class="bottom-nav-label">GPA</span>
+    <span class="bottom-nav-dot"></span>
+  </button>
 </nav>
+
+<!-- GPA TAB -->
+<div id="main-gpa" class="main-tab" style="display:none;">
+  <div class="container">
+    <div class="gpa-page-header">
+      <div class="gpa-page-badge">🎓 UNEC · Akademik</div>
+      <h1 class="gpa-page-title">UNEC <span>GPA</span><br>Calculator</h1>
+    </div>
+    <div class="gpa-main-card">
+      <div class="gpa-card-label">Cari GPA</div>
+      <span id="gpa-current">0.00</span>
+      <div class="gpa-card-sub">Keçid balı: 51 · Hesabat cari fənlərə görədir</div>
+    </div>
+    <div class="gpa-result-row">
+      <div class="gpa-result-cell"><div class="gpa-result-cell-label">Ümumi Kredit</div><div class="gpa-result-cell-val" id="gpa-total-credits">0</div></div>
+      <div class="gpa-result-cell"><div class="gpa-result-cell-label">Qazanılan</div><div class="gpa-result-cell-val" id="gpa-earned-credits">0</div></div>
+      <div class="gpa-result-cell"><div class="gpa-result-cell-label">GPA</div><div class="gpa-result-cell-val" id="gpa-result-val">0.00</div></div>
+    </div>
+    <div class="gpa-list-header">
+      <div class="gpa-list-title">📚 Fənnlər</div>
+    </div>
+    <div id="gpa-subject-list"></div>
+    <button class="gpa-add-btn" onclick="addSubject()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Fənn əlavə et
+    </button>
+    <div class="gpa-target-card">
+      <div class="gpa-target-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+        Hədəf GPA Predictor
+      </div>
+      <div class="gpa-target-desc">Hədəfinizə çatmaq üçün nə qədər bal lazım olduğunu hesablayın.</div>
+      <div class="gpa-target-inputs">
+        <div class="gpa-target-group"><label>Hədəf GPA</label><input class="gpa-target-inp" id="gpa-target-input" type="number" min="0" max="100" step="0.1" placeholder="məs. 75"/></div>
+        <div class="gpa-target-group"><label>Qalan Kredit</label><input class="gpa-target-inp" id="gpa-remaining-credits" type="number" min="1" max="200" step="1" placeholder="məs. 30"/></div>
+      </div>
+      <div id="gpa-target-result"></div>
+    </div>
+    <div class="gpa-info-note">Məlumatlar avtomatik saxlanılır · Keçid balı 51<br>GPA = Σ(Bal × Kredit) / Σ(Qazanılan Kredit)</div>
+  </div>
+</div>
 
 <script src="pdfs.js"></script>
 <script src="scripts/data-utils.js"></script>
 <script src="scripts/ui.js"></script>
 <script src="scripts/features.js"></script>
 <script src="scripts/pdf-loader.js"></script>
+<script src="scripts/gpa.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
