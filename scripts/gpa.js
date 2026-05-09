@@ -35,12 +35,20 @@ function getEarnedCredits(list) {
 
 function getGradeLabel(gpa) {
   const g = parseFloat(gpa);
-  if (g === 0)   return { text: '—',            color: '#64748b', ring: ['#334155','#475569'] };
-  if (g >= 90)   return { text: 'Excellent',    color: '#4ade80', ring: ['#22c55e','#4ade80'] };
-  if (g >= 75)   return { text: 'Good',         color: '#86efac', ring: ['#16a34a','#4ade80'] };
-  if (g >= 60)   return { text: 'Satisfactory', color: '#facc15', ring: ['#ca8a04','#fbbf24'] };
-  if (g >= 51)   return { text: 'Passed',       color: '#fb923c', ring: ['#ea580c','#fb923c'] };
-  return           { text: 'Failed',            color: '#f87171', ring: ['#dc2626','#f87171'] };
+
+  if (g === 0) return { text: '—', color: '#64748b', ring: ['#334155', '#475569'] };
+  // 91+ üçün parlaq mavi (Cyan/Blue)
+  if (g >= 91) return { text: 'Əla (A)', color: '#22d3ee', ring: ['#0891b2', '#22d3ee'] };
+  // 81-90 üçün tünd yaşıl
+  if (g >= 81) return { text: 'Çox yaxşı (B)', color: '#22c55e', ring: ['#15803d', '#22c55e'] };
+  // 71-80 üçün açıq yaşıl
+  if (g >= 71) return { text: 'Yaxşı (C)', color: '#86efac', ring: ['#16a34a', '#86efac'] };
+  // 61-70 üçün sarı
+  if (g >= 61) return { text: 'Kafi (D)', color: '#facc15', ring: ['#ca8a04', '#facc15'] };
+  // 51-60 üçün narıncı
+  if (g >= 51) return { text: 'Qənaətbəxş (E)', color: '#fb923c', ring: ['#ea580c', '#fb923c'] };
+  // 51-dən aşağı üçün qırmızı
+  return { text: 'Kəsildi (F)', color: '#f87171', ring: ['#dc2626', '#f87171'] };
 }
 
 // ── Count-up animation ────────────────────────────────────────
@@ -237,13 +245,13 @@ function gpaRenderPredictor() {
     const r = Math.ceil(required);
     if (r < 51) {
       icon = '✅'; cls = 'target-easy';
-      msg = `Hədəf GPA <strong>${targetVal}</strong> üçün qalan <strong>${remCr}</strong> kreditdən orta <strong>${r}</strong> bal lazımdır — keçid balından aşağı olduğuna görə, faktiki olaraq istənilən nəticə keçər.`;
+      msg = `Hədəf GPA <strong>${targetVal}</strong> üçün qalan <strong>${remCr}</strong> kreditdən ortalama <strong>${r}</strong> bal lazımdır. Keçid balından aşağı olduğuna görə, faktiki olaraq istənilən nəticə keçər.`;
     } else if (r >= 75) {
       icon = '🎯'; cls = 'target-high';
-      msg = `Hədəf GPA <strong>${targetVal}</strong> üçün qalan <strong>${remCr}</strong> kreditdən orta <strong>${r}</strong> bal toplamalısınız.`;
+      msg = `Hədəf GPA <strong>${targetVal}</strong> üçün qalan <strong>${remCr}</strong> kreditdən ortalama <strong>${r}</strong> bal toplamalısınız.`;
     } else {
       icon = '📈'; cls = 'target-mid';
-      msg = `Hədəf GPA <strong>${targetVal}</strong> üçün qalan <strong>${remCr}</strong> kreditdən orta <strong>${r}</strong> bal toplamalısınız.`;
+      msg = `Hədəf GPA <strong>${targetVal}</strong> üçün qalan <strong>${remCr}</strong> kreditdən ortalama <strong>${r}</strong> bal toplamalısınız.`;
     }
   }
 
@@ -429,11 +437,11 @@ function gpaRenderMemoryCard() {
 
 // ── Smart Message Engine ──────────────────────────────────────
 const GPA_MESSAGES = [
-  { min: 90,  max: 101, text: "Əla gedirsən — top performans yolundasan.", emoji: "🏆", cls: "msg-excellent" },
-  { min: 75,  max: 90,  text: "Ardıcıl inkişaf edirsən. Davam et.",          emoji: "📈", cls: "msg-good"      },
-  { min: 60,  max: 75,  text: "Yaxşısın, amma daha güclü fokus lazımdır.",   emoji: "🎯", cls: "msg-mid"       },
-  { min: 51,  max: 60,  text: "Keçid xəttindəsən — vaxt itirmə.",            emoji: "⚡", cls: "msg-warn"      },
-  { min: 0,   max: 51,  text: "Bərpa rejimi. Hər kredit sayılır.",            emoji: "💪", cls: "msg-danger"    },
+  { min: 90,  max: 101, text: "Əla gedirsən. Top-15 performans yolundasan.", emoji: "🏆", cls: "msg-excellent" },
+  { min: 75,  max: 90,  text: "Ardıcıl inkişaf edirsən. Belə davam et.",          emoji: "📈", cls: "msg-good"      },
+  { min: 60,  max: 75,  text: "Yaxşısan, amma daha güclü fokus lazımdır.",   emoji: "🎯", cls: "msg-mid"       },
+  { min: 51,  max: 60,  text: "Keçid xəttindəsən, çox vaxt itirmə.",            emoji: "⚡", cls: "msg-warn"      },
+  { min: 0,   max: 51,  text: "Bərpa rejimidir. Hər kredit sayılır.",            emoji: "💪", cls: "msg-danger"    },
 ];
 
 function gpaRenderSmartMessage() {
