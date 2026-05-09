@@ -1,0 +1,509 @@
+/* ================================================================
+   GPA.CSS — UNEC GPA Calculator Styles
+   Glassmorphism, modular, genişlənə bilər
+   ================================================================ */
+
+/* ── GPA Tab Container ─────────────────────────────────────── */
+#main-gpa .container {
+  padding-top: 28px;
+}
+
+/* ── Page Header ─────────────────────────────────────────────── */
+.gpa-page-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.gpa-page-badge {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 100px;
+  background: rgba(59,130,246,0.12);
+  border: 1px solid rgba(59,130,246,0.25);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+.gpa-page-title {
+  font-size: clamp(1.5rem, 5vw, 2.1rem);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.gpa-page-title span {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Current GPA Card ────────────────────────────────────────── */
+.gpa-main-card {
+  background: rgba(13,26,46,0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(59,130,246,0.18);
+  border-radius: 24px;
+  padding: 28px 24px;
+  text-align: center;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.gpa-main-card::before {
+  content: '';
+  position: absolute;
+  top: -40px; left: 50%;
+  transform: translateX(-50%);
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.gpa-card-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+#gpa-current {
+  font-size: clamp(3rem, 12vw, 4.5rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: #4ade80;
+  transition: color 0.35s ease, transform 0.35s ease;
+  display: block;
+  margin-bottom: 6px;
+}
+
+#gpa-current.gpa-pop {
+  transform: scale(1.08);
+}
+
+.gpa-card-sub {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+/* ── Result Summary Row ──────────────────────────────────────── */
+.gpa-result-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.gpa-result-cell {
+  background: rgba(13,26,46,0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(59,130,246,0.12);
+  border-radius: 16px;
+  padding: 14px 10px;
+  text-align: center;
+}
+
+.gpa-result-cell-label {
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.gpa-result-cell-val {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+#gpa-result-val {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Subject List ────────────────────────────────────────────── */
+.gpa-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.gpa-list-title {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.gpa-subject-row {
+  background: rgba(13,26,46,0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(59,130,246,0.12);
+  border-radius: 18px;
+  padding: 14px 14px 12px;
+  margin-bottom: 10px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.gpa-subject-row:focus-within {
+  border-color: rgba(59,130,246,0.35);
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.08);
+}
+
+.gpa-row-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.gpa-row-num {
+  width: 22px;
+  min-width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: rgba(59,130,246,0.12);
+  color: var(--accent2);
+  font-size: 0.68rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0;
+}
+
+.gpa-subject-name {
+  flex: 1;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(59,130,246,0.12);
+  border-radius: 10px;
+  padding: 7px 10px;
+  color: var(--text);
+  font-size: 0.85rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+  min-width: 0;
+}
+
+.gpa-subject-name:focus {
+  border-color: rgba(59,130,246,0.4);
+}
+
+.gpa-subject-name::placeholder {
+  color: var(--muted);
+  opacity: 0.6;
+}
+
+/* ── Status Badge ────────────────────────────────────────────── */
+.gpa-status-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  padding: 3px 8px;
+  border-radius: 100px;
+  white-space: nowrap;
+  transition: background 0.25s, color 0.25s;
+  flex-shrink: 0;
+}
+
+.gpa-status-badge.passed {
+  background: rgba(74,222,128,0.15);
+  color: #4ade80;
+  border: 1px solid rgba(74,222,128,0.3);
+}
+
+.gpa-status-badge.failed {
+  background: rgba(248,113,113,0.12);
+  color: #f87171;
+  border: 1px solid rgba(248,113,113,0.25);
+}
+
+/* ── Remove Button ───────────────────────────────────────────── */
+.gpa-remove-btn {
+  width: 28px; height: 28px; min-width: 28px;
+  border-radius: 8px;
+  background: rgba(248,113,113,0.08);
+  border: 1px solid rgba(248,113,113,0.18);
+  color: #f87171;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.gpa-remove-btn:hover {
+  background: rgba(248,113,113,0.2);
+}
+
+.gpa-remove-placeholder {
+  width: 28px; min-width: 28px;
+  display: inline-block;
+}
+
+/* ── Bottom Inputs Row ───────────────────────────────────────── */
+.gpa-row-bottom {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.gpa-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.gpa-input-group label {
+  font-size: 0.64rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.gpa-num-input {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(59,130,246,0.14);
+  border-radius: 10px;
+  padding: 7px 10px;
+  color: var(--text);
+  font-size: 0.9rem;
+  font-family: inherit;
+  font-weight: 700;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.2s;
+  -moz-appearance: textfield;
+}
+
+.gpa-num-input::-webkit-inner-spin-button,
+.gpa-num-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+.gpa-num-input:focus {
+  border-color: rgba(59,130,246,0.4);
+}
+
+.gpa-score-input:focus {
+  border-color: rgba(139,92,246,0.45);
+}
+
+.gpa-row-weight {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 60px;
+  text-align: center;
+}
+
+.gpa-row-weight label {
+  font-size: 0.64rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.gpa-weight-val {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--accent2);
+  padding: 7px 10px;
+  background: rgba(6,182,212,0.06);
+  border: 1px solid rgba(6,182,212,0.14);
+  border-radius: 10px;
+  text-align: center;
+}
+
+/* ── Add Button ──────────────────────────────────────────────── */
+.gpa-add-btn {
+  width: 100%;
+  padding: 13px;
+  border-radius: 14px;
+  border: 1.5px dashed rgba(59,130,246,0.3);
+  background: rgba(59,130,246,0.04);
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  transition: background 0.2s, border-color 0.2s;
+  margin: 14px 0 24px;
+}
+
+.gpa-add-btn:hover {
+  background: rgba(59,130,246,0.09);
+  border-color: rgba(59,130,246,0.5);
+}
+
+/* ── Calculate Button ────────────────────────────────────────── */
+.gpa-calc-btn {
+  width: 100%;
+  padding: 15px;
+  border-radius: 16px;
+  border: none;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: opacity 0.2s, transform 0.15s;
+  margin-bottom: 24px;
+}
+
+.gpa-calc-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+.gpa-calc-btn:active { transform: translateY(0); }
+
+/* ── Target GPA Card ─────────────────────────────────────────── */
+.gpa-target-card {
+  background: rgba(13,26,46,0.65);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(139,92,246,0.2);
+  border-radius: 20px;
+  padding: 20px 18px;
+  margin-bottom: 32px;
+}
+
+.gpa-target-title {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  color: var(--accent3);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.gpa-target-desc {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+.gpa-target-inputs {
+  display: flex;
+  gap: 10px;
+}
+
+.gpa-target-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.gpa-target-group label {
+  font-size: 0.64rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.gpa-target-inp {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(139,92,246,0.2);
+  border-radius: 10px;
+  padding: 8px 12px;
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: inherit;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.2s;
+}
+
+.gpa-target-inp:focus {
+  border-color: rgba(139,92,246,0.5);
+}
+
+#gpa-target-result {
+  margin-top: 14px;
+}
+
+.gpa-target-msg {
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.target-icon { flex-shrink: 0; font-size: 1rem; }
+
+.gpa-target-msg.target-high {
+  background: rgba(74,222,128,0.1);
+  border: 1px solid rgba(74,222,128,0.25);
+  color: #86efac;
+}
+.gpa-target-msg.target-mid {
+  background: rgba(250,204,21,0.1);
+  border: 1px solid rgba(250,204,21,0.25);
+  color: #fde68a;
+}
+.gpa-target-msg.target-easy {
+  background: rgba(59,130,246,0.1);
+  border: 1px solid rgba(59,130,246,0.25);
+  color: #93c5fd;
+}
+.gpa-target-msg.target-impossible {
+  background: rgba(248,113,113,0.1);
+  border: 1px solid rgba(248,113,113,0.25);
+  color: #fca5a5;
+}
+.gpa-target-msg.target-done {
+  background: rgba(6,182,212,0.1);
+  border: 1px solid rgba(6,182,212,0.25);
+  color: #67e8f9;
+}
+
+/* ── Info note ───────────────────────────────────────────────── */
+.gpa-info-note {
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-align: center;
+  padding: 12px 0 8px;
+  line-height: 1.6;
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 400px) {
+  .gpa-result-row {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 7px;
+  }
+  .gpa-result-cell-val { font-size: 1.1rem; }
+  .gpa-row-bottom { flex-wrap: wrap; }
+  .gpa-target-inputs { flex-direction: column; }
+}
