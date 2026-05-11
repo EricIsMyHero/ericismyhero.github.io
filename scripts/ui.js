@@ -7,7 +7,7 @@
 // - Render — PDF Səhifəsi (openPDFs)
 // - Render — Əlavələr (renderExtras)
 // - Render — Seçilmişlər (renderFavorites, removeFavAndRefresh)
-// - Sevimlilər + Cache (getFavorites, toggleFavorite, cacheOnePDF, removeFromCache)
+// - Sevimlilər (getFavorites, toggleFavorite, removeFavAndRefresh)
 // - Axtarış (initSearch, clearSearch, filterSubjects)
 // - Qlobal Event Delegation — PDF düymələri
 // - Xəta Bildiriş Modal (openReportModal, closeReportModal, sendReport)
@@ -266,7 +266,6 @@ function renderFavorites() {
 function removeFavAndRefresh(filePath) {
   let favs = getFavorites().filter(f => f !== filePath);
   localStorage.setItem("favorites", JSON.stringify(favs));
-  removeFromCache(filePath);
   renderFavorites();
 }
 
@@ -401,39 +400,21 @@ function openPDFs(subjectName) {
   goTo('pdfs');
 }
 
-// ── Sevimlilər + Cache ────────────────────────────────────────
+// ── Sevimlilər ────────────────────────────────────────────────
 function getFavorites() {
   return JSON.parse(localStorage.getItem("favorites")) || [];
 }
 
-async function toggleFavorite(filePath, btn) {
+function toggleFavorite(filePath, btn) {
   let favs = getFavorites();
   if (favs.includes(filePath)) {
     favs = favs.filter(f => f !== filePath);
-    removeFromCache(filePath);
     if (btn) { btn.textContent = '☆'; btn.classList.remove('active'); }
   } else {
     favs.push(filePath);
-    cacheOnePDF(filePath);
     if (btn) { btn.textContent = '★'; btn.classList.add('active'); }
   }
   localStorage.setItem("favorites", JSON.stringify(favs));
-}
-
-async function cacheOnePDF(filePath) {
-  if (!("caches" in window)) return;
-  try {
-    const cache = await caches.open("pdf-cache");
-    await cache.add(BASE + filePath);
-  } catch (e) { console.warn("Cache xətası:", e); }
-}
-
-async function removeFromCache(filePath) {
-  if (!("caches" in window)) return;
-  try {
-    const cache = await caches.open("pdf-cache");
-    await cache.delete(BASE + filePath);
-  } catch (e) { console.warn("Cache silmə xətası:", e); }
 }
 
 // ── Xəta Bildiriş Modal ───────────────────────────────────────
