@@ -155,10 +155,6 @@ document.getElementById('ai-input').addEventListener('keydown', e => {
   if (e.key === 'Enter') sendMessage();
 });
 
-// ── PWA / Service Worker ──────────────────────────────────────
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js");
-}
 
 let deferredPrompt;
 window.addEventListener("beforeinstallprompt", (e) => {
