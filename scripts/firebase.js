@@ -119,11 +119,8 @@ async function signInWithGoogle() {
   try {
     const provider = new firebase.auth.GoogleAuthProvider();
     provider.setCustomParameters({ prompt: 'select_account' });
-    await _auth.signInWithPopup(provider);
+    await _auth.signInWithRedirect(provider);
   } catch (e) {
-    // COOP xətası — real xəta deyil, popup bağlandı
-    if (e.code === 'auth/popup-closed-by-user' ||
-        e.message?.includes('Cross-Origin')) return;
     _showAuthError(_authErrorMessage(e.code));
   }
 }
