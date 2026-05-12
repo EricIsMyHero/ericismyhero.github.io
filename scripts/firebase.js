@@ -119,8 +119,12 @@ async function signInWithGoogle() {
   try {
     const provider = new firebase.auth.GoogleAuthProvider();
     provider.setCustomParameters({ prompt: 'select_account' });
-    await _auth.signInWithRedirect(provider);
+    const result = await _auth.signInWithPopup(provider);
+    if (result.user) {
+      console.log('[firebase] Google login uğurlu:', result.user.email);
+    }
   } catch (e) {
+    console.error('[firebase] Google login xətası:', e);
     _showAuthError(_authErrorMessage(e.code));
   }
 }
@@ -416,7 +420,9 @@ function getDb()          { return _db; }
 function isLoggedIn()     { return !!currentUser; }
 
 // ── Init ──────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  initFirebase();
-  _showGuestBadge();
+document.addEventListener('DOMContentLoaded', async () => {
+  const ok = await initFirebase();
+  if (!ok) {
+    _showGuestBadge();
+  }
 });
