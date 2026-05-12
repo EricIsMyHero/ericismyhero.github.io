@@ -1,0 +1,457 @@
+/* ============================================================
+   DASHBOARD.CSS  —  Auth Modal + Dashboard Tab + Gamification
+   ============================================================ */
+
+/* ── Auth Modal ─────────────────────────────────────────────── */
+#authOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(6px);
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+#authOverlay.hidden { display: none; }
+
+.auth-modal {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 380px;
+  padding: 32px 28px 28px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.35);
+  position: relative;
+}
+
+.auth-modal-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: background .15s;
+}
+.auth-modal-close:hover { background: var(--hover-bg); }
+
+.auth-logo {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 4px;
+}
+.auth-title {
+  text-align: center;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.auth-sub {
+  text-align: center;
+  font-size: .8rem;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.auth-panel.hidden { display: none; }
+
+/* Google butonu */
+.auth-google-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 11px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  background: var(--card-bg);
+  color: var(--text);
+  font-size: .9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+  margin-bottom: 16px;
+}
+.auth-google-btn:hover { background: var(--hover-bg); border-color: var(--accent); }
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-muted);
+  font-size: .75rem;
+  margin-bottom: 14px;
+}
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* Input */
+.auth-field {
+  margin-bottom: 12px;
+}
+.auth-field label {
+  display: block;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+}
+.auth-field input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: .9rem;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color .15s;
+}
+.auth-field input:focus { border-color: var(--accent); }
+
+.auth-submit-btn {
+  width: 100%;
+  padding: 12px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: .95rem;
+  font-weight: 800;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: opacity .15s;
+}
+.auth-submit-btn:hover { opacity: .88; }
+
+.auth-error {
+  font-size: .8rem;
+  min-height: 18px;
+  margin-top: 8px;
+  text-align: center;
+  color: #ef4444;
+}
+
+.auth-switch {
+  text-align: center;
+  font-size: .8rem;
+  color: var(--text-muted);
+  margin-top: 14px;
+}
+.auth-switch-link {
+  color: var(--accent);
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* ── Header Auth Button ─────────────────────────────────────── */
+#authHeaderBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 12px 5px 8px;
+  cursor: pointer;
+  color: var(--text);
+  font-size: .82rem;
+  font-weight: 700;
+  transition: background .15s;
+}
+#authHeaderBtn:hover { background: var(--hover-bg); }
+
+.auth-avatar {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: .75rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.auth-name { max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ── Dashboard Tab ──────────────────────────────────────────── */
+#main-dashboard { padding-bottom: 100px; }
+
+.dash-container { max-width: 480px; margin: 0 auto; padding: 20px 16px 0; }
+
+.dash-greeting {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.dash-date {
+  font-size: .8rem;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  text-transform: capitalize;
+}
+
+/* Stat kartları */
+.dash-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.dash-stat-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.dash-stat-icon { font-size: 1.4rem; }
+.dash-stat-val {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--text);
+  line-height: 1;
+}
+.dash-stat-label {
+  font-size: .75rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* Streak mesajı */
+.dash-streak-msg {
+  font-size: .82rem;
+  font-weight: 700;
+  padding: 10px 14px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.dash-streak-ok   { background: rgba(34,197,94,.12); color: #22c55e; }
+.dash-streak-warn { background: rgba(251,191,36,.12); color: #f59e0b; }
+.dash-streak-dead { background: rgba(239,68,68,.12);  color: #ef4444; }
+
+/* Rank kartı */
+.dash-rank-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 16px;
+}
+.dash-rank-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.dash-rank-icon-wrap {
+  font-size: 2rem;
+  line-height: 1;
+}
+.dash-rank-info { flex: 1; }
+.dash-rank-title {
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: var(--text);
+}
+.dash-rank-xp {
+  font-size: .8rem;
+  color: var(--accent);
+  font-weight: 700;
+}
+.dash-rank-next {
+  font-size: .75rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+/* Progress bar */
+.dash-rank-bar-bg {
+  height: 8px;
+  background: var(--border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.dash-rank-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2, #06b6d4));
+  border-radius: 99px;
+  width: 0;
+  transition: width .8s cubic-bezier(.4,0,.2,1);
+}
+
+/* Son quizlər */
+.dash-section-title {
+  font-size: .85rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-bottom: 10px;
+}
+.dash-quiz-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+.dash-quiz-subj  { flex: 1; font-size: .85rem; font-weight: 700; color: var(--text); }
+.dash-quiz-score { font-size: .8rem; color: var(--text-muted); }
+.dash-quiz-pct   { font-size: .88rem; font-weight: 800; min-width: 38px; text-align: right; }
+.dash-quiz-good .dash-quiz-pct { color: #22c55e; }
+.dash-quiz-mid  .dash-quiz-pct { color: #f59e0b; }
+.dash-quiz-bad  .dash-quiz-pct { color: #ef4444; }
+
+.dash-empty {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: .85rem;
+  padding: 20px 0;
+}
+
+/* Profil bölməsi */
+.dash-profile-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 16px;
+}
+.dash-profile-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.dash-profile-avatar {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.dash-profile-name { font-size: 1rem; font-weight: 800; color: var(--text); }
+.dash-profile-email { font-size: .78rem; color: var(--text-muted); }
+
+.dash-faculty-row {
+  display: flex;
+  gap: 8px;
+}
+.dash-faculty-input {
+  flex: 1;
+  padding: 9px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: .85rem;
+  outline: none;
+}
+.dash-faculty-input:focus { border-color: var(--accent); }
+.dash-faculty-btn {
+  padding: 9px 14px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: .85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.dash-signout-btn {
+  width: 100%;
+  padding: 12px;
+  background: transparent;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  color: var(--text-muted);
+  font-size: .88rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: background .15s;
+}
+.dash-signout-btn:hover { background: var(--hover-bg); color: #ef4444; border-color: #ef4444; }
+
+/* Giriş etməmiş — prompt kartı */
+.dash-login-prompt {
+  text-align: center;
+  padding: 48px 24px;
+}
+.dash-login-prompt-icon { font-size: 3rem; margin-bottom: 12px; }
+.dash-login-prompt h3 {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.dash-login-prompt p {
+  font-size: .85rem;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+.dash-login-btn {
+  padding: 12px 28px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: .95rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* ── XP Toast ───────────────────────────────────────────────── */
+#xp-toast {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--accent);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 99px;
+  font-size: .88rem;
+  font-weight: 800;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s, transform .25s;
+  z-index: 8000;
+  white-space: nowrap;
+}
+#xp-toast.xp-toast-show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Bottom nav — dashboard düyməsi ─────────────────────────── */
+#btn-dashboard .bottom-nav-icon svg { stroke: currentColor; }
