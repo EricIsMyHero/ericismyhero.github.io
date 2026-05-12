@@ -37,9 +37,6 @@ async function initFirebase() {
 
     _auth.onAuthStateChanged(onAuthStateChange);
 
-    // Redirect-dən qayıdış nəticəsini emal et
-    _auth.getRedirectResult().catch(() => {});
-
     console.info('[firebase] Uğurla başladıldı.');
     return true;
   } catch (e) {
@@ -122,9 +119,11 @@ async function signInWithGoogle() {
   try {
     const provider = new firebase.auth.GoogleAuthProvider();
     provider.setCustomParameters({ prompt: 'select_account' });
-    // popup əvəzinə redirect — COOP xətasından qaçmaq üçün
-    await _auth.signInWithRedirect(provider);
+    await _auth.signInWithPopup(provider);
   } catch (e) {
+    // COOP xətası — real xəta deyil, popup bağlandı
+    if (e.code === 'auth/popup-closed-by-user' ||
+        e.message?.includes('Cross-Origin')) return;
     _showAuthError(_authErrorMessage(e.code));
   }
 }
