@@ -645,6 +645,12 @@ const TAB_MAP = {
 let currentBottomTab = 'home';
 
 function switchBottomTab(tab) {
+  // More menu tab-larından biridirsə, btn-more active olsun
+  const moreTabs = ['tests', 'gpa', 'dashboard'];
+  if (moreTabs.includes(tab)) {
+    document.querySelectorAll('.bottom-nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('btn-more')?.classList.add('active');
+  }
   if (currentBottomTab === tab) return;
   if (!TAB_MAP[tab]) return;
 
@@ -715,3 +721,25 @@ computeStats();
 applyTranslations();
 renderCourses();
 initSearch();
+
+// ── Daha çox menyusu ─────────────────────────────────────────
+function toggleMoreMenu() {
+  const menu = document.getElementById('more-menu');
+  const overlay = document.getElementById('more-menu-overlay');
+  const isOpen = menu.classList.contains('open');
+  if (isOpen) {
+    closeMoreMenu();
+  } else {
+    menu.classList.add('open');
+    overlay.style.display = 'block';
+    document.getElementById('btn-more').classList.add('active');
+  }
+}
+
+function closeMoreMenu() {
+  const menu = document.getElementById('more-menu');
+  const overlay = document.getElementById('more-menu-overlay');
+  menu.classList.remove('open');
+  overlay.style.display = 'none';
+  document.getElementById('btn-more').classList.remove('active');
+}
