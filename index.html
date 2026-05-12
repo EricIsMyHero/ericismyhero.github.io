@@ -431,6 +431,7 @@
         Google ilə daxil ol
       </button>
       <div class="auth-divider">və ya email ilə</div>
+      <form onsubmit="handleLoginSubmit();return false;" autocomplete="on">
       <div class="auth-field">
         <label>Email</label>
         <input type="email" id="login-email" placeholder="email@unec.edu.az" autocomplete="email">
@@ -439,7 +440,8 @@
         <label>Şifrə</label>
         <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
       </div>
-      <button class="auth-submit-btn" onclick="handleLoginSubmit()">Daxil ol</button>
+      <button type="submit" class="auth-submit-btn">Daxil ol</button>
+      </form>
       <div class="auth-error"></div>
       <div class="auth-switch">
         Hesabın yoxdur? <span class="auth-switch-link" onclick="setAuthMode('register')">Qeydiyyat</span>
@@ -454,6 +456,7 @@
         Google ilə qeydiyyat
       </button>
       <div class="auth-divider">və ya email ilə</div>
+      <form onsubmit="handleRegisterSubmit();return false;" autocomplete="on">
       <div class="auth-field">
         <label>Ad Soyad</label>
         <input type="text" id="reg-name" placeholder="Əli Həsənov" autocomplete="name">
@@ -466,7 +469,8 @@
         <label>Şifrə</label>
         <input type="password" id="reg-password" placeholder="min 6 simvol" autocomplete="new-password">
       </div>
-      <button class="auth-submit-btn" onclick="handleRegisterSubmit()">Qeydiyyatdan keç</button>
+      <button type="submit" class="auth-submit-btn">Qeydiyyatdan keç</button>
+      </form>
       <div class="auth-error"></div>
       <div class="auth-switch">
         Hesabın var? <span class="auth-switch-link" onclick="setAuthMode('login')">Daxil ol</span>
@@ -1074,14 +1078,14 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
-  <script src="pdfs.js"></script>
-  <script src="scripts/data-utils.js"></script>
-  <script src="scripts/ui.js"></script>
-  <script src="scripts/features.js"></script>
-  <script src="scripts/pdf-loader.js"></script>
-  <script src="scripts/gpa.js"></script>
-  <script src="scripts/firebase.js"></script>
-  <script src="scripts/dashboard.js"></script>
+<script src="pdfs.js"></script>
+<script src="scripts/data-utils.js"></script>
+<script src="scripts/ui.js"></script>
+<script src="scripts/features.js"></script>
+<script src="scripts/pdf-loader.js"></script>
+<script src="scripts/gpa.js"></script>
+<script src="scripts/firebase.js"></script>
+<script src="scripts/dashboard.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
