@@ -306,61 +306,82 @@
     <div class="thanks-modal-header">
       <span class="thanks-modal-icon" style="animation:none">🔒</span>
       <h2 class="thanks-modal-title">Məxfilik Siyasəti</h2>
-      <button class="thanks-modal-close" onclick="closePrivacyModal()">✕</button>
-    </div>
-    <div class="privacy-body">
-      <div class="privacy-section">
-        <h3>Toplanan məlumatlar</h3>
-        <p>Bu sayt istifadəçilərdən birbaşa şəxsi məlumat toplamır. Aşağıdakı məlumatlar yalnız brauzerinizdə (local storage) saxlanılır:</p>
-        <ul>
-          <li>Seçilmiş tema və dil seçimi</li>
-          <li>Seçilmiş PDF-lər</li>
-          <li>Əvvəlcədən açılmış materiallar</li>
-        </ul>
-        <p style="margin-top:8px;">Bu məlumatlar serverə göndərilmir və yalnız sizin cihazınızda qalır.</p>
-      </div>
-      <div class="privacy-section">
-        <h3>Xəta bildirişləri</h3>
-        <p>Saytda xəta göndərdiyiniz zaman daxil etdiyiniz mətn və seçdiyiniz fənn adı <strong>Formspree</strong> vasitəsilə bizə ötürülür. Bu məlumatlar yalnız problemi həll etmək üçün istifadə olunur.</p>
-      </div>
-      <div class="privacy-section">
-        <h3>Üçüncü tərəf xidmətlər</h3>
-        <p>Saytda aşağıdakı xidmətlər istifadə olunur:</p>
-        <ul>
-          <li><strong>Google Fonts</strong> - şriftlərin göstərilməsi üçün</li>
-          <li><strong>Google Analytics</strong> - statistika üçün</li>
-          <li><strong>Formspree</strong> - form məlumatlarının göndərilməsi üçün</li>
-          <li><strong>Vercel & Gemini API</strong> - saytdakı süni intelektin istifadəsi üçün</li>
-        </ul>
-        <p>Bu xidmətlər öz məxfilik siyasətlərinə malikdir və məlumatların emalı onların qaydalarına uyğun aparılır.</p>
-      </div>
-      <div class="privacy-section">
-        <h3>Google Analytics</h3>
-        <p>Bu sayt istifadəçi davranışını analiz etmək üçün Google Analytics xidmətindən istifadə edir.
+<button class="thanks-modal-close" onclick="closePrivacyModal()">✕</button>
+</div>
 
-           Google Analytics aşağıdakı məlumatları toplaya bilər:
-           - Ziyarət edilən səhifələr
-           - Kliklənən linklər (PDF-lər daxil olmaqla)
-           - Cihaz və brauzer məlumatları
-           - IP ünvanı (anonimləşdirilmiş şəkildə)
+<div class="privacy-body">
 
-           Bu məlumatlar saytın inkişafı və istifadəçi təcrübəsinin yaxşılaşdırılması məqsədilə istifadə olunur.</p>
-      </div>
-      <div class="privacy-section">
-        <h3>Cookies</h3>
-        <p>Bu sayt birbaşa cookie istifadə etmir. Lakin üçüncü tərəf xidmətlər istifadəçi davranışını analiz etmək üçün cookie-lərdən istifadə edə bilər.</p>
-      </div>
-      <div class="privacy-section">
-        <h3>Gələcək dəyişikliklər</h3>
-        <p>Bu siyasət zamanla yenilənə bilər. Dəyişikliklər bu səhifədə paylaşılır.</p>
-      </div>
-      <div class="privacy-section">
-        <h3>Əlaqə</h3>
-        <p>Hər hansı sual üçün sayt üzərində olan <a href="mailto:ericismyhero2467@gmail.com" class="privacy-link">əlaqə bölməsindən</a> istifadə edin.</p>
-      </div>
-      <p class="privacy-updated">Son yenilənmə: 4 May 2026</p>
-    </div>
+  <div class="privacy-section">
+    <h3>Toplanan məlumatlar</h3>
+    <p>Platformadan istifadə zamanı aşağıdakı məlumatlar toplana və saxlanıla bilər:</p>
+    <ul>
+      <li>Hesab məlumatları, email ünvanı və Google giriş məlumatları</li>
+      <li>İstifadəçi dashboard statistikaları və XP məlumatları</li>
+      <li>Seçilmiş tema, dil seçimi və local storage məlumatları</li>
+      <li>Oxunan material tarixçəsi və platforma fəaliyyəti</li>
+      <li>AI sisteminə göndərilən sorğular</li>
+    </ul>
+    <p style="margin-top:8px;">Bu məlumatlar platformanın düzgün işləməsi və istifadəçi təcrübəsinin yaxşılaşdırılması üçün istifadə olunur.</p>
   </div>
+
+  <div class="privacy-section">
+    <h3>Hesab və giriş məlumatları</h3>
+    <p>Platformada hesab yaratdığınız zaman <strong>Firebase Authentication</strong> vasitəsilə məlumatlar emal olunur. Google ilə giriş zamanı ad, email ünvanı, profil şəkli və hesab identifikatoru əldə edilə bilər.</p>
+  </div>
+
+  <div class="privacy-section">
+    <h3>Xəta bildirişləri</h3>
+    <p>Saytda xəta göndərdiyiniz zaman daxil etdiyiniz mətn və seçdiyiniz fənn adı <strong>Formspree</strong> vasitəsilə bizə ötürülür. Bu məlumatlar yalnız problemi həll etmək üçün istifadə olunur.</p>
+  </div>
+
+  <div class="privacy-section">
+    <h3>Üçüncü tərəf xidmətlər</h3>
+    <p>Saytda aşağıdakı xidmətlər istifadə olunur:</p>
+    <ul>
+      <li><strong>Firebase Authentication & Firestore</strong>, hesab və istifadəçi məlumatlarının saxlanılması üçün</li>
+      <li><strong>Google Fonts</strong>, şriftlərin göstərilməsi üçün</li>
+      <li><strong>Google Analytics</strong>, statistika üçün</li>
+      <li><strong>Formspree</strong>, form məlumatlarının göndərilməsi üçün</li>
+      <li><strong>Vercel & Gemini API</strong>, süni intellekt funksiyaları üçün</li>
+    </ul>
+    <p>Bu xidmətlər öz məxfilik siyasətlərinə uyğun fəaliyyət göstərir.</p>
+  </div>
+
+  <div class="privacy-section">
+    <h3>Google Analytics</h3>
+    <p>Bu platforma istifadəçi davranışını analiz etmək üçün Google Analytics xidmətindən istifadə edir.</p>
+    <ul>
+      <li>Ziyarət edilən səhifələr</li>
+      <li>Kliklənən linklər və materiallar</li>
+      <li>Cihaz və brauzer məlumatları</li>
+      <li>Anonimləşdirilmiş IP məlumatı</li>
+    </ul>
+    <p>Bu məlumatlar platformanın inkişafı üçün istifadə olunur.</p>
+  </div>
+  <div class="privacy-section">
+    <h3>Cookies və local storage</h3>
+    <p>Platforma giriş sessiyası, tema seçimi, dil parametrləri və istifadəçi seçimlərini yadda saxlamaq üçün cookie və local storage texnologiyalarından istifadə edə bilər.</p>
+  </div>
+  <div class="privacy-section">
+    <h3>Süni intellekt istifadəsi</h3>
+    <p>AI funksiyalarından istifadə etdiyiniz zaman sorğular üçüncü tərəf AI xidmətlərinə göndərilə bilər. Cavablar avtomatik yaradılır və tam düzgünlük zəmanəti verilmir.</p>
+  </div>
+  <div class="privacy-section">
+    <h3>Hesab silinməsi</h3>
+    <p>İstifadəçi hesabının silinməsi üçün əlaqə bölməsindən müraciət edilə bilər. Təsdiqdən sonra məlumatlar silinə və ya deaktiv edilə bilər.</p>
+  </div>
+  <div class="privacy-section">
+    <h3>Gələcək dəyişikliklər</h3>
+    <p>Bu siyasət platformanın inkişafına uyğun olaraq yenilənə bilər. Dəyişikliklər bu səhifədə paylaşılır.</p>
+  </div>
+  <div class="privacy-section">
+    <h3>Əlaqə</h3>
+    <p>Hər hansı sual üçün <a href="mailto:ericismyhero2467@gmail.com" class="privacy-link">əlaqə bölməsindən</a> istifadə edin.</p>
+  </div>
+
+  <p class="privacy-updated">Son yenilənmə: 12 May 2026</p>
+</div>
+</div>
 </div>
 
 <!-- İstifadə Şərtləri Modalı -->
@@ -369,50 +390,91 @@
     <div class="thanks-modal-header">
       <span class="thanks-modal-icon" style="animation:none">📄</span>
       <h2 class="thanks-modal-title">İstifadə Şərtləri</h2>
-      <button class="thanks-modal-close" onclick="closeTermsModal()">✕</button>
-    </div>
-    <div class="privacy-body">
-      <div class="privacy-section">
-        <h3>Saytdan istifadə</h3>
-        <p>Bu saytdan istifadə etməklə aşağıdakı şərtlərlə razılaşırsınız. Əgər razı deyilsinizsə, saytdan istifadə etməyin.</p>
-      </div>
-
-      <div class="privacy-section">
-        <h3>Məzmun və məqsəd</h3>
-        <p>Bu sayt tələbələr üçün imtahan materiallarını bir yerdə toplamaq məqsədi daşıyır. Sayt rəsmi qurum deyil və heç bir universitetlə rəsmi əlaqəsi yoxdur.</p>
-      </div>
-      
-      <div class="privacy-section">
-        <h3>PDF materiallar</h3>
-        <p>Saytda yerləşdirilən PDF fayllar istifadəçilər tərəfindən paylaşılmış və ya açıq mənbələrdən götürülmüşdür. Bütün hüquqlar orijinal müəlliflərə aiddir.</p>
-        <p style="margin-top:8px;">Əgər hər hansı materialın sizə məxsus olduğunu və saytda yerləşdirilməsinin uyğun olmadığını düşünürsünüzsə, <a href="mailto:ericismyhero2467@gmail.com">bizə bildirin</a>.</p>
-      </div>
-      
-      <div class="privacy-section">
-        <h3>Məsuliyyətin məhdudlaşdırılması</h3>
-        <p>Saytda yerləşdirilən məlumatların dəqiqliyinə tam zəmanət verilmir. İstifadə zamanı yaranan hər hansı zərərə görə sayt sahibi məsuliyyət daşımır.</p>
-      </div>
-      
-      <div class="privacy-section">
-        <h3>Üçüncü tərəf xidmətlər</h3>
-        <p>Saytda bəzi üçüncü tərəf xidmətlər istifadə olunur, o cümlədən <strong>Formspree</strong>, <strong>Vercel & Gemini API</strong>, <strong>Google Analytics</strong> və <strong>Google Fonts</strong>.</p>
-      </div>
-      
-      <div class="privacy-section">
-        <h3>Dəyişikliklər</h3>
-        <p>Bu şərtlər istənilən vaxt yenilənə bilər. Yenilənmiş versiya bu səhifədə paylaşılır.</p>
-      </div>
-      
-      <div class="privacy-section">
-        <h3>Əlaqə</h3>
-        <p>Hər hansı sual və ya şikayət üçün <a href="mailto:ericismyhero2467@gmail.com" class="privacy-link">əlaqə bölməsindən</a> istifadə edin.</p>
-      </div>
-
-      <p class="privacy-updated">Son yenilənmə: 4 May 2026</p>
-    </div>
-  </div>
+<button class="thanks-modal-close" onclick="closeTermsModal()">✕</button>
 </div>
 
+<div class="privacy-body">
+
+  <div class="privacy-section">
+    <h3>Saytdan istifadə</h3>
+    <p>Bu platformadan istifadə etməklə aşağıdakı şərtlərlə razılaşırsınız. Əgər bu şərtlərlə razı deyilsinizsə, platformadan istifadə etməyin.</p>
+  </div>
+
+  <div class="privacy-section">
+    <h3>Platformanın məqsədi</h3>
+    <p>Bu platforma tələbələr üçün imtahan materiallarını, öyrənmə resurslarını və akademik alətləri bir araya gətirmək məqsədi daşıyır. Platforma heç bir universitet və ya rəsmi qurum ilə birbaşa əlaqəli deyil.</p>
+  </div>
+
+  <div class="privacy-section">
+    <h3>Hesab və istifadəçi məlumatları</h3>
+    <p>İstifadəçilər Firebase Authentication vasitəsilə hesab yarada bilər. Hesab təhlükəsizliyinə görə istifadəçi özü məsuliyyət daşıyır. Şübhəli fəaliyyət aşkar edildikdə hesab müvəqqəti məhdudlaşdırıla və ya silinə bilər.</p>
+  </div>
+
+  <div class="privacy-section">
+    <h3>XP və dashboard sistemi</h3>
+    <p>Platformada göstərilən XP, progress və digər statistik göstəricilər istifadəçi inkişafını izləmək məqsədi daşıyır. Texniki nasazlıqlar səbəbilə statistik məlumatlarda dəyişiklik və ya sıfırlanma baş verə bilər.</p>
+  </div>
+
+  <div class="privacy-section">
+    <h3>PDF və materiallar</h3>
+    <p>Platformada yerləşdirilən PDF və digər materiallar istifadəçilər tərəfindən paylaşılmış və ya açıq mənbələrdən əldə olunmuş ola bilər. Bütün hüquqlar orijinal müəlliflərə məxsusdur.</p>
+    <p style="margin-top:8px;">Əgər materialın sizə məxsus olduğunu və yerləşdirilməsinin uyğun olmadığını düşünürsünüzsə, <a href="mailto:ericismyhero2467@gmail.com" class="privacy-link">bizə bildirin</a>.</p>
+  </div>
+
+  <div class="privacy-section">
+    <h3>Süni intellekt xidmətləri</h3>
+    <p>Platformadakı AI funksiyaları avtomatik cavablar yaradır. Bu cavabların tam düzgünlüyünə zəmanət verilmir və akademik qərarlar üçün əlavə yoxlama tövsiyə olunur.</p>
+  </div>
+
+  <div class="privacy-section">
+    <h3>Qadağan olunan istifadə</h3>
+    <p>Aşağıdakı hallar qadağandır:</p>
+    <ul>
+      <li>Platformanın texniki işinə müdaxilə etmək</li>
+      <li>Saxta hesab yaratmaq</li>
+      <li>Sistemdən sui istifadə etmək</li>
+      <li>Başqa istifadəçilərin məlumatlarına müdaxilə etmək</li>
+      <li>Platformanı zərərli məqsədlərlə istifadə etmək</li>
+    </ul>
+  </div>
+
+  <div class="privacy-section">
+    <h3>Üçüncü tərəf xidmətlər</h3>
+    <p>Platformada aşağıdakı xidmətlər istifadə olunur:</p>
+    <ul>
+      <li><strong>Firebase Authentication & Firestore</strong></li>
+      <li><strong>Google Analytics</strong></li>
+      <li><strong>Google Fonts</strong></li>
+      <li><strong>Formspree</strong></li>
+      <li><strong>Vercel & Gemini API</strong></li>
+    </ul>
+  </div>
+
+  <div class="privacy-section">
+    <h3>Məsuliyyətin məhdudlaşdırılması</h3>
+    <p>Platformada təqdim olunan məlumatların və xidmətlərin fasiləsiz və tam səhvsiz işləməsinə zəmanət verilmir. İstifadə nəticəsində yaranan hər hansı zərərə görə platforma sahibi məsuliyyət daşımır.</p>
+  </div>
+
+  <div class="privacy-section">
+    <h3>Xidmət dəyişiklikləri</h3>
+    <p>Platformanın funksiyaları əvvəlcədən xəbərdarlıq edilmədən dəyişdirilə, dayandırıla və ya yenilənə bilər.</p>
+  </div>
+
+  <div class="privacy-section">
+    <h3>Şərtlərin yenilənməsi</h3>
+    <p>Bu şərtlər istənilən vaxt yenilənə bilər. Yenilənmiş versiya bu səhifədə paylaşılır.</p>
+  </div>
+
+  <div class="privacy-section">
+    <h3>Əlaqə</h3>
+    <p>Hər hansı sual və ya şikayət üçün <a href="mailto:ericismyhero2467@gmail.com" class="privacy-link">əlaqə bölməsindən</a> istifadə edin.</p>
+  </div>
+
+  <p class="privacy-updated">Son yenilənmə: 12 May 2026</p>
+
+</div>
+</div>
+</div>
 
 <!-- ═══════════════════════════════════════════════════════════ -->
 <!-- AUTH MODAL                                                 -->
