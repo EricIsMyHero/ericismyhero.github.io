@@ -29,7 +29,7 @@ async function initFirebase() {
     _auth = firebase.auth();
     _db   = firebase.firestore();
 
-    _db.enablePersistence({ synchronizeTabs: true }).catch(() => {});
+    // Offline persistence söndürüldü (Firebase 9 compat SDK deprecation xəbərdarlığından qaçmaq üçün)
 
     if (typeof firebase.analytics === 'function') {
       _analytics = firebase.analytics();
