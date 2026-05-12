@@ -164,7 +164,8 @@ function _authErrorMessage(code) {
   const map = {
     'auth/email-already-in-use':   'Bu email artıq qeydiyyatdan keçib.',
     'auth/invalid-email':          'Düzgün email daxil edin.',
-    'auth/weak-password':          'Şifrə ən azı 6 simvol olmalıdır.',
+    'auth/weak-password':          'Şifrə ən azı 8 simvol, böyük hərf və rəqəm olmalıdır.',
+    'auth/password-does-not-meet-requirements': 'Şifrə tələblərə uyğun deyil: ən azı 8 simvol, böyük hərf və rəqəm olmalıdır.',
     'auth/user-not-found':         'Bu email ilə hesab tapılmadı.',
     'auth/wrong-password':         'Şifrə yanlışdır.',
     'auth/too-many-requests':      'Çox sayda cəhd. Bir az gözləyin.',
