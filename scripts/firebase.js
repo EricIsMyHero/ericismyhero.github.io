@@ -21,7 +21,7 @@ async function initFirebase() {
   }
 
   try {
-    const res = await fetch('https://your-vercel-app.vercel.app/api/firebase-config');
+    const res = await fetch('https://ericismyhero-github-io.vercel.app/api/firebase-config');
     if (!res.ok) throw new Error('Config alınmadı: ' + res.status);
     const config = await res.json();
 
