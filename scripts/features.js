@@ -470,6 +470,13 @@ function finishTest() {
 
   renderReview();
   window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Firebase — quiz nəticəsini saxla
+  if (typeof onQuizFinished === 'function') {
+    const _subj   = testState.selectedSubject || 'Naməlum';
+    const _wrong  = total - correct - testState.userAnswers.filter(a => a === null).length;
+    onQuizFinished(_subj, correct, total, _wrong);
+  }
 }
 
 // ── İcmalı Göstər ─────────────────────────────────────────────
