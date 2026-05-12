@@ -55,6 +55,7 @@ function handlePdfClick(e) {
   if (action === 'open') {
     showPdfLoading(false);
     gtag('event', 'pdf_click', { event_category: category, event_label: file });
+    if (typeof onPdfOpened === 'function') onPdfOpened(category, file);
     setTimeout(() => {
       window.open(url, '_blank');
       hidePdfLoading();
@@ -637,7 +638,8 @@ const TAB_MAP = {
   tests:   { main: 'main-tests',   btn: 'btn-tests'   },
   courses: { main: 'main-courses', btn: 'btn-courses' },
   support: { main: 'main-support', btn: 'btn-support' },
-  gpa:     { main: 'main-gpa',     btn: 'btn-gpa'     },
+  gpa:       { main: 'main-gpa',       btn: 'btn-gpa'       },
+  dashboard: { main: 'main-dashboard', btn: 'btn-dashboard' },
 };
 
 let currentBottomTab = 'home';
@@ -674,6 +676,23 @@ function switchBottomTab(tab) {
   }
   if (tab === 'gpa') {
     if (typeof initGPA === 'function') initGPA();
+  }
+  if (tab === 'dashboard') {
+    if (isLoggedIn()) {
+      document.getElementById('dash-guest-view').style.display = 'none';
+      document.getElementById('dash-user-view').style.display  = '';
+      const p = getProfile();
+      if (p) {
+        document.getElementById('dash-avatar').textContent  = (p.name || '?').charAt(0).toUpperCase();
+        document.getElementById('dash-pname').textContent   = p.name  || '—';
+        document.getElementById('dash-pemail').textContent  = p.email || '—';
+        if (p.faculty) document.getElementById('dash-faculty-input').value = p.faculty;
+      }
+      renderDashboard();
+    } else {
+      document.getElementById('dash-guest-view').style.display = '';
+      document.getElementById('dash-user-view').style.display  = 'none';
+    }
   }
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
