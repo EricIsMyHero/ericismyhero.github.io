@@ -488,7 +488,7 @@ async function sendReport() {
     const body = encodeURIComponent(
       `Kurs: ${reportCourseName}\nFənn: ${reportSubjectName}\nXəta növü: ${type}\n\n${message}`
     );
-    window.open(`mailto:ericismyhero2467@gmail.com?subject=UNEC%20X%C9%99ta%20Bildiri%C5%9Fi&body=${body}`, '_blank');
+    window.open(`mailto:unecimtahanmateriallari@gmail.com?subject=UNEC%20X%C9%99ta%20Bildiri%C5%9Fi&body=${body}`, '_blank');
     closeReportModal();
   } finally {
     sendBtn.disabled  = false;
