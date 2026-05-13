@@ -77,8 +77,10 @@ async function _loadRecentQuizzes(uid) {
       const d   = doc.data();
       const pct = d.percent ?? Math.round((d.score / d.total) * 100);
       const cls = pct >= 75 ? 'dash-quiz-good' : pct >= 50 ? 'dash-quiz-mid' : 'dash-quiz-bad';
+      const icon = _subjectIcon(d.subject);
       return `
         <div class="dash-quiz-item ${cls}">
+          <div class="dash-quiz-icon">${icon}</div>
           <div class="dash-quiz-subj">${d.subject || '—'}</div>
           <div class="dash-quiz-score">${d.score}/${d.total}</div>
           <div class="dash-quiz-pct">${pct}%</div>
@@ -91,21 +93,27 @@ async function _loadRecentQuizzes(uid) {
 
 function _renderStreakStatus(progress) {
   const el   = document.getElementById('dash-streak-msg');
+  const txt  = document.getElementById('dash-streak-msg-text');
   if (!el) return;
-  const last = progress.lastActive;
+  const last  = progress.lastActive;
   const today = new Date().toISOString().slice(0, 10);
   const yest  = (() => { const d = new Date(); d.setDate(d.getDate()-1); return d.toISOString().slice(0,10); })();
 
   if (last === today) {
-    el.textContent = '✅ Bu gün aktiv oldun!';
-    el.className   = 'dash-streak-msg dash-streak-ok';
+    if (txt) txt.textContent = '✅ Bu gün aktiv oldun! Davam et';
+    el.className = 'dash-streak-msg dash-streak-ok';
   } else if (last === yest) {
-    el.textContent = '⚡ Bu gün aktiv ol — streaki qoru!';
-    el.className   = 'dash-streak-msg dash-streak-warn';
+    if (txt) txt.textContent = '⚡ Bu gün aktiv ol — streaki qoru!';
+    el.className = 'dash-streak-msg dash-streak-warn';
   } else {
-    el.textContent = '❌ Streak kəsildi. Yeni başlat!';
-    el.className   = 'dash-streak-msg dash-streak-dead';
+    if (txt) txt.textContent = '❌ Streak kəsildi. Yeni başlat!';
+    el.className = 'dash-streak-msg dash-streak-dead';
   }
+}
+
+function toggleStreakInfo() {
+  const panel = document.getElementById('streak-info-panel');
+  if (panel) panel.classList.toggle('hidden');
 }
 
 // ── XP toast bildirişi ────────────────────────────────────────
@@ -180,4 +188,27 @@ function openDashboardTab() {
     return;
   }
   switchBottomTab('dashboard');
+}
+
+// ── Fənn ikonu ────────────────────────────────────────────────
+function _subjectIcon(subject) {
+  if (!subject) return '📋';
+  const s = subject.toLowerCase();
+  if (s.includes('riyaz'))      return '📐';
+  if (s.includes('statisti'))   return '📊';
+  if (s.includes('iqtisad'))    return '💹';
+  if (s.includes('karyera'))    return '🎯';
+  if (s.includes('ehtimal'))    return '🎲';
+  if (s.includes('mühasibat'))  return '🧾';
+  if (s.includes('menecment'))  return '📈';
+  if (s.includes('market'))     return '📣';
+  if (s.includes('hüquq'))      return '⚖️';
+  if (s.includes('tarix'))      return '📜';
+  if (s.includes('ingilis'))    return '🌐';
+  if (s.includes('informatika') || s.includes('proqram')) return '💻';
+  if (s.includes('maliyy'))     return '💰';
+  if (s.includes('audit'))      return '🔍';
+  if (s.includes('sosiol'))     return '👥';
+  if (s.includes('fəlsəf'))     return '🧠';
+  return '📋';
 }
