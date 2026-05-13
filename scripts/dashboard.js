@@ -137,12 +137,26 @@ async function onQuizFinished(subject, score, total, mistakes) {
 async function onGpaUpdated(current, history) {
   if (!isLoggedIn()) return;
   await saveGpaUpdate(current, history);
+  // Dashboard stat-ı dərhal yenilə
+  const gpaEl = document.getElementById('dash-gpa');
+  if (gpaEl) gpaEl.textContent = current.toFixed(1);
 }
 
 // ── PDF açılışı hook ──────────────────────────────────────────
 async function onPdfOpened(subject, fileName) {
   await logPdfOpen(subject, fileName);
-  if (isLoggedIn()) showXpToast(0, 'PDF qeydə alındı 📄');
+  if (!isLoggedIn()) return;
+  // Streak yeniləndi — profili yenidən yüklə və dashboard-u refresh et
+  const uid = getCurrentUser().uid;
+  try {
+    const snap = await getDb().collection('users').doc(uid)
+                              .collection('progress').doc('main').get();
+    const data = snap.data() || {};
+    // dash-streak-ı dərhal yenilə
+    const streakEl = document.getElementById('dash-streak');
+    if (streakEl) streakEl.textContent = data.streak || 0;
+    _renderStreakStatus(data);
+  } catch(e) {}
 }
 
 // ── Auth form submit handlers ─────────────────────────────────
