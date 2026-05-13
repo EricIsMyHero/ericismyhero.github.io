@@ -190,10 +190,16 @@
     </button>
     <div class="logo" id="logo-easter" onclick="easterEggClick()">UNEC · İMTAHAN</div>
   </div>
-  <button id="authHeaderBtn" style="margin-right:8px;"></button>
-  <div class="lang-toggle">
-    <button class="lang-btn active" onclick="setLang('az')">AZ</button>
-    <button class="lang-btn" onclick="setLang('en')">EN</button>
+  <div class="header-right">
+    <button id="authHeaderBtn" class="header-auth-btn"></button>
+    <button class="header-lang-btn" id="headerLangBtn" onclick="toggleLangDropdown()">
+      <span id="headerLangLabel">AZ</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="header-lang-dropdown hidden" id="headerLangDropdown">
+      <button onclick="setLang('az');toggleLangDropdown()" class="lang-drop-item" data-lang="az">AZ</button>
+      <button onclick="setLang('en');toggleLangDropdown()" class="lang-drop-item" data-lang="en">EN</button>
+    </div>
   </div>
 </header>
 
@@ -306,12 +312,10 @@
     <div class="thanks-modal-header">
       <span class="thanks-modal-icon" style="animation:none">🔒</span>
       <h2 class="thanks-modal-title">Məxfilik Siyasəti</h2>
-<button class="thanks-modal-close" onclick="closePrivacyModal()">✕</button>
-</div>
-
-<div class="privacy-body">
-
-  <div class="privacy-section">
+      <button class="thanks-modal-close" onclick="closePrivacyModal()">✕</button>
+    </div>
+    <div class="privacy-body">
+      <div class="privacy-section">
     <h3>Toplanan məlumatlar</h3>
     <p>Platformadan istifadə zamanı aşağıdakı məlumatlar toplana və saxlanıla bilər:</p>
     <ul>
@@ -378,7 +382,6 @@
     <h3>Əlaqə</h3>
     <p>Hər hansı sual üçün <a href="mailto:ericismyhero2467@gmail.com" class="privacy-link">əlaqə bölməsindən</a> istifadə edin.</p>
   </div>
-
   <p class="privacy-updated">Son yenilənmə: 12 May 2026</p>
 </div>
 </div>
@@ -390,42 +393,34 @@
     <div class="thanks-modal-header">
       <span class="thanks-modal-icon" style="animation:none">📄</span>
       <h2 class="thanks-modal-title">İstifadə Şərtləri</h2>
-<button class="thanks-modal-close" onclick="closeTermsModal()">✕</button>
-</div>
-
-<div class="privacy-body">
-
-  <div class="privacy-section">
+      <button class="thanks-modal-close" onclick="closeTermsModal()">✕</button>
+    </div>
+    <div class="privacy-body">
+      <div class="privacy-section">
     <h3>Saytdan istifadə</h3>
     <p>Bu platformadan istifadə etməklə aşağıdakı şərtlərlə razılaşırsınız. Əgər bu şərtlərlə razı deyilsinizsə, platformadan istifadə etməyin.</p>
   </div>
-
   <div class="privacy-section">
     <h3>Platformanın məqsədi</h3>
     <p>Bu platforma tələbələr üçün imtahan materiallarını, öyrənmə resurslarını və akademik alətləri bir araya gətirmək məqsədi daşıyır. Platforma heç bir universitet və ya rəsmi qurum ilə birbaşa əlaqəli deyil.</p>
   </div>
-
   <div class="privacy-section">
     <h3>Hesab və istifadəçi məlumatları</h3>
     <p>İstifadəçilər Firebase Authentication vasitəsilə hesab yarada bilər. Hesab təhlükəsizliyinə görə istifadəçi özü məsuliyyət daşıyır. Şübhəli fəaliyyət aşkar edildikdə hesab müvəqqəti məhdudlaşdırıla və ya silinə bilər.</p>
   </div>
-
   <div class="privacy-section">
     <h3>XP və dashboard sistemi</h3>
     <p>Platformada göstərilən XP, progress və digər statistik göstəricilər istifadəçi inkişafını izləmək məqsədi daşıyır. Texniki nasazlıqlar səbəbilə statistik məlumatlarda dəyişiklik və ya sıfırlanma baş verə bilər.</p>
   </div>
-
   <div class="privacy-section">
     <h3>PDF və materiallar</h3>
     <p>Platformada yerləşdirilən PDF və digər materiallar istifadəçilər tərəfindən paylaşılmış və ya açıq mənbələrdən əldə olunmuş ola bilər. Bütün hüquqlar orijinal müəlliflərə məxsusdur.</p>
     <p style="margin-top:8px;">Əgər materialın sizə məxsus olduğunu və yerləşdirilməsinin uyğun olmadığını düşünürsünüzsə, <a href="mailto:ericismyhero2467@gmail.com" class="privacy-link">bizə bildirin</a>.</p>
   </div>
-
   <div class="privacy-section">
     <h3>Süni intellekt xidmətləri</h3>
     <p>Platformadakı AI funksiyaları avtomatik cavablar yaradır. Bu cavabların tam düzgünlüyünə zəmanət verilmir və akademik qərarlar üçün əlavə yoxlama tövsiyə olunur.</p>
   </div>
-
   <div class="privacy-section">
     <h3>Qadağan olunan istifadə</h3>
     <p>Aşağıdakı hallar qadağandır:</p>
@@ -437,7 +432,6 @@
       <li>Platformanı zərərli məqsədlərlə istifadə etmək</li>
     </ul>
   </div>
-
   <div class="privacy-section">
     <h3>Üçüncü tərəf xidmətlər</h3>
     <p>Platformada aşağıdakı xidmətlər istifadə olunur:</p>
@@ -449,32 +443,28 @@
       <li><strong>Vercel & Gemini API</strong></li>
     </ul>
   </div>
-
   <div class="privacy-section">
     <h3>Məsuliyyətin məhdudlaşdırılması</h3>
     <p>Platformada təqdim olunan məlumatların və xidmətlərin fasiləsiz və tam səhvsiz işləməsinə zəmanət verilmir. İstifadə nəticəsində yaranan hər hansı zərərə görə platforma sahibi məsuliyyət daşımır.</p>
   </div>
-
   <div class="privacy-section">
     <h3>Xidmət dəyişiklikləri</h3>
     <p>Platformanın funksiyaları əvvəlcədən xəbərdarlıq edilmədən dəyişdirilə, dayandırıla və ya yenilənə bilər.</p>
   </div>
-
   <div class="privacy-section">
     <h3>Şərtlərin yenilənməsi</h3>
     <p>Bu şərtlər istənilən vaxt yenilənə bilər. Yenilənmiş versiya bu səhifədə paylaşılır.</p>
   </div>
-
   <div class="privacy-section">
     <h3>Əlaqə</h3>
     <p>Hər hansı sual və ya şikayət üçün <a href="mailto:ericismyhero2467@gmail.com" class="privacy-link">əlaqə bölməsindən</a> istifadə edin.</p>
   </div>
-
   <p class="privacy-updated">Son yenilənmə: 12 May 2026</p>
 
 </div>
 </div>
 </div>
+
 
 <!-- ═══════════════════════════════════════════════════════════ -->
 <!-- AUTH MODAL                                                 -->
@@ -1083,28 +1073,59 @@
       <div class="dash-stats-grid">
         <div class="dash-stat-card">
           <div class="dash-stat-icon">🔥</div>
-          <div class="dash-stat-val" id="dash-streak">0</div>
-          <div class="dash-stat-label">Gün Streak</div>
+          <div class="dash-stat-body">
+            <div class="dash-stat-val" id="dash-streak">0</div>
+            <div class="dash-stat-label">Gün Streak</div>
+          </div>
         </div>
         <div class="dash-stat-card">
           <div class="dash-stat-icon">🎯</div>
-          <div class="dash-stat-val" id="dash-solved">0</div>
-          <div class="dash-stat-label">Həll edilən Test</div>
+          <div class="dash-stat-body">
+            <div class="dash-stat-val" id="dash-solved">0</div>
+            <div class="dash-stat-label">Həll edilən Test</div>
+          </div>
         </div>
         <div class="dash-stat-card">
           <div class="dash-stat-icon">⚡</div>
-          <div class="dash-stat-val" id="dash-xp">0</div>
-          <div class="dash-stat-label">XP</div>
+          <div class="dash-stat-body">
+            <div class="dash-stat-val" id="dash-xp">0</div>
+            <div class="dash-stat-label">XP</div>
+          </div>
         </div>
         <div class="dash-stat-card">
           <div class="dash-stat-icon">🎓</div>
-          <div class="dash-stat-val" id="dash-gpa">—</div>
-          <div class="dash-stat-label">GPA</div>
+          <div class="dash-stat-body">
+            <div class="dash-stat-val" id="dash-gpa">—</div>
+            <div class="dash-stat-label">GPA</div>
+          </div>
         </div>
       </div>
 
       <!-- Streak vəziyyəti -->
-      <div id="dash-streak-msg" class="dash-streak-msg"></div>
+      <div id="dash-streak-msg" class="dash-streak-msg" onclick="toggleStreakInfo()">
+        <span id="dash-streak-msg-text"></span>
+        <svg class="streak-msg-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+      <div class="streak-info-panel hidden" id="streak-info-panel">
+        <div class="streak-info-title">🔥 Streak necə qazanılır?</div>
+        <div class="streak-info-item">
+          <span class="streak-info-icon">🎯</span>
+          <div><strong>Quiz həll et</strong> - hər gün ən azı 1 test</div>
+        </div>
+        <div class="streak-info-item">
+          <span class="streak-info-icon">📄</span>
+          <div><strong>PDF aç</strong> - materialları oxu</div>
+        </div>
+        <div class="streak-info-item">
+          <span class="streak-info-icon">🎓</span>
+          <div><strong>GPA yenilə</strong> - qiymətlərini əlavə et</div>
+        </div>
+        <div class="streak-info-item">
+          <span class="streak-info-icon">⏱️</span>
+          <div><strong>Study timer işlət</strong> — ən azı 5 dəqiqə</div>
+        </div>
+        <div class="streak-info-note">Streak hər gün saat 00:00-da sıfırlanır. Günlük aktivlik saxla!</div>
+      </div>
 
       <!-- Rank kartı -->
       <div class="dash-rank-card">
@@ -1122,7 +1143,10 @@
       </div>
 
       <!-- Son quizlər -->
-      <div class="dash-section-title">Son Test Nəticələri</div>
+      <div class="dash-section-header">
+        <div class="dash-section-title">SON TEST NƏTİCƏLƏRİ</div>
+        <button class="dash-section-more" onclick="switchBottomTab('tests');closeMoreMenu()">Hamısına bax →</button>
+      </div>
       <div id="dash-recent-quizzes"></div>
 
       <!-- Profil -->
