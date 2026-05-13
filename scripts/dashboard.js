@@ -212,3 +212,60 @@ function _subjectIcon(subject) {
   if (s.includes('fəlsəf'))     return '🧠';
   return '📋';
 }
+
+// ── Quiz nəticələri modali ────────────────────────────────────
+async function openQuizResultsModal() {
+  const overlay = document.getElementById('quizResultsOverlay');
+  const body    = document.getElementById('quiz-results-body');
+  if (!overlay || !body) return;
+  overlay.classList.remove('hidden');
+  body.innerHTML = '<div class="quiz-results-loading">Yüklənir...</div>';
+
+  if (!isLoggedIn()) {
+    body.innerHTML = '<div class="quiz-results-empty">Nəticələri görmək üçün daxil ol.</div>';
+    return;
+  }
+
+  try {
+    const snap = await getDb()
+      .collection('users').doc(getCurrentUser().uid)
+      .collection('quiz_results')
+      .orderBy('timestamp', 'desc')
+      .limit(20).get();
+
+    if (snap.empty) {
+      body.innerHTML = '<div class="quiz-results-empty">Hələ heç bir test həll edilməyib.</div>';
+      return;
+    }
+
+    body.innerHTML = snap.docs.map(doc => {
+      const d   = doc.data();
+      const pct = d.percent ?? Math.round((d.score / d.total) * 100);
+      const cls = pct >= 75 ? 'qr-good' : pct >= 50 ? 'qr-mid' : 'qr-bad';
+      const icon = _subjectIcon(d.subject);
+      const ts   = d.timestamp?.toDate
+        ? d.timestamp.toDate().toLocaleDateString('az-AZ', { day:'numeric', month:'short' })
+        : '';
+      return `
+        <div class="qr-item">
+          <div class="qr-icon">${icon}</div>
+          <div class="qr-info">
+            <div class="qr-subj">${d.subject || '—'}</div>
+            <div class="qr-date">${ts}</div>
+          </div>
+          <div class="qr-right">
+            <div class="qr-score">${d.score}/${d.total}</div>
+            <div class="qr-pct ${cls}">${pct}%</div>
+          </div>
+        </div>`;
+    }).join('');
+  } catch (e) {
+    body.innerHTML = '<div class="quiz-results-empty">Yüklənmə xətası.</div>';
+    console.warn('[dashboard] quiz modal xəta:', e);
+  }
+}
+
+function closeQuizResultsModal() {
+  const overlay = document.getElementById('quizResultsOverlay');
+  if (overlay) overlay.classList.add('hidden');
+}
