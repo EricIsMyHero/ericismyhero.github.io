@@ -187,8 +187,10 @@ function applyTranslations() {
   document.getElementById('stat-subjects-label').textContent = t.statSubjects;
   document.getElementById('stat-pdfs-label').textContent     = t.statPdfs;
   document.getElementById('footer-text').textContent         = t.footer;
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.lang-btn')[lang === 'az' ? 0 : 1].classList.add('active');
+  // Lang pill active vəziyyəti
+  document.querySelectorAll('.lang-pill-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
 }
 
 // ── Statistika ───────────────────────────────────────────────
