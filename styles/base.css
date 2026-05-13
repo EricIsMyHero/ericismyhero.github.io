@@ -99,13 +99,7 @@ header {
   background-clip: text;
 }
 
-.lang-toggle {
-  display: flex;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  overflow: hidden;
-}
+.lang-toggle { display: none; } /* header-right dropdown ilə əvəzləndi */
 
 .lang-btn {
   padding: 6px 14px;
