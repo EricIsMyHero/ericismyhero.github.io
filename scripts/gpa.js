@@ -395,6 +395,11 @@ function gpaSaveSnapshot() {
   history.push({ gpa, label, ts: Date.now() });
   if (history.length > 20) history.shift();
   try { localStorage.setItem('unec_gpa_history', JSON.stringify(history)); } catch(e) {}
+
+  // Firebase-ə saxla + streak yenilə
+  if (typeof onGpaUpdated === 'function') {
+    onGpaUpdated(parseFloat(gpa), history);
+  }
 }
 
 function gpaRenderMemoryCard() {
