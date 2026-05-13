@@ -162,29 +162,12 @@ function setLang(l) {
   else if (view === 'home') renderCourses();
   const searchInput = document.getElementById('searchInput');
   if (searchInput) searchInput.placeholder = translations[lang].searchPlaceholder;
-  // Header lang label yenilə
-  const label = document.getElementById('headerLangLabel');
-  if (label) label.textContent = l.toUpperCase();
-  // Active class
-  document.querySelectorAll('.lang-drop-item').forEach(btn => {
-    btn.style.color = btn.dataset.lang === l ? 'var(--accent)' : '';
-    btn.style.fontWeight = btn.dataset.lang === l ? '800' : '700';
+  // Lang pill active vəziyyəti
+  document.querySelectorAll('.lang-pill-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === l);
   });
 }
 
-function toggleLangDropdown() {
-  const dd = document.getElementById('headerLangDropdown');
-  if (dd) dd.classList.toggle('hidden');
-}
-
-// Dropdown xaricinə basılanda bağla
-document.addEventListener('click', (e) => {
-  const dd  = document.getElementById('headerLangDropdown');
-  const btn = document.getElementById('headerLangBtn');
-  if (dd && btn && !btn.contains(e.target) && !dd.contains(e.target)) {
-    dd.classList.add('hidden');
-  }
-});
 
 function applyTranslations() {
   const t = translations[lang];
