@@ -192,13 +192,9 @@
   </div>
   <div class="header-right">
     <button id="authHeaderBtn" class="header-auth-btn"></button>
-    <button class="header-lang-btn" id="headerLangBtn" onclick="toggleLangDropdown()">
-      <span id="headerLangLabel">AZ</span>
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-    </button>
-    <div class="header-lang-dropdown hidden" id="headerLangDropdown">
-      <button onclick="setLang('az');toggleLangDropdown()" class="lang-drop-item" data-lang="az">AZ</button>
-      <button onclick="setLang('en');toggleLangDropdown()" class="lang-drop-item" data-lang="en">EN</button>
+    <div class="header-lang-pill" id="headerLangPill">
+      <button class="lang-pill-btn active" id="lang-btn-az" data-lang="az" onclick="setLang('az')">AZ</button>
+      <button class="lang-pill-btn" id="lang-btn-en" data-lang="en" onclick="setLang('en')">EN</button>
     </div>
   </div>
 </header>
@@ -316,7 +312,7 @@
     </div>
     <div class="privacy-body">
       <div class="privacy-section">
-    <h3>Toplanan məlumatlar</h3>
+        <h3>Toplanan məlumatlar</h3>
     <p>Platformadan istifadə zamanı aşağıdakı məlumatlar toplana və saxlanıla bilər:</p>
     <ul>
       <li>Hesab məlumatları, email ünvanı və Google giriş məlumatları</li>
@@ -397,7 +393,7 @@
     </div>
     <div class="privacy-body">
       <div class="privacy-section">
-    <h3>Saytdan istifadə</h3>
+        <h3>Saytdan istifadə</h3>
     <p>Bu platformadan istifadə etməklə aşağıdakı şərtlərlə razılaşırsınız. Əgər bu şərtlərlə razı deyilsinizsə, platformadan istifadə etməyin.</p>
   </div>
   <div class="privacy-section">
@@ -486,7 +482,7 @@
       <form onsubmit="handleLoginSubmit();return false;" autocomplete="on">
       <div class="auth-field">
         <label>Email</label>
-        <input type="email" id="login-email" placeholder="example@gmail.com" autocomplete="email">
+        <input type="email" id="login-email" placeholder="email@unec.edu.az" autocomplete="email">
       </div>
       <div class="auth-field">
         <label>Şifrə</label>
@@ -511,15 +507,15 @@
       <form onsubmit="handleRegisterSubmit();return false;" autocomplete="on">
       <div class="auth-field">
         <label>Ad Soyad</label>
-        <input type="text" id="reg-name" placeholder="Filankəs Filankəsov" autocomplete="name">
+        <input type="text" id="reg-name" placeholder="Əli Həsənov" autocomplete="name">
       </div>
       <div class="auth-field">
         <label>Email</label>
-        <input type="email" id="reg-email" placeholder="example@gmail.com" autocomplete="email">
+        <input type="email" id="reg-email" placeholder="email@unec.edu.az" autocomplete="email">
       </div>
       <div class="auth-field">
         <label>Şifrə</label>
-        <input type="password" id="reg-password" placeholder="minumum 8 simvol, böyük hərf, rəqəm" autocomplete="new-password">
+        <input type="password" id="reg-password" placeholder="min 8 simvol, böyük hərf, rəqəm" autocomplete="new-password">
       </div>
       <button type="submit" class="auth-submit-btn">Qeydiyyatdan keç</button>
       </form>
@@ -533,7 +529,7 @@
     <div class="auth-panel hidden" id="auth-panel-reset">
       <div class="auth-field">
         <label>Email</label>
-        <input type="email" id="reset-email" placeholder="example@gmail.com">
+        <input type="email" id="reset-email" placeholder="email@unec.edu.az">
       </div>
       <button class="auth-submit-btn" onclick="handleResetSubmit()">Sıfırlama linki göndər</button>
       <div class="auth-error"></div>
@@ -1074,28 +1070,40 @@
         <div class="dash-stat-card">
           <div class="dash-stat-icon">🔥</div>
           <div class="dash-stat-body">
-            <div class="dash-stat-val" id="dash-streak">0</div>
-            <div class="dash-stat-label">Gün Streak</div>
+            <div class="dash-stat-top">
+              <span class="dash-stat-val" id="dash-streak">0</span>
+              <span class="dash-stat-unit">gün</span>
+            </div>
+            <div class="dash-stat-label">Streak</div>
           </div>
         </div>
         <div class="dash-stat-card">
           <div class="dash-stat-icon">🎯</div>
           <div class="dash-stat-body">
-            <div class="dash-stat-val" id="dash-solved">0</div>
-            <div class="dash-stat-label">Həll edilən Test</div>
+            <div class="dash-stat-top">
+              <span class="dash-stat-val" id="dash-solved">0</span>
+              <span class="dash-stat-unit">test</span>
+            </div>
+            <div class="dash-stat-label">Həll edilən</div>
           </div>
         </div>
         <div class="dash-stat-card">
           <div class="dash-stat-icon">⚡</div>
           <div class="dash-stat-body">
-            <div class="dash-stat-val" id="dash-xp">0</div>
-            <div class="dash-stat-label">XP</div>
+            <div class="dash-stat-top">
+              <span class="dash-stat-val" id="dash-xp">0</span>
+              <span class="dash-stat-unit">xp</span>
+            </div>
+            <div class="dash-stat-label">Bal</div>
           </div>
         </div>
         <div class="dash-stat-card">
           <div class="dash-stat-icon">🎓</div>
           <div class="dash-stat-body">
-            <div class="dash-stat-val" id="dash-gpa">—</div>
+            <div class="dash-stat-top">
+              <span class="dash-stat-val" id="dash-gpa">—</span>
+              <span class="dash-stat-unit" id="dash-gpa-unit"></span>
+            </div>
             <div class="dash-stat-label">GPA</div>
           </div>
         </div>
@@ -1110,15 +1118,15 @@
         <div class="streak-info-title">🔥 Streak necə qazanılır?</div>
         <div class="streak-info-item">
           <span class="streak-info-icon">🎯</span>
-          <div><strong>Quiz həll et</strong> - hər gün ən azı 1 test</div>
+          <div><strong>Quiz həll et</strong> — hər gün ən azı 1 test</div>
         </div>
         <div class="streak-info-item">
           <span class="streak-info-icon">📄</span>
-          <div><strong>PDF aç</strong> - materialları oxu</div>
+          <div><strong>PDF aç</strong> — materialları oxu</div>
         </div>
         <div class="streak-info-item">
           <span class="streak-info-icon">🎓</span>
-          <div><strong>GPA yenilə</strong> - qiymətlərini əlavə et</div>
+          <div><strong>GPA yenilə</strong> — qiymətlərini əlavə et</div>
         </div>
         <div class="streak-info-item">
           <span class="streak-info-icon">⏱️</span>
@@ -1145,7 +1153,7 @@
       <!-- Son quizlər -->
       <div class="dash-section-header">
         <div class="dash-section-title">SON TEST NƏTİCƏLƏRİ</div>
-        <button class="dash-section-more" onclick="switchBottomTab('tests');closeMoreMenu()">Hamısına bax →</button>
+        <button class="dash-section-more" onclick="openQuizResultsModal()">Hamısına bax →</button>
       </div>
       <div id="dash-recent-quizzes"></div>
 
@@ -1169,6 +1177,19 @@
   </div>
 </div>
 
+
+<!-- ── Quiz Nəticələri Modali ──────────────────────────────── -->
+<div id="quizResultsOverlay" class="quiz-results-overlay hidden" onclick="if(event.target===this)closeQuizResultsModal()">
+  <div class="quiz-results-modal">
+    <div class="quiz-results-header">
+      <div class="quiz-results-title">Son Test Nəticələri</div>
+      <button class="quiz-results-close" onclick="closeQuizResultsModal()">✕</button>
+    </div>
+    <div id="quiz-results-body" class="quiz-results-body">
+      <div class="quiz-results-loading">Yüklənir...</div>
+    </div>
+  </div>
+</div>
 <!-- Share toast -->
 <div class="gpa-share-toast" id="gpa-share-toast">✓ Kopyalandı / Paylaşıldı</div>
 <div id="xp-toast"></div>
