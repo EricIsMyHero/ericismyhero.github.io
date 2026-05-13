@@ -160,21 +160,18 @@
 }
 
 /* ── Header Auth Button ─────────────────────────────────────── */
+/* Header auth btn — kompakt */
 #authHeaderBtn {
   display: flex;
   align-items: center;
-  gap: 6px;
-  background: var(--card-bg);
-  border: 1.5px solid var(--border);
-  border-radius: 20px;
-  padding: 5px 12px 5px 8px;
+  gap: 5px;
+  background: transparent;
+  border: none;
   cursor: pointer;
   color: var(--text);
-  font-size: .82rem;
-  font-weight: 700;
-  transition: background .15s;
+  padding: 0;
 }
-#authHeaderBtn:hover { background: var(--hover-bg); }
+#authHeaderBtn:hover .auth-avatar { opacity: .85; }
 
 .auth-avatar {
   width: 24px; height: 24px;
@@ -455,3 +452,260 @@
 
 /* ── Bottom nav — dashboard düyməsi ─────────────────────────── */
 #btn-dashboard .bottom-nav-icon svg { stroke: currentColor; }
+
+/* ── Header right group ──────────────────────────────────────── */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.header-auth-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text);
+  padding: 0;
+}
+.header-auth-btn .auth-name {
+  font-size: .8rem;
+  font-weight: 700;
+  max-width: 70px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Kompakt lang dropdown */
+.header-lang-btn {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 5px 8px;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+  letter-spacing: .04em;
+  transition: background .15s;
+}
+.header-lang-btn:hover { background: var(--hover-bg); }
+
+.header-lang-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,.3);
+  z-index: 600;
+  min-width: 64px;
+}
+.header-lang-dropdown.hidden { display: none; }
+
+.lang-drop-item {
+  display: block;
+  width: 100%;
+  padding: 9px 16px;
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--text);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  transition: background .12s;
+}
+.lang-drop-item:hover { background: var(--hover-bg); }
+
+/* ── Stat kartları — minimalist ──────────────────────────────── */
+.dash-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.dash-stat-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.dash-stat-icon { font-size: 1.25rem; flex-shrink: 0; }
+.dash-stat-body { display: flex; flex-direction: column; }
+.dash-stat-val {
+  font-size: 1.45rem;
+  font-weight: 900;
+  color: var(--text);
+  line-height: 1;
+}
+.dash-stat-label {
+  font-size: .7rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* ── Streak banner ───────────────────────────────────────────── */
+.dash-streak-msg {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: .83rem;
+  font-weight: 700;
+  padding: 11px 14px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  user-select: none;
+  transition: opacity .15s;
+}
+.dash-streak-msg:hover { opacity: .88; }
+.streak-msg-arrow { flex-shrink: 0; opacity: .7; }
+.dash-streak-ok   { background: rgba(34,197,94,.12);  color: #22c55e; }
+.dash-streak-warn { background: rgba(251,191,36,.12); color: #f59e0b; }
+.dash-streak-dead { background: rgba(239,68,68,.12);  color: #ef4444; }
+
+/* Streak info paneli */
+.streak-info-panel {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.streak-info-panel.hidden { display: none; }
+.streak-info-title {
+  font-size: .88rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+.streak-info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: .82rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+.streak-info-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+.streak-info-item strong { color: var(--text); }
+.streak-info-note {
+  font-size: .75rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+  margin-top: 4px;
+}
+
+/* ── Section header ──────────────────────────────────────────── */
+.dash-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.dash-section-title {
+  font-size: .75rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.dash-section-more {
+  font-size: .75rem;
+  color: var(--accent);
+  font-weight: 700;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* ── Quiz items — ikon ilə ───────────────────────────────────── */
+.dash-quiz-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border-radius: 12px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+.dash-quiz-icon {
+  width: 34px; height: 34px;
+  border-radius: 9px;
+  background: rgba(99,102,241,.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.dash-quiz-subj  { flex: 1; font-size: .83rem; font-weight: 700; color: var(--text); }
+.dash-quiz-score { font-size: .75rem; color: var(--text-muted); margin-right: 4px; }
+.dash-quiz-pct   { font-size: .85rem; font-weight: 800; min-width: 36px; text-align: right; }
+.dash-quiz-good .dash-quiz-pct { color: #22c55e; }
+.dash-quiz-mid  .dash-quiz-pct { color: #f59e0b; }
+.dash-quiz-bad  .dash-quiz-pct { color: #ef4444; }
+
+/* Rank kartı — kiçildilmiş */
+.dash-rank-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+.dash-rank-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.dash-rank-icon-wrap { font-size: 1.6rem; line-height: 1; }
+.dash-rank-title { font-size: .95rem; font-weight: 900; color: var(--text); }
+.dash-rank-xp    { font-size: .78rem; color: var(--accent); font-weight: 700; }
+.dash-rank-next  { font-size: .72rem; color: var(--text-muted); margin-bottom: 7px; }
+.dash-rank-bar-bg {
+  height: 6px;
+  background: var(--border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.dash-rank-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #06b6d4);
+  border-radius: 99px;
+  width: 0;
+  transition: width .8s cubic-bezier(.4,0,.2,1);
+}
+
+/* Greeting kiçildilmiş */
+.dash-greeting {
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: var(--text);
+  margin-bottom: 1px;
+}
+.dash-date {
+  font-size: .75rem;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+  text-transform: capitalize;
+}
