@@ -466,7 +466,7 @@ async function sendReport() {
   sendBtn.textContent = 'Göndərilir...';
 
   try {
-    const response = await fetch('https://formspree.io/f/xjgjrkyz', {
+    const response = await fetch('https://formspree.io/f/xkoyapnj', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
