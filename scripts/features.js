@@ -528,3 +528,40 @@ function resetTest() {
   if (fill) fill.style.width = '0%';
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+// ── QR Ödəniş Modali ──────────────────────────────────────────
+function openQRModal(type) {
+  const overlay = document.getElementById('qrPayOverlay');
+  const img     = document.getElementById('qrModalImg');
+  const title   = document.getElementById('qrModalTitle');
+  const icon    = document.getElementById('qrModalIcon');
+  const note    = document.getElementById('qrModalNote');
+
+  if (type === 'birbank') {
+    img.src   = 'images/birbankqr.png';
+    img.alt   = 'Birbank QR';
+    title.textContent = 'Birbank QR';
+    icon.textContent  = '🏦';
+    note.textContent  = 'Birbank tətbiqini açın → QR Skan → kodu oxudun';
+  } else {
+    img.src   = 'images/m10qr.png';
+    img.alt   = 'm10 QR';
+    title.textContent = 'm10 QR';
+    icon.textContent  = '💚';
+    note.textContent  = 'm10 tətbiqini açın → Köçürmə → QR Skan edin';
+  }
+
+  overlay.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeQRModal() {
+  const overlay = document.getElementById('qrPayOverlay');
+  overlay.classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+// Esc düyməsi ilə bağla
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeQRModal();
+});
