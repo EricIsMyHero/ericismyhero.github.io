@@ -717,10 +717,12 @@ function switchBottomTab(tab) {
 })();
 
 // ── Başlanğıc ─────────────────────────────────────────────────
-computeStats();
-applyTranslations();
-renderCourses();
-initSearch();
+document.addEventListener('DOMContentLoaded', function () {
+  try { computeStats(); }      catch(e) { console.warn('computeStats:', e); }
+  try { applyTranslations(); } catch(e) { console.warn('applyTranslations:', e); }
+  try { renderCourses(); }     catch(e) { console.warn('renderCourses:', e); }
+  try { initSearch(); }        catch(e) { console.warn('initSearch:', e); }
+});
 
 // ── Daha çox menyusu ─────────────────────────────────────────
 function toggleMoreMenu() {
