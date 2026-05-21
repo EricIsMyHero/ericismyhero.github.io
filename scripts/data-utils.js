@@ -239,18 +239,13 @@ function toggleExtraThemes() {
   if (label) label.textContent = isOpen ? 'Daha çox tema' : 'Daha az tema';
 }
 
-// ── Başlanğıc — Tema yüklə ───────────────────────────────────
-(function loadSavedTheme() {
-  const saved = localStorage.getItem('theme');
-  if (saved && themes[saved]) {
+// ── Başlanğıc — Tema yüklə + Genişlənmiş tema ────────────────
+document.addEventListener('DOMContentLoaded', function () {
+  const saved = localStorage.getItem('theme') || 'ocean';
+  if (themes[saved]) {
     const btn = document.querySelector(`[data-theme="${saved}"]`);
     applyTheme(saved, btn);
   }
-})();
-
-// ── Başlanğıc — Genişlənmiş tema ────────────────────────────
-(function () {
-  const saved = localStorage.getItem('theme') || 'ocean';
   if (['midnight', 'candy', 'arctic'].includes(saved)) {
     document.querySelectorAll('.theme-extra').forEach(el => el.classList.add('theme-extra-visible'));
     const icon  = document.getElementById('themeExpandIcon');
@@ -258,4 +253,4 @@ function toggleExtraThemes() {
     if (icon)  icon.classList.add('rotated');
     if (label) label.textContent = 'Daha az tema';
   }
-})();
+});
