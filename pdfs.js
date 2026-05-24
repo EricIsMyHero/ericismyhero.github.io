@@ -96,7 +96,8 @@ const data = {
       },
       "İqtisadiyyata giriş": {
         type: "yazili", semester: 2, pdfs: [
-          { name: "İqtisadiyyata Giriş", file: "iqtisadiyyat1.pdf", pdfType: "semester"}
+          { name: "İqtisadiyyata Giriş", file: "iqtisadiyyat1.pdf", pdfType: "semester"},
+          { name: "İqtisadiyyata Giriş", file: "iqtisadiyyat2.pdf", pdfType: "semester"}
         ]
       },
       "Mülki müdafiə": {
