@@ -169,6 +169,8 @@ function selectSpecialty(spec) {
   // Fill tables
   renderSemesterTable('s1', data.semester1);
   renderSemesterTable('s2', data.semester2);
+   renderSemesterTable('s3', data.semester3);
+  renderSemesterTable('s4', data.semester4);
 
   // Show/hide
   document.getElementById('currEmptyState').style.display = 'none';
