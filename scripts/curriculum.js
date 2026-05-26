@@ -413,7 +413,7 @@ function renderSemesterTable(semKey, subjects) {
       <td class="curr-td-name">${s.name}</td>
       <td><span class="curr-badge curr-badge--credit">${s.credit}</span></td>
       <td><span class="curr-badge curr-badge--hours">${s.hours || '—'}</span></td>
-      <td><span class="curr-badge curr-badge--absence${s.absenceLimit <= 5 && s.absenceLimit > 0 ? ' warn' : ''}">${s.absenceLimit || '—'}</span></td>
+      <td><span class="curr-badge curr-badge--absence${s.absenceLimit <= 1 && s.absenceLimit > 0 ? ' warn' : ''}">${s.absenceLimit || '—'}</span></td>
       <td><span class="curr-badge curr-badge--weekly">${s.weekly || '—'}</span></td>
     </tr>`).join('');
 }
