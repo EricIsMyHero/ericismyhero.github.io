@@ -44,11 +44,11 @@ const CURRICULUM_DATA = {
       { name: 'Mülki müdafiə',                                    credit: 3, hours: 45, absenceLimit: 5, weekly: 3 },
     ],
     semester6: [
-      { name: 'Ekonometrika',                    credit: 6, hours: 60, absenceLimit: 5, weekly: 4 },
-      { name: 'Beynəlxalq iqtisadiyyat',         credit: 5, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Seçmə fənn - 1',                  credit: 3, hours: 45, absenceLimit: 7, weekly: 3 },
-      { name: 'Seçmə fənn - 2',                  credit: 7, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Seçmə fənn - 3',                  credit: 4, hours: 45, absenceLimit: 7, weekly: 3 },
+      { name: 'Ekonometrika',                           credit: 10, hours: 60, absenceLimit: 5, weekly: 4 },
+      { name: 'Sosial sahələrin iqtisadiyyatı',         credit: 6, hours: 60, absenceLimit: 7, weekly: 4 },
+      { name: 'Seçmə fənn - 1',                         credit: 3, hours: 45, absenceLimit: 7, weekly: 3 },
+      { name: 'Seçmə fənn - 2',                         credit: 7, hours: 60, absenceLimit: 7, weekly: 4 },
+      { name: 'Seçmə fənn - 3',                         credit: 4, hours: 45, absenceLimit: 7, weekly: 3 },
     ],
     semester7: [
       { name: 'İnkişaf iqtisadiyyatı',                                       credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
