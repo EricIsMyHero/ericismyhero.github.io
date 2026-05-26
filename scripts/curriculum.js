@@ -51,11 +51,11 @@ const CURRICULUM_DATA = {
       { name: 'Seçmə fənn - 3',                         credit: 4, hours: 45, absenceLimit: 7, weekly: 3 },
     ],
     semester7: [
-      { name: 'İnkişaf iqtisadiyyatı',                                       credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Sərt bacarıqlar (Hard skills)',                                 credit: 10, hours: 30, absenceLimit: 3, weekly: 2 },
-      { name: 'Seçmə fənn - 1',                               credit: 3, hours: 45, absenceLimit: 5, weekly: 3 },
-      { name: 'Seçmə fənn - 1',                                         credit: 7, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Seçmə fənn - 1',                                   credit: 6, hours: 60,  absenceLimit: 7, weekly: 4 },
+      { name: 'İnkişaf iqtisadiyyatı',               credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
+      { name: 'Sərt bacarıqlar (Hard skills)',       credit: 10, hours: 30, absenceLimit: 3, weekly: 2 },
+      { name: 'Seçmə fənn - 1',                      credit: 3, hours: 45, absenceLimit: 5, weekly: 3 },
+      { name: 'Seçmə fənn - 2',                      credit: 7, hours: 60, absenceLimit: 7, weekly: 4 },
+      { name: 'Seçmə fənn - 3',                      credit: 6, hours: 60,  absenceLimit: 7, weekly: 4 },
     ],
     semester8: [
       { name: 'İstehsalat təcrübəsi / layihə',         credit: 6, hours: 0, absenceLimit: 0, weekly: 0 },
