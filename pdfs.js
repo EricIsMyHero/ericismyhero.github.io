@@ -134,6 +134,7 @@ const data = {
       },
       "Sosial iş təcrübəsində etik prinsiplər": {
         type: "yazili", semester: 2, pdfs: [
+          { name: "Sosial İş Təcrübəsində Etik Prinsiplər", file: "sitep1.pdf", pdfType: "semester"},
           { name: "Sosial İş Təcrübəsində Etik Prinsiplər", file: "sitepkollek1.pdf", pdfType: "midterm"},
           { name: "Sosial İş Təcrübəsində Etik Prinsiplər", file: "sitepkollek2.pdf", pdfType: "midterm"}
         ]
