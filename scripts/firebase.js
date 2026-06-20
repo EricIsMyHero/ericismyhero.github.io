@@ -63,11 +63,13 @@ async function onAuthStateChange(user) {
     _showUserBadge(user);
 
     if (typeof renderDashboard === 'function') renderDashboard();
+    if (typeof refreshChatAuthState === 'function') refreshChatAuthState();
     _logEvent('login', { method: user.providerData[0]?.providerId || 'unknown' });
   } else {
     currentUser    = null;
     currentProfile = null;
     _showGuestBadge();
+    if (typeof refreshChatAuthState === 'function') refreshChatAuthState();
   }
 }
 
