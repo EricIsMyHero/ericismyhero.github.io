@@ -234,6 +234,7 @@ const data = {
       "Makroiqtisadiyyat": {
         type: "yazili", semester: 2, pdfs: [
           { name: "Makroiqtisadiyyat", file: "makroiqt1.pdf", pdfType: "semester"},
+          { name: "Makroiqtisadiyyat", file: "makroiqtkollek1.pdf", pdfType: "midterm"},
           { name: "Makroiqtisadiyyat", file: "makroiqtmesele1.pdf", pdfType: "task"}
         ]
       },
