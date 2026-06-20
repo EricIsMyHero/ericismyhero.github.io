@@ -39,6 +39,7 @@ function goTo(view) {
   document.getElementById('view-' + view).classList.remove('hidden');
   clearSearch();
   if (view === 'home') renderCourses();
+  if (view !== 'pdfs' && typeof unsubscribeSubjectChat === 'function') unsubscribeSubjectChat();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -397,6 +398,8 @@ function openPDFs(subjectName) {
   `;
   reportBtn.onclick = () => openReportModal(subjectName, currentCourse);
   list.appendChild(reportBtn);
+
+  if (typeof renderSubjectChat === 'function') renderSubjectChat(currentCourse, subjectName);
 
   goTo('pdfs');
 }
