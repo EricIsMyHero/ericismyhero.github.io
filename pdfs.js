@@ -73,6 +73,7 @@ const data = {
       },
       "Ehtimal nəzəriyyəsi və riyazi statistika": {
         type: "test", semester: 2, pdfs: [
+          { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika Y26", file: "enrsY26.pdf", pdfType: "semester"},
           { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika Y25", file: "enrsY25.pdf", pdfType: "semester"},
           { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika Y23", file: "enrsY23.pdf", pdfType: "semester"}
         ]
@@ -84,6 +85,7 @@ const data = {
       },
       "Azərbaycan dilində işgüzar və akademik kommunikasiya": {
         type: "test", semester: 2, pdfs: [
+          { name: "ADİAK Y26", file: "adiakY26.pdf", pdfType: "semester"},
           { name: "ADİAK Q26", file: "adiakQ26.pdf", pdfType: "semester"},
           { name: "ADİAK Y25", file: "adiakY25.pdf", pdfType: "semester"},
           { name: "ADİAK Y23", file: "adiakY23.pdf", pdfType: "semester"}
@@ -91,6 +93,7 @@ const data = {
       },
       "Yumşaq bacarıqlar (Soft skills)": {
         type: "test", semester: 2, pdfs: [
+          { name: "Soft Skills Y26", file: "softskillsY26.pdf", pdfType: "semester"},
           { name: "Soft Skills Y25", file: "softskillsY25.pdf", pdfType: "semester"}
         ]
       },
@@ -249,7 +252,8 @@ const data = {
         type: "yazili", semester: 2, pdfs: [
           { name: "İqtisadi Fikir Tarixi", file: "iqtfkrtrx1.pdf", pdfType: "semester"},
           { name: "İqtisadi Fikir Tarixi", file: "iqtfkrtrx2.pdf", pdfType: "semester"},
-          { name: "İqtisadi Fikir Tarixi", file: "iqtfkrtrx3.pdf", pdfType: "semester"}
+          { name: "İqtisadi Fikir Tarixi", file: "iqtfkrtrx3.pdf", pdfType: "semester"},
+          { name: "İqtisadi Fikir Tarixi", file: "iqtfkrtrx4.pdf", pdfType: "semester"}
         ]
       },
       "Xərclərin idarə edilməsi": { 
