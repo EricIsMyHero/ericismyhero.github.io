@@ -40,6 +40,7 @@ function goTo(view) {
   clearSearch();
   if (view === 'home') renderCourses();
   if (view !== 'pdfs' && typeof unsubscribeSubjectChat === 'function') unsubscribeSubjectChat();
+  if (view !== 'pdfs' && typeof unsubscribePdfRatings  === 'function') unsubscribePdfRatings();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -195,7 +196,9 @@ function renderExtras() {
       <div class="pdf-actions">
         <button class="fav-btn ${isFav ? 'active' : ''}"
           onclick="toggleFavorite('pdf-extra/${pdf.file}', this)"
-          title="Sevimlilərə əlavə et">
+          title="Sevimlilərə əlavə et"
+          aria-label="${isFav ? 'Seçilmişlərdən sil' : 'Sevimlilərə əlavə et'}"
+          aria-pressed="${isFav}">
           ${isFav ? '★' : '☆'}
         </button>
         <button class="pdf-open-btn" data-url="${EXTRAS_BASE}${pdf.file}" data-file="${pdf.file}" data-action="open" data-category="PDF-Extra">
@@ -252,7 +255,7 @@ function renderFavorites() {
         </div>
       </div>
       <div class="pdf-actions">
-        <button class="fav-btn active" onclick="removeFavAndRefresh('${item.path}')" title="Sil">★</button>
+        <button class="fav-btn active" onclick="removeFavAndRefresh('${item.path}')" title="Sil" aria-label="Seçilmişlərdən sil" aria-pressed="true">★</button>
         <button class="pdf-open-btn" data-url="${BASE}${item.path}" data-file="${item.path}" data-action="open" data-category="PDF-Favorite">
           ↗ ${t.openPdf}
         </button>
@@ -367,12 +370,15 @@ function openPDFs(subjectName) {
         <div class="pdf-info">
           <div class="pdf-name"><span class="pdf-number">${index + 1}.</span> ${pdf.name}</div>
           <div class="pdf-meta">Fayl adı: ${pdf.file} ${typeBadge}</div>
+          <div class="pdf-rating" data-course="${currentCourse}" data-subject="${subjectName}" data-file="${pdf.file}"></div>
         </div>
       </div>
       <div class="pdf-actions">
         <button class="fav-btn ${isFav ? 'active' : ''}"
           onclick="toggleFavorite('pdf/${pdf.file}', this)"
-          title="Seçilmişlərə əlavə et">
+          title="Seçilmişlərə əlavə et"
+          aria-label="${isFav ? 'Seçilmişlərdən sil' : 'Seçilmişlərə əlavə et'}"
+          aria-pressed="${isFav}">
           ${isFav ? '★' : '☆'}
         </button>
         <button class="pdf-open-btn" data-url="/pdf/${pdf.file}" data-file="${pdf.file}" data-action="open">
@@ -399,7 +405,8 @@ function openPDFs(subjectName) {
   reportBtn.onclick = () => openReportModal(subjectName, currentCourse);
   list.appendChild(reportBtn);
 
-  if (typeof renderSubjectChat === 'function') renderSubjectChat(currentCourse, subjectName);
+  if (typeof renderAllPdfRatings === 'function') renderAllPdfRatings();
+  if (typeof renderSubjectChat   === 'function') renderSubjectChat(currentCourse, subjectName, pdfs);
 
   goTo('pdfs');
 }
@@ -413,10 +420,20 @@ function toggleFavorite(filePath, btn) {
   let favs = getFavorites();
   if (favs.includes(filePath)) {
     favs = favs.filter(f => f !== filePath);
-    if (btn) { btn.textContent = '☆'; btn.classList.remove('active'); }
+    if (btn) {
+      btn.textContent = '☆';
+      btn.classList.remove('active');
+      btn.setAttribute('aria-pressed', 'false');
+      btn.setAttribute('aria-label', 'Seçilmişlərə əlavə et');
+    }
   } else {
     favs.push(filePath);
-    if (btn) { btn.textContent = '★'; btn.classList.add('active'); }
+    if (btn) {
+      btn.textContent = '★';
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
+      btn.setAttribute('aria-label', 'Seçilmişlərdən sil');
+    }
   }
   localStorage.setItem("favorites", JSON.stringify(favs));
 }
