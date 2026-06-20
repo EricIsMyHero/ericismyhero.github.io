@@ -47,7 +47,7 @@ function _chatTimeAgo(date) {
 }
 
 // ── Açılış — fənn səhifəsi açılanda çağırılır ───────────────
-function renderSubjectChat(courseName, subjectName) {
+function renderSubjectChat(courseName, subjectName, pdfFiles) {
   const container = document.getElementById('subject-chat');
   if (!container) return;
 
@@ -57,6 +57,7 @@ function renderSubjectChat(courseName, subjectName) {
   _chatCurrentDocId = docId;
 
   container.innerHTML = `
+    <div class="material-leaderboard" id="material-leaderboard"></div>
     <div class="chat-header">
       <span class="chat-title">💬 Fənn müzakirəsi</span>
       <span class="chat-sub">Bu fənnin materialları haqqında fikrini yaz</span>
@@ -66,6 +67,10 @@ function renderSubjectChat(courseName, subjectName) {
     </div>
     <div class="chat-input-area" id="chat-input-area"></div>
   `;
+
+  if (typeof renderMaterialLeaderboard === 'function') {
+    renderMaterialLeaderboard(courseName, subjectName, pdfFiles || []);
+  }
 
   refreshChatAuthState();
   _attachChatListener(docId);
