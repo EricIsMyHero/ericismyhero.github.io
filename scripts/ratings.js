@@ -44,53 +44,98 @@ function renderAllPdfRatings() {
     const file     = el.dataset.file;
     const id       = ratingDocId(course, subject, file);
 
-    el.innerHTML = _starsMarkup();
-    _bindStarClicks(el, id);
+    el.innerHTML = _ratingMarkup();
+    _bindRatingWidget(el, id);
 
     const unsub = db.collection('pdf_ratings').doc(id).onSnapshot(snap => {
       const d = snap.exists ? snap.data() : { avg: 0, count: 0 };
-      _updateStarsDisplay(el, d.avg || 0, d.count || 0);
+      _updateViewStars(el, d.avg || 0, d.count || 0);
     }, err => console.warn('[ratings] dinləyici xətası:', err));
 
     _ratingUnsubs.push(unsub);
   });
 }
 
-function _starsMarkup() {
-  let html = '<div class="pdf-stars">';
-  for (let i = 1; i <= 5; i++) {
-    html += `<button type="button" class="pdf-star" data-value="${i}" aria-label="${i} ulduz ver">★</button>`;
-  }
-  html += '</div><span class="pdf-rating-count">Hələ qiymət yoxdur</span>';
-  return html;
+// ── Markup: baxış rejimi (rəngli, sabit) + reyting rejimi (boş, klikləyiə bilən) ──
+function _ratingMarkup() {
+  const viewStars = Array.from({ length: 5 }, () => `<span>★</span>`).join('');
+  const inputStars = Array.from({ length: 5 }, (_, i) =>
+    `<button type="button" class="pdf-star" data-value="${i + 1}" aria-label="${i + 1} ulduz ver">★</button>`
+  ).join('');
+
+  return `
+    <div class="rating-view">
+      <span class="rating-view-stars">${viewStars}</span>
+      <span class="rating-view-count">Hələ qiymət yoxdur</span>
+    </div>
+    <button type="button" class="rating-toggle-btn">⭐ Reytinq ver</button>
+    <div class="rating-input hidden">
+      <div class="pdf-stars">${inputStars}</div>
+      <button type="button" class="rating-back-btn" aria-label="Geri qayıt">✕</button>
+    </div>
+  `;
 }
 
-function _paintStars(el, filledCount) {
-  el.querySelectorAll('.pdf-star').forEach(btn => {
-    btn.classList.toggle('filled', Number(btn.dataset.value) <= filledCount);
-  });
-}
-
-function _updateStarsDisplay(el, avg, count) {
+function _updateViewStars(el, avg, count) {
   el.dataset.avg   = avg;
   el.dataset.count = count;
-  _paintStars(el, Math.round(avg));
-  const countEl = el.querySelector('.pdf-rating-count');
+
+  const rounded = Math.round(avg);
+  el.querySelectorAll('.rating-view-stars span').forEach((span, i) => {
+    span.classList.toggle('filled', i < rounded);
+  });
+
+  const countEl = el.querySelector('.rating-view-count');
   if (countEl) {
     countEl.textContent = count > 0 ? `${avg.toFixed(1)} (${count})` : 'Hələ qiymət yoxdur';
   }
 }
 
-function _bindStarClicks(el, ratingId) {
+function _paintInputStars(el, filledCount) {
   el.querySelectorAll('.pdf-star').forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      submitPdfRating(ratingId, Number(btn.dataset.value));
-    });
-    btn.addEventListener('mouseenter', () => _paintStars(el, Number(btn.dataset.value)));
+    btn.classList.toggle('filled', Number(btn.dataset.value) <= filledCount);
   });
-  el.addEventListener('mouseleave', () => {
-    _paintStars(el, Math.round(Number(el.dataset.avg || 0)));
+}
+
+function _enterRatingMode(el) {
+  el.querySelector('.rating-view').classList.add('hidden');
+  el.querySelector('.rating-toggle-btn').classList.add('hidden');
+  el.querySelector('.rating-input').classList.remove('hidden');
+  _paintInputStars(el, 0); // rənglər silinir — boş başlayır
+}
+
+function _exitRatingMode(el) {
+  el.querySelector('.rating-input').classList.add('hidden');
+  el.querySelector('.rating-view').classList.remove('hidden');
+  el.querySelector('.rating-toggle-btn').classList.remove('hidden');
+}
+
+function _bindRatingWidget(el, ratingId) {
+  const toggleBtn = el.querySelector('.rating-toggle-btn');
+  const backBtn   = el.querySelector('.rating-back-btn');
+  const input     = el.querySelector('.rating-input');
+
+  toggleBtn.addEventListener('click', () => {
+    if (typeof isLoggedIn !== 'function' || !isLoggedIn()) {
+      if (typeof openAuthModal === 'function') openAuthModal('login');
+      return;
+    }
+    _enterRatingMode(el);
+  });
+
+  backBtn.addEventListener('click', () => _exitRatingMode(el));
+
+  el.querySelectorAll('.pdf-star').forEach(btn => {
+    btn.addEventListener('click', async e => {
+      e.stopPropagation();
+      await submitPdfRating(ratingId, Number(btn.dataset.value));
+      _exitRatingMode(el); // ulduz verdikdə ümumi reytinq görünür
+    });
+    btn.addEventListener('mouseenter', () => _paintInputStars(el, Number(btn.dataset.value)));
+  });
+
+  input.addEventListener('mouseleave', () => {
+    if (!input.classList.contains('hidden')) _paintInputStars(el, 0);
   });
 }
 
