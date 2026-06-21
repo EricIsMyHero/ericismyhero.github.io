@@ -1214,7 +1214,76 @@
       <div id="dash-greeting" class="dash-greeting">Salam 👋</div>
       <div id="dash-date" class="dash-date"></div>
 
-      <!-- 4 stat kartı -->
+      <!-- Tələbə Profili -->
+      <div class="dash-profile-card">
+        <div class="dash-profile-row">
+          <div class="dash-profile-avatar" id="dash-avatar">?</div>
+          <div class="dash-profile-id">
+            <div class="dash-profile-name"  id="dash-pname">—</div>
+            <div class="dash-profile-email" id="dash-pemail">—</div>
+          </div>
+          <button class="dash-profile-edit-btn" onclick="toggleProfileEdit()" aria-label="Profili redaktə et" title="Profili redaktə et">✏️</button>
+        </div>
+
+        <!-- Baxış rejimi -->
+        <div class="dash-profile-facts" id="dash-profile-facts">
+          <div class="dash-fact">
+            <span class="dash-fact-icon">🏛️</span>
+            <span class="dash-fact-label">Fakültə</span>
+            <span class="dash-fact-val" id="dash-fact-faculty">—</span>
+          </div>
+          <div class="dash-fact">
+            <span class="dash-fact-icon">📚</span>
+            <span class="dash-fact-label">İxtisas</span>
+            <span class="dash-fact-val" id="dash-fact-major">—</span>
+          </div>
+          <div class="dash-fact">
+            <span class="dash-fact-icon">🎓</span>
+            <span class="dash-fact-label">Kurs</span>
+            <span class="dash-fact-val" id="dash-fact-year">—</span>
+          </div>
+          <div class="dash-fact">
+            <span class="dash-fact-icon">⚡</span>
+            <span class="dash-fact-label">Səviyyə</span>
+            <span class="dash-fact-val" id="dash-fact-rank">—</span>
+          </div>
+          <div class="dash-fact">
+            <span class="dash-fact-icon">🎯</span>
+            <span class="dash-fact-label">Həll edilən test</span>
+            <span class="dash-fact-val" id="dash-fact-solved">0</span>
+          </div>
+        </div>
+
+        <!-- Redaktə rejimi -->
+        <div class="dash-profile-edit hidden" id="dash-profile-edit">
+          <label class="dash-edit-label">Fakültə</label>
+          <input class="dash-edit-input" id="dash-faculty-input" placeholder="məs. İqtisadiyyat">
+
+          <label class="dash-edit-label">İxtisas</label>
+          <input class="dash-edit-input" id="dash-major-input" placeholder="məs. Maliyyə">
+
+          <label class="dash-edit-label">Kurs</label>
+          <select class="dash-edit-input" id="dash-year-input">
+            <option value="">Seç...</option>
+            <option value="1-ci kurs">1-ci kurs</option>
+            <option value="2-ci kurs">2-ci kurs</option>
+            <option value="3-cü kurs">3-cü kurs</option>
+            <option value="4-cü kurs">4-cü kurs</option>
+          </select>
+
+          <div class="dash-edit-actions">
+            <button class="dash-edit-save" id="dash-profile-save-btn" onclick="handleProfileUpdate()">Yadda saxla</button>
+            <button class="dash-edit-cancel" onclick="toggleProfileEdit(false)">Ləğv et</button>
+          </div>
+        </div>
+
+        <button class="dash-signout-btn" onclick="signOut()">Çıxış</button>
+      </div>
+
+      <!-- Statistika -->
+      <div class="dash-section-header">
+        <div class="dash-section-title">STATİSTİKA</div>
+      </div>
       <div class="dash-stats-grid">
         <div class="dash-stat-card">
           <div class="dash-stat-icon">🔥</div>
@@ -1284,7 +1353,10 @@
         <div class="streak-info-note">Streak hər gün saat 00:00-da sıfırlanır. Günlük aktivlik saxla!</div>
       </div>
 
-      <!-- Rank kartı -->
+      <!-- Səviyyə -->
+      <div class="dash-section-header">
+        <div class="dash-section-title">SƏVİYYƏ</div>
+      </div>
       <div class="dash-rank-card">
         <div class="dash-rank-header">
           <div class="dash-rank-icon-wrap" id="dash-rank-icon">🌱</div>
@@ -1305,22 +1377,6 @@
         <button class="dash-section-more" onclick="openQuizResultsModal()">Hamısına bax →</button>
       </div>
       <div id="dash-recent-quizzes"></div>
-
-      <!-- Profil -->
-      <div class="dash-profile-card" style="margin-top:16px;">
-        <div class="dash-profile-row">
-          <div class="dash-profile-avatar" id="dash-avatar">?</div>
-          <div>
-            <div class="dash-profile-name"  id="dash-pname">—</div>
-            <div class="dash-profile-email" id="dash-pemail">—</div>
-          </div>
-        </div>
-        <div class="dash-faculty-row">
-          <input class="dash-faculty-input" id="dash-faculty-input" placeholder="Fakültəni daxil et (məs. İqtisadiyyat)">
-          <button class="dash-faculty-btn" onclick="handleFacultyUpdate()">Saxla</button>
-        </div>
-        <button class="dash-signout-btn" onclick="signOut()">Çıxış</button>
-      </div>
 
     </div>
   </div>
