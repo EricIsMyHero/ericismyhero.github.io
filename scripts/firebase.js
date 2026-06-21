@@ -179,9 +179,13 @@ function _initRecaptcha() {
     try { window.recaptchaVerifier.clear(); } catch (_) {}
     window.recaptchaVerifier = null;
   }
+  // DİQQƏT: 3-cü arqument silindi. O, Auth obyekti deyil, Firebase App
+  // obyekti gözləyirdi (_auth ötürülməsi "invalid-api-key" xətasına səbəb
+  // olurdu, çünki _auth.options yoxdur, sadəcə _auth.app.options var).
+  // Arqumenti ötürməyəndə default app özü götürülür.
   window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
     size: 'invisible'
-  }, _auth);
+  });
   return window.recaptchaVerifier;
 }
 
