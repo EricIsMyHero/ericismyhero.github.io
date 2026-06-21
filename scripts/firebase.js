@@ -84,6 +84,8 @@ async function _ensureUserDoc(user) {
       email:      user.email || '',
       university: 'UNEC',
       faculty:    '',
+      major:      '',
+      year:       '',
       createdAt:  firebase.firestore.FieldValue.serverTimestamp(),
       photoURL:   user.photoURL || ''
     });
@@ -408,9 +410,9 @@ function _showGuestBadge() {
   btn.onclick   = () => openAuthModal('login');
 }
 
-async function updateUserProfile(faculty) {
-  if (!currentUser) return;
-  await _db.collection('users').doc(currentUser.uid).update({ faculty });
+async function updateUserProfile(updates) {
+  if (!currentUser || !updates) return;
+  await _db.collection('users').doc(currentUser.uid).update(updates);
   currentProfile = await _getUserProfile(currentUser.uid);
   if (typeof renderDashboard === 'function') renderDashboard();
 }
