@@ -14,12 +14,15 @@ function renderDashboard() {
   const rankInfo = getRankInfo(xp);
 
   // Salamlama
-  const name = profile?.name?.split(' ')[0] || user?.displayName?.split(' ')[0] || 'Tələbə';
+  const firstName = profile?.name?.split(' ')[0] || user?.displayName?.split(' ')[0] || 'Tələbə';
   const hour = new Date().getHours();
   const greeting = hour < 12 ? 'Sabahın xeyir' : hour < 18 ? 'Günün xeyir' : 'Axşamın xeyir';
 
-  document.getElementById('dash-greeting').textContent  = `${greeting}, ${name} 👋`;
+  document.getElementById('dash-greeting').textContent  = `${greeting}, ${firstName} 👋`;
   document.getElementById('dash-date').textContent      = _formatDate();
+
+  // Profil kartı — şəxsiyyət + faktlar
+  _renderProfileCard(profile, rankInfo, solved);
 
   // Statistika kartları
   document.getElementById('dash-streak').textContent    = streak;
@@ -45,6 +48,65 @@ function renderDashboard() {
 
   // Streak vəziyyəti
   _renderStreakStatus(progress);
+}
+
+// ── Profil kartı — avatar, ad, email, faktlar ────────────────
+function _renderProfileCard(profile, rankInfo, solved) {
+  const avatarEl = document.getElementById('dash-avatar');
+  const nameEl   = document.getElementById('dash-pname');
+  const emailEl  = document.getElementById('dash-pemail');
+  if (avatarEl) avatarEl.textContent = (profile?.name || '?').charAt(0).toUpperCase();
+  if (nameEl)   nameEl.textContent   = profile?.name  || '—';
+  if (emailEl)  emailEl.textContent  = profile?.email || '—';
+
+  const setFact = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+  };
+  setFact('dash-fact-faculty', profile?.faculty || '—');
+  setFact('dash-fact-major',   profile?.major    || '—');
+  setFact('dash-fact-year',    profile?.year     || '—');
+  setFact('dash-fact-rank',    `${rankInfo.rank.icon} ${rankInfo.rank.name}`);
+  setFact('dash-fact-solved',  String(solved));
+}
+
+// ── Profil redaktə rejimi açıb-bağlamaq ──────────────────────
+function toggleProfileEdit(forceShow) {
+  const facts = document.getElementById('dash-profile-facts');
+  const edit  = document.getElementById('dash-profile-edit');
+  if (!facts || !edit) return;
+
+  const opening = forceShow !== undefined ? forceShow : edit.classList.contains('hidden');
+
+  if (opening) {
+    const p = getProfile();
+    const fEl = document.getElementById('dash-faculty-input');
+    const mEl = document.getElementById('dash-major-input');
+    const yEl = document.getElementById('dash-year-input');
+    if (fEl) fEl.value = p?.faculty || '';
+    if (mEl) mEl.value = p?.major   || '';
+    if (yEl) yEl.value = p?.year    || '';
+    facts.classList.add('hidden');
+    edit.classList.remove('hidden');
+  } else {
+    edit.classList.add('hidden');
+    facts.classList.remove('hidden');
+  }
+}
+
+// ── Profil yeniləməsini saxla ─────────────────────────────────
+async function handleProfileUpdate() {
+  const faculty = document.getElementById('dash-faculty-input')?.value?.trim() || '';
+  const major   = document.getElementById('dash-major-input')?.value?.trim()  || '';
+  const year    = document.getElementById('dash-year-input')?.value || '';
+
+  const btn = document.getElementById('dash-profile-save-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Saxlanılır...'; }
+
+  await updateUserProfile({ faculty, major, year });
+
+  if (btn) { btn.disabled = false; btn.textContent = 'Yadda saxla'; }
+  toggleProfileEdit(false);
 }
 
 async function _loadDashGpa(uid) {
@@ -179,13 +241,6 @@ function handleResetSubmit() {
   const email = document.getElementById('reset-email')?.value?.trim();
   if (!email) return;
   sendPasswordReset(email);
-}
-
-// ── Profil fakültəsini yenilə ─────────────────────────────────
-function handleFacultyUpdate() {
-  const val = document.getElementById('dash-faculty-input')?.value?.trim();
-  if (!val) return;
-  updateUserProfile(val);
 }
 
 // ── Köməkçi ──────────────────────────────────────────────────
