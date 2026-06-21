@@ -661,13 +661,14 @@ const TAB_MAP = {
   gpa:       { main: 'main-gpa',       btn: 'btn-gpa'       },
   dashboard: { main: 'main-dashboard', btn: 'btn-dashboard' },
   curriculum: { main: 'main-curriculum', btn: 'btn-curriculum' },
+  requests:   { main: 'main-requests',   btn: 'btn-requests'   },
 };
 
 let currentBottomTab = 'home';
 
 function switchBottomTab(tab) {
   // More menu tab-larından biridirsə, btn-more active olsun
-  const moreTabs = ['tests', 'gpa', 'dashboard', 'curriculum'];
+  const moreTabs = ['tests', 'gpa', 'dashboard', 'curriculum', 'requests'];
   if (moreTabs.includes(tab)) {
     document.querySelectorAll('.bottom-nav-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('btn-more')?.classList.add('active');
@@ -706,6 +707,9 @@ function switchBottomTab(tab) {
   }
   if (tab === 'curriculum') {
     initCurriculum();
+  }
+  if (tab === 'requests') {
+    if (typeof initMaterialRequests === 'function') initMaterialRequests();
   }
   if (tab === 'dashboard') {
     if (isLoggedIn()) {
