@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="styles/dashboard.css">
   <link rel="stylesheet" href="styles/chat.css">
   <link rel="stylesheet" href="styles/ratings.css">
+  <link rel="stylesheet" href="styles/requests.css">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#3b82f6">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -1032,6 +1033,15 @@
       <span class="more-menu-label">İxtisas Planı</span>
       <svg class="more-menu-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
     </button>
+    <button class="more-menu-item" id="btn-requests" onclick="switchBottomTab('requests');closeMoreMenu()">
+      <span class="more-menu-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </span>
+      <span class="more-menu-label">Material İstəkləri</span>
+      <svg class="more-menu-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
   </div>
 </div>
 
@@ -1432,6 +1442,7 @@
 <script src="scripts/firebase.js"></script>
 <script src="scripts/chat.js"></script>
 <script src="scripts/ratings.js"></script>
+<script src="scripts/requests.js"></script>
 <script src="scripts/dashboard.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -1730,6 +1741,49 @@
     <div id="currEmptyState" class="curr-empty">
       <div class="curr-empty-icon">🎓</div>
       <div class="curr-empty-text">Yuxarıdan öz ixtisasını seç</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── Material İstəkləri ─────────────────────────────────── -->
+<div id="main-requests" class="main-tab" style="display:none;">
+  <div class="container">
+
+    <div class="req-hero">
+      <div class="req-page-badge">🔎 Material İstəkləri</div>
+      <h1 class="req-page-title">Axtardığını <span>tapa bilmirsən?</span></h1>
+      <p class="req-hero-sub">İstək yaz — başqa tələbələr kömək etsin.</p>
+    </div>
+
+    <button class="req-new-btn" onclick="openRequestForm()">+ Yeni istək yaz</button>
+
+    <div class="req-form hidden" id="req-form">
+      <textarea class="req-form-textarea" id="req-text-input" maxlength="300" placeholder="Məs: Maliyyə bazarları final sualları axtarıram"></textarea>
+      <div class="req-form-row">
+        <select class="req-form-select" id="req-course-input">
+          <option value="">Kurs (istəyə görə)</option>
+          <option value="1-ci kurs">1-ci kurs</option>
+          <option value="2-ci kurs">2-ci kurs</option>
+          <option value="3-cü kurs">3-cü kurs</option>
+          <option value="4-cü kurs">4-cü kurs</option>
+        </select>
+        <input class="req-form-input" id="req-subject-input" placeholder="Fənn adı (istəyə görə)">
+      </div>
+      <div class="req-form-actions">
+        <button class="req-form-submit" id="req-submit-btn" onclick="submitMaterialRequest()">Göndər</button>
+        <button class="req-form-cancel" onclick="closeRequestForm()">Ləğv et</button>
+      </div>
+    </div>
+
+    <div class="req-filters">
+      <button class="req-filter-btn active" data-filter="all" onclick="setRequestsFilter('all')">Hamısı</button>
+      <button class="req-filter-btn" data-filter="open" onclick="setRequestsFilter('open')">Açıq</button>
+      <button class="req-filter-btn" data-filter="fulfilled" onclick="setRequestsFilter('fulfilled')">Tapılıb</button>
+    </div>
+
+    <div id="req-list" class="req-list">
+      <div class="req-loading">Yüklənir...</div>
     </div>
 
   </div>
