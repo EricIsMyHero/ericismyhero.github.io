@@ -9,8 +9,9 @@ let _activeChatTag    = null;
 
 const CHAT_TAGS = [
   { key: 'final',   label: '📌 Finalda düşdü' },
+  { key: 'midterm',   label: '📎 Kollekviumda düşdü' },
   { key: 'old',     label: '🔁 Köhnə suallardır' },
-  { key: 'changed', label: '👨‍🏫 Müəllim dəyişib' }
+  { key: 'wantmore', label: '📕 Yeni PDF istəyirəm' }
 ];
 
 // ── Köməkçilər ────────────────────────────────────────────────
