@@ -711,13 +711,6 @@ function switchBottomTab(tab) {
     if (isLoggedIn()) {
       document.getElementById('dash-guest-view').style.display = 'none';
       document.getElementById('dash-user-view').style.display  = '';
-      const p = getProfile();
-      if (p) {
-        document.getElementById('dash-avatar').textContent  = (p.name || '?').charAt(0).toUpperCase();
-        document.getElementById('dash-pname').textContent   = p.name  || '—';
-        document.getElementById('dash-pemail').textContent  = p.email || '—';
-        if (p.faculty) document.getElementById('dash-faculty-input').value = p.faculty;
-      }
       renderDashboard();
     } else {
       document.getElementById('dash-guest-view').style.display = '';
