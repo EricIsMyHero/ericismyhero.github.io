@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="styles/chat.css">
   <link rel="stylesheet" href="styles/ratings.css">
   <link rel="stylesheet" href="styles/requests.css">
+  <link rel="stylesheet" href="styles/timer.css">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#3b82f6">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -1042,6 +1043,15 @@
       <span class="more-menu-label">Material İstəkləri</span>
       <svg class="more-menu-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
     </button>
+    <button class="more-menu-item" id="btn-timer" onclick="switchBottomTab('timer');closeMoreMenu()">
+      <span class="more-menu-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+        </svg>
+      </span>
+      <span class="more-menu-label">Taymer &amp; İmtahan</span>
+      <svg class="more-menu-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
   </div>
 </div>
 
@@ -1789,6 +1799,96 @@
   </div>
 </div>
 
+<!-- ── Taymer & İmtahan Geri Sayımı ─────────────────────── -->
+<div id="main-timer" class="main-tab" style="display:none;">
+  <div class="timer-container">
+
+    <!-- Notification banner -->
+    <div class="timer-notif-banner hidden" id="timer-notif-banner">
+      <span>🔔 Bildiriş icazəsi ver</span>
+      <button class="timer-notif-btn" onclick="requestTimerNotif()">İcazə ver</button>
+    </div>
+
+    <!-- ── Pomodoro ── -->
+    <div class="timer-section-title">Pomodoro Taymer</div>
+    <div class="pomodoro-card">
+
+      <!-- Mode tabs -->
+      <div class="pomodoro-modes">
+        <button class="pomodoro-mode-btn active" id="pmode-focus"  onclick="pomodoroSetMode('focus')">Fokus</button>
+        <button class="pomodoro-mode-btn"        id="pmode-short"  onclick="pomodoroSetMode('short')">Qısa fasilə</button>
+        <button class="pomodoro-mode-btn"        id="pmode-long"   onclick="pomodoroSetMode('long')">Uzun fasilə</button>
+      </div>
+
+      <!-- Circle -->
+      <div class="pomodoro-circle-wrap">
+        <svg class="pomodoro-svg" viewBox="0 0 200 200">
+          <circle class="pomodoro-track"    cx="100" cy="100" r="90"/>
+          <circle class="pomodoro-progress" cx="100" cy="100" r="90"
+            id="pomodoro-ring"
+            style="stroke-dasharray:565.48;stroke-dashoffset:0"/>
+        </svg>
+        <div class="pomodoro-center">
+          <div class="pomodoro-time" id="pomodoro-time">25:00</div>
+          <div class="pomodoro-label" id="pomodoro-mode-label">Fokus</div>
+        </div>
+      </div>
+
+      <!-- Session dots -->
+      <div class="pomodoro-sessions">
+        <div class="pomodoro-dot" id="pdot-0"></div>
+        <div class="pomodoro-dot" id="pdot-1"></div>
+        <div class="pomodoro-dot" id="pdot-2"></div>
+        <div class="pomodoro-dot" id="pdot-3"></div>
+      </div>
+
+      <!-- Controls -->
+      <div class="pomodoro-controls">
+        <button class="pomodoro-btn-secondary" onclick="pomodoroReset()" title="Sıfırla">↺</button>
+        <button class="pomodoro-btn-main" id="pomodoro-play-btn" onclick="pomodoroToggle()">▶</button>
+        <button class="pomodoro-btn-secondary" onclick="pomodoroSkip()" title="Keç">⏭</button>
+      </div>
+
+      <!-- Stats -->
+      <div class="pomodoro-stats">
+        <div class="pomodoro-stat">
+          <div class="pomodoro-stat-val" id="pstat-done">0</div>
+          <div class="pomodoro-stat-lbl">Sessiya</div>
+        </div>
+        <div class="pomodoro-stat">
+          <div class="pomodoro-stat-val" id="pstat-mins">0</div>
+          <div class="pomodoro-stat-lbl">Dəq (bu gün)</div>
+        </div>
+      </div>
+
+    </div><!-- /pomodoro-card -->
+
+    <!-- ── Exam Countdown ── -->
+    <div class="timer-section-title">İmtahan Geri Sayımı</div>
+
+    <div class="exam-form hidden" id="exam-form">
+      <div class="exam-form-row">
+        <input class="exam-form-input" id="exam-name-input" placeholder="Fənn adı (məs: Makroiqtisadiyyat)" maxlength="60">
+      </div>
+      <div class="exam-form-row">
+        <input class="exam-form-input" id="exam-date-input" type="date">
+      </div>
+      <div class="exam-form-actions">
+        <button class="exam-form-cancel" onclick="hideExamForm()">Ləğv et</button>
+        <button class="exam-form-submit" onclick="addExam()">Əlavə et</button>
+      </div>
+    </div>
+
+    <button class="exam-add-btn" onclick="showExamForm()">＋ İmtahan əlavə et</button>
+
+    <div class="exam-list" id="exam-list">
+      <p class="exam-empty">İmtahan əlavə edilməyib.</p>
+    </div>
+
+  </div>
+</div>
+
   <script src="scripts/curriculum.js"></script>
+  <script src="scripts/timer.js"></script>
 </body>
 </html>
