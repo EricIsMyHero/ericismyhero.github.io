@@ -662,13 +662,14 @@ const TAB_MAP = {
   dashboard: { main: 'main-dashboard', btn: 'btn-dashboard' },
   curriculum: { main: 'main-curriculum', btn: 'btn-curriculum' },
   requests:   { main: 'main-requests',   btn: 'btn-requests'   },
+  timer:      { main: 'main-timer',      btn: 'btn-timer'      },
 };
 
 let currentBottomTab = 'home';
 
 function switchBottomTab(tab) {
   // More menu tab-larından biridirsə, btn-more active olsun
-  const moreTabs = ['tests', 'gpa', 'dashboard', 'curriculum', 'requests'];
+  const moreTabs = ['tests', 'gpa', 'dashboard', 'curriculum', 'requests', 'timer'];
   if (moreTabs.includes(tab)) {
     document.querySelectorAll('.bottom-nav-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('btn-more')?.classList.add('active');
@@ -710,6 +711,9 @@ function switchBottomTab(tab) {
   }
   if (tab === 'requests') {
     if (typeof initMaterialRequests === 'function') initMaterialRequests();
+  }
+  if (tab === 'timer') {
+    if (typeof initTimer === 'function') initTimer();
   }
   if (tab === 'dashboard') {
     if (isLoggedIn()) {
