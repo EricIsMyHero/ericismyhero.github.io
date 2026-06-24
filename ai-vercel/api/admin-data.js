@@ -1,21 +1,9 @@
 // api/admin-data.js
-// Vercel Serverless — Admin paneli üçün tam Firestore məlumatı
-// Firebase Admin SDK istifadə edir (server-side, tam icazə)
-// Qorunma: ADMIN_SECRET_KEY header ilə
+// Vercel Serverless — Admin paneli
+// Firebase Admin SDK YOX — Firebase REST API + Service Account JWT istifadə edir
+// Heç bir npm paketi lazım deyil
 
-import { initializeApp, getApps, cert } from 'firebase-admin/app';
-import { getFirestore } from 'firebase-admin/firestore';
-
-// ── Firebase Admin init ───────────────────────────────────────
-function getDb() {
-  if (!getApps().length) {
-    const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-    initializeApp({ credential: cert(serviceAccount) });
-  }
-  return getFirestore();
-}
-
-// ── CORS helper ───────────────────────────────────────────────
+// ── CORS ─────────────────────────────────────────────────────
 function setCors(res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -23,48 +11,149 @@ function setCors(res) {
   res.setHeader('Access-Control-Max-Age', '86400');
 }
 
-// ── Auth check ────────────────────────────────────────────────
+// ── Auth ──────────────────────────────────────────────────────
 function checkAuth(req) {
   const key = req.headers['x-admin-key'] || req.body?.adminKey;
   return key && key === process.env.ADMIN_SECRET_KEY;
 }
 
+// ── Firebase JWT (Service Account → Access Token) ─────────────
+async function getAccessToken() {
+  const sa = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+
+  const header = { alg: 'RS256', typ: 'JWT' };
+  const now = Math.floor(Date.now() / 1000);
+  const claim = {
+    iss: sa.client_email,
+    sub: sa.client_email,
+    aud: 'https://oauth2.googleapis.com/token',
+    iat: now,
+    exp: now + 3600,
+    scope: 'https://www.googleapis.com/auth/datastore',
+  };
+
+  const b64 = (obj) => Buffer.from(JSON.stringify(obj)).toString('base64url');
+  const unsigned = `${b64(header)}.${b64(claim)}`;
+
+  // Sign with RS256 using Web Crypto
+  const pemKey = sa.private_key;
+  const keyData = pemKey
+    .replace(/-----BEGIN PRIVATE KEY-----/, '')
+    .replace(/-----END PRIVATE KEY-----/, '')
+    .replace(/\n/g, '');
+  const binaryKey = Buffer.from(keyData, 'base64');
+
+  const cryptoKey = await crypto.subtle.importKey(
+    'pkcs8',
+    binaryKey,
+    { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
+    false,
+    ['sign']
+  );
+
+  const encoder = new TextEncoder();
+  const sig = await crypto.subtle.sign(
+    'RSASSA-PKCS1-v1_5',
+    cryptoKey,
+    encoder.encode(unsigned)
+  );
+
+  const jwt = `${unsigned}.${Buffer.from(sig).toString('base64url')}`;
+
+  // Exchange JWT for access token
+  const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: `grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=${jwt}`,
+  });
+  const tokenData = await tokenRes.json();
+  if (!tokenData.access_token) throw new Error('Token alınamadı: ' + JSON.stringify(tokenData));
+  return tokenData.access_token;
+}
+
+// ── Firestore REST helper ─────────────────────────────────────
+async function firestoreGet(projectId, path, token) {
+  const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/${path}`;
+  const res = await fetch(url, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error(`Firestore xətası: ${res.status} ${path}`);
+  return res.json();
+}
+
+async function firestoreList(projectId, collection, token, pageSize = 100) {
+  const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/${collection}?pageSize=${pageSize}`;
+  const res = await fetch(url, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) return { documents: [] };
+  return res.json();
+}
+
+// ── Firestore value extractor ────────────────────────────────
+function val(field) {
+  if (!field) return null;
+  if (field.stringValue  !== undefined) return field.stringValue;
+  if (field.integerValue  !== undefined) return parseInt(field.integerValue);
+  if (field.doubleValue   !== undefined) return parseFloat(field.doubleValue);
+  if (field.booleanValue  !== undefined) return field.booleanValue;
+  if (field.timestampValue !== undefined) return field.timestampValue;
+  if (field.arrayValue)   return (field.arrayValue.values || []).map(val);
+  if (field.mapValue)     return extractFields(field.mapValue.fields || {});
+  return null;
+}
+
+function extractFields(fields) {
+  const out = {};
+  for (const [k, v] of Object.entries(fields || {})) out[k] = val(v);
+  return out;
+}
+
+function docId(doc) {
+  return doc.name?.split('/').pop() || '';
+}
+
 // ── Data fetchers ─────────────────────────────────────────────
 
-async function getUsers(db) {
-  const snap = await db.collection('users').get();
+async function getUsers(projectId, token) {
+  const data = await firestoreList(projectId, 'users', token, 200);
+  const docs = data.documents || [];
   const users = [];
-  for (const doc of snap.docs) {
-    const data = doc.data();
-    let progress = {};
+
+  for (const doc of docs) {
+    const f = extractFields(doc.fields);
+    // progress subcollection
+    let xp = 0, streak = 0, totalTests = 0;
     try {
-      const pSnap = await doc.ref.collection('progress').doc('main').get();
-      if (pSnap.exists) progress = pSnap.data();
+      const pDoc = await firestoreGet(projectId, `users/${docId(doc)}/progress/main`, token);
+      const pf = extractFields(pDoc.fields || {});
+      xp = pf.xp || 0;
+      streak = pf.streak || 0;
+      totalTests = pf.totalTests || 0;
     } catch (_) {}
+
     users.push({
-      uid: doc.id,
-      name:    data.name    || 'Adsız',
-      email:   data.email   || '',
-      faculty: data.faculty || '',
-      major:   data.major   || '',
-      year:    data.year    || '',
-      xp:      progress.xp      || 0,
-      streak:  progress.streak  || 0,
-      totalTests: progress.totalTests || 0,
-      createdAt: data.createdAt?.toDate?.()?.toISOString() || null,
-      lastLogin: data.lastLogin?.toDate?.()?.toISOString() || null,
+      uid: docId(doc),
+      name:    f.name    || 'Adsız',
+      email:   f.email   || '',
+      faculty: f.faculty || '',
+      major:   f.major   || '',
+      year:    f.year    || '',
+      xp, streak, totalTests,
+      createdAt: f.createdAt || null,
+      lastLogin: f.lastLogin || null,
     });
   }
   return users.sort((a, b) => b.xp - a.xp);
 }
 
-async function getPdfOpens(db) {
-  const snap = await db.collection('analytics').doc('pdf_opens').collection('events')
-    .orderBy('ts', 'desc').limit(500).get();
+async function getPdfOpens(projectId, token) {
+  const data = await firestoreList(projectId, 'analytics/pdf_opens/events', token, 500);
+  const docs = data.documents || [];
   const counts = {};
-  for (const doc of snap.docs) {
-    const d = doc.data();
-    const key = d.pdfName || d.pdf || 'Naməlum';
+  for (const doc of docs) {
+    const f = extractFields(doc.fields);
+    const key = f.pdfName || f.pdf || 'Naməlum';
     counts[key] = (counts[key] || 0) + 1;
   }
   return Object.entries(counts)
@@ -73,124 +162,93 @@ async function getPdfOpens(db) {
     .map(([name, count]) => ({ name, count }));
 }
 
-async function getSubjectChats(db) {
-  const topSnap = await db.collection('subject_chats').get();
-  const results = [];
-  for (const doc of topSnap.docs) {
-    const msgSnap = await doc.ref.collection('messages')
-      .orderBy('ts', 'desc').limit(100).get();
-    const messages = msgSnap.docs.map(m => {
-      const d = m.data();
+async function getSubjectChats(projectId, token) {
+  const topData = await firestoreList(projectId, 'subject_chats', token, 50);
+  const groups = [];
+  for (const doc of (topData.documents || [])) {
+    const subject = docId(doc);
+    const msgData = await firestoreList(projectId, `subject_chats/${subject}/messages`, token, 100);
+    const messages = (msgData.documents || []).map(m => {
+      const f = extractFields(m.fields);
       return {
-        id: m.id,
-        text:      d.text || '',
-        userName:  d.userName || 'Adsız',
-        userEmail: d.userEmail || '',
-        uid:       d.uid || '',
-        ts:        d.ts?.toDate?.()?.toISOString() || null,
-        deleted:   d.deleted || false,
+        id: docId(m),
+        text:      f.text      || '',
+        userName:  f.userName  || 'Adsız',
+        userEmail: f.userEmail || '',
+        uid:       f.uid       || '',
+        ts:        f.ts        || null,
+        deleted:   f.deleted   || false,
       };
     });
     if (messages.length > 0) {
-      results.push({ subject: doc.id, messages, count: messages.length });
+      groups.push({ subject, messages, count: messages.length });
     }
   }
-  return results.sort((a, b) => b.count - a.count);
+  return groups.sort((a, b) => b.count - a.count);
 }
 
-async function getMaterialRequests(db) {
-  const snap = await db.collection('material_requests')
-    .orderBy('createdAt', 'desc').limit(200).get();
-  return snap.docs.map(doc => {
-    const d = doc.data();
+async function getMaterialRequests(projectId, token) {
+  const data = await firestoreList(projectId, 'material_requests', token, 200);
+  return (data.documents || []).map(doc => {
+    const f = extractFields(doc.fields);
     return {
-      id:        doc.id,
-      text:      d.text || '',
-      userName:  d.userName || '',
-      userEmail: d.userEmail || '',
-      uid:       d.uid || '',
-      upvotes:   d.upvotes || 0,
-      found:     d.found || false,
-      createdAt: d.createdAt?.toDate?.()?.toISOString() || null,
+      id:        docId(doc),
+      text:      f.text      || '',
+      userName:  f.userName  || '',
+      userEmail: f.userEmail || '',
+      uid:       f.uid       || '',
+      upvotes:   f.upvotes   || 0,
+      found:     f.found     || false,
+      createdAt: f.createdAt || null,
     };
   });
 }
 
-async function getPdfRatings(db) {
-  const snap = await db.collection('pdf_ratings').get();
-  const results = [];
-  for (const doc of snap.docs) {
-    const d = doc.data();
-    results.push({
-      id:         doc.id,
-      avgRating:  d.avgRating  || 0,
-      totalVotes: d.totalVotes || 0,
-    });
-  }
-  return results.sort((a, b) => b.totalVotes - a.totalVotes);
-}
-
-async function getStats(db) {
-  const now = new Date();
-  const monthKey = `${now.getFullYear()}_${String(now.getMonth()+1).padStart(2,'0')}`;
-  let monthly = {};
-  try {
-    const snap = await db.collection('stats').doc(`monthly_${monthKey}`).get();
-    if (snap.exists) monthly = snap.data();
-  } catch (_) {}
-  return { monthly };
+async function getPdfRatings(projectId, token) {
+  const data = await firestoreList(projectId, 'pdf_ratings', token, 100);
+  return (data.documents || []).map(doc => {
+    const f = extractFields(doc.fields);
+    return {
+      id:         docId(doc),
+      avgRating:  f.avgRating  || 0,
+      totalVotes: f.totalVotes || 0,
+    };
+  }).sort((a, b) => b.totalVotes - a.totalVotes);
 }
 
 // ── Main handler ──────────────────────────────────────────────
 export default async function handler(req, res) {
-  // CORS headers — hər sorğuda əvvəlcə
   setCors(res);
 
-  // OPTIONS preflight — dərhal 200 qaytar
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
+  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'POST')   return res.status(405).json({ error: 'Method not allowed' });
+  if (!checkAuth(req))         return res.status(401).json({ error: 'Səlahiyyətsiz giriş' });
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  if (!checkAuth(req)) {
-    return res.status(401).json({ error: 'Səlahiyyətsiz giriş' });
-  }
-
-  const section = req.body?.section || 'all';
+  const section   = req.body?.section || 'all';
+  const projectId = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT).project_id;
 
   try {
-    const db = getDb();
+    const token = await getAccessToken();
 
     if (section === 'users') {
-      const users = await getUsers(db);
-      return res.status(200).json({ users });
+      return res.status(200).json({ users: await getUsers(projectId, token) });
     }
-
     if (section === 'chats') {
-      const chats = await getSubjectChats(db);
-      return res.status(200).json({ chats });
+      return res.status(200).json({ chats: await getSubjectChats(projectId, token) });
     }
-
     if (section === 'requests') {
-      const requests = await getMaterialRequests(db);
-      return res.status(200).json({ requests });
+      return res.status(200).json({ requests: await getMaterialRequests(projectId, token) });
     }
-
     if (section === 'pdfs') {
-      const pdfOpens   = await getPdfOpens(db);
-      const pdfRatings = await getPdfRatings(db);
+      const [pdfOpens, pdfRatings] = await Promise.all([getPdfOpens(projectId, token), getPdfRatings(projectId, token)]);
       return res.status(200).json({ pdfOpens, pdfRatings });
     }
 
-    // all — dashboard overview
-    const [users, pdfOpens, requests, stats] = await Promise.all([
-      getUsers(db),
-      getPdfOpens(db),
-      getMaterialRequests(db),
-      getStats(db),
+    // all — overview
+    const [users, pdfOpens, requests] = await Promise.all([
+      getUsers(projectId, token),
+      getPdfOpens(projectId, token),
+      getMaterialRequests(projectId, token),
     ]);
 
     return res.status(200).json({
@@ -203,11 +261,10 @@ export default async function handler(req, res) {
       topUsers: users.slice(0, 10),
       pdfOpens: pdfOpens.slice(0, 10),
       requests: requests.slice(0, 20),
-      stats,
     });
 
   } catch (err) {
     console.error('[admin-data]', err);
-    return res.status(500).json({ error: 'Server xətası: ' + err.message });
+    return res.status(500).json({ error: err.message });
   }
 }
