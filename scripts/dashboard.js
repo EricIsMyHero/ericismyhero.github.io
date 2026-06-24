@@ -48,6 +48,9 @@ function renderDashboard() {
 
   // Streak vəziyyəti
   _renderStreakStatus(progress);
+
+  // Badges
+  if (typeof renderBadges === 'function') renderBadges(progress);
 }
 
 // ── Profil kartı — avatar, ad, email, faktlar ────────────────
