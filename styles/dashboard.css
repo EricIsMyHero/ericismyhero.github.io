@@ -782,3 +782,125 @@ select.dash-edit-input { cursor: pointer; }
   color: var(--text);
   background: var(--surface2);
 }
+
+/* ============================================================
+   BADGES
+   ============================================================ */
+
+/* ── Dashboard badge bölməsi ────────────────────────────────── */
+.dash-badges-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.dash-badges-title {
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.dash-badges-count {
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: rgba(99,102,241,.1);
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.dash-badges-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 8px;
+}
+
+.badge-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 6px;
+  border-radius: 12px;
+  text-align: center;
+  border: 1.5px solid transparent;
+  transition: transform .18s;
+  cursor: default;
+}
+.badge-item:hover { transform: scale(1.06); }
+
+.badge-earned {
+  background: rgba(99,102,241,.1);
+  border-color: rgba(99,102,241,.25);
+}
+.badge-locked {
+  background: var(--surface2, #f1f5f9);
+  border-color: transparent;
+  opacity: .35;
+  filter: grayscale(1);
+}
+
+.badge-item-icon {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+.badge-item-name {
+  font-size: .6rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+/* ── Toast ──────────────────────────────────────────────────── */
+.badge-toast {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--surface, #fff);
+  border: 1.5px solid var(--accent);
+  border-radius: 18px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.18);
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .35s, transform .35s;
+  max-width: 320px;
+  width: calc(100vw - 40px);
+}
+.badge-toast-show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.badge-toast-hide {
+  opacity: 0;
+  transform: translateX(-50%) translateY(20px);
+}
+.badge-toast-icon {
+  font-size: 2.2rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.badge-toast-body { flex: 1; }
+.badge-toast-title {
+  font-size: .68rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: 2px;
+}
+.badge-toast-name {
+  font-size: .95rem;
+  font-weight: 800;
+  color: var(--text);
+}
+.badge-toast-desc {
+  font-size: .72rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
