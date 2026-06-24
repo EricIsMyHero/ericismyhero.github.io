@@ -225,6 +225,7 @@ async function sendChatMessage() {
     input.value = '';
     document.querySelectorAll('.chat-tag-btn').forEach(b => b.classList.remove('active'));
     _activeChatTag = null;
+    if (typeof badgeOnComment === 'function') badgeOnComment();
   } catch (e) {
     console.warn('[chat] göndərmə xətası:', e);
   } finally {
