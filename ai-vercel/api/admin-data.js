@@ -16,19 +16,11 @@ function getDb() {
 }
 
 // ── CORS helper ───────────────────────────────────────────────
-function setCors(res, origin) {
-  const allowed = [
-    'https://ericismyhero.github.io',
-    'https://ericismyhero-github-io.vercel.app',
-  ];
-  if (allowed.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-  } else {
-    // Admin paneli GitHub Pages-dən gəlir
-    res.setHeader('Access-Control-Allow-Origin', 'https://ericismyhero.github.io');
-  }
+function setCors(res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Admin-Key');
+  res.setHeader('Access-Control-Max-Age', '86400');
 }
 
 // ── Auth check ────────────────────────────────────────────────
@@ -44,7 +36,6 @@ async function getUsers(db) {
   const users = [];
   for (const doc of snap.docs) {
     const data = doc.data();
-    // Get progress subcollection
     let progress = {};
     try {
       const pSnap = await doc.ref.collection('progress').doc('main').get();
@@ -83,7 +74,6 @@ async function getPdfOpens(db) {
 }
 
 async function getSubjectChats(db) {
-  // subject_chats/{courseSubject}/messages
   const topSnap = await db.collection('subject_chats').get();
   const results = [];
   for (const doc of topSnap.docs) {
@@ -132,40 +122,15 @@ async function getPdfRatings(db) {
   for (const doc of snap.docs) {
     const d = doc.data();
     results.push({
-      id:       doc.id,
-      avgRating: d.avgRating || 0,
+      id:         doc.id,
+      avgRating:  d.avgRating  || 0,
       totalVotes: d.totalVotes || 0,
     });
   }
   return results.sort((a, b) => b.totalVotes - a.totalVotes);
 }
 
-async function getRecentQuizResults(db, users) {
-  // For top 10 users get their recent quiz results
-  const recent = [];
-  const topUsers = users.slice(0, 10);
-  for (const u of topUsers) {
-    try {
-      const snap = await db.collection('users').doc(u.uid)
-        .collection('quiz_results').orderBy('timestamp', 'desc').limit(5).get();
-      for (const doc of snap.docs) {
-        const d = doc.data();
-        recent.push({
-          userName: u.name,
-          subject: d.subject || '',
-          score: d.score || 0,
-          total: d.total || 0,
-          pct: d.pct || 0,
-          ts: d.timestamp?.toDate?.()?.toISOString() || null,
-        });
-      }
-    } catch (_) {}
-  }
-  return recent.sort((a, b) => new Date(b.ts) - new Date(a.ts)).slice(0, 50);
-}
-
 async function getStats(db) {
-  // Monthly stats
   const now = new Date();
   const monthKey = `${now.getFullYear()}_${String(now.getMonth()+1).padStart(2,'0')}`;
   let monthly = {};
@@ -178,11 +143,17 @@ async function getStats(db) {
 
 // ── Main handler ──────────────────────────────────────────────
 export default async function handler(req, res) {
-  const origin = req.headers.origin || '';
-  setCors(res, origin);
+  // CORS headers — hər sorğuda əvvəlcə
+  setCors(res);
 
-  if (req.method === 'OPTIONS') return res.status(204).end();
-  if (req.method !== 'POST')   return res.status(405).json({ error: 'Method not allowed' });
+  // OPTIONS preflight — dərhal 200 qaytar
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
 
   if (!checkAuth(req)) {
     return res.status(401).json({ error: 'Səlahiyyətsiz giriş' });
@@ -209,7 +180,7 @@ export default async function handler(req, res) {
     }
 
     if (section === 'pdfs') {
-      const pdfOpens  = await getPdfOpens(db);
+      const pdfOpens   = await getPdfOpens(db);
       const pdfRatings = await getPdfRatings(db);
       return res.status(200).json({ pdfOpens, pdfRatings });
     }
@@ -229,9 +200,9 @@ export default async function handler(req, res) {
         totalRequests: requests.length,
         openRequests:  requests.filter(r => !r.found).length,
       },
-      topUsers:   users.slice(0, 10),
-      pdfOpens:   pdfOpens.slice(0, 10),
-      requests:   requests.slice(0, 20),
+      topUsers: users.slice(0, 10),
+      pdfOpens: pdfOpens.slice(0, 10),
+      requests: requests.slice(0, 20),
       stats,
     });
 
