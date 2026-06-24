@@ -92,12 +92,17 @@ async function _ensureUserDoc(user) {
 
     await _db.collection('users').doc(user.uid)
              .collection('progress').doc('main').set({
-      solvedTests:   0,
-      streak:        0,
-      lastActive:    null,
-      xp:            0,
-      rank:          'Freshman',
-      lastLoginDate: null
+      solvedTests:      0,
+      streak:           0,
+      lastActive:       null,
+      xp:               0,
+      rank:             'Freshman',
+      lastLoginDate:    null,
+      badges:           ['first_login'],
+      totalComments:    0,
+      totalRatings:     0,
+      totalPdfOpens:    0,
+      pomodoroSessions: 0,
     });
   }
 }
@@ -211,6 +216,10 @@ async function saveQuizResult(subject, score, total, mistakes) {
   currentProfile = await _getUserProfile(uid);
   if (typeof renderDashboard === 'function') renderDashboard();
 
+  // Badge yoxla
+  const progressSnap = await _db.collection('users').doc(uid).collection('progress').doc('main').get();
+  if (typeof checkBadges === 'function') await checkBadges(progressSnap.data() || {});
+
   return xpGain;
 }
 
@@ -237,6 +246,7 @@ async function logPdfOpen(subject, fileName) {
   if (currentUser) {
     await _updateStreak(currentUser.uid, 'pdf');
     _logEvent('pdf_open', { subject, file: fileName });
+    if (typeof badgeOnPdfOpen === 'function') badgeOnPdfOpen();
   }
 }
 
@@ -345,6 +355,10 @@ async function _updateStreak(uid, activityType) {
   if (newStreak > 0 && newStreak % 7 === 0) {
     await _addXP(uid, 30); // hər 7 günlük streak bonusu
   }
+
+  // Badge yoxla
+  const snapAfter = await ref.get();
+  if (typeof checkBadges === 'function') await checkBadges(snapAfter.data() || {});
 }
 
 function _todayStr() {
