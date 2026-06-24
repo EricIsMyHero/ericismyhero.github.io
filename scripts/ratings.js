@@ -176,6 +176,7 @@ async function submitPdfRating(ratingId, stars) {
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       });
     });
+    if (typeof badgeOnRating === 'function') badgeOnRating();
   } catch (e) {
     console.warn('[ratings] qiymət göndərmə xətası:', e);
   }
