@@ -129,6 +129,7 @@
       pState.totalToday += 25;
       savePomodoroStats();
       notifyUser('Fokus sessiyası bitdi! 🎉', '5 dəqiqə istirahət et.');
+      if (typeof badgeOnPomodoro === 'function') badgeOnPomodoro();
       // switch to short break, long every 4
       pState.mode = pState.sessionsToday % 4 === 0 ? 'long' : 'short';
     } else {
