@@ -240,6 +240,7 @@ const data = {
       },
       "Maliyyə uçotu": {
         type: "test", semester: 2, pdfs: [
+          { name: "Maliyyə Uçotu Y26", file: "maliyyeY26.pdf", pdfType: "semester"},
           { name: "Maliyyə Uçotu Q26", file: "maliyyeQ26.pdf", pdfType: "semester"},
           { name: "Maliyyə Uçotu", file: "maliyyekollek1.pdf", pdfType: "midterm"},
         ]
