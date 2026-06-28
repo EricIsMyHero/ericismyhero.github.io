@@ -1,19 +1,19 @@
 // ============================================================
-// PDF-LOADER.JS  —  v3.0  (Production)
+// PDF-LOADER.JS  —  v4.0  (Merged + Enhanced)
 // ============================================================
-// Düzəlişlər (v3.0):
-//   • MIN_QUESTION_LENGTH dinamik edildi: "nədir?", "nədir :"
-//     kimi terminoloji suallar artıq atlanmır
-//   • Blok bölmə yenidən yazıldı: seenSymbol yerinə
-//     variantCount sayacı istifadə edilir (≥2 variant görüldükdən
-//     sonra növbəti QNUM sual başlangıcı sayılır)
-//   • Qısa suallar üçün ikili filter: həm uzunluq HƏM cavab
-//     olmalıdır; amma sual işarəsi / terminoloji markerlər
-//     varsa limit aşağı düşür
-//   • Sual mətni toplama düzəldildi: ":" ilə bitən qısa
-//     mətni rəqəmli siyahıyla birlikdə saxlayır (Format C)
-//   • _isQuestionLine() köməkçisi əlavə edildi: sual mətni
-//     deyil variant sətiri olan "1. X" formatını aşkarlayır
+// v4.0 yenilikləri:
+//   • Yeni _itemsToLines() motoru: y-tolerance 60% glyph height
+//     əsaslı, daha dəqiq söz boşluq məntiqi (gap > charW*0.3)
+//   • CONFIG bloku: bütün regex-lər bir yerdə, asanca uyğunlaşdırılır
+//   • ArrayBuffer + URL hər ikisi dəstəklənir (extractPdfText/parse)
+//   • curOpt tracking: çox sətirli variant mətni düzgün toplanır
+//   • _detectColumns() → ikili sütun dəstəyi qalır
+//   • _mergeOrphanSymbols() → tək simvol sətirləri qalır
+//   • Format A + Format C parser qalır (Azərbaycan PDF-ləri üçün)
+//   • PDFParser sinifi (ArrayBuffer, progress callback) — quiz UI üçün
+//   • QUESTION_BANK + autoLoadAllSubjects() qalır — platform üçün
+//   • PdfLoadingUI overlay qalır
+//   • debugPdf() + testParse() debug alətləri qalır
 // ============================================================
 
 // ── Qlobal QUESTION_BANK ──────────────────────────────────────
@@ -32,9 +32,133 @@ if (typeof QUESTION_BANK === 'undefined') {
 })();
 
 // ============================================================
-// 1. PDF-dən tam mətn çıxar  (koordinat əsaslı)
+// CONFIG — regex-lər bu blokda, PDF formatı dəyişərsə buradan düzəlt
+// ============================================================
+const PDF_PARSE_CONFIG = {
+  // Sual başlangıcı: "1.", "2.", "35." — ondalık ədəd deyil
+  questionStart: /^\s*(\d{1,4})\.(?=\s|$)/u,
+
+  // Variant sətiri: bullet və ya check işarəsi ilə başlayır
+  optionBullet: /^\s*([•∙·●◦‣▪◾■✓✔√☑\u2022\u221A\u25CF\u25AA\u25A0\u25C6])\s*/u,
+
+  // Düzgün cavab işarələri
+  correctGlyph: /[✓✔√☑\u221A\u2713\u2714\u2611]/u,
+
+  // Tək sütun/iki sütun ayrım həddi (pageWidth-in bu faizi)
+  columnGapRatio: 0.25,
+
+  // Y-tolerance: glyph hündürlüyünün bu faizi qədər fərq eyni sətir sayılır
+  yToleranceRatio: 0.6,
+
+  // Söz boşluğu: charWidth-in bu faizindən böyük gap = boşluq
+  wordGapRatio: 0.3,
+};
+
+// ── Terminoloji marker-lər (dinamik uzunluq limiti üçün) ──────
+const TERMINOLOGIC_MARKERS = [
+  /nədir[\s?:]/i,
+  /nə deməkdir/i,
+  /nədən ibarətdir/i,
+  /hansıdır/i,
+  /neçədir/i,
+  /kimdir/i,
+  /\?/,
+];
+
+function _isTerminologicQuestion(text) {
+  return TERMINOLOGIC_MARKERS.some(rx => rx.test(text));
+}
+
+function _getMinLength(text) {
+  return _isTerminologicQuestion(text) ? 5 : 20;
+}
+
+// ── Simvol regex-ləri ──────────────────────────────────────────
+const CORRECT_CHARS = /^[✓✔√☑\u221A\u2713\u2714\u2611\u2612]/;
+const SYMBOL_OPTION = /^[•∙·●◦‣▪◾■✓✔√☑\u2022\u221A\u2713\u2714\u2611\u2612\u25CF\u25AA\u25A0\u25C6]\s*/;
+const LONE_SYMBOL   = /^[•∙·●◦‣▪◾■✓✔√☑\u2022\u221A\u25CF\u25AA\u25A0\u25C6]\s*$/;
+const QNUM          = /^\d+\.\s+\S/;
+
+// ============================================================
+// 1. PDF-dən sətir çıxarma (yeni v4.0 motoru)
 // ============================================================
 
+/**
+ * pdf.js items → vizual sətirləri qurur.
+ * Y-tolerance hər elementin glyph hündürlüyünə əsaslanır (daha dəqiq).
+ * Söz boşluğu charWidth * wordGapRatio əsasında müəyyənləşir.
+ *
+ * @param {Array} items  — page.getTextContent().items
+ * @returns {Array<{text:string, x:number, y:number}>}
+ */
+function _itemsToLines(items) {
+  const cfg = PDF_PARSE_CONFIG;
+
+  // 1. Normalize: boş stringləri at, koordinat+ölçü əlavə et
+  const entries = [];
+  for (const it of items) {
+    if (!it.str || !it.str.trim()) continue;
+    entries.push({
+      x: it.transform[4],
+      y: it.transform[5],
+      w: it.width  || 0,
+      h: it.height || Math.abs(it.transform[3]) || 10,
+      str: it.str,
+    });
+  }
+  if (!entries.length) return [];
+
+  // 2. Sırala: yuxarıdan aşağı (PDF y yuxarı böyüyür), soldan sağa
+  entries.sort((a, b) => (b.y - a.y) || (a.x - b.x));
+
+  // 3. Qrupla: y fərqi glyph hündürlüyünün 60%-dən az isə eyni sətir
+  const lineGroups = [];
+  let group = [];
+  let lineY = null;
+  let tol   = 0;
+
+  const flush = () => {
+    if (!group.length) return;
+    group.sort((a, b) => a.x - b.x);
+
+    let text = '';
+    let prev = null;
+    for (const e of group) {
+      if (prev) {
+        const gap    = e.x - (prev.x + prev.w);
+        const charW  = prev.w / Math.max(prev.str.length, 1);
+        const needSp = gap > Math.max(charW * cfg.wordGapRatio, 0.5);
+        if (needSp && !/\s$/.test(text) && !/^\s/.test(e.str)) text += ' ';
+      }
+      text += e.str;
+      prev = e;
+    }
+
+    text = text.replace(/[ \t]+/g, ' ').trim();
+    if (text) lineGroups.push({ text, x: group[0].x, y: group[0].y });
+    group = [];
+  };
+
+  for (const e of entries) {
+    if (lineY === null) {
+      lineY = e.y;
+      tol   = Math.max(e.h * cfg.yToleranceRatio, 3);
+    } else if (Math.abs(e.y - lineY) > tol) {
+      flush();
+      lineY = e.y;
+      tol   = Math.max(e.h * cfg.yToleranceRatio, 3);
+    }
+    group.push(e);
+  }
+  flush();
+
+  return lineGroups;
+}
+
+/**
+ * Sütun ayrımını aşkarlayır.
+ * Geri qaytarır: splitX (mərkəz X koordinatı) və ya null.
+ */
 function _detectColumns(tagged, pageWidth) {
   if (!pageWidth || tagged.length < 6) return null;
   const xs = tagged.map(t => t.x).sort((a, b) => a - b);
@@ -43,61 +167,14 @@ function _detectColumns(tagged, pageWidth) {
     const gap = xs[i] - xs[i - 1];
     if (gap > maxGap) { maxGap = gap; splitX = (xs[i - 1] + xs[i]) / 2; }
   }
-  return maxGap > pageWidth * 0.25 ? splitX : null;
+  return maxGap > pageWidth * PDF_PARSE_CONFIG.columnGapRatio ? splitX : null;
 }
 
-function _buildLinesFromItems(items) {
-  if (!items.length) return [];
-  const Y_TOLERANCE = 5;
-  const lineGroups  = [];
-  const sorted = [...items].sort((a, b) => {
-    const dy = b.y - a.y;
-    if (Math.abs(dy) > 4) return dy;
-    return a.x - b.x;
-  });
-  for (const item of sorted) {
-    const existing = lineGroups.find(g => Math.abs(g.y - item.y) <= Y_TOLERANCE);
-    if (existing) existing.parts.push(item);
-    else lineGroups.push({ y: item.y, parts: [item] });
-  }
-  lineGroups.sort((a, b) => b.y - a.y);
-  return lineGroups.map(group => {
-    group.parts.sort((a, b) => a.x - b.x);
-    let result = '';
-    for (let i = 0; i < group.parts.length; i++) {
-      const cur  = group.parts[i];
-      const prev = group.parts[i - 1];
-      if (i === 0) { result += cur.str; continue; }
-      const gap      = cur.x - (prev.x + prev.width);
-      const avgCharW = prev.width / (prev.str.length || 1);
-      const needsSp  = gap > avgCharW * 0.3;
-      result += (needsSp && !result.endsWith(' ') ? ' ' : '') + cur.str;
-    }
-    return result.trim();
-  }).filter(Boolean);
-}
-
-function _rebuildPageLines(items, pageWidth) {
-  const valid  = items.filter(item => item.str && item.str.trim() !== '');
-  if (!valid.length) return [];
-  const tagged = valid.map(item => ({
-    str  : item.str,
-    x    : item.transform[4],
-    y    : item.transform[5],
-    width: item.width || 0,
-  }));
-  const splitX = _detectColumns(tagged, pageWidth);
-  if (splitX !== null) {
-    return [
-      ..._buildLinesFromItems(tagged.filter(t => t.x < splitX)),
-      ..._buildLinesFromItems(tagged.filter(t => t.x >= splitX)),
-    ];
-  }
-  return _buildLinesFromItems(tagged);
-}
-
+/**
+ * Tək simvoldan ibarət sətirləri növbəti sətirə birləşdirir.
+ * "• " ayrı sətirdə gəldikdə sual yanlış bölünməsin deyə.
+ */
 function _mergeOrphanSymbols(lines) {
-  const LONE_SYMBOL = /^[\u2022\u221A\u25CF\u25AA\u25A0\u25C6•√●▪■◆✓✔]\s*$/;
   const result = [];
   for (let i = 0; i < lines.length; i++) {
     if (LONE_SYMBOL.test(lines[i]) && i + 1 < lines.length) {
@@ -110,6 +187,98 @@ function _mergeOrphanSymbols(lines) {
   return result;
 }
 
+/**
+ * Bir PDF səhifəsinin items massivindən sətirləri qayıdır.
+ * Sütun aşkarlanırsa: sol → sağ sıra.
+ *
+ * @param {Array}  items
+ * @param {number} pageWidth
+ * @returns {string[]}
+ */
+function _rebuildPageLines(items, pageWidth) {
+  const valid  = items.filter(it => it.str && it.str.trim());
+  if (!valid.length) return [];
+
+  const tagged = valid.map(it => ({
+    str:   it.str,
+    x:     it.transform[4],
+    y:     it.transform[5],
+    w:     it.width || 0,
+    h:     it.height || Math.abs(it.transform[3]) || 10,
+  }));
+
+  const splitX = _detectColumns(tagged, pageWidth);
+
+  let lineObjs;
+  if (splitX !== null) {
+    // Sütun aşkarlandı: hər sütundan ayrı sətir çıxar, sonra birləşdir
+    const leftItems  = tagged.filter(t => t.x < splitX);
+    const rightItems = tagged.filter(t => t.x >= splitX);
+    lineObjs = [
+      ..._itemsToLinesFromTagged(leftItems),
+      ..._itemsToLinesFromTagged(rightItems),
+    ];
+  } else {
+    lineObjs = _itemsToLinesFromTagged(tagged);
+  }
+
+  return lineObjs.map(l => l.text);
+}
+
+/**
+ * Artıq tagged (x,y,w,h,str) formatında olan massivdən sətir obyektləri qayıdır.
+ * _itemsToLines()-in daxili məntiqi ilə eynidir, amma tam items yerinə tagged alır.
+ */
+function _itemsToLinesFromTagged(tagged) {
+  if (!tagged.length) return [];
+  const cfg = PDF_PARSE_CONFIG;
+
+  const sorted = [...tagged].sort((a, b) => (b.y - a.y) || (a.x - b.x));
+
+  const lineGroups = [];
+  let group = [];
+  let lineY = null;
+  let tol   = 0;
+
+  const flush = () => {
+    if (!group.length) return;
+    group.sort((a, b) => a.x - b.x);
+    let text = '';
+    let prev = null;
+    for (const e of group) {
+      if (prev) {
+        const gap   = e.x - (prev.x + prev.w);
+        const charW = prev.w / Math.max(prev.str.length, 1);
+        const needSp = gap > Math.max(charW * cfg.wordGapRatio, 0.5);
+        if (needSp && !/\s$/.test(text) && !/^\s/.test(e.str)) text += ' ';
+      }
+      text += e.str;
+      prev = e;
+    }
+    text = text.replace(/[ \t]+/g, ' ').trim();
+    if (text) lineGroups.push({ text, x: group[0].x, y: group[0].y });
+    group = [];
+  };
+
+  for (const e of sorted) {
+    if (lineY === null) {
+      lineY = e.y;
+      tol   = Math.max((e.h || 10) * cfg.yToleranceRatio, 3);
+    } else if (Math.abs(e.y - lineY) > tol) {
+      flush();
+      lineY = e.y;
+      tol   = Math.max((e.h || 10) * cfg.yToleranceRatio, 3);
+    }
+    group.push(e);
+  }
+  flush();
+
+  return lineGroups;
+}
+
+// ============================================================
+// 2. URL-dən tam mətn çıxar  (platform üçün: QUESTION_BANK)
+// ============================================================
 async function extractPdfText(url) {
   if (typeof pdfjsLib === 'undefined') {
     throw new Error('[pdf-loader] pdfjsLib tapılmadı. HTML-ə pdf.js CDN əlavə edin.');
@@ -120,72 +289,83 @@ async function extractPdfText(url) {
   } catch (err) {
     throw new Error(`[pdf-loader] PDF yüklənmədi (${url}): ${err.message}`);
   }
+  return _pdfToText(pdf);
+}
+
+/**
+ * ArrayBuffer-dən tam mətn çıxar (quiz UI üçün: fayl yükləmə).
+ * @param {ArrayBuffer} buffer
+ * @param {(ratio:number)=>void} [onProgress]  0..1
+ */
+async function extractPdfTextFromBuffer(buffer, onProgress) {
+  if (typeof pdfjsLib === 'undefined') {
+    throw new Error('[pdf-loader] pdfjsLib tapılmadı.');
+  }
+  let pdf;
+  try {
+    pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
+  } catch (e) {
+    throw new Error('Bu fayl açılmadı. Xərab və ya PDF olmaya bilər.');
+  }
+  return _pdfToText(pdf, onProgress);
+}
+
+/** Ortaq PDF→mətn çıxarma məntiqi. */
+async function _pdfToText(pdf, onProgress) {
+  const total = pdf.numPages;
   let fullText = '';
-  for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+
+  for (let p = 1; p <= total; p++) {
     try {
-      const page     = await pdf.getPage(pageNum);
+      const page     = await pdf.getPage(p);
       const content  = await page.getTextContent();
       const viewport = page.getViewport({ scale: 1 });
       const rawLines   = _rebuildPageLines(content.items, viewport.width);
       const cleanLines = _mergeOrphanSymbols(rawLines);
       fullText += cleanLines.join('\n') + '\n';
+      page.cleanup();
     } catch (pageErr) {
-      console.warn(`[pdf-loader] Səhifə ${pageNum} oxunmadı:`, pageErr.message);
+      console.warn(`[pdf-loader] Səhifə ${p} oxunmadı:`, pageErr.message);
     }
+
+    if (onProgress) onProgress(p / total);
+    // Event loop-a nəfəs ver (progress bar yenilənsin)
+    if (p % 5 === 0) await new Promise(r => setTimeout(r, 0));
   }
+
+  pdf.destroy();
   return fullText;
 }
 
 // ============================================================
-// 2. Mətnden sualları parse et
+// 3. Mətnden sualları parse et
 // ============================================================
 
-const CORRECT_CHARS = /^[\u221A\u2713\u2714\u2611\u2612√✓✔☑]/;
-const SYMBOL_OPTION = /^[\u2022\u221A\u2713\u2714\u2611\u2612\u25CF\u25AA\u25A0\u25C6•√✓✔☑●▪■◆]\s*/;
-
-// ── Sual uzunluq yoxlaması ────────────────────────────────────
-// Terminoloji suallar ("X nədir?", "X nədir :", "X dedikdə nə başa düşülür?")
-// qısadırlar amma etibarlıdırlar. Onlar üçün limit aşağı düşür.
-const TERMINOLOGIC_MARKERS = [
-  /nədir[\s?:]/i,
-  /nə deməkdir/i,
-  /nədən ibarətdir/i,
-  /hansıdır/i,
-  /neçədir/i,
-  /kimdir/i,
-  /\?/,            // Sual işarəsi olan hər şey
-];
-
-function _isTerminologicQuestion(text) {
-  return TERMINOLOGIC_MARKERS.some(rx => rx.test(text));
-}
-
-function _getMinLength(text) {
-  // Terminoloji suallar üçün minimum 5 hərf,
-  // adi suallar üçün minimum 20 hərf
-  return _isTerminologicQuestion(text) ? 5 : 20;
-}
-
-// ── Blok bölmə köməkçisi ──────────────────────────────────────
-// Bir sətrin "sual nömrəsi" olub-olmadığını yoxla.
-// ŞƏRT: ≥2 variant artıq görülmüş OLMALIDIR —
-// yəni bu, Format C siyahı elementi deyil, yeni sualdır.
-const QNUM = /^\d+\.\s+\S/;
-
+/**
+ * Normallaşdırılmış mətnden sual massivi çıxarır.
+ * Format A: simvol variantlı düz mətn sualları
+ * Format C: variant içindəki nömrəli siyahılar (1. 2. 3.)
+ * Hər iki format eyni blok bölmə mərhələsindən keçir.
+ *
+ * Geri qaytarır: [{question, options:[], answer:number}]
+ */
 function parseQuestionsFromText(text) {
   const questions = [];
 
   const normalised = text
     .replace(/\r\n/g, '\n')
-    .replace(/\r/g,   '\n')
+    .replace(/\r/g, '\n')
     .replace(/[ \t]+/g, ' ')
     .replace(/\n{3,}/g, '\n\n');
 
   const allLines = normalised.split('\n');
-  const questionBlocks = [];
-  let currentBlock  = [];
-  // seenSymbol → variantCount: daha dəqiq sayaclıq
-  let variantCount  = 0;
+
+  // ── Blok bölmə ──────────────────────────────────────────────
+  // Yeni sual: QNUM formatında VƏ artıq ≥2 variant görülmüş
+  // Bu şərt Format C siyahı elementlərini (1. 2. 3.) yanlış bölmür
+  const questionBlocks  = [];
+  let currentBlock      = [];
+  let variantCount      = 0;
   let foundFirstQuestion = false;
 
   for (const line of allLines) {
@@ -196,20 +376,12 @@ function parseQuestionsFromText(text) {
     const isVariant = SYMBOL_OPTION.test(trimmed);
 
     if (!foundFirstQuestion) {
-      if (isQNum) {
-        foundFirstQuestion = true;
-        currentBlock  = [trimmed];
-        variantCount  = 0;
-      }
+      if (isQNum) { foundFirstQuestion = true; currentBlock = [trimmed]; variantCount = 0; }
       continue;
     }
 
-    if (isVariant) {
-      variantCount++;
-    }
+    if (isVariant) variantCount++;
 
-    // Yeni sual başlanğıcı: QNUM + artıq ≥2 variant görülüb
-    // Bu şərt Format C siyahı elementlərini (1. 2. 3.) sual kimi bölünməsinin qarşısını alır
     if (isQNum && variantCount >= 2) {
       if (currentBlock.length) questionBlocks.push(currentBlock.join('\n'));
       currentBlock = [trimmed];
@@ -220,15 +392,12 @@ function parseQuestionsFromText(text) {
   }
   if (currentBlock.length) questionBlocks.push(currentBlock.join('\n'));
 
+  // ── Hər bloku parse et ──────────────────────────────────────
   questionBlocks
     .map(b => b.trim())
     .filter(Boolean)
     .forEach((block, blockIdx) => {
-      const lines = block
-        .split('\n')
-        .map(l => l.trim())
-        .filter(Boolean);
-
+      const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
       if (lines.length < 2) {
         console.warn(`[pdf-loader] Blok ${blockIdx + 1} çox qısadır, keçilir:`, block.slice(0, 60));
         return;
@@ -253,13 +422,14 @@ function parseQuestionsFromText(text) {
 }
 
 // ── Format A Parser ───────────────────────────────────────────
+// Standart simvol variantlı suallar (•/✓ ilə işarələnmiş)
 function _parseFormatA(lines, blockIdx, questions) {
   let questionLines  = [];
   let optionStartIdx = -1;
 
   for (let i = 0; i < lines.length; i++) {
-    if (/^[\u221A√✓✔]\s*$/.test(lines[i])) { optionStartIdx = i; break; }
-    if (SYMBOL_OPTION.test(lines[i]))        { optionStartIdx = i; break; }
+    if (/^[✓✔√☑\u221A]\s*$/.test(lines[i])) { optionStartIdx = i; break; }
+    if (SYMBOL_OPTION.test(lines[i]))          { optionStartIdx = i; break; }
     questionLines.push(lines[i]);
   }
 
@@ -271,57 +441,25 @@ function _parseFormatA(lines, blockIdx, questions) {
   const questionText = questionLines.join(' ').replace(/^\d+\.\s*/, '').trim();
   if (!questionText) return;
 
-  const options       = [];
-  let   correctAnswer = -1;
-  let   nextIsCorrect = false;
-
-  for (let i = optionStartIdx; i < lines.length; i++) {
-    const line = lines[i];
-
-    if (/^[\u221A√✓✔]\s*$/.test(line)) {
-      nextIsCorrect = true;
-      continue;
-    }
-
-    const isCorrect = nextIsCorrect || CORRECT_CHARS.test(line);
-    const isOption  = SYMBOL_OPTION.test(line);
-    nextIsCorrect   = false;
-
-    if (/^\d+\.\s+\S/.test(line) && !SYMBOL_OPTION.test(line)) break;
-
-    if (!isOption) {
-      if (isCorrect) {
-        options.push(line.trim());
-        correctAnswer = options.length - 1;
-      } else if (options.length > 0) {
-        options[options.length - 1] += ' ' + line;
-      }
-      continue;
-    }
-
-    const clean = line.replace(/^[\u2022\u221A\u25CF\u25AA\u25A0\u25C6•√●▪■◆✓✔]\s*/, '').trim();
-    if (!clean) continue;
-
-    options.push(clean);
-    if (isCorrect) correctAnswer = options.length - 1;
-  }
+  const { options, correctAnswer } = _extractOptions(lines, optionStartIdx);
 
   if (options.length < 2) {
-    console.warn(`[pdf-loader] FormatA "${questionText.slice(0, 40)}…" — variant sayı azdır, keçilir.`);
+    console.warn(`[pdf-loader] FormatA "${questionText.slice(0, 40)}…" — variant sayı azdır.`);
     return;
   }
   if (correctAnswer === -1) {
-    console.warn(`[pdf-loader] "${questionText.slice(0, 40)}…" — düzgün cavab tapılmadı. answer=-1.`);
+    console.warn(`[pdf-loader] FormatA "${questionText.slice(0, 40)}…" — düzgün cavab tapılmadı.`);
   }
 
   questions.push({ question: questionText, options, answer: correctAnswer });
 }
 
 // ── Format C Parser ───────────────────────────────────────────
+// Variant içindəki nömrəli siyahılar (1. 2. 3.) olan suallar
 function _parseFormatC(lines, blockIdx, questions) {
   let symStart = -1;
   for (let i = 0; i < lines.length; i++) {
-    if (SYMBOL_OPTION.test(lines[i]) || /^[\u221A√✓✔]\s*$/.test(lines[i])) {
+    if (SYMBOL_OPTION.test(lines[i]) || /^[✓✔√☑\u221A]\s*$/.test(lines[i])) {
       symStart = i; break;
     }
   }
@@ -337,14 +475,38 @@ function _parseFormatC(lines, blockIdx, questions) {
 
   if (!questionText) return;
 
+  const { options, correctAnswer } = _extractOptions(lines, symStart);
+
+  if (options.length < 2) {
+    console.warn(`[pdf-loader] FormatC "${questionText.slice(0, 40)}…" — variant sayı azdır.`);
+    return;
+  }
+  if (correctAnswer === -1) {
+    console.warn(`[pdf-loader] FormatC "${questionText.slice(0, 40)}…" — düzgün cavab tapılmadı.`);
+  }
+
+  questions.push({ question: questionText, options, answer: correctAnswer });
+}
+
+/**
+ * Ortaq variant çıxarma məntiqi — Format A və C tərəfindən istifadə edilir.
+ * Çox sətirli variant mətni dəstəklənir (curOpt tracking).
+ *
+ * @param {string[]} lines
+ * @param {number}   startIdx  — ilk variant sətirinin indeksi
+ * @returns {{ options: string[], correctAnswer: number }}
+ */
+function _extractOptions(lines, startIdx) {
   const options       = [];
   let   correctAnswer = -1;
   let   nextIsCorrect = false;
+  let   curOpt        = -1;  // çox sətirli variant üçün aktiv indeks
 
-  for (let i = symStart; i < lines.length; i++) {
+  for (let i = startIdx; i < lines.length; i++) {
     const line = lines[i];
 
-    if (/^[\u221A√✓✔]\s*$/.test(line)) {
+    // Tək sətirlik düzgün cavab işarəsi (növbəti sətir həmin cavabdır)
+    if (/^[✓✔√☑\u221A]\s*$/.test(line)) {
       nextIsCorrect = true;
       continue;
     }
@@ -353,38 +515,87 @@ function _parseFormatC(lines, blockIdx, questions) {
     const isOption  = SYMBOL_OPTION.test(line);
     nextIsCorrect   = false;
 
+    // Nömrəli siyahı sətiri — Format C mətni, variant deyil → dayandır
     if (/^\d+\.\s+\S/.test(line) && !SYMBOL_OPTION.test(line)) break;
 
     if (!isOption) {
-      if (isCorrect) {
+      // Simvolsuz sətir: aktiv varianta davam mətn kimi əlavə et
+      if (curOpt >= 0) {
+        options[curOpt] += ' ' + line;
+      } else if (isCorrect) {
+        // Bəzən simvoldan ayrı sətirdə sual gəlir
         options.push(line.trim());
         correctAnswer = options.length - 1;
-      } else if (options.length > 0) {
-        options[options.length - 1] += ' ' + line;
+        curOpt = options.length - 1;
       }
       continue;
     }
 
-    const clean = line.replace(/^[\u2022\u221A\u25CF\u25AA\u25A0\u25C6•√●▪■◆✓✔]\s*/, '').trim();
+    // Simvollu sətir: yeni variant
+    const clean = line
+      .replace(/^[•∙·●◦‣▪◾■✓✔√☑\u2022\u221A\u25CF\u25AA\u25A0\u25C6]\s*/, '')
+      .trim();
     if (!clean) continue;
 
     options.push(clean);
-    if (isCorrect) correctAnswer = options.length - 1;
+    curOpt = options.length - 1;
+    if (isCorrect) correctAnswer = curOpt;
   }
 
-  if (options.length < 2) {
-    console.warn(`[pdf-loader] FormatC "${questionText.slice(0, 40)}…" — variant sayı azdır, keçilir.`);
-    return;
-  }
-  if (correctAnswer === -1) {
-    console.warn(`[pdf-loader] FormatC "${questionText.slice(0, 40)}…" — düzgün cavab tapılmadı. answer=-1.`);
-  }
-
-  questions.push({ question: questionText, options, answer: correctAnswer });
+  return { options, correctAnswer };
 }
 
 // ============================================================
-// 3. Bir PDF yüklə və QUESTION_BANK-a yaz
+// 4. PDFParser sinifi — ArrayBuffer əsaslı, quiz UI üçün
+// ============================================================
+
+/**
+ * Quiz UI tərəfindən istifadə edilən sinif.
+ * parse() → [{question, options:{A,B,...}, correct:'A'|null}]
+ *
+ * Bu format QUESTION_BANK-dan fərqlidir (options massiv deyil obyekt).
+ * Quiz UI bunu birbaşa render edir.
+ */
+class PDFParser {
+  /**
+   * @param {ArrayBuffer} buffer
+   * @param {(ratio:number)=>void} [onProgress]
+   * @returns {Promise<Array>}
+   */
+  async parse(buffer, onProgress) {
+    const text = await extractPdfTextFromBuffer(buffer, onProgress);
+    const raw  = parseQuestionsFromText(text);
+
+    // Massiv formatını {A,B,C...} / correct formatına çevir
+    return raw.map(q => this._toLetterFormat(q)).filter(q => q !== null);
+  }
+
+  /**
+   * {question, options:[], answer:N} → {text, options:{A:..}, correct:'A'|null}
+   */
+  _toLetterFormat(q) {
+    if (!q.options || q.options.length < 2) return null;
+    const letters = 'ABCDEFGHIJ';
+    const opts    = {};
+    let correct   = null;
+
+    q.options.forEach((text, i) => {
+      const letter = letters[i] || ('Z' + i);
+      opts[letter] = text;
+      if (i === q.answer) correct = letter;
+    });
+
+    return {
+      number:  q.number  || null,
+      text:    q.question,
+      options: opts,
+      correct,
+    };
+  }
+}
+
+// ============================================================
+// 5. Bir PDF yüklə və QUESTION_BANK-a yaz  (platform üçün)
 // ============================================================
 async function loadQuestionsFromPDF(url, subjectName) {
   console.info(`[pdf-loader] "${subjectName}" yüklənir: ${url}`);
@@ -401,18 +612,14 @@ async function loadQuestionsFromPDF(url, subjectName) {
   const parsed = parseQuestionsFromText(text);
 
   // ── Dinamik filter ────────────────────────────────────────
-  // Terminoloji suallar ("SWİFT nədir?" kimi) qısa olsa belə keçirlər.
-  // Cavabsız suallar həmişə atlanır.
   const valid = parsed.filter(q => {
     const t = q.question.trim();
 
-    // Cavabsız sual — həmişə at
     if (q.answer === -1) {
       console.warn(`[pdf-loader] Düzgün cavabsız sual atlandı: "${t.slice(0, 40)}…"`);
       return false;
     }
 
-    // Dinamik uzunluq limiti
     const minLen = _getMinLength(t);
     if (t.length < minLen) {
       console.warn(`[pdf-loader] Çox qısa sual atlandı (${t.length}<${minLen}): "${t}"`);
@@ -433,7 +640,7 @@ async function loadQuestionsFromPDF(url, subjectName) {
 }
 
 // ============================================================
-// 4. subjects.json-dan bütün fənləri avtomatik yüklə
+// 6. subjects.json-dan bütün fənləri avtomatik yüklə
 // ============================================================
 const PdfLoadingUI = {
   _el: null, _fill: null, _title: null, _interval: null, _progress: 0,
@@ -525,7 +732,7 @@ async function autoLoadAllSubjects(subjectsUrl) {
 }
 
 // ============================================================
-// 5. Avtomatik başlat
+// 7. Avtomatik başlat
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
   window.initTestSystem = function () {
@@ -539,8 +746,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ============================================================
-// 6. Debug yardımçısı
+// 8. Debug alətləri
 // ============================================================
+
+/** Konsol: səhifənin ham sətirləri. İstifadə: debugPdf('./pdf/maliyyeQ26.pdf') */
 window.debugPdf = async function (url, pageNum = 1) {
   if (typeof pdfjsLib === 'undefined') { console.error('[debugPdf] pdfjsLib yoxdur'); return; }
   const pdf      = await pdfjsLib.getDocument(url).promise;
@@ -556,8 +765,7 @@ window.debugPdf = async function (url, pageNum = 1) {
   return cleanLines;
 };
 
-// ── İnteraktiv test funksiyası (konsolda istifadə üçün) ──────
-// İstifadə: window.testParse('./pdf/maliyyeQ26.pdf')
+/** Konsol: URL-dəki sualları parse et. İstifadə: testParse('./pdf/maliyyeQ26.pdf') */
 window.testParse = async function (url) {
   const text      = await extractPdfText(url);
   const questions = parseQuestionsFromText(text);
@@ -565,6 +773,19 @@ window.testParse = async function (url) {
   questions.forEach((q, i) => {
     const status = q.answer === -1 ? '❌' : '✅';
     console.log(`${status} ${i + 1}. ${q.question.slice(0, 60)} | cavab: ${q.answer}`);
+  });
+  console.groupEnd();
+  return questions;
+};
+
+/** Konsol: ArrayBuffer-dan parse et (fayl seçimi sonrası). İstifadə: testParseFile(file) */
+window.testParseFile = async function (file) {
+  const buffer    = await file.arrayBuffer();
+  const parser    = new PDFParser();
+  const questions = await parser.parse(buffer, r => console.log(`Progress: ${(r * 100).toFixed(0)}%`));
+  console.group(`[testParseFile] ${file.name} — ${questions.length} sual`);
+  questions.forEach((q, i) => {
+    console.log(`${q.correct ? '✅' : '❌'} ${i + 1}. ${q.text.slice(0, 60)} | cavab: ${q.correct}`);
   });
   console.groupEnd();
   return questions;
