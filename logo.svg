@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0d0608"/>
+      <stop offset="100%" stop-color="#1a0810"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="64" height="64" rx="13" fill="url(#bg)"/>
+
+  <!-- === BOOK === -->
+  <!-- Book left page -->
+  <path d="M10 20 L10 50 Q10 53 14 53 L32 50 L32 18 Q22 18 14 20 Z" fill="#ffffff" opacity="0.92"/>
+  <!-- Book right page -->
+  <path d="M54 20 L54 50 Q54 53 50 53 L32 50 L32 18 Q42 18 50 20 Z" fill="#e0e0e0" opacity="0.85"/>
+  <!-- Book spine -->
+  <rect x="31" y="18" width="2" height="32" fill="#cccccc" opacity="0.6"/>
+  <!-- Book bottom V-shape -->
+  <path d="M14 53 Q23 56 32 58 Q41 56 50 53" fill="none" stroke="#999" stroke-width="1.2" stroke-linecap="round"/>
+
+  <!-- Book bracket-like cover marks (dark) -->
+  <path d="M10 20 L10 50" stroke="#333" stroke-width="1" opacity="0.3"/>
+  <path d="M54 20 L54 50" stroke="#333" stroke-width="1" opacity="0.3"/>
+
+  <!-- === NETWORK / GRAPH nodes and edges === -->
+  <!-- Edges -->
+  <line x1="32" y1="28" x2="24" y2="34" stroke="#8B0000" stroke-width="1.1" opacity="0.85"/>
+  <line x1="32" y1="28" x2="40" y2="34" stroke="#8B0000" stroke-width="1.1" opacity="0.85"/>
+  <line x1="24" y1="34" x2="32" y2="40" stroke="#8B0000" stroke-width="1.1" opacity="0.85"/>
+  <line x1="40" y1="34" x2="32" y2="40" stroke="#8B0000" stroke-width="1.1" opacity="0.85"/>
+  <line x1="24" y1="34" x2="28" y2="38" stroke="#8B0000" stroke-width="0.9" opacity="0.7"/>
+  <line x1="40" y1="34" x2="36" y2="38" stroke="#8B0000" stroke-width="0.9" opacity="0.7"/>
+  <line x1="32" y1="28" x2="36" y2="32" stroke="#8B0000" stroke-width="0.9" opacity="0.7"/>
+  <line x1="32" y1="28" x2="28" y2="32" stroke="#8B0000" stroke-width="0.9" opacity="0.7"/>
+
+  <!-- Nodes -->
+  <circle cx="32" cy="28" r="2.5" fill="#ffffff" stroke="#8B0000" stroke-width="1"/>
+  <circle cx="24" cy="34" r="2.2" fill="#8B0000"/>
+  <circle cx="40" cy="34" r="2.2" fill="#ffffff" stroke="#8B0000" stroke-width="1"/>
+  <circle cx="32" cy="40" r="2.2" fill="#8B0000"/>
+  <circle cx="28" cy="32" r="1.6" fill="#ffffff" stroke="#8B0000" stroke-width="0.8"/>
+  <circle cx="36" cy="32" r="1.6" fill="#8B0000" opacity="0.8"/>
+  <circle cx="28" cy="38" r="1.5" fill="#ffffff" stroke="#8B0000" stroke-width="0.8"/>
+  <circle cx="36" cy="38" r="1.5" fill="#8B0000" opacity="0.7"/>
+
+  <!-- === GRADUATION CAP === -->
+  <!-- Cap board -->
+  <polygon points="32,8 48,14 32,20 16,14" fill="#ffffff"/>
+  <!-- Cap top shadow -->
+  <polygon points="32,8 48,14 32,20 16,14" fill="#dddddd" opacity="0.3"/>
+  <!-- Cap ridge -->
+  <line x1="16" y1="14" x2="48" y2="14" stroke="#cccccc" stroke-width="0.5" opacity="0.5"/>
+
+  <!-- Tassel string -->
+  <line x1="44" y1="14" x2="44" y2="22" stroke="#8B0000" stroke-width="1.3" stroke-linecap="round"/>
+  <!-- Tassel end tuft -->
+  <circle cx="44" cy="23.5" r="2" fill="#8B0000"/>
+  <line x1="43" y1="25" x2="42" y2="28" stroke="#8B0000" stroke-width="0.9" stroke-linecap="round"/>
+  <line x1="44" y1="25.5" x2="44" y2="28.5" stroke="#8B0000" stroke-width="0.9" stroke-linecap="round"/>
+  <line x1="45" y1="25" x2="46" y2="28" stroke="#8B0000" stroke-width="0.9" stroke-linecap="round"/>
+</svg>
