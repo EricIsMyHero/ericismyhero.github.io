@@ -263,13 +263,14 @@ const data = {
           { name: "Xərclərin İdarə Edilməsi Y25", file: "xerclerY25.pdf", pdfType: "semester"}
         ]
       },
-    },
+    
     "Marketinq": { 
         type: "test", semester: 2, pdfs: [
           { name: "Marketinq Y26", file: "marketingY26.pdf", pdfType: "semester"}
         ]
       },
     }
+  },
   },
   "3-cü kurs": {
     icon: "📙",
