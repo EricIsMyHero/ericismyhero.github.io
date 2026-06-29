@@ -148,7 +148,7 @@ const data = {
           { name: "Psixologiya", file: "psixologiyakollek1.pdf", pdfType: "midterm"}
         ]
       },
-    "Sosial işin nəzəriyyəsi və təcrübəsi-2": {
+      "Sosial işin nəzəriyyəsi və təcrübəsi-2": {
         type: "yazili", semester: 2, pdfs: [
           { name: "Sosial işin nəzəriyyəsi və təcrübəsi-2", file: "sint1.pdf", pdfType: "semester"},
           { name: "Sosial işin nəzəriyyəsi və təcrübəsi-2", file: "sintkollek1.pdf", pdfType: "midterm"}
@@ -161,13 +161,13 @@ const data = {
       },
       "Liner cebir ve matematiksel analiz": {
         type: "test", semester: 1, pdfs: [
-          { name: "Liner Cebir ve Matematiksel Analiz Q26", file: "lcmaQ26.pdf" , pdfType: "semester"},
-          { name: "Liner Cebir ve Matematiksel Analiz Q23", file: "lcmaQ23.pdf" , pdfType: "semester"}
+          { name: "Liner Cebir ve Matematiksel Analiz Q26", file: "lcmaQ26.pdf", pdfType: "semester"},
+          { name: "Liner Cebir ve Matematiksel Analiz Q23", file: "lcmaQ23.pdf", pdfType: "semester"}
         ]
       },
       "Azerbaycanın tarihi": {
         type: "test", semester: 1, pdfs: [
-          { name: "Azerbaycanın Tarihi Q26", file: "aztarihiQ26.pdf", pdfType: "semester"},
+          { name: "Azerbaycanın Tarihi Q26", file: "aztarixiQ26.pdf", pdfType: "semester"},
           { name: "Azerbaycanın Tarihi Q25", file: "aztarihiQ25.pdf", pdfType: "semester"}
         ]
       },
@@ -185,7 +185,7 @@ const data = {
         type: "test", semester: 2, pdfs: [
           { name: "Olasılık Teorisi ve Matematiksel İstatistik Y26", file: "otmiY26.pdf", pdfType: "semester"}
         ]
-      },
+      }
     }
   },
   "2-ci kurs": {
@@ -193,11 +193,11 @@ const data = {
     subjects: {
       "Mikroiqtisadiyyat": {
         type: "yazili", semester: 1, pdfs: [
-          { name: "Mikroiqtisadiyyat", file: "mikroiqt1.pdf" , pdfType: "semester"},
-          { name: "Mikroiqtisadiyyat ", file: "mikroiqt2.pdf" , pdfType: "semester"},
-          { name: "Mikroiqtisadiyyat", file: "mikroiqt3.pdf" , pdfType: "semester"},
-          { name: "Mikroiqtisadiyyat", file: "mikroiqtmesele1.pdf" , pdfType: "task"},
-          { name: "Mikroiqtisadiyyat", file: "mikroiqtmesele2.pdf" , pdfType: "task"}
+          { name: "Mikroiqtisadiyyat", file: "mikroiqt1.pdf", pdfType: "semester"},
+          { name: "Mikroiqtisadiyyat ", file: "mikroiqt2.pdf", pdfType: "semester"},
+          { name: "Mikroiqtisadiyyat", file: "mikroiqt3.pdf", pdfType: "semester"},
+          { name: "Mikroiqtisadiyyat", file: "mikroiqtmesele1.pdf", pdfType: "task"},
+          { name: "Mikroiqtisadiyyat", file: "mikroiqtmesele2.pdf", pdfType: "task"}
         ]
       },
       "Qiymət siyasəti": {
@@ -212,8 +212,8 @@ const data = {
         ]
       },
       "Xarici dildə işgüzar və akademik kommunikasiya B1": {
-        type: "test",  semester: 1,  pdfs: [
-          { name: "Forrest Gump B1", file: "forrestgumpB1.pdf" , pdfType: "midterm"}
+        type: "test", semester: 1, pdfs: [
+          { name: "Forrest Gump B1", file: "forrestgumpB1.pdf", pdfType: "midterm"}
         ]
       },
       "Ətraf mühitin iqtisadiyyatı": {
@@ -242,7 +242,7 @@ const data = {
         type: "test", semester: 2, pdfs: [
           { name: "Maliyyə Uçotu Y26", file: "maliyyeY26.pdf", pdfType: "semester"},
           { name: "Maliyyə Uçotu Q26", file: "maliyyeQ26.pdf", pdfType: "semester"},
-          { name: "Maliyyə Uçotu", file: "maliyyekollek1.pdf", pdfType: "midterm"},
+          { name: "Maliyyə Uçotu", file: "maliyyekollek1.pdf", pdfType: "midterm"}
         ]
       },
       "Xarici dildə işgüzar və akademik kommunikasiya B1+": {
@@ -263,14 +263,12 @@ const data = {
           { name: "Xərclərin İdarə Edilməsi Y25", file: "xerclerY25.pdf", pdfType: "semester"}
         ]
       },
-    
-    "Marketinq": { 
+      "Marketinq": { 
         type: "test", semester: 2, pdfs: [
           { name: "Marketinq Y26", file: "marketingY26.pdf", pdfType: "semester"}
         ]
-      },
+      }
     }
-  },
   },
   "3-cü kurs": {
     icon: "📙",
