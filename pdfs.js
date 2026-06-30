@@ -223,6 +223,16 @@ const data = {
           { name: "Ətraf Mühitin İqtisadiyyatı", file: "emikollek1.pdf", pdfType: "midterm"},
           { name: "Ətraf Mühitin İqtisadiyyatı", file: "emikollek2.pdf", pdfType: "midterm"}
         ]
+      }, 
+      "Sosial sahibkarlıq": {
+        type: "test", semester: 1, pdfs: [
+          { name: "Sosial Sahibkarlıq", file: "sosialsahibkarlıgQ26.pdf", pdfType: "semester"}
+        ]
+      },
+      "Vergitutma": {
+        type: "yazili", semester: 1, pdfs: [
+          { name: "Vergitutma", file: "vergitutma1.pdf", pdfType: "semester"}
+        ]
       },
       "Azərbaycan iqtisadiyyatı": {
         type: "yazili", semester: 2, pdfs: [
@@ -256,11 +266,21 @@ const data = {
           { name: "İqtisadi Fikir Tarixi", file: "iqtfkrtrx2.pdf", pdfType: "semester"},
           { name: "İqtisadi Fikir Tarixi", file: "iqtfkrtrx3.pdf", pdfType: "semester"},
           { name: "İqtisadi Fikir Tarixi", file: "iqtfkrtrx4.pdf", pdfType: "semester"}
+        ] 
+      },
+      "Maliyyə risklərinin idarə edilməsi": {
+        type: "yazili", semester: 2, pdfs: [
+          { name: "Maliyyə Risklərinin İdarə Edilməsi", file: "mrie1.pdf", pdfType: "semester"}
+        ]
+      },
+      "Korporativ maliyyə": {
+        type: "yazili", semester: 2, pdfs: [
+          { name: "Korporativ Maliyyə", file: "korporativmaliyye1.pdf", pdfType: "semester"}
         ]
       },
       "Xərclərin idarə edilməsi": { 
         type: "test", semester: 2, pdfs: [
-          { name: "Xərclərin İdarə Edilməsi Y25", file: "xerclerY25.pdf", pdfType: "semester"}
+          { name: "Xərclərin İdarə Edilməsi Y24", file: "xerclerY24.pdf", pdfType: "semester"}
         ]
       },
       "Marketinq": { 
