@@ -4,8 +4,9 @@
 // subjects altında: { type: "test", semester: 1, pdfs: [...] }
 // ============================================================
 
-const BASE = "/";
-const EXTRAS_BASE = "/pdf-extra/";
+const R2_BASE = "https://pub-2179773f096a4b76a772ec1317daec99.r2.dev/";
+const BASE = R2_BASE;
+const EXTRAS_BASE = R2_BASE + "pdf-extra/";
 
 const PDF_TYPES = {
   semester:  { label: "Semestr",       color: "#ef4444", bg: "rgba(239,68,68,0.12)", border: "rgba(239,68,68,0.3)" },
