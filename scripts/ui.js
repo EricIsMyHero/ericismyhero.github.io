@@ -381,10 +381,10 @@ function openPDFs(subjectName) {
           aria-pressed="${isFav}">
           ${isFav ? '★' : '☆'}
         </button>
-        <button class="pdf-open-btn" data-url="/pdf/${pdf.file}" data-file="${pdf.file}" data-action="open">
+        <button class="pdf-open-btn" data-url="${BASE}pdf/${pdf.file}" data-file="${pdf.file}" data-action="open">
           ↗ ${t.openPdf}
         </button>
-        <button class="pdf-download-btn" data-url="/pdf/${pdf.file}" data-file="${pdf.file}" data-action="download">
+        <button class="pdf-download-btn" data-url="${BASE}pdf/${pdf.file}" data-file="${pdf.file}" data-action="download">
           ↓ ${t.downloadPdf}
         </button>
       </div>
