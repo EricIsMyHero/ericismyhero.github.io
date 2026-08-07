@@ -1,4 +1,4 @@
-// api/ask.js — Vercel Serverless Function (Gemini)
+// api/ask.js — Vercel Serverless Function (Groq, pulsuz tier)
 export default async function handler(req, res) {
 
   const allowedOrigins = [
@@ -25,27 +25,32 @@ Kontekst:
 ${context}
 Sual: ${question}`;
 
-    const geminiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+    const groqRes = await fetch(
+      'https://api.groq.com/openai/v1/chat/completions',
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
+        },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }]
+          model: 'llama-3.3-70b-versatile',
+          messages: [{ role: 'user', content: prompt }],
+          temperature: 0.4
         })
       }
     );
 
-    const geminiData = await geminiRes.json();
-    console.log('GEMINI RAW:', JSON.stringify(geminiData));
+    const groqData = await groqRes.json();
+    console.log('GROQ RAW:', JSON.stringify(groqData));
 
-    const reply = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text
+    const reply = groqData?.choices?.[0]?.message?.content
       ?? 'Bəzi cuzi maddi sıxıntılar səbəbindən hələlik AI aktiv deyildir.';
 
     return res.status(200).json({ reply });
 
   } catch (err) {
-    console.error('Gemini error:', err);
+    console.error('Groq error:', err);
     return res.status(500).json({ error: 'Server xətası' });
   }
 }
