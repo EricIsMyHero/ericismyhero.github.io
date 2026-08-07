@@ -7,7 +7,7 @@ const CURRICULUM_DATA = {
 
   /* ─── İQTİSADİYYAT ──────────────────────────────────────── */
   economics: {
-    name: 'İqtisadiyyat', icon: '📈',
+    name: 'İqtisadiyyat', icon: 'trending_up',
     semester1: [
       { name: 'Azərbaycanın tarixi',                                    credit: 5, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Xətti cəbr və riyazi analiz',                            credit: 8, hours: 60, absenceLimit: 7, weekly: 4 },
@@ -68,7 +68,7 @@ const CURRICULUM_DATA = {
 
   /* ─── MALİYYƏ ──────────────────────────────────────── */
   finance: {
-    name: 'Maliyyə', icon: '💰',
+    name: 'Maliyyə', icon: 'payments',
     semester1: [
       { name: 'Azərbaycan dilində işgüzar və akademik kommunikasiya', credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Xarici dildə işgüzar və akademik kommunikasiya-1',    credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
@@ -129,7 +129,7 @@ const CURRICULUM_DATA = {
 
   /* ─── MÜHASİBAT ──────────────────────────────────────── */
   accounting: {
-    name: 'Mühasibat', icon: '🧾',
+    name: 'Mühasibat', icon: 'receipt_long',
     semester1: [
       { name: 'Azərbaycanın tarixi',                          credit: 5, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Xarici dildə işgüzar və akademik kommunikasiya-1', credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
@@ -190,7 +190,7 @@ const CURRICULUM_DATA = {
 
   /* ─── MENECMENT ──────────────────────────────────────── */
   management: {
-    name: 'Menecment', icon: '🧭',
+    name: 'Menecment', icon: 'explore',
     semester1: [
       { name: 'Azərbaycan dilində işgüzar və akademik kommunikasiya', credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Xarici dildə işgüzar və akademik kommunikasiya-1',    credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
@@ -251,7 +251,7 @@ const CURRICULUM_DATA = {
 
   /* ─── MARKETİNQ ──────────────────────────────────────── */
   marketing: {
-    name: 'Marketinq', icon: '📊',
+    name: 'Marketinq', icon: 'bar_chart',
     semester1: [
       { name: 'Azərbaycan dilində işgüzar və akademik kommunikasiya', credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Xarici dildə işgüzar və akademik kommunikasiya-1',    credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
@@ -312,7 +312,7 @@ const CURRICULUM_DATA = {
 
   /* ─── DİZAYN ──────────────────────────────────────── */
   design: {
-    name: 'Dizayn', icon: '🎨',
+    name: 'Dizayn', icon: 'palette',
     semester1: [
       { name: 'Azərbaycanın tarixi',            credit: 5, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Xarici dildə işgüzar və akademik kommunikasiya-1', credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
@@ -377,7 +377,7 @@ const CURRICULUM_DATA = {
 
    /* ─── QİDA MÜHƏNDİSLİYİ ──────────────────────────────────────── */
   foodEngineering: {
-    name: 'Qida mühəndisliyi', icon: '🍽️',
+    name: 'Qida mühəndisliyi', icon: 'restaurant',
     semester1: [
       { name: 'Azərbaycan tarixi',                          credit: 5, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Xarici dildə işgüzar və akademik kommunikasiya-1', credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
@@ -442,7 +442,7 @@ const CURRICULUM_DATA = {
 
    /* ─── BEYNƏLXALQ MÜNASİBƏTLƏR ──────────────────────────────────────── */
   internationalRelations: {
-    name: 'Beynəlxalq münasibətlər', icon: '🌍',
+    name: 'Beynəlxalq münasibətlər', icon: 'public',
     semester1: [
       { name: 'Azərbaycan dilində işgüzar və akademik kommunikasiya', credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Azərbaycanın tarixi',                          credit: 5, hours: 60, absenceLimit: 7, weekly: 4 },
@@ -509,7 +509,7 @@ const CURRICULUM_DATA = {
 
 /* ─── BEYNƏLXALQ TİCARƏT VƏ LOGİSTİKA ──────────────────────────────────────── */
   internationalTradeLogistics: {
-    name: 'Beynəlxalq ticarət və logistika', icon: '🚢',
+    name: 'Beynəlxalq ticarət və logistika', icon: 'directions_boat',
     semester1: [
       { name: 'Azərbaycan dilində işgüzar və akademik kommunikasiya', credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Xarici dildə işgüzar və akademik kommunikasiya-1', credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
@@ -570,7 +570,7 @@ const CURRICULUM_DATA = {
 
    /* ─── EKOLOGİYA ──────────────────────────────────────── */
   ecology: {
-    name: 'Ekologiya', icon: '🌿',
+    name: 'Ekologiya', icon: 'eco',
     semester1: [
       { name: 'Xarici dildə işgüzar və akademik kommunikasiya-1', credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Kimya',                                  credit: 6, hours: 60, absenceLimit: 7, weekly: 4 },
@@ -634,7 +634,7 @@ const CURRICULUM_DATA = {
 
 /* ─── STATİSTİKA ──────────────────────────────────────── */
   statistics: {
-    name: 'Statistika', icon: '🔢',
+    name: 'Statistika', icon: 'calculate',
     semester1: [
       { name: 'Azərbaycanın tarixi',                    credit: 5, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Xarici dildə işgüzar və akademik kommunikasiya-1', credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
@@ -695,7 +695,7 @@ const CURRICULUM_DATA = {
 
 /* ─── DÖVLƏT VƏ BƏLƏDİYYƏ İDARƏETMƏSİ ──────────────────────────────────────── */
   publicAdministration: {
-    name: 'Dövlət və bələdiyyə idarəetməsi', icon: '🏛️',
+    name: 'Dövlət və bələdiyyə idarəetməsi', icon: 'account_balance',
     semester1: [
       { name: 'Azərbaycanın tarixi',                    credit: 5, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Xarici dildə işgüzar və akademik kommunikasiya-1', credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
@@ -757,7 +757,7 @@ const CURRICULUM_DATA = {
 
 /* ─── BİZNESİN İDARƏ EDİLMƏSİ ──────────────────────────────────────── */
   businessManagement: {
-    name: 'Biznesin idarə edilməsi', icon: '💼',
+    name: 'Biznesin idarə edilməsi', icon: 'work',
     semester1: [
       { name: 'Azərbaycanın tarixi',                    credit: 5, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Xarici dildə işgüzar və akademik kommunikasiya-1', credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
@@ -833,7 +833,7 @@ function selectSpecialty(spec) {
     b.classList.toggle('active', b.dataset.spec === spec));
 
   document.getElementById('currSpecBadge').innerHTML =
-    `${data.icon} <strong>${data.name}</strong>`;
+    `<span class="material-symbols-outlined msi">${data.icon}</span> <strong>${data.name}</strong>`;
 
   // Render all 8 semesters; skip if data missing (some specs may lack s5-s8)
   for (let i = 1; i <= 8; i++) {
