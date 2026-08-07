@@ -22,7 +22,7 @@ const PDF_TYPES = {
 
 const data = {
   "1-ci kurs": {
-    icon: "📘",
+    icon: "menu_book",
     subjects: {
       "Xətti cəbr və riyazi analiz": {
         type: "test", semester: 1, pdfs: [
@@ -190,7 +190,7 @@ const data = {
     }
   },
   "2-ci kurs": {
-    icon: "📗",
+    icon: "menu_book",
     subjects: {
       "Mikroiqtisadiyyat": {
         type: "yazili", semester: 1, pdfs: [
@@ -292,7 +292,7 @@ const data = {
     }
   },
   "3-cü kurs": {
-    icon: "📙",
+    icon: "menu_book",
     subjects: {
       "Mülki müdafiə": {
         type: "test", semester: 1, pdfs: [
@@ -309,7 +309,7 @@ const data = {
     }
   },
   "4-cü kurs": {
-    icon: "📕",
+    icon: "menu_book",
     subjects: {
       "Menecment": {
         type: "test", semester: 1, pdfs: [
