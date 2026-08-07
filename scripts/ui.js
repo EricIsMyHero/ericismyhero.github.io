@@ -139,7 +139,7 @@ function renderCourses() {
     const div = document.createElement('div');
     div.className = 'course-card animate-in';
     div.innerHTML = `
-      <span class="course-icon">${courseData.icon}</span>
+      <span class="course-icon"><span class="material-symbols-outlined">${courseData.icon}</span></span>
       <h3>${courseName}</h3>
       <div class="sub-count">${subCount} ${t.subjects} · ${pdfCount} ${t.pdfs}</div>
       <div class="tag">${courseName}</div>
@@ -202,7 +202,7 @@ function renderExtras() {
           ${isFav ? '★' : '☆'}
         </button>
         <button class="pdf-open-btn" data-url="${EXTRAS_BASE}${pdf.file}" data-file="${pdf.file}" data-action="open" data-category="PDF-Extra">
-          ↗ ${t.openPdf}
+          <span class="material-symbols-outlined msi">arrow_outward</span> ${t.openPdf}
         </button>
         <button class="pdf-download-btn" data-url="${EXTRAS_BASE}${pdf.file}" data-file="${pdf.file}" data-action="download" data-category="PDF-Extra">
           ↓ ${t.downloadPdf}
@@ -232,7 +232,7 @@ function renderFavorites() {
     (extrasData[currentCourse] || []).forEach(pdf => {
       const path = 'pdf-extra/' + pdf.file;
       if (favs.includes(path)) {
-        allPdfs.push({ name: pdf.name, meta: pdf.desc || '📦 Əlavə material', path, color: 'background:linear-gradient(135deg,#f59e0b,#d97706)', pdfType: pdf.pdfType });
+        allPdfs.push({ name: pdf.name, meta: pdf.desc || '<span class="material-symbols-outlined msi">inventory_2</span> Əlavə material', path, color: 'background:linear-gradient(135deg,#f59e0b,#d97706)', pdfType: pdf.pdfType });
       }
     });
   }
@@ -257,7 +257,7 @@ function renderFavorites() {
       <div class="pdf-actions">
         <button class="fav-btn active" onclick="removeFavAndRefresh('${item.path}')" title="Sil" aria-label="Seçilmişlərdən sil" aria-pressed="true">★</button>
         <button class="pdf-open-btn" data-url="${BASE}${item.path}" data-file="${item.path}" data-action="open" data-category="PDF-Favorite">
-          ↗ ${t.openPdf}
+          <span class="material-symbols-outlined msi">arrow_outward</span> ${t.openPdf}
         </button>
         <button class="pdf-download-btn" data-url="${BASE}${item.path}" data-file="${item.path}" data-action="download" data-category="PDF-Favorite">
           ↓ ${t.downloadPdf}
@@ -279,7 +279,7 @@ function renderSubjects(courseName) {
   const t    = translations[lang];
   const grid = document.getElementById('subjects-grid');
   grid.innerHTML = '';
-  const icons = ['📊','📐','🗓','💡','📝','📈','🔬','⚙️','🎯','📌','🏛','💰','📉','🌿','🔗','📋','🧮','🏆'];
+  const icons = ['bar_chart','straighten','calendar_month','lightbulb','edit_note','trending_up','science','settings','target','push_pin','account_balance','payments','trending_down','eco','link','assignment','calculate','emoji_events'];
 
   const allEntries = Object.entries(data[courseName].subjects);
   const sem1 = allEntries.filter(([, subj]) => subj.semester === 1);
@@ -298,7 +298,7 @@ function renderSubjects(courseName) {
       const div = document.createElement('div');
       div.className = 'subject-card animate-in';
       div.innerHTML = `
-        <div class="subject-icon">${icons[iconIndex % icons.length]}</div>
+        <div class="subject-icon"><span class="material-symbols-outlined">${icons[iconIndex % icons.length]}</span></div>
         <div class="subject-info">
           <h4>${subjectName}</h4>
           <div class="pdf-count">
@@ -346,7 +346,7 @@ function openPDFs(subjectName) {
   panel.innerHTML = `
     <div class="info-panel-inner info-panel-${type}">
       <div class="info-panel-header">
-        <span class="info-panel-title">${type === 'test' ? '🖥️ Elektron-test haqqında' : '✍️ Elektron-yazılı haqqında'}</span>
+        <span class="info-panel-title">${type === 'test' ? '<span class="material-symbols-outlined msi">desktop_windows</span> Elektron-test haqqında' : '<span class="material-symbols-outlined msi">edit</span> Elektron-yazılı haqqında'}</span>
         <button class="info-panel-close" onclick="closeInfoPanel()">✕</button>
       </div>
       <ul class="info-panel-list">
@@ -382,7 +382,7 @@ function openPDFs(subjectName) {
           ${isFav ? '★' : '☆'}
         </button>
         <button class="pdf-open-btn" data-url="${BASE}pdf/${pdf.file}" data-file="${pdf.file}" data-action="open">
-          ↗ ${t.openPdf}
+          <span class="material-symbols-outlined msi">arrow_outward</span> ${t.openPdf}
         </button>
         <button class="pdf-download-btn" data-url="${BASE}pdf/${pdf.file}" data-file="${pdf.file}" data-action="download">
           ↓ ${t.downloadPdf}
@@ -512,7 +512,7 @@ async function sendReport() {
     closeReportModal();
   } finally {
     sendBtn.disabled  = false;
-    sendBtn.innerHTML = '↗ Göndər';
+    sendBtn.innerHTML = '<span class="material-symbols-outlined msi">arrow_outward</span> Göndər';
   }
 }
 
