@@ -53,7 +53,7 @@
 
     // play/pause icon
     const btn = document.getElementById('pomodoro-play-btn');
-    if (btn) btn.innerHTML = pState.running ? '⏸' : '▶';
+    if (btn) btn.innerHTML = pState.running ? '<span class="material-symbols-outlined">pause</span>' : '<span class="material-symbols-outlined">play_arrow</span>';
 
     // dots
     for (let i = 0; i < 4; i++) {
@@ -128,7 +128,7 @@
       pState.sessionsToday++;
       pState.totalToday += 25;
       savePomodoroStats();
-      notifyUser('Fokus sessiyası bitdi! 🎉', '5 dəqiqə istirahət et.');
+      notifyUser('Fokus sessiyası bitdi!', '5 dəqiqə istirahət et.');
       if (typeof badgeOnPomodoro === 'function') badgeOnPomodoro();
       // switch to short break, long every 4
       pState.mode = pState.sessionsToday % 4 === 0 ? 'long' : 'short';
@@ -280,7 +280,7 @@
             <div class="exam-date-str">${dateFormatted}</div>
           </div>
           <span class="exam-badge ${bdgCls}">${bdgTxt}</span>
-          <button class="exam-delete-btn" onclick="deleteExam(${exam.id})" title="Sil">🗑</button>
+          <button class="exam-delete-btn" onclick="deleteExam(${exam.id})" title="Sil"><span class="material-symbols-outlined">delete</span></button>
         </div>`;
     }).join('');
   }
