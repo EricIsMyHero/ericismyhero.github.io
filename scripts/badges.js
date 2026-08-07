@@ -11,98 +11,98 @@
 const BADGE_DEFS = [
   {
     id:    'first_login',
-    icon:  '🥉',
+    icon:  'military_tech',
     name:  'İlk Addım',
     desc:  'Hesab yaratdı',
     check: (p) => true, // qeydiyyatda avtomatik
   },
   {
     id:    'first_comment',
-    icon:  '💬',
+    icon:  'chat_bubble',
     name:  'İlk Şərh',
     desc:  'İlk şərhini yazdı',
     check: (p) => (p.totalComments || 0) >= 1,
   },
   {
     id:    'first_rating',
-    icon:  '⭐',
+    icon:  'star',
     name:  'İlk Reytinq',
     desc:  'İlk dəfə material qiymətləndirdi',
     check: (p) => (p.totalRatings || 0) >= 1,
   },
   {
     id:    'first_pdf',
-    icon:  '📚',
+    icon:  'menu_book',
     name:  'Oxumağa Başladı',
     desc:  'İlk PDF-i açdı',
     check: (p) => (p.totalPdfOpens || 0) >= 1,
   },
   {
     id:    'streak_3',
-    icon:  '🔥',
+    icon:  'local_fire_department',
     name:  '3 Günlük Streak',
     desc:  '3 gün ardıcıl daxil oldu',
     check: (p) => (p.streak || 0) >= 3,
   },
   {
     id:    'streak_7',
-    icon:  '🔥',
+    icon:  'local_fire_department',
     name:  '7 Günlük Streak',
     desc:  '7 gün ardıcıl daxil oldu',
     check: (p) => (p.streak || 0) >= 7,
   },
   {
     id:    'streak_30',
-    icon:  '🔥',
+    icon:  'local_fire_department',
     name:  '30 Günlük Streak',
     desc:  '30 gün ardıcıl daxil oldu',
     check: (p) => (p.streak || 0) >= 30,
   },
   {
     id:    'focus_master',
-    icon:  '⏰',
+    icon:  'schedule',
     name:  'Fokus Ustası',
     desc:  'Pomodoro timerini 10 dəfə tamamladı',
     check: (p) => (p.pomodoroSessions || 0) >= 10,
   },
   {
     id:    'test_fan',
-    icon:  '🎯',
+    icon:  'target',
     name:  'Test Həvəskarı',
     desc:  '10 test tamamladı',
     check: (p) => (p.solvedTests || 0) >= 10,
   },
   {
     id:    'test_expert',
-    icon:  '🧠',
+    icon:  'psychology',
     name:  'Test Eksperti',
     desc:  '50 test tamamladı',
     check: (p) => (p.solvedTests || 0) >= 50,
   },
   {
     id:    'pdf_hunter',
-    icon:  '📄',
+    icon:  'description',
     name:  'Material Ovçusu',
     desc:  '25 material açdı',
     check: (p) => (p.totalPdfOpens || 0) >= 25,
   },
   {
     id:    'helpful',
-    icon:  '📝',
+    icon:  'edit_note',
     name:  'Köməksevər',
     desc:  '10 şərh yazdı',
     check: (p) => (p.totalComments || 0) >= 10,
   },
   {
     id:    'active_student',
-    icon:  '🌟',
+    icon:  'auto_awesome',
     name:  'Aktiv Tələbə',
     desc:  '500 XP qazandı',
     check: (p) => (p.xp || 0) >= 500,
   },
   {
     id:    'unec_legend',
-    icon:  '🏆',
+    icon:  'emoji_events',
     name:  'UNEC Əfsanəsi',
     desc:  '2000 XP qazandı',
     check: (p) => (p.xp || 0) >= 2000,
@@ -152,7 +152,7 @@ function showBadgeToast(def) {
   }
 
   el.innerHTML = `
-    <div class="badge-toast-icon">${def.icon}</div>
+    <div class="badge-toast-icon"><span class="material-symbols-outlined">${def.icon}</span></div>
     <div class="badge-toast-body">
       <div class="badge-toast-title">Yeni badge qazandın!</div>
       <div class="badge-toast-name">${def.name}</div>
@@ -180,7 +180,7 @@ window.renderBadges = function (progress) {
     const has = earned.has(def.id);
     return `
       <div class="badge-item ${has ? 'badge-earned' : 'badge-locked'}" title="${def.desc}">
-        <div class="badge-item-icon">${def.icon}</div>
+        <div class="badge-item-icon"><span class="material-symbols-outlined">${def.icon}</span></div>
         <div class="badge-item-name">${def.name}</div>
       </div>`;
   }).join('');
