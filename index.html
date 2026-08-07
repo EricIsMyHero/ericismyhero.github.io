@@ -42,6 +42,7 @@
 
   <!-- ═══ Fonts & Styles ════════════════════════════════════════ -->
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/base.css">
   <link rel="stylesheet" href="styles/components.css">
   <link rel="stylesheet" href="styles/features.css">
@@ -69,7 +70,7 @@
 <!-- PWA INSTALL BANNER                                         -->
 <!-- ═══════════════════════════════════════════════════════════ -->
 <div id="installBanner">
-  <span>📱 Bu saytı tətbiq kimi əlavə et</span>
+  <span><span class="material-symbols-outlined msi">smartphone</span> Bu saytı tətbiq kimi əlavə et</span>
   <div class="banner-actions">
     <button class="banner-btn-dismiss" onclick="dismissBanner()">Sonra</button>
     <button class="banner-btn-install" onclick="installApp()">Əlavə et</button>
@@ -94,7 +95,7 @@
 
   <!-- Tema Seç -->
   <div class="sidebar-section">
-    <div class="sidebar-section-label">🎨 Tema Seç</div>
+    <div class="sidebar-section-label"><span class="material-symbols-outlined msi">palette</span> Tema Seç</div>
     <div class="sidebar-theme-options" id="themeOptions">
       <button class="sidebar-theme-opt active" data-theme="unec" onclick="applyTheme('unec',this)">
         <span class="theme-dot" style="background:#003087"></span>
@@ -173,7 +174,7 @@
 
   <!-- Yeniliklər -->
   <div class="sidebar-section">
-    <div class="sidebar-section-label">🔔 Yeniliklər</div>
+    <div class="sidebar-section-label"><span class="material-symbols-outlined msi">notifications</span> Yeniliklər</div>
     <a class="sidebar-menu-item" href="https://t.me/unecimtahanmateriallari" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;">
       <span class="sidebar-menu-icon">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
@@ -187,7 +188,7 @@
 
   <!-- Təşəkkürlər -->
   <div class="sidebar-section">
-    <div class="sidebar-section-label">💛 Töhfəçilər</div>
+    <div class="sidebar-section-label"><span class="material-symbols-outlined msi">favorite</span> Töhfəçilər</div>
     <button class="sidebar-menu-item" onclick="closeSidebar(); openThanks();">
       <span class="sidebar-menu-icon">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
@@ -201,7 +202,7 @@
 
   <!-- About, Privacy, Terms -->
   <div class="sidebar-section">
-    <div class="sidebar-section-label">ℹ️ Sayt haqqında</div>
+    <div class="sidebar-section-label"><span class="material-symbols-outlined msi">info</span> Sayt haqqında</div>
     <button class="sidebar-menu-item" onclick="openAboutModal()">
       <span class="sidebar-menu-icon">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -235,7 +236,7 @@
 <!-- ═══════════════════════════════════════════════════════════ -->
 <div id="supportToast" class="support-toast">
   <div class="st-left">
-    <div class="st-icon">☕</div>
+    <div class="st-icon"><span class="material-symbols-outlined">local_cafe</span></div>
     <div class="st-text">
       <span class="st-title">Layihəyə dəstək ol</span>
       <span class="st-sub">Birbank və ya m10 ilə töhfə ver</span>
@@ -277,20 +278,20 @@
 <div id="easterOverlay" class="thanks-overlay hidden" onclick="closeEasterIfOutside(event)">
   <div class="thanks-modal" id="easterModal">
     <div class="thanks-modal-header">
-      <span class="thanks-modal-icon" style="animation:none">🫥</span>
+      <span class="thanks-modal-icon" style="animation:none"><span class="material-symbols-outlined">help</span></span>
       <h2 class="thanks-modal-title" style="font-size:1rem">Gizli Bölmə</h2>
       <button class="thanks-modal-close" onclick="closeEaster()">✕</button>
     </div>
     <div class="easter-body">
-      <div class="easter-icon">🏆</div>
+      <div class="easter-icon"><span class="material-symbols-outlined">emoji_events</span></div>
       <h3 class="easter-title">Xüsusi Təşəkkürlər</h3>
       <p class="easter-desc">Bu sayta <strong>heç bir töhfə vermədiyiniz</strong> üçün sizə xüsusi minnətdarlığımızı bildiririk.</p>
       <div class="easter-list">
-        <div class="easter-person"><span class="easter-num">🥇</span><span>Vəlizadə Kərim</span></div>
-        <div class="easter-person"><span class="easter-num">🥈</span><span>Atakişiyev Xəzər</span></div>
-        <div class="easter-person"><span class="easter-num">🥉</span><span>Paşayev Səid</span></div>
+        <div class="easter-person"><span class="easter-num"><span class="material-symbols-outlined">military_tech</span></span><span>Vəlizadə Kərim</span></div>
+        <div class="easter-person"><span class="easter-num"><span class="material-symbols-outlined">military_tech</span></span><span>Atakişiyev Xəzər</span></div>
+        <div class="easter-person"><span class="easter-num"><span class="material-symbols-outlined">military_tech</span></span><span>Paşayev Səid</span></div>
       </div>
-      <p class="easter-footer">Siz olmadan bu sayt tamamilə eyni olardı 💅</p>
+      <p class="easter-footer">Siz olmadan bu sayt tamamilə eyni olardı <span class="material-symbols-outlined msi">auto_awesome</span></p>
     </div>
   </div>
 </div>
@@ -299,7 +300,7 @@
 <div id="reportOverlay" class="thanks-overlay hidden" onclick="closeReportIfOutside(event)">
   <div class="report-modal">
     <div class="report-modal-header">
-      <div class="report-modal-icon">⚠️</div>
+      <div class="report-modal-icon"><span class="material-symbols-outlined">warning</span></div>
       <h2 class="report-modal-title">Xəta Bildir</h2>
       <button class="report-modal-close" onclick="closeReportModal()">✕</button>
     </div>
@@ -322,11 +323,11 @@
       </div>
       <div class="report-modal-footer">
         <button class="report-cancel-btn" onclick="closeReportModal()">Ləğv et</button>
-        <button class="report-send-btn" id="report-send-btn" onclick="sendReport()">↗ Göndər</button>
+        <button class="report-send-btn" id="report-send-btn" onclick="sendReport()"><span class="material-symbols-outlined msi">arrow_outward</span> Göndər</button>
       </div>
     </div>
     <div id="report-success" class="report-success hidden">
-      <div class="report-success-icon">✅</div>
+      <div class="report-success-icon"><span class="material-symbols-outlined">check_circle</span></div>
       <div class="report-success-title">Təşəkkür edirik!</div>
       <p class="report-success-desc">Xəta bildirişiniz alındı.<br>Ən qısa zamanda düzəldiləcək.</p>
     </div>
@@ -337,13 +338,13 @@
 <div id="thanksOverlay" class="thanks-overlay hidden" onclick="closeThanksIfOutside(event)">
   <div class="thanks-modal" id="thanksModal">
     <div class="thanks-modal-header">
-      <span class="thanks-modal-icon">💛</span>
+      <span class="thanks-modal-icon"><span class="material-symbols-outlined">favorite</span></span>
       <h2 class="thanks-modal-title">Təşəkkürlər</h2>
       <button class="thanks-modal-close" onclick="closeThanks()">✕</button>
     </div>
     <p class="thanks-modal-desc">Bu layihəyə töhfə verən hər kəsə ürəkdən təşəkkür edirik:</p>
     <ul class="thanks-list" id="thanks-list"></ul>
-    <div class="thanks-footer-note">Bu sayt tələbələr üçün, tələbələr tərəfindən hazırlanıb 🎓</div>
+    <div class="thanks-footer-note">Bu sayt tələbələr üçün, tələbələr tərəfindən hazırlanıb <span class="material-symbols-outlined msi">school</span></div>
   </div>
 </div>
 
@@ -351,27 +352,27 @@
 <div id="aboutOverlay" class="thanks-overlay hidden" onclick="if(event.target===this)closeAboutModal()">
   <div class="thanks-modal">
     <div class="thanks-modal-header">
-      <span class="thanks-modal-icon" style="animation:none">ℹ️</span>
+      <span class="thanks-modal-icon" style="animation:none"><span class="material-symbols-outlined">info</span></span>
       <h2 class="thanks-modal-title">Sayt Haqqında</h2>
       <button class="thanks-modal-close" onclick="closeAboutModal()">✕</button>
     </div> 
     <div class="about-body">
       <p>UNEC Students Hub, <strong>UNEC tələbələri</strong> tərəfindən hazırlanmış müstəqil tələbə platformasıdır. Məqsədimiz tələbələrin akademik və gündəlik universitet həyatını asanlaşdıran resursları, alətləri və xidmətləri vahid platformada bir araya gətirməkdir. Platformada aşağıdakı xidmətlər təqdim olunur:</p>
       <div class="about-list">
-        <div class="about-item"><span class="about-item-icon">📚</span><span>İmtahan materialları və öyrənmə resursları</span></div>
-        <div class="about-item"><span class="about-item-icon">🔍</span><span>Onlayn testlər və bilik yoxlama sistemi</span></div>
-        <div class="about-item"><span class="about-item-icon">🔢</span><span>GPA kalkulyatoru</span></div>
-        <div class="about-item"><span class="about-item-icon">📑 </span><span>İxtisas planı</span></div>
-        <div class="about-item"><span class="about-item-icon">👤 </span><span>Dashboard və nailiyyət sistemi</span></div>
-        <div class="about-item"><span class="about-item-icon">🏷️ </span><span>Material istəkləri</span></div> 
-        <div class="about-item"><span class="about-item-icon">✏️ </span><span>AI köməkçisi</span></div>
-        <div class="about-item"><span class="about-item-icon">⏱️ </span><span>Taymer və məhsuldarlıq alətləri</span></div>
-        <div class="about-item"><span class="about-item-icon">🧑‍🧒‍🧒 </span><span>Gələcək tələbə xidmətləri və icma funksiyaları</span></div>
+        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">menu_book</span></span><span>İmtahan materialları və öyrənmə resursları</span></div>
+        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">search</span></span><span>Onlayn testlər və bilik yoxlama sistemi</span></div>
+        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">calculate</span></span><span>GPA kalkulyatoru</span></div>
+        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">bookmark</span></span><span>İxtisas planı</span></div>
+        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">person</span></span><span>Dashboard və nailiyyət sistemi</span></div>
+        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">local_offer</span></span><span>Material istəkləri</span></div> 
+        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">edit</span></span><span>AI köməkçisi</span></div>
+        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">timer</span></span><span>Taymer və məhsuldarlıq alətləri</span></div>
+        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">family_restroom</span></span><span>Gələcək tələbə xidmətləri və icma funksiyaları</span></div>
       </div>
-      <p class="about-note">⚠️ Platforma tələbələr tərəfindən idarə olunur və UNEC və ya hər hansı dövlət qurumu ilə rəsmi əlaqəsi yoxdur. Platformada yerləşdirilən materialların müəllif hüquqları onların qanuni sahiblərinə məxsusdur. Hüquq pozuntusu olduğunu düşünürsünüzsə, bizimlə əlaqə saxlayın.</p>
+      <p class="about-note"><span class="material-symbols-outlined msi">warning</span> Platforma tələbələr tərəfindən idarə olunur və UNEC və ya hər hansı dövlət qurumu ilə rəsmi əlaqəsi yoxdur. Platformada yerləşdirilən materialların müəllif hüquqları onların qanuni sahiblərinə məxsusdur. Hüquq pozuntusu olduğunu düşünürsünüzsə, bizimlə əlaqə saxlayın.</p>
       <div class="about-contact">
-        <a href="mailto:unecimtahanmateriallari@gmail.com">📧 Əlaqə saxla</a>
-        <a href="https://ericismyhero.github.io/my-portfolio/" target="_blank">🌐 Portfolio</a>
+        <a href="mailto:unecimtahanmateriallari@gmail.com"><span class="material-symbols-outlined msi">mail</span> Əlaqə saxla</a>
+        <a href="https://ericismyhero.github.io/my-portfolio/" target="_blank"><span class="material-symbols-outlined msi">language</span> Portfolio</a>
       </div>
     </div>
   </div>
@@ -381,7 +382,7 @@
 <div id="privacyOverlay" class="thanks-overlay hidden" onclick="if(event.target===this)closePrivacyModal()">
   <div class="thanks-modal privacy-modal">
     <div class="thanks-modal-header">
-      <span class="thanks-modal-icon" style="animation:none">🔒</span>
+      <span class="thanks-modal-icon" style="animation:none"><span class="material-symbols-outlined">lock</span></span>
       <h2 class="thanks-modal-title">Məxfilik Siyasəti</h2>
       <button class="thanks-modal-close" onclick="closePrivacyModal()">✕</button>
     </div>
@@ -462,7 +463,7 @@
 <div id="termsOverlay" class="thanks-overlay hidden" onclick="if(event.target===this)closeTermsModal()">
   <div class="thanks-modal privacy-modal">
     <div class="thanks-modal-header">
-      <span class="thanks-modal-icon" style="animation:none">📄</span>
+      <span class="thanks-modal-icon" style="animation:none"><span class="material-symbols-outlined">description</span></span>
       <h2 class="thanks-modal-title">İstifadə Şərtləri</h2>
       <button class="thanks-modal-close" onclick="closeTermsModal()">✕</button>
     </div>
@@ -543,7 +544,7 @@
 <div id="authOverlay" class="hidden" onclick="if(event.target===this)this.classList.add('hidden')">
   <div class="auth-modal">
     <button class="auth-modal-close" onclick="document.getElementById('authOverlay').classList.add('hidden')">✕</button>
-    <div class="auth-logo">🎓</div>
+    <div class="auth-logo"><span class="material-symbols-outlined">school</span></div>
     <div class="auth-title">UNEC Students Hub</div>
     <div class="auth-sub">Hesabına daxil ol, irəliləyişini izlə</div>
 
@@ -653,25 +654,25 @@
       <!-- ── BIG STAT CARDS ── -->
       <div class="stat-cards-grid">
         <div class="stat-card stat-card--blue">
-          <div class="stat-card-icon">👥</div>
+          <div class="stat-card-icon"><span class="material-symbols-outlined">group</span></div>
           <div class="stat-card-num" data-target="2467" id="sc-students">0</div>
           <div class="stat-card-label">Aktiv Tələbə</div>
           <div class="stat-card-sub">Firebase-dən canlı</div>
         </div>
         <div class="stat-card stat-card--cyan">
-          <div class="stat-card-icon">📄</div>
+          <div class="stat-card-icon"><span class="material-symbols-outlined">description</span></div>
           <div class="stat-card-num" data-target="72" id="sc-materials">0</div>
           <div class="stat-card-label">Material</div>
           <div class="stat-card-sub">PDF formatında</div>
         </div>
         <div class="stat-card stat-card--purple">
-          <div class="stat-card-icon">📚</div>
+          <div class="stat-card-icon"><span class="material-symbols-outlined">menu_book</span></div>
           <div class="stat-card-num" data-target="43" id="sc-subjects">0</div>
           <div class="stat-card-label">Fənn</div>
           <div class="stat-card-sub">4 kurs ərzində</div>
         </div>
         <div class="stat-card stat-card--green">
-          <div class="stat-card-icon">🟢</div>
+          <div class="stat-card-icon"><span class="material-symbols-outlined">fiber_manual_record</span></div>
           <div class="stat-card-num stat-card-num--text">24/7</div>
           <div class="stat-card-label">Açıq Platforma</div>
           <div class="stat-card-sub">Həmişə əlçatan</div>
@@ -698,42 +699,42 @@
       </div>
       <div class="why-grid">
         <div class="why-card">
-          <div class="why-card-icon why-icon--blue">🔍</div>
+          <div class="why-card-icon why-icon--blue"><span class="material-symbols-outlined">search</span></div>
           <div class="why-card-body">
             <h3>Sürətli Axtarış</h3>
             <p>Fənn adını yaz, anında tap. Bütün materiallar indeksləşdirilib.</p>
           </div>
         </div>
         <div class="why-card">
-          <div class="why-card-icon why-icon--cyan">📖</div>
+          <div class="why-card-icon why-icon--cyan"><span class="material-symbols-outlined">auto_stories</span></div>
           <div class="why-card-body">
             <h3>PDF Preview</h3>
             <p>Yükləmədən birbaşa brauzerda aç, oxu, hazırlaş.</p>
           </div>
         </div>
         <div class="why-card">
-          <div class="why-card-icon why-icon--purple">🤖</div>
+          <div class="why-card-icon why-icon--purple"><span class="material-symbols-outlined">smart_toy</span></div>
           <div class="why-card-body">
             <h3>AI Sual–Cavab</h3>
             <p>Material haqqında sual ver, AI sənə izah etsin.</p>
           </div>
         </div>
         <div class="why-card">
-          <div class="why-card-icon why-icon--amber">🎓</div>
+          <div class="why-card-icon why-icon--amber"><span class="material-symbols-outlined">school</span></div>
           <div class="why-card-body">
             <h3>GPA Hesablayıcı</h3>
             <p>Kreditlərini daxil et, GPA-nı real vaxtda gör.</p>
           </div>
         </div>
         <div class="why-card">
-          <div class="why-card-icon why-icon--green">📱</div>
+          <div class="why-card-icon why-icon--green"><span class="material-symbols-outlined">smartphone</span></div>
           <div class="why-card-body">
             <h3>Mobil Uyğun</h3>
             <p>PWA dəstəyi ilə tətbiq kimi quraşdır, oflayn işlə.</p>
           </div>
         </div>
         <div class="why-card">
-          <div class="why-card-icon why-icon--rose">⭐</div>
+          <div class="why-card-icon why-icon--rose"><span class="material-symbols-outlined">star</span></div>
           <div class="why-card-body">
             <h3>Seçilmişlər</h3>
             <p>Sevimli materiallarını saxla, tez tap.</p>
@@ -752,36 +753,36 @@
         <div class="popular-card">
           <div class="popular-card-top">
             <span class="popular-card-course">2-ci Kurs</span>
-            <span class="popular-card-badge popular-badge--hot">🔥 Trend</span>
+            <span class="popular-card-badge popular-badge--hot"><span class="material-symbols-outlined msi">local_fire_department</span> Trend</span>
           </div>
           <h4 class="popular-card-title">Mikroiqtisadiyyat</h4>
           <p class="popular-card-meta">PDF · Semestr sualları</p>
           <div class="popular-card-footer">
-            <span class="popular-card-views">👁 199 baxış</span>
+            <span class="popular-card-views"><span class="material-symbols-outlined msi">visibility</span> 199 baxış</span>
             <button class="popular-card-btn" onclick="switchBottomTab('courses')">Aç →</button>
           </div>
         </div>
         <div class="popular-card">
           <div class="popular-card-top">
             <span class="popular-card-course">2-ci Kurs</span>
-            <span class="popular-card-badge popular-badge--new">✨ Yeni</span>
+            <span class="popular-card-badge popular-badge--new"><span class="material-symbols-outlined msi">auto_awesome</span> Yeni</span>
           </div>
           <h4 class="popular-card-title">Makroiqtisadiyyat</h4>
           <p class="popular-card-meta">PDF · Semestr sualları</p>
           <div class="popular-card-footer">
-            <span class="popular-card-views">👁 115 baxış</span>
+            <span class="popular-card-views"><span class="material-symbols-outlined msi">visibility</span> 115 baxış</span>
             <button class="popular-card-btn" onclick="switchBottomTab('courses')">Aç →</button>
           </div>
         </div>
         <div class="popular-card">
           <div class="popular-card-top">
             <span class="popular-card-course">2-ci Kurs</span>
-            <span class="popular-card-badge popular-badge--hot">🔥 Trend</span>
+            <span class="popular-card-badge popular-badge--hot"><span class="material-symbols-outlined msi">local_fire_department</span> Trend</span>
           </div>
           <h4 class="popular-card-title">Maliyyə Uçotu</h4>
           <p class="popular-card-meta">PDF · Kollekvium sualları</p>
           <div class="popular-card-footer">
-            <span class="popular-card-views">👁 69 baxış</span>
+            <span class="popular-card-views"><span class="material-symbols-outlined msi">visibility</span> 69 baxış</span>
             <button class="popular-card-btn" onclick="switchBottomTab('courses')">Aç →</button>
           </div>
         </div>
@@ -821,11 +822,9 @@
         <span class="breadcrumb-current" id="bc-course"></span>
       </div>
       <div class="tab-bar">
-        <button class="tab-btn active" id="tab-subjects-btn" onclick="switchTab('subjects')">
-          📚 <span id="label-subjects">Fənlər</span>
+        <button class="tab-btn active" id="tab-subjects-btn" onclick="switchTab('subjects')"><span class="material-symbols-outlined">menu_book</span><span id="label-subjects">Fənlər</span>
         </button>
-        <button class="tab-btn" id="tab-extras-btn" onclick="switchTab('extras')">
-          📦 <span id="label-extras">Əlavələr</span>
+        <button class="tab-btn" id="tab-extras-btn" onclick="switchTab('extras')"><span class="material-symbols-outlined">inventory_2</span><span id="label-extras">Əlavələr</span>
         </button>
         <button class="tab-btn" id="tab-favorites-btn" onclick="switchTab('favorites')">
           ★ <span id="label-favorites">Seçilmişlər</span>
@@ -834,7 +833,7 @@
 
       <div class="search-bar-container" id="searchBarContainer">
         <div class="search-bar-wrapper">
-          <div class="search-icon">🔍</div>
+          <div class="search-icon"><span class="material-symbols-outlined">search</span></div>
           <input type="text" id="searchInput" placeholder="PDF axtar..." autocomplete="off">
           <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
         </div>
@@ -880,7 +879,7 @@
   <div class="container">
     <div class="support-page">
       <div class="support-page-header">
-        <div class="support-page-icon">☕</div>
+        <div class="support-page-icon"><span class="material-symbols-outlined">local_cafe</span></div>
         <h2 class="support-page-title">Layihəyə Dəstək Ol</h2>
         <p class="support-page-desc">Bu sayt tamamilə pulsuz və reklamsızdır. Server xərclərini ödəməyə kömək etsəniz, layihə davam edər.</p>
       </div>
@@ -935,10 +934,10 @@
 
       <div class="support-contact-row">
         <a href="mailto:ericismyhero2467@gmail.com" class="support-contact-btn">
-          📧 Əlaqə saxla
+          <span class="material-symbols-outlined msi">mail</span> Əlaqə saxla
         </a>
         <button class="support-contact-btn" onclick="openThanks()">
-          💛 Töhfəçilər
+          <span class="material-symbols-outlined msi">favorite</span> Töhfəçilər
         </button>
       </div>
     </div>
@@ -952,7 +951,7 @@
     <!-- Landing screen -->
     <div id="test-landing">
       <div class="test-hero">
-        <div class="test-hero-icon">🎯</div>
+        <div class="test-hero-icon"><span class="material-symbols-outlined">target</span></div>
         <h2 id="test-hero-title">UNEC <span>Test</span><br>Sistemi ᵇᵉᵗᵃ</h2>
         <p class="test-hero-desc">Bu sistem beta versiyada olduğu üçün cavabların səhv olma ehtimalı vardır.</p>
       </div>
@@ -1013,7 +1012,7 @@
     <!-- Result screen -->
     <div id="test-result" style="display:none;">
       <div class="test-result-card">
-        <div class="test-result-emoji" id="resultEmoji">🏆</div>
+        <div class="test-result-emoji material-symbols-outlined" id="resultEmoji">emoji_events</div>
         <h2 class="test-result-title" id="resultTitle">Nəticə</h2>
         <div class="test-result-score" id="resultScore"></div>
         <div class="test-result-percent" id="resultPercent"></div>
@@ -1022,7 +1021,7 @@
         </div>
         <div class="test-result-stats" id="resultStats"></div>
         <button class="test-start-btn" style="margin-top:24px;" onclick="resetTest()">
-          🔄 Yenidən Başla
+          <span class="material-symbols-outlined msi">refresh</span> Yenidən Başla
         </button>
       </div>
 
@@ -1173,7 +1172,7 @@
 
     <!-- Hero -->
     <div class="gpa-hero">
-      <div class="gpa-page-badge">🎓 UNEC · Akademik</div>
+      <div class="gpa-page-badge"><span class="material-symbols-outlined msi">school</span> UNEC · Akademik</div>
       <h1 class="gpa-page-title">UNEC <span>GPA</span> Calculator</h1>
       <p class="gpa-hero-sub">GPA-nı real vaxtda hesabla. Kreditlərini izləyərək nəticəni əvvəlcədən gör.</p>
     </div>
@@ -1181,10 +1180,10 @@
     <!-- Mode Toggle -->
     <div class="gpa-mode-toggle">
       <button class="gpa-mode-btn active" id="gpa-mode-calc" onclick="gpaSetMode('calculator')">
-        🧮 Kalkulyator
+        <span class="material-symbols-outlined msi">calculate</span> Kalkulyator
       </button>
       <button class="gpa-mode-btn" id="gpa-mode-pred" onclick="gpaSetMode('predictor')">
-        🎯 Proqnozlaşdırıcı
+        <span class="material-symbols-outlined msi">target</span> Proqnozlaşdırıcı
       </button>
     </div>
 
@@ -1253,7 +1252,7 @@
     <div id="gpa-pred-view" style="display:none;">
       <div class="gpa-predictor-card">
         <div class="gpa-predictor-header">
-          <div class="gpa-predictor-icon">🎯</div>
+          <div class="gpa-predictor-icon"><span class="material-symbols-outlined">target</span></div>
           <div class="gpa-predictor-title">Hədəf GPA Proqnozlaşdırıcı</div>
         </div>
         <div class="gpa-predictor-sub">
@@ -1291,7 +1290,7 @@
     <!-- Giriş etməyib -->
     <div id="dash-guest-view">
       <div class="dash-login-prompt">
-        <div class="dash-login-prompt-icon">🎓</div>
+        <div class="dash-login-prompt-icon"><span class="material-symbols-outlined">school</span></div>
         <h3>Öz İrəliləyişini İzlə</h3>
         <p>Giriş et — streak, XP, GPA və test nəticələrin burada saxlanır.</p>
         <button class="dash-login-btn" onclick="openAuthModal('login')">Daxil ol / Qeydiyyat</button>
@@ -1301,7 +1300,7 @@
     <!-- Giriş etmiş -->
     <div id="dash-user-view" style="display:none;">
 
-      <div id="dash-greeting" class="dash-greeting">Salam 👋</div>
+      <div id="dash-greeting" class="dash-greeting">Salam <span class="material-symbols-outlined msi">waving_hand</span></div>
       <div id="dash-date" class="dash-date"></div>
 
       <!-- Tələbə Profili -->
@@ -1312,33 +1311,33 @@
             <div class="dash-profile-name"  id="dash-pname">—</div>
             <div class="dash-profile-email" id="dash-pemail">—</div>
           </div>
-          <button class="dash-profile-edit-btn" onclick="toggleProfileEdit()" aria-label="Profili redaktə et" title="Profili redaktə et">✏️</button>
+          <button class="dash-profile-edit-btn" onclick="toggleProfileEdit()" aria-label="Profili redaktə et" title="Profili redaktə et"><span class="material-symbols-outlined">edit</span></button>
         </div>
 
         <!-- Baxış rejimi -->
         <div class="dash-profile-facts" id="dash-profile-facts">
           <div class="dash-fact">
-            <span class="dash-fact-icon">🏛️</span>
+            <span class="dash-fact-icon"><span class="material-symbols-outlined">account_balance</span></span>
             <span class="dash-fact-label">Fakültə</span>
             <span class="dash-fact-val" id="dash-fact-faculty">—</span>
           </div>
           <div class="dash-fact">
-            <span class="dash-fact-icon">📚</span>
+            <span class="dash-fact-icon"><span class="material-symbols-outlined">menu_book</span></span>
             <span class="dash-fact-label">İxtisas</span>
             <span class="dash-fact-val" id="dash-fact-major">—</span>
           </div>
           <div class="dash-fact">
-            <span class="dash-fact-icon">🎓</span>
+            <span class="dash-fact-icon"><span class="material-symbols-outlined">school</span></span>
             <span class="dash-fact-label">Kurs</span>
             <span class="dash-fact-val" id="dash-fact-year">—</span>
           </div>
           <div class="dash-fact">
-            <span class="dash-fact-icon">⚡</span>
+            <span class="dash-fact-icon"><span class="material-symbols-outlined">bolt</span></span>
             <span class="dash-fact-label">Səviyyə</span>
             <span class="dash-fact-val" id="dash-fact-rank">—</span>
           </div>
           <div class="dash-fact">
-            <span class="dash-fact-icon">🎯</span>
+            <span class="dash-fact-icon"><span class="material-symbols-outlined">target</span></span>
             <span class="dash-fact-label">Həll edilən test</span>
             <span class="dash-fact-val" id="dash-fact-solved">0</span>
           </div>
@@ -1376,7 +1375,7 @@
       </div>
       <div class="dash-stats-grid">
         <div class="dash-stat-card">
-          <div class="dash-stat-icon">🔥</div>
+          <div class="dash-stat-icon"><span class="material-symbols-outlined">local_fire_department</span></div>
           <div class="dash-stat-body">
             <div class="dash-stat-top">
               <span class="dash-stat-val" id="dash-streak">0</span>
@@ -1386,7 +1385,7 @@
           </div>
         </div>
         <div class="dash-stat-card">
-          <div class="dash-stat-icon">🎯</div>
+          <div class="dash-stat-icon"><span class="material-symbols-outlined">target</span></div>
           <div class="dash-stat-body">
             <div class="dash-stat-top">
               <span class="dash-stat-val" id="dash-solved">0</span>
@@ -1396,7 +1395,7 @@
           </div>
         </div>
         <div class="dash-stat-card">
-          <div class="dash-stat-icon">⚡</div>
+          <div class="dash-stat-icon"><span class="material-symbols-outlined">bolt</span></div>
           <div class="dash-stat-body">
             <div class="dash-stat-top">
               <span class="dash-stat-val" id="dash-xp">0</span>
@@ -1406,7 +1405,7 @@
           </div>
         </div>
         <div class="dash-stat-card">
-          <div class="dash-stat-icon">🎓</div>
+          <div class="dash-stat-icon"><span class="material-symbols-outlined">school</span></div>
           <div class="dash-stat-body">
             <div class="dash-stat-top">
               <span class="dash-stat-val" id="dash-gpa">—</span>
@@ -1419,25 +1418,25 @@
 
       <!-- Streak vəziyyəti -->
       <div id="dash-streak-msg" class="dash-streak-msg" onclick="toggleStreakInfo()">
-        <span id="dash-streak-msg-text"></span>
+        <span id="dash-streak-msg-icon" class="material-symbols-outlined msi"></span><span id="dash-streak-msg-text"></span>
         <svg class="streak-msg-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
       <div class="streak-info-panel hidden" id="streak-info-panel">
-        <div class="streak-info-title">🔥 Streak necə qazanılır?</div>
+        <div class="streak-info-title"><span class="material-symbols-outlined msi">local_fire_department</span> Streak necə qazanılır?</div>
         <div class="streak-info-item">
-          <span class="streak-info-icon">🎯</span>
+          <span class="streak-info-icon"><span class="material-symbols-outlined">target</span></span>
           <div><strong>Quiz həll et</strong> — hər gün ən azı 1 test</div>
         </div>
         <div class="streak-info-item">
-          <span class="streak-info-icon">📄</span>
+          <span class="streak-info-icon"><span class="material-symbols-outlined">description</span></span>
           <div><strong>PDF aç</strong> — materialları oxu</div>
         </div>
         <div class="streak-info-item">
-          <span class="streak-info-icon">🎓</span>
+          <span class="streak-info-icon"><span class="material-symbols-outlined">school</span></span>
           <div><strong>GPA yenilə</strong> — qiymətlərini əlavə et</div>
         </div>
         <div class="streak-info-item">
-          <span class="streak-info-icon">⏱️</span>
+          <span class="streak-info-icon"><span class="material-symbols-outlined">timer</span></span>
           <div><strong>Study timer işlət</strong> — ən azı 5 dəqiqə</div>
         </div>
         <div class="streak-info-note">Streak hər gün saat 00:00-da sıfırlanır. Günlük aktivlik saxla!</div>
@@ -1449,7 +1448,7 @@
       </div>
       <div class="dash-rank-card">
         <div class="dash-rank-header">
-          <div class="dash-rank-icon-wrap" id="dash-rank-icon">🌱</div>
+          <div class="dash-rank-icon-wrap material-symbols-outlined" id="dash-rank-icon">eco</div>
           <div class="dash-rank-info">
             <div class="dash-rank-title" id="dash-rank-name">Freshman</div>
             <div class="dash-rank-xp"   id="dash-rank-xp">0 XP</div>
@@ -1471,7 +1470,7 @@
       <!-- Badges -->
       <div class="dash-section" style="margin-top:20px;">
         <div class="dash-badges-header">
-          <span class="dash-badges-title">🏅 Badgelər</span>
+          <span class="dash-badges-title"><span class="material-symbols-outlined msi">workspace_premium</span>Badgelər</span>
           <span class="dash-badges-count" id="dash-badges-count">0/14</span>
         </div>
         <div class="dash-badges-grid" id="dash-badges-grid"></div>
@@ -1487,7 +1486,7 @@
   <div class="qr-pay-modal">
     <div class="qr-pay-modal-header">
       <div class="qr-pay-modal-title-row">
-        <span class="qr-pay-modal-icon" id="qrModalIcon">💳</span>
+        <span class="qr-pay-modal-icon material-symbols-outlined" id="qrModalIcon">credit_card</span>
         <span class="qr-pay-modal-title" id="qrModalTitle">QR ilə Ödəniş</span>
       </div>
       <button class="qr-pay-modal-close" onclick="closeQRModal()">✕</button>
@@ -1591,7 +1590,7 @@
 <div id="main-curriculum" class="main-tab" style="display:none;">
   <div class="curr-container">
     <div class="curr-header">
-      <div class="curr-header-icon">📚</div>
+      <div class="curr-header-icon"><span class="material-symbols-outlined">menu_book</span></div>
       <h2 id="curr-header-title">UNEC <span>İxtisas</span><br>Planı</h2>
       <p class="curr-header-sub">İxtisasını seç, fənnlərini, kreditlərini və qayıb limitini öyrən</p>
     </div>
@@ -1601,39 +1600,39 @@
       <div class="curr-selector-label">İxtisasını seç</div>
       <div class="curr-specialty-grid" id="currSpecialtyGrid">
         <button class="curr-specialty-btn" data-spec="economics" onclick="selectSpecialty('economics')">
-          <span class="curr-spec-icon">📈</span>
+          <span class="curr-spec-icon"><span class="material-symbols-outlined">trending_up</span></span>
           <span class="curr-spec-name">İqtisadiyyat</span>
         </button>
         <button class="curr-specialty-btn" data-spec="finance" onclick="selectSpecialty('finance')">
-          <span class="curr-spec-icon">💰</span>
+          <span class="curr-spec-icon"><span class="material-symbols-outlined">payments</span></span>
           <span class="curr-spec-name">Maliyyə</span>
         </button>
         <button class="curr-specialty-btn" data-spec="accounting" onclick="selectSpecialty('accounting')">
-          <span class="curr-spec-icon">🧾</span>
+          <span class="curr-spec-icon"><span class="material-symbols-outlined">receipt_long</span></span>
           <span class="curr-spec-name">Mühasibat</span>
         </button>
         <button class="curr-specialty-btn" data-spec="management" onclick="selectSpecialty('management')">
-          <span class="curr-spec-icon">🧭</span>
+          <span class="curr-spec-icon"><span class="material-symbols-outlined">explore</span></span>
           <span class="curr-spec-name">Menecment</span>
         </button>
         <button class="curr-specialty-btn" data-spec="marketing" onclick="selectSpecialty('marketing')">
-          <span class="curr-spec-icon">📊</span>
+          <span class="curr-spec-icon"><span class="material-symbols-outlined">bar_chart</span></span>
           <span class="curr-spec-name">Marketinq</span>
         </button>
         <button class="curr-specialty-btn" data-spec="design" onclick="selectSpecialty('design')">
-          <span class="curr-spec-icon">🎨</span>
+          <span class="curr-spec-icon"><span class="material-symbols-outlined">palette</span></span>
           <span class="curr-spec-name">Dizayn</span>
         </button>
         <button class="curr-specialty-btn" data-spec="foodEngineering" onclick="selectSpecialty('foodEngineering')">
-          <span class="curr-spec-icon">🍽️</span>
+          <span class="curr-spec-icon"><span class="material-symbols-outlined">restaurant</span></span>
           <span class="curr-spec-name">Qida mühəndisliyi</span>
         </button>
         <button class="curr-specialty-btn" data-spec="internationalRelations" onclick="selectSpecialty('internationalRelations')">
-          <span class="curr-spec-icon">🌍</span>
+          <span class="curr-spec-icon"><span class="material-symbols-outlined">public</span></span>
           <span class="curr-spec-name">Beynəlxalq münasibətlər</span>
         </button>
         <button class="curr-specialty-btn" data-spec="internationalTradeLogistics" onclick="selectSpecialty('internationalTradeLogistics')">
-          <span class="curr-spec-icon">🚢</span>
+          <span class="curr-spec-icon"><span class="material-symbols-outlined">directions_boat</span></span>
           <span class="curr-spec-name">Beynəlxalq ticarət və logistika</span>
         </button>
       </div>
@@ -1833,14 +1832,14 @@
 
       <!-- GPA məsləhəti -->
       <div class="curr-gpa-tip">
-        <div class="curr-gpa-tip-icon">💡</div>
+        <div class="curr-gpa-tip-icon"><span class="material-symbols-outlined">lightbulb</span></div>
         <div class="curr-gpa-tip-text">Bu məlumatlar bir-başa UNEC-in rəsmi saytından alınmışdır, məlumatlar 2024-cü ilə aiddir. Seçmə fənnlərin qarşısında mötərizə ilə fərqləndirilmiş fənlər keçirilməsi ehtimal olunan fənlərdir.</div>
       </div>
     </div>
 
     <!-- Boş vəziyyət -->
     <div id="currEmptyState" class="curr-empty">
-      <div class="curr-empty-icon">🎓</div>
+      <div class="curr-empty-icon"><span class="material-symbols-outlined">school</span></div>
       <div class="curr-empty-text">Yuxarıdan öz ixtisasını seç</div>
     </div>
 
@@ -1852,7 +1851,7 @@
   <div class="container">
 
     <div class="req-hero">
-      <div class="req-page-badge">🔎 Material İstəkləri</div>
+      <div class="req-page-badge"><span class="material-symbols-outlined msi">search</span> Material İstəkləri</div>
       <h1 class="req-page-title">Axtardığını <span>tapa bilmirsən?</span></h1>
       <p class="req-hero-sub">İstək yaz — başqa tələbələr kömək etsin.</p>
     </div>
@@ -1896,7 +1895,7 @@
 
     <!-- Notification banner -->
     <div class="timer-notif-banner hidden" id="timer-notif-banner">
-      <span>🔔 Bildiriş icazəsi ver</span>
+      <span><span class="material-symbols-outlined msi">notifications</span> Bildiriş icazəsi ver</span>
       <button class="timer-notif-btn" onclick="requestTimerNotif()">İcazə ver</button>
     </div>
 
@@ -1936,8 +1935,8 @@
       <!-- Controls -->
       <div class="pomodoro-controls">
         <button class="pomodoro-btn-secondary" onclick="pomodoroReset()" title="Sıfırla">↺</button>
-        <button class="pomodoro-btn-main" id="pomodoro-play-btn" onclick="pomodoroToggle()">▶</button>
-        <button class="pomodoro-btn-secondary" onclick="pomodoroSkip()" title="Keç">⏭</button>
+        <button class="pomodoro-btn-main" id="pomodoro-play-btn" onclick="pomodoroToggle()"><span class="material-symbols-outlined">play_arrow</span></button>
+        <button class="pomodoro-btn-secondary" onclick="pomodoroSkip()" title="Keç"><span class="material-symbols-outlined">skip_next</span></button>
       </div>
 
       <!-- Stats -->
