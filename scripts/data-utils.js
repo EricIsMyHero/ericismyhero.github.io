@@ -13,16 +13,16 @@
 // ── İmtahan tipinə görə avtomatik qeydlər ───────────────────
 const EXAM_NOTES = {
   test: [
-    "🖥️ Bu fənn <strong>Elektron-Test</strong> formatındadır.",
-    "🔀 Sualların sırası fərqli ola bilər. Cavabları sıraya görə deyil, mənaya görə öyrənin.",
-    "⚠️ Materiallardakı cavablar köhnə ola bilər, müəllimin dediyi mövzularla müqayisə edin.",
-    "💡 Bütün variantları nəzərdən keçirin, bəzən test tipli fənnlər yazılıya çevrilə bilər."
+    "<span class=\"material-symbols-outlined msi\">desktop_windows</span>Bu fənn <strong>Elektron-Test</strong> formatındadır.",
+    "<span class=\"material-symbols-outlined msi\">shuffle</span>Sualların sırası fərqli ola bilər. Cavabları sıraya görə deyil, mənaya görə öyrənin.",
+    "<span class=\"material-symbols-outlined msi\">warning</span>Materiallardakı cavablar köhnə ola bilər, müəllimin dediyi mövzularla müqayisə edin.",
+    "<span class=\"material-symbols-outlined msi\">lightbulb</span>Bütün variantları nəzərdən keçirin, bəzən test tipli fənnlər yazılıya çevrilə bilər."
   ],
   yazili: [
-    "✍️ Bu fənn <strong>Elektron-Yazılı</strong> formatındadır.",
-    "📝 Cavablarınızı tam, əsaslandırılmış və ən önəmlisi fərqli şəkildə yazmağa diqqət göstərin.",
-    "⚠️ Materiallardakı suallar köhnə ola bilər, sillabusunuzla mütləq uyğunlaşdırın.",
-    "💡 Əlavə mənbələrdən də istifadə etməyi tövsiyə edirik, bəzən yazılı tipli fənnlər testə çevrilə bilər."
+    "<span class=\"material-symbols-outlined msi\">edit</span>Bu fənn <strong>Elektron-Yazılı</strong> formatındadır.",
+    "<span class=\"material-symbols-outlined msi\">edit_note</span>Cavablarınızı tam, əsaslandırılmış və ən önəmlisi fərqli şəkildə yazmağa diqqət göstərin.",
+    "<span class=\"material-symbols-outlined msi\">warning</span>Materiallardakı suallar köhnə ola bilər, sillabusunuzla mütləq uyğunlaşdırın.",
+    "<span class=\"material-symbols-outlined msi\">lightbulb</span>Əlavə mənbələrdən də istifadə etməyi tövsiyə edirik, bəzən yazılı tipli fənnlər testə çevrilə bilər."
   ]
 };
 
@@ -40,22 +40,22 @@ function renderThanks() {
   if (!ul) return;
   ul.innerHTML = '';
   const groups = [
-    { key: 'code', label: '💻 Kod töhfəçiləri' },
-    { key: 'pdf',  label: '📄 PDF töhfəçiləri' }
+    { key: 'code', label: '<span class="material-symbols-outlined msi">computer</span>Kod töhfəçiləri' },
+    { key: 'pdf',  label: '<span class="material-symbols-outlined msi">description</span>PDF töhfəçiləri' }
   ];
   groups.forEach(group => {
     const people = thanksData.filter(p => p.role === group.key);
     if (people.length === 0) return;
     const header = document.createElement('li');
     header.className = 'thanks-section-label';
-    header.textContent = group.label;
+    header.innerHTML = group.label;
     ul.appendChild(header);
     people.forEach(p => {
       const li = document.createElement('li');
       li.innerHTML = `
         <span class="thanks-avatar">${p.initial}</span>
         <div class="thanks-person"><span class="thanks-name">${p.name}</span></div>
-        <span class="thanks-heart">♥</span>
+        <span class="thanks-heart material-symbols-outlined">favorite</span>
       `;
       ul.appendChild(li);
     });
@@ -64,8 +64,8 @@ function renderThanks() {
 
 // ── Fənn tipi badge-i ────────────────────────────────────────
 function getTypeBadgeHTML(type) {
-  if (type === 'test')   return `<span class="exam-type-badge exam-type-test">🖥️ Test</span>`;
-  if (type === 'yazili') return `<span class="exam-type-badge exam-type-yazili">✍️ Yazılı</span>`;
+  if (type === 'test')   return `<span class="exam-type-badge exam-type-test"><span class="material-symbols-outlined msi">desktop_windows</span>Test</span>`;
+  if (type === 'yazili') return `<span class="exam-type-badge exam-type-yazili"><span class="material-symbols-outlined msi">edit</span>Yazılı</span>`;
   return '';
 }
 
@@ -133,8 +133,8 @@ const translations = {
     noFavorites: "Hələ seçilən PDF yoxdur. ★ basaraq əlavə edin.",
     noExtras: "Bu kurs üçün hələ əlavə material yoxdur.",
     footer: "Bu sayt rəsmi deyildir. Yalnız tələbələrin imtahan zamanı materialları daha rahat və əlçatan tapması üçün hazırlanıb.",
-    semesterFall: "🍂 Payız Semestri",
-    semesterSpring: "🌸 Yaz Semestri"
+    semesterFall: "Payız Semestri",
+    semesterSpring: "Yaz Semestri"
   },
   en: {
     badge: "UNEC Students Hub",
@@ -159,8 +159,8 @@ const translations = {
     noFavorites: "No favorites yet. Tap ★ to add one.",
     noExtras: "No extra materials for this course yet.",
     footer: "This site is unofficial. Created to help students find exam materials more easily.",
-    semesterFall: "🍂 Fall Semester",
-    semesterSpring: "🌸 Spring Semester"
+    semesterFall: "Fall Semester",
+    semesterSpring: "Spring Semester"
   }
 };
 
