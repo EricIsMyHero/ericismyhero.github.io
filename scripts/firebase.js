@@ -280,12 +280,12 @@ async function saveTeacherReview(teacher, rating, comment) {
 // ============================================================
 
 const RANKS = [
-  { name: 'Freshman',  minXP:    0, icon: '🌱' },
-  { name: 'Scholar',   minXP:  100, icon: '📖' },
-  { name: 'Analyst',   minXP:  300, icon: '🔍' },
-  { name: 'Expert',    minXP:  700, icon: '⚡' },
-  { name: 'Master',    minXP: 1500, icon: '🎓' },
-  { name: 'Professor', minXP: 3000, icon: '🏆' },
+  { name: 'Freshman',  minXP:    0, icon: 'eco' },
+  { name: 'Scholar',   minXP:  100, icon: 'auto_stories' },
+  { name: 'Analyst',   minXP:  300, icon: 'search' },
+  { name: 'Expert',    minXP:  700, icon: 'bolt' },
+  { name: 'Master',    minXP: 1500, icon: 'school' },
+  { name: 'Professor', minXP: 3000, icon: 'emoji_events' },
 ];
 
 function getRankInfo(xp) {
