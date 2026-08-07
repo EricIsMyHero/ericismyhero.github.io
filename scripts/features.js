@@ -51,7 +51,9 @@ function hidePdfLoading() {
 }
 
 // ── AI Widget ─────────────────────────────────────────────────
-const BACKEND_URL = "https://ericismyhero-github-io.vercel.app";
+const BACKEND_URL    = "https://ericismyhero-github-io.vercel.app";
+const AI_DAILY_LIMIT = 5;
+const AI_CHAR_LIMIT  = 250;
 let aiOpen = false;
 
 function toggleAI() {
@@ -59,12 +61,95 @@ function toggleAI() {
   const chat = document.getElementById('ai-chat');
   if (aiOpen) {
     chat.classList.add('ai-open');
-    document.getElementById('ai-input').focus();
+    refreshAiAuthState();
     if (!document.getElementById('ai-messages').children.length) {
       addBotMsg('Salam! UNEC materialları haqqında sualını ver — cavablayayım.');
     }
   } else {
     chat.classList.remove('ai-open');
+  }
+}
+
+function _aiTodayStr() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+async function _aiGetUsage() {
+  const user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
+  const db   = typeof getDb === 'function' ? getDb() : null;
+  if (!user || !db) return { count: 0, remaining: AI_DAILY_LIMIT };
+  try {
+    const ref  = db.collection('users').doc(user.uid).collection('progress').doc('main');
+    const snap = await ref.get();
+    const d    = snap.data() || {};
+    const count = (d.aiAskDate === _aiTodayStr()) ? (d.aiAskCount || 0) : 0;
+    return { count, remaining: Math.max(0, AI_DAILY_LIMIT - count) };
+  } catch (e) {
+    console.warn('[AI] limit oxunmadı:', e);
+    return { count: 0, remaining: AI_DAILY_LIMIT };
+  }
+}
+
+async function _aiIncrementUsage() {
+  const user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
+  const db   = typeof getDb === 'function' ? getDb() : null;
+  if (!user || !db) return;
+  try {
+    const ref   = db.collection('users').doc(user.uid).collection('progress').doc('main');
+    const today = _aiTodayStr();
+    const snap  = await ref.get();
+    const d     = snap.data() || {};
+    if (d.aiAskDate === today) {
+      await ref.update({ aiAskCount: firebase.firestore.FieldValue.increment(1) });
+    } else {
+      await ref.update({ aiAskDate: today, aiAskCount: 1 });
+    }
+  } catch (e) {
+    console.warn('[AI] limit yazılmadı:', e);
+  }
+}
+
+// ── Giriş / limit vəziyyətinə görə input sahəsi ─────────────
+async function refreshAiAuthState() {
+  const area = document.getElementById('ai-input-area');
+  if (!area) return;
+
+  if (typeof isLoggedIn !== 'function' || !isLoggedIn()) {
+    area.innerHTML = `
+      <button class="chat-login-btn" onclick="openAuthModal('login')">
+        Yazmaq üçün daxil ol
+      </button>
+    `;
+    return;
+  }
+
+  const { remaining } = await _aiGetUsage();
+
+  area.innerHTML = `
+    <div id="ai-input-meta">
+      <span id="ai-char-count">0/${AI_CHAR_LIMIT}</span>
+      <span id="ai-daily-count">Bugün qalan sorğu: ${remaining}/${AI_DAILY_LIMIT}</span>
+    </div>
+    <div id="ai-input-row">
+      <input type="text" id="ai-input" placeholder="Sualını yaz..." autocomplete="off" maxlength="${AI_CHAR_LIMIT}" />
+      <button id="ai-send-btn" onclick="sendMessage()">Göndər</button>
+    </div>
+  `;
+
+  const input   = document.getElementById('ai-input');
+  const sendBtn = document.getElementById('ai-send-btn');
+
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') sendMessage(); });
+  input.addEventListener('input', () => {
+    document.getElementById('ai-char-count').textContent = `${input.value.length}/${AI_CHAR_LIMIT}`;
+  });
+
+  if (remaining <= 0) {
+    input.disabled     = true;
+    input.placeholder  = 'Sabah davam et — günlük limit bitdi';
+    sendBtn.disabled    = true;
+  } else {
+    input.focus();
   }
 }
 
@@ -167,15 +252,30 @@ async function buildContext(question) {
 }
 
 async function sendMessage() {
+  if (typeof isLoggedIn !== 'function' || !isLoggedIn()) {
+    if (typeof openAuthModal === 'function') openAuthModal('login');
+    return;
+  }
+
   const input = document.getElementById('ai-input');
-  const text  = input.value.trim();
+  if (!input) return;
+  const text = input.value.trim().slice(0, AI_CHAR_LIMIT);
   if (!text) return;
+
+  const { remaining } = await _aiGetUsage();
+  if (remaining <= 0) {
+    addBotMsg('Günlük sorğu limitin bitdi (' + AI_DAILY_LIMIT + '/' + AI_DAILY_LIMIT + '). Sabah yenidən cəhd et.');
+    refreshAiAuthState();
+    return;
+  }
+
   input.value    = '';
   input.disabled = true;
   addUserMsg(text);
   showTyping();
 
   try {
+    await _aiIncrementUsage();
     const res = await fetch(`${BACKEND_URL}/api/ask`, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -188,15 +288,9 @@ async function sendMessage() {
     removeTyping();
     addBotMsg('Bağlantı xətası.');
   } finally {
-    input.disabled = false;
-    input.focus();
+    refreshAiAuthState();
   }
 }
-
-document.getElementById('ai-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter') sendMessage();
-});
-
 
 let deferredPrompt;
 window.addEventListener("beforeinstallprompt", (e) => {
