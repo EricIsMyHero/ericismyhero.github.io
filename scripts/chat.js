@@ -8,10 +8,10 @@ let _chatCurrentDocId = null;
 let _activeChatTag    = null;
 
 const CHAT_TAGS = [
-  { key: 'final',   label: '📌 Finalda düşdü' },
-  { key: 'midterm',   label: '📎 Kollekviumda düşdü' },
-  { key: 'old',     label: '🔁 Köhnə suallardır' },
-  { key: 'wantmore', label: '📕 Yeni PDF istəyirəm' }
+  { key: 'final',    icon: 'push_pin',    label: 'Finalda düşdü' },
+  { key: 'midterm',  icon: 'attach_file', label: 'Kollekviumda düşdü' },
+  { key: 'old',      icon: 'repeat',      label: 'Köhnə suallardır' },
+  { key: 'wantmore', icon: 'menu_book',   label: 'Yeni PDF istəyirəm' }
 ];
 
 // ── Köməkçilər ────────────────────────────────────────────────
@@ -60,7 +60,7 @@ function renderSubjectChat(courseName, subjectName, pdfFiles) {
   container.innerHTML = `
     <div class="material-leaderboard" id="material-leaderboard"></div>
     <div class="chat-header">
-      <span class="chat-title">💬 Fənn müzakirəsi</span>
+      <span class="chat-title"><span class="material-symbols-outlined msi">chat_bubble</span>Fənn müzakirəsi</span>
       <span class="chat-sub">Bu fənnin materialları haqqında fikrini yaz</span>
     </div>
     <div class="chat-messages" id="chat-messages">
@@ -109,7 +109,7 @@ function refreshChatAuthState() {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'chat-tag-btn';
-    btn.textContent = t.label;
+    btn.innerHTML = `<span class="material-symbols-outlined msi">${t.icon}</span>${t.label}`;
     btn.onclick = () => _toggleChatTag(btn, t.key);
     tagsWrap.appendChild(btn);
   });
@@ -166,14 +166,14 @@ function _renderChatMessages(msgs) {
   }
 
   const uid    = (typeof getCurrentUser === 'function' && getCurrentUser()) ? getCurrentUser().uid : null;
-  const tagMap = Object.fromEntries(CHAT_TAGS.map(t => [t.key, t.label]));
+  const tagMap = Object.fromEntries(CHAT_TAGS.map(t => [t.key, t]));
 
   list.innerHTML = msgs.map(m => {
     const isMine  = !!(m.uid && uid && m.uid === uid);
     const initial = (m.name || '?').charAt(0).toUpperCase();
     const time    = m.createdAt?.toDate ? _chatTimeAgo(m.createdAt.toDate()) : '';
     const tagBadge = m.tag && tagMap[m.tag]
-      ? `<span class="chat-msg-tag">${tagMap[m.tag]}</span>` : '';
+      ? `<span class="chat-msg-tag"><span class="material-symbols-outlined msi msi--tight">${tagMap[m.tag].icon}</span> ${tagMap[m.tag].label}</span>` : '';
 
     return `
       <div class="chat-msg ${isMine ? 'chat-msg-mine' : ''}">
