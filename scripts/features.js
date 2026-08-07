@@ -101,7 +101,26 @@ function removeTyping() {
   if (el) el.remove();
 }
 
-function buildContext(question) {
+const _aiPdfTextCache = {};
+const AI_PDF_CHAR_CAP     = 6000;  // fənn üzrə mətn limiti
+const AI_MAX_PDFS_PER_ASK = 2;     // sorğu başına oxunan PDF sayı
+
+async function _aiExtractPdfCached(file) {
+  if (_aiPdfTextCache[file] !== undefined) return _aiPdfTextCache[file];
+  try {
+    const url  = `${BASE}pdf/${file}`;
+    const text = await extractPdfText(url);
+    const trimmed = (text || '').slice(0, AI_PDF_CHAR_CAP);
+    _aiPdfTextCache[file] = trimmed;
+    return trimmed;
+  } catch (e) {
+    console.warn('[AI] PDF oxunmadı:', file, e.message);
+    _aiPdfTextCache[file] = '';
+    return '';
+  }
+}
+
+async function buildContext(question) {
   if (typeof data === 'undefined') return '';
   const q       = question.toLowerCase();
   const matched = [];
@@ -109,19 +128,42 @@ function buildContext(question) {
     for (const [subject, subObj] of Object.entries(courseObj.subjects || {})) {
       const words = subject.toLowerCase().split(/\s+/).filter(w => w.length > 3);
       if (words.filter(w => q.includes(w)).length > 0) {
-        const pdfNames = (subObj.pdfs || []).map(p => p.name).join(', ');
-        matched.push(`Kurs: ${course} | Fənn: ${subject} | Növ: ${subObj.type} | Semestr: ${subObj.semester} | Materiallar: ${pdfNames}`);
+        matched.push({ course, subject, subObj });
       }
     }
   }
+
   if (!matched.length) {
     const all = [];
     for (const [course, courseObj] of Object.entries(data))
       for (const subj of Object.keys(courseObj.subjects || {}))
         all.push(`${course}: ${subj}`);
-    return `Saytda mövcud fənlər:\n${all.join('\n')}`;
+    return `Saytda mövcud fənlər (heç biri sualla üst-üstə düşmədi):\n${all.join('\n')}`;
   }
-  return matched.join('\n');
+
+  // Uyğun fənnlərin PDF-lərindən əsl mətni çıxar (RAG)
+  const pdfsToRead = [];
+  for (const m of matched) {
+    for (const pdf of (m.subObj.pdfs || [])) {
+      pdfsToRead.push({ ...m, pdf });
+      if (pdfsToRead.length >= AI_MAX_PDFS_PER_ASK) break;
+    }
+    if (pdfsToRead.length >= AI_MAX_PDFS_PER_ASK) break;
+  }
+
+  const sections = [];
+  for (const m of matched) {
+    sections.push(`Kurs: ${m.course} | Fənn: ${m.subject} | Növ: ${m.subObj.type} | Semestr: ${m.subObj.semester} | Materiallar: ${(m.subObj.pdfs || []).map(p => p.name).join(', ')}`);
+  }
+
+  if (typeof extractPdfText === 'function' && typeof BASE !== 'undefined') {
+    for (const { subject, pdf } of pdfsToRead) {
+      const text = await _aiExtractPdfCached(pdf.file);
+      if (text) sections.push(`\n--- "${pdf.name}" (${subject}) sənədinin mətni ---\n${text}`);
+    }
+  }
+
+  return sections.join('\n');
 }
 
 async function sendMessage() {
@@ -137,7 +179,7 @@ async function sendMessage() {
     const res = await fetch(`${BACKEND_URL}/api/ask`, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ question: text, context: buildContext(text) })
+      body:    JSON.stringify({ question: text, context: await buildContext(text) })
     });
     removeTyping();
     if (!res.ok) { addBotMsg('Server xəta verdi (' + res.status + ').'); }
