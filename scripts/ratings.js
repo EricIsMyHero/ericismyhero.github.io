@@ -68,7 +68,7 @@ function _ratingMarkup() {
       <span class="rating-view-stars">${viewStars}</span>
       <span class="rating-view-count">Hələ qiymət yoxdur</span>
     </div>
-    <button type="button" class="rating-toggle-btn">⭐ Reytinq ver</button>
+    <button type="button" class="rating-toggle-btn"><span class="material-symbols-outlined msi">star</span>Reytinq ver</button>
     <div class="rating-input hidden">
       <div class="pdf-stars">${inputStars}</div>
       <button type="button" class="rating-back-btn" aria-label="Geri qayıt">✕</button>
