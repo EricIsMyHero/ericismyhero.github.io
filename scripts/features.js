@@ -61,7 +61,7 @@ function toggleAI() {
     chat.classList.add('ai-open');
     document.getElementById('ai-input').focus();
     if (!document.getElementById('ai-messages').children.length) {
-      addBotMsg('Salam! 👋 UNEC materialları haqqında sualını ver — cavablayayım.');
+      addBotMsg('Salam! UNEC materialları haqqında sualını ver — cavablayayım.');
     }
   } else {
     chat.classList.remove('ai-open');
@@ -231,10 +231,10 @@ function renderTestSubjects() {
   if (!grid) return;
   grid.innerHTML = '';
   const icons = {
-    "Mühasibat Uçotu": "📊",
-    "İqtisadiyyat":    "📈",
-    "Marketinq":       "🎯",
-    "Menеcment":       "🏛"
+    "Mühasibat Uçotu": "bar_chart",
+    "İqtisadiyyat":    "trending_up",
+    "Marketinq":       "target",
+    "Menеcment":       "account_balance"
   };
   Object.keys(QUESTION_BANK).forEach(subject => {
     const count = QUESTION_BANK[subject].length;
@@ -242,7 +242,7 @@ function renderTestSubjects() {
     btn.className = 'test-subject-btn';
     btn.setAttribute('data-subject', subject);
     btn.innerHTML = `
-      <span class="tsb-icon">${icons[subject] || '📚'}</span>
+      <span class="tsb-icon"><span class="material-symbols-outlined">${icons[subject] || 'menu_book'}</span></span>
       <span class="tsb-name">${subject}</span>
       <span class="tsb-count">${count} sual</span>
     `;
@@ -446,10 +446,10 @@ function finishTest() {
   document.getElementById('test-result').style.display = '';
 
   let emoji, title;
-  if (pct >= 90)      { emoji = '🏆'; title = 'Əla nəticə!'; }
-  else if (pct >= 75) { emoji = '🎉'; title = 'Yaxşı nəticə!'; }
-  else if (pct >= 50) { emoji = '👍'; title = 'Orta nəticə'; }
-  else                { emoji = '📚'; title = 'Daha çox məşq lazımdır'; }
+  if (pct >= 90)      { emoji = 'emoji_events'; title = 'Əla nəticə!'; }
+  else if (pct >= 75) { emoji = 'celebration'; title = 'Yaxşı nəticə!'; }
+  else if (pct >= 50) { emoji = 'thumb_up'; title = 'Orta nəticə'; }
+  else                { emoji = 'menu_book'; title = 'Daha çox məşq lazımdır'; }
 
   document.getElementById('resultEmoji').textContent   = emoji;
   document.getElementById('resultTitle').textContent   = title;
@@ -541,13 +541,13 @@ function openQRModal(type) {
     img.src   = 'images/birbankqr.png';
     img.alt   = 'Birbank QR';
     title.textContent = 'Birbank QR';
-    icon.textContent  = '🏦';
+    icon.textContent  = 'account_balance';
     note.textContent  = 'Birbank tətbiqini açın → QR Skan → kodu oxudun';
   } else {
     img.src   = 'images/m10qr.png';
     img.alt   = 'm10 QR';
     title.textContent = 'm10 QR';
-    icon.textContent  = '💚';
+    icon.textContent  = 'account_balance_wallet';
     note.textContent  = 'm10 tətbiqini açın → Köçürmə → QR Skan edin';
   }
 
