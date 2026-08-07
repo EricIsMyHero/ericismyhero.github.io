@@ -69,7 +69,7 @@
 }
 
 .bottom-nav-label {
-  font-family: 'Nunito', 'Arial', sans-serif;
+  font-family: 'Arial Nova', 'Nunito', 'Arial', sans-serif;
   font-size: 0.62rem;
   font-weight: 700;
   color: var(--muted);
@@ -375,7 +375,7 @@
   filter: drop-shadow(0 0 20px var(--border));
 }
 .test-hero-title {
-  font-family: 'Nunito', 'Arial', sans-serif;
+  font-family: 'Arial Nova', 'Nunito', 'Arial', sans-serif;
   font-size: 1.7rem;
   font-weight: 900;
   background: linear-gradient(135deg, var(--accent), var(--accent2));
@@ -434,7 +434,7 @@
 }
 .tsb-icon { font-size: 1.5rem; }
 .tsb-name {
-  font-family: 'Nunito', 'Arial', sans-serif;
+  font-family: 'Arial Nova', 'Nunito', 'Arial', sans-serif;
   font-size: 0.82rem;
   font-weight: 800;
   color: var(--text);
@@ -484,7 +484,7 @@
   border: 1.5px solid var(--border);
   background: var(--surface2);
   color: var(--text);
-  font-family: 'Nunito', 'Arial', sans-serif;
+  font-family: 'Arial Nova', 'Nunito', 'Arial', sans-serif;
   font-size: 0.88rem;
   font-weight: 800;
   cursor: pointer;
@@ -515,7 +515,7 @@
   border: none;
   background: linear-gradient(135deg, var(--accent), var(--accent3));
   color: #fff;
-  font-family: 'Nunito', 'Arial', sans-serif;
+  font-family: 'Arial Nova', 'Nunito', 'Arial', sans-serif;
   font-size: 1rem;
   font-weight: 800;
   cursor: pointer;
@@ -541,7 +541,7 @@
   font-size: 0.82rem;
   font-weight: 700;
   color: var(--muted);
-  font-family: 'Nunito', 'Arial', sans-serif;
+  font-family: 'Arial Nova', 'Nunito', 'Arial', sans-serif;
 }
 .test-quiz-progress-text span { color: var(--accent); }
 .test-timer {
@@ -550,7 +550,7 @@
   gap: 5px;
   font-size: 0.82rem;
   font-weight: 800;
-  font-family: 'Nunito', 'Arial', sans-serif;
+  font-family: 'Arial Nova', 'Nunito', 'Arial', sans-serif;
   color: var(--text);
   background: var(--surface);
   border: 1px solid var(--border);
@@ -618,7 +618,7 @@
   color: var(--text);
   line-height: 1.5;
   margin-bottom: 18px;
-  font-family: 'Nunito', 'Arial', sans-serif;
+  font-family: 'Arial Nova', 'Nunito', 'Arial', sans-serif;
 }
 
 /* ── Options ── */
@@ -658,7 +658,7 @@
   font-size: 0.72rem;
   font-weight: 800;
   color: var(--muted);
-  font-family: 'Nunito', 'Arial', sans-serif;
+  font-family: 'Arial Nova', 'Nunito', 'Arial', sans-serif;
   flex-shrink: 0;
   transition: all 0.18s;
 }
@@ -672,7 +672,7 @@
   color: var(--text);
   line-height: 1.35;
   font-weight: 600;
-  font-family: 'Nunito', 'Arial', sans-serif;
+  font-family: 'Arial Nova', 'Nunito', 'Arial', sans-serif;
 }
 
 /* ── Nav Row ── */
@@ -688,7 +688,7 @@
   border: 1.5px solid var(--border);
   background: var(--surface);
   color: var(--text);
-  font-family: 'Nunito', 'Arial', sans-serif;
+  font-family: 'Arial Nova', 'Nunito', 'Arial', sans-serif;
   font-size: 0.88rem;
   font-weight: 700;
   cursor: pointer;
@@ -705,7 +705,7 @@
   border: none;
   background: linear-gradient(135deg, #22c55e, #16a34a);
   color: #fff;
-  font-family: 'Nunito', 'Arial', sans-serif;
+  font-family: 'Arial Nova', 'Nunito', 'Arial', sans-serif;
   font-size: 0.88rem;
   font-weight: 800;
   cursor: pointer;
@@ -740,14 +740,14 @@
   filter: drop-shadow(0 0 16px rgba(59,130,246,0.3));
 }
 .test-result-title {
-  font-family: 'Nunito', 'Arial', sans-serif;
+  font-family: 'Arial Nova', 'Nunito', 'Arial', sans-serif;
   font-size: 1.4rem;
   font-weight: 900;
   color: var(--text);
   margin-bottom: 14px;
 }
 .test-result-score {
-  font-family: 'Nunito', 'Arial', sans-serif;
+  font-family: 'Arial Nova', 'Nunito', 'Arial', sans-serif;
   font-size: 3rem;
   font-weight: 900;
   background: linear-gradient(135deg, var(--accent), var(--accent2));
@@ -762,7 +762,7 @@
   color: var(--muted);
   font-weight: 700;
   margin-bottom: 16px;
-  font-family: 'Nunito', 'Arial', sans-serif;
+  font-family: 'Arial Nova', 'Nunito', 'Arial', sans-serif;
 }
 .test-result-bar-wrap {
   height: 8px;
@@ -784,7 +784,7 @@
   flex-wrap: wrap;
   font-size: 0.82rem;
   font-weight: 700;
-  font-family: 'Nunito', 'Arial', sans-serif;
+  font-family: 'Arial Nova', 'Nunito', 'Arial', sans-serif;
 }
 .rs-correct { color: #22c55e; }
 .rs-wrong   { color: #ef4444; }
@@ -793,7 +793,7 @@
 /* ── Review ── */
 .test-review-section { padding-bottom: 20px; }
 .test-review-title {
-  font-family: 'Nunito', 'Arial', sans-serif;
+  font-family: 'Arial Nova', 'Nunito', 'Arial', sans-serif;
   font-size: 1rem;
   font-weight: 800;
   color: var(--text);
@@ -822,13 +822,13 @@
   display: flex; align-items: center; justify-content: center;
   font-size: 0.7rem; font-weight: 800;
   color: var(--muted);
-  font-family: 'Nunito', 'Arial', sans-serif;
+  font-family: 'Arial Nova', 'Nunito', 'Arial', sans-serif;
   flex-shrink: 0;
 }
 .ri-badge {
   font-size: 0.72rem;
   font-weight: 800;
-  font-family: 'Nunito', 'Arial', sans-serif;
+  font-family: 'Arial Nova', 'Nunito', 'Arial', sans-serif;
 }
 .ri-correct .ri-badge { color: #22c55e; }
 .ri-wrong   .ri-badge { color: #ef4444; }
@@ -839,7 +839,7 @@
   color: var(--text);
   line-height: 1.4;
   margin-bottom: 10px;
-  font-family: 'Nunito', 'Arial', sans-serif;
+  font-family: 'Arial Nova', 'Nunito', 'Arial', sans-serif;
 }
 .ri-options { display: flex; flex-direction: column; gap: 5px; }
 .ro-opt {
@@ -851,7 +851,7 @@
   font-size: 0.8rem;
   color: var(--muted);
   font-weight: 600;
-  font-family: 'Nunito', 'Arial', sans-serif;
+  font-family: 'Arial Nova', 'Nunito', 'Arial', sans-serif;
 }
 .ro-opt.ro-correct {
   background: rgba(34,197,94,0.12);
