@@ -160,16 +160,16 @@ function _renderRequestsList() {
             <span class="req-time">${time}</span>
           </div>
           <span class="req-status ${isFulfilled ? 'req-status-fulfilled' : 'req-status-open'}">
-            ${isFulfilled ? '✅ Tapılıb' : '🟢 Açıq'}
+            ${isFulfilled ? '<span class="material-symbols-outlined msi">check_circle</span>Tapılıb' : '<span class="material-symbols-outlined msi">fiber_manual_record</span>Açıq'}
           </span>
         </div>
         <div class="req-text">${_reqEscape(d.text || '')}</div>
         ${tags.length ? `<div class="req-tags">${tags.join('')}</div>` : ''}
         <div class="req-actions">
           <button type="button" class="req-upvote-btn ${hasUpvoted ? 'active' : ''}" onclick="toggleRequestUpvote('${d.id}', ${hasUpvoted})">
-            🙋 Mən də axtarıram${upvoters.length > 0 ? ` (${upvoters.length})` : ''}
+            <span class="material-symbols-outlined msi">front_hand</span>Mən də axtarıram${upvoters.length > 0 ? ` (${upvoters.length})` : ''}
           </button>
-          ${isMine && !isFulfilled ? `<button type="button" class="req-fulfill-btn" onclick="markRequestFulfilled('${d.id}')">✅ Tapıldı et</button>` : ''}
+          ${isMine && !isFulfilled ? `<button type="button" class="req-fulfill-btn" onclick="markRequestFulfilled('${d.id}')"><span class="material-symbols-outlined msi">check_circle</span>Tapıldı et</button>` : ''}
           ${isMine ? `<button type="button" class="req-delete-btn" onclick="deleteRequest('${d.id}')" aria-label="Sil">✕</button>` : ''}
         </div>
       </div>
