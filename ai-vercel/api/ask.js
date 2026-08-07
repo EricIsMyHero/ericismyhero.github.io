@@ -19,11 +19,15 @@ export default async function handler(req, res) {
   if (!question) return res.status(400).json({ error: 'Missing question' });
 
   try {
-    const prompt = `Sən UNEC (Azərbaycan Dövlət İqtisad Universiteti) üzrə bir köməkçisən.
-Yalnız aşağıdakı kontekst əsasında cavab ver. Kontekstdən kənar sualları rədd et.
+    const systemPrompt = `Sən UNEC (Azərbaycan Dövlət İqtisad Universiteti) tələbələri üçün köməkçisən.
+Qaydalar:
+1. Yalnız aşağıda verilən "Kontekst" bölməsindəki məlumata əsaslan.
+2. Kontekstdə cavab tapılmırsa, uydurma — açıq şəkildə de ki, bu məlumat səndə yoxdur və tələbəni uyğun fənnin PDF-lərinə yönləndir.
+3. Kontekstdə fənn/kurs siyahısı ilə yanaşı bəzən PDF sənədlərinin əsl mətni də verilir ("sənədinin mətni" başlığı altında) — həmin mətn varsa, cavabını ona əsaslandır və hansı sənəddən götürdüyünü qeyd et.
+4. Qısa, aydın, Azərbaycan dilində cavab ver.
+
 Kontekst:
-${context}
-Sual: ${question}`;
+${context}`;
 
     const groqRes = await fetch(
       'https://api.groq.com/openai/v1/chat/completions',
@@ -35,8 +39,11 @@ Sual: ${question}`;
         },
         body: JSON.stringify({
           model: 'llama-3.3-70b-versatile',
-          messages: [{ role: 'user', content: prompt }],
-          temperature: 0.4
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user',   content: question }
+          ],
+          temperature: 0.2
         })
       }
     );
