@@ -236,26 +236,26 @@ function gpaRenderPredictor() {
 
   let msg, cls, icon;
   if (required > 100) {
-    icon = '😔'; cls = 'target-impossible';
+    icon = 'sentiment_dissatisfied'; cls = 'target-impossible';
     msg = `Bu hədəfə çatmaq <strong>mümkün deyil</strong>. Mövcud nəticəniz çox aşağıdır.`;
   } else if (required < 0) {
-    icon = '🎉'; cls = 'target-done';
+    icon = 'celebration'; cls = 'target-done';
     msg = `Siz artıq bu hədəfə <strong>çatmısınız!</strong> Qalan fənlər nəticənizi dəyişməyəcək.`;
   } else {
     const r = Math.ceil(required);
     if (r < 51) {
-      icon = '✅'; cls = 'target-easy';
+      icon = 'check_circle'; cls = 'target-easy';
       msg = `Hədəf GPA <strong>${targetVal}</strong> üçün qalan <strong>${remCr}</strong> kreditdən ortalama <strong>${r}</strong> bal lazımdır. Keçid balından aşağı olduğuna görə, faktiki olaraq istənilən nəticə keçər.`;
     } else if (r >= 75) {
-      icon = '🎯'; cls = 'target-high';
+      icon = 'target'; cls = 'target-high';
       msg = `Hədəf GPA <strong>${targetVal}</strong> üçün qalan <strong>${remCr}</strong> kreditdən ortalama <strong>${r}</strong> bal toplamalısınız.`;
     } else {
-      icon = '📈'; cls = 'target-mid';
+      icon = 'trending_up'; cls = 'target-mid';
       msg = `Hədəf GPA <strong>${targetVal}</strong> üçün qalan <strong>${remCr}</strong> kreditdən ortalama <strong>${r}</strong> bal toplamalısınız.`;
     }
   }
 
-  resultEl.innerHTML = `<div class="gpa-target-msg ${cls}"><span class="target-icon">${icon}</span><span>${msg}</span></div>`;
+  resultEl.innerHTML = `<div class="gpa-target-msg ${cls}"><span class="target-icon"><span class="material-symbols-outlined">${icon}</span></span><span>${msg}</span></div>`;
 }
 
 // ── Mode toggle ───────────────────────────────────────────────
@@ -284,7 +284,7 @@ function gpaSetMode(mode) {
 function gpaShare() {
   const gpa   = calculateGPA(gpaSubjects);
   const grade = getGradeLabel(gpa).text;
-  const text  = `UNEC GPA-m: ${gpa} (${grade}) 🎓\nhesabla: ${window.location.href}`;
+  const text  = `UNEC GPA-m: ${gpa} (${grade})\nhesabla: ${window.location.href}`;
   if (navigator.share) {
     navigator.share({ text });
   } else {
@@ -349,7 +349,7 @@ function gpaRender() {
   if (gpaSubjects.length === 0) {
     listEl.innerHTML = `
       <div class="gpa-empty-state">
-        <span class="gpa-empty-icon">📚</span>
+        <span class="gpa-empty-icon material-symbols-outlined">menu_book</span>
         <div class="gpa-empty-title">İlk fənnini əlavə et</div>
         <div class="gpa-empty-sub">Aşağıdakı düyməyə bas, fənn adı, kredit və balını daxil et</div>
       </div>`;
@@ -442,11 +442,11 @@ function gpaRenderMemoryCard() {
 
 // ── Smart Message Engine ──────────────────────────────────────
 const GPA_MESSAGES = [
-  { min: 90,  max: 101, text: "Əla gedirsən. Top-15 performans yolundasan.", emoji: "🏆", cls: "msg-excellent" },
-  { min: 75,  max: 90,  text: "Ardıcıl inkişaf edirsən. Belə davam et.",          emoji: "📈", cls: "msg-good"      },
-  { min: 60,  max: 75,  text: "Yaxşısan, amma daha güclü fokus lazımdır.",   emoji: "🎯", cls: "msg-mid"       },
-  { min: 51,  max: 60,  text: "Keçid xəttindəsən, çox vaxt itirmə.",            emoji: "⚡", cls: "msg-warn"      },
-  { min: 0,   max: 51,  text: "Bərpa rejimidir. Hər kredit sayılır.",            emoji: "💪", cls: "msg-danger"    },
+  { min: 90,  max: 101, text: "Əla gedirsən. Top-15 performans yolundasan.", emoji: "emoji_events", cls: "msg-excellent" },
+  { min: 75,  max: 90,  text: "Ardıcıl inkişaf edirsən. Belə davam et.",          emoji: "trending_up", cls: "msg-good"      },
+  { min: 60,  max: 75,  text: "Yaxşısan, amma daha güclü fokus lazımdır.",   emoji: "target", cls: "msg-mid"       },
+  { min: 51,  max: 60,  text: "Keçid xəttindəsən, çox vaxt itirmə.",            emoji: "bolt", cls: "msg-warn"      },
+  { min: 0,   max: 51,  text: "Bərpa rejimidir. Hər kredit sayılır.",            emoji: "fitness_center", cls: "msg-danger"    },
 ];
 
 function gpaRenderSmartMessage() {
@@ -456,7 +456,7 @@ function gpaRenderSmartMessage() {
   if (g === 0) { el.innerHTML = ''; return; }
   const msg = GPA_MESSAGES.find(m => g >= m.min && g < m.max) || GPA_MESSAGES[GPA_MESSAGES.length-1];
   el.innerHTML = `<div class="gpa-smart-msg-inner ${msg.cls}">
-    <span class="gpa-msg-emoji">${msg.emoji}</span>
+    <span class="gpa-msg-emoji"><span class="material-symbols-outlined">${msg.emoji}</span></span>
     <span class="gpa-msg-text">${msg.text}</span>
   </div>`;
 }
