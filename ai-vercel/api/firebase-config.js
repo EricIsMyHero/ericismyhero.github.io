@@ -11,6 +11,8 @@ export default function handler(req, res) {
 
   // İcazə verilən origin — öz saytın
   const allowedOrigins = [
+    'https://unecstudentshub.com',
+    'https://www.unecstudentshub.com',
     'https://ericismyhero.github.io',
     'https://ericismyhero-github-io.vercel.app',
   ];
