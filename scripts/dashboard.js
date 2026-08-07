@@ -18,7 +18,7 @@ function renderDashboard() {
   const hour = new Date().getHours();
   const greeting = hour < 12 ? 'Sabahın xeyir' : hour < 18 ? 'Günün xeyir' : 'Axşamın xeyir';
 
-  document.getElementById('dash-greeting').textContent  = `${greeting}, ${firstName} 👋`;
+  document.getElementById('dash-greeting').textContent  = `${greeting}, ${firstName}`;
   document.getElementById('dash-date').textContent      = _formatDate();
 
   // Profil kartı — şəxsiyyət + faktlar
@@ -37,7 +37,7 @@ function renderDashboard() {
   document.getElementById('dash-rank-name').textContent  = rankInfo.rank.name;
   document.getElementById('dash-rank-xp').textContent    = `${xp} XP`;
   document.getElementById('dash-rank-next').textContent  =
-    rankInfo.nextRank ? `${rankInfo.nextRank.name} üçün ${rankInfo.nextRank.minXP - xp} XP lazımdır` : '🏆 Maksimal rank!';
+    rankInfo.nextRank ? `${rankInfo.nextRank.name} üçün ${rankInfo.nextRank.minXP - xp} XP lazımdır` : 'Maksimal rank!';
   setTimeout(() => {
     const bar = document.getElementById('dash-rank-bar');
     if (bar) bar.style.width = rankInfo.progress + '%';
@@ -69,7 +69,7 @@ function _renderProfileCard(profile, rankInfo, solved) {
   setFact('dash-fact-faculty', profile?.faculty || '—');
   setFact('dash-fact-major',   profile?.major    || '—');
   setFact('dash-fact-year',    profile?.year     || '—');
-  setFact('dash-fact-rank',    `${rankInfo.rank.icon} ${rankInfo.rank.name}`);
+  setFact('dash-fact-rank',    rankInfo.rank.name);
   setFact('dash-fact-solved',  String(solved));
 }
 
@@ -159,19 +159,23 @@ async function _loadRecentQuizzes(uid) {
 function _renderStreakStatus(progress) {
   const el   = document.getElementById('dash-streak-msg');
   const txt  = document.getElementById('dash-streak-msg-text');
+  const ico  = document.getElementById('dash-streak-msg-icon');
   if (!el) return;
   const last  = progress.lastActive;
   const today = new Date().toISOString().slice(0, 10);
   const yest  = (() => { const d = new Date(); d.setDate(d.getDate()-1); return d.toISOString().slice(0,10); })();
 
   if (last === today) {
-    if (txt) txt.textContent = '✅ Bu gün aktiv oldun! Davam et';
+    if (txt) txt.textContent = 'Bu gün aktiv oldun! Davam et';
+    if (ico) ico.textContent = 'check_circle';
     el.className = 'dash-streak-msg dash-streak-ok';
   } else if (last === yest) {
-    if (txt) txt.textContent = '⚡ Bu gün aktiv ol — streaki qoru!';
+    if (txt) txt.textContent = 'Bu gün aktiv ol — streaki qoru!';
+    if (ico) ico.textContent = 'bolt';
     el.className = 'dash-streak-msg dash-streak-warn';
   } else {
-    if (txt) txt.textContent = '❌ Streak kəsildi. Yeni başlat!';
+    if (txt) txt.textContent = 'Streak kəsildi. Yeni başlat!';
+    if (ico) ico.textContent = 'cancel';
     el.className = 'dash-streak-msg dash-streak-dead';
   }
 }
@@ -264,25 +268,26 @@ function openDashboardTab() {
 
 // ── Fənn ikonu ────────────────────────────────────────────────
 function _subjectIcon(subject) {
-  if (!subject) return '📋';
+  const wrap = n => `<span class="material-symbols-outlined">${n}</span>`;
+  if (!subject) return wrap('assignment');
   const s = subject.toLowerCase();
-  if (s.includes('riyaz'))      return '📐';
-  if (s.includes('statisti'))   return '📊';
-  if (s.includes('iqtisad'))    return '💹';
-  if (s.includes('karyera'))    return '🎯';
-  if (s.includes('ehtimal'))    return '🎲';
-  if (s.includes('mühasibat'))  return '🧾';
-  if (s.includes('menecment'))  return '📈';
-  if (s.includes('market'))     return '📣';
-  if (s.includes('hüquq'))      return '⚖️';
-  if (s.includes('tarix'))      return '📜';
-  if (s.includes('ingilis'))    return '🌐';
-  if (s.includes('informatika') || s.includes('proqram')) return '💻';
-  if (s.includes('maliyy'))     return '💰';
-  if (s.includes('audit'))      return '🔍';
-  if (s.includes('sosiol'))     return '👥';
-  if (s.includes('fəlsəf'))     return '🧠';
-  return '📋';
+  if (s.includes('riyaz'))      return wrap('straighten');
+  if (s.includes('statisti'))   return wrap('bar_chart');
+  if (s.includes('iqtisad'))    return wrap('show_chart');
+  if (s.includes('karyera'))    return wrap('target');
+  if (s.includes('ehtimal'))    return wrap('casino');
+  if (s.includes('mühasibat'))  return wrap('receipt_long');
+  if (s.includes('menecment'))  return wrap('trending_up');
+  if (s.includes('market'))     return wrap('campaign');
+  if (s.includes('hüquq'))      return wrap('balance');
+  if (s.includes('tarix'))      return wrap('history_edu');
+  if (s.includes('ingilis'))    return wrap('language');
+  if (s.includes('informatika') || s.includes('proqram')) return wrap('computer');
+  if (s.includes('maliyy'))     return wrap('payments');
+  if (s.includes('audit'))      return wrap('search');
+  if (s.includes('sosiol'))     return wrap('group');
+  if (s.includes('fəlsəf'))     return wrap('psychology');
+  return wrap('assignment');
 }
 
 // ── Quiz nəticələri modali ────────────────────────────────────
