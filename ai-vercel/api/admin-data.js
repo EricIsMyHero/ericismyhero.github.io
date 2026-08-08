@@ -216,6 +216,66 @@ async function getPdfRatings(projectId, token) {
   }).sort((a, b) => b.totalVotes - a.totalVotes);
 }
 
+// ── Premium kodlar ──────────────────────────────────────────────
+function genPremiumCode() {
+  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'; // 0/O, 1/I/L kimi qarışıq simvollar çıxarılıb
+  const rand = (n) => Array.from({ length: n }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+  return `UNEC-${rand(4)}-${rand(4)}`;
+}
+
+function toFirestoreFields(obj) {
+  const out = {};
+  for (const [k, v] of Object.entries(obj)) {
+    if (v === null)                  out[k] = { nullValue: null };
+    else if (typeof v === 'string')  out[k] = { stringValue: v };
+    else if (typeof v === 'number')  out[k] = { integerValue: String(v) };
+    else if (typeof v === 'boolean') out[k] = { booleanValue: v };
+  }
+  return out;
+}
+
+async function firestoreCreate(projectId, collection, docIdVal, fields, token) {
+  const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/${collection}?documentId=${encodeURIComponent(docIdVal)}`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ fields }),
+  });
+  if (!res.ok) throw new Error(`Firestore yazma xətası: ${res.status} ${await res.text()}`);
+  return res.json();
+}
+
+async function getPremiumCodes(projectId, token) {
+  const data = await firestoreList(projectId, 'premium_codes', token, 300);
+  return (data.documents || []).map(doc => {
+    const f = extractFields(doc.fields);
+    return {
+      code:            docId(doc),
+      plan:            f.plan            || '',
+      status:          f.status          || 'unused',
+      createdAt:       f.createdAt       || null,
+      redeemedAt:      f.redeemedAt      || null,
+      redeemedByUid:   f.redeemedByUid   || '',
+    };
+  }).sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
+}
+
+const PREMIUM_PLANS = ['7d', '15d', '32d', 'lifetime'];
+
+async function generatePremiumCodes(projectId, token, plan, count) {
+  const codes = [];
+  for (let i = 0; i < count; i++) {
+    const code = genPremiumCode();
+    await firestoreCreate(projectId, 'premium_codes', code, toFirestoreFields({
+      plan,
+      status: 'unused',
+      createdAt: new Date().toISOString(),
+    }), token);
+    codes.push(code);
+  }
+  return codes;
+}
+
 // ── Main handler ──────────────────────────────────────────────
 export default async function handler(req, res) {
   setCors(res);
@@ -242,6 +302,16 @@ export default async function handler(req, res) {
     if (section === 'pdfs') {
       const [pdfOpens, pdfRatings] = await Promise.all([getPdfOpens(projectId, token), getPdfRatings(projectId, token)]);
       return res.status(200).json({ pdfOpens, pdfRatings });
+    }
+    if (section === 'premium') {
+      if (req.body?.action === 'generate') {
+        const plan  = req.body?.plan;
+        const count = Math.min(Math.max(parseInt(req.body?.count) || 1, 1), 50);
+        if (!PREMIUM_PLANS.includes(plan)) return res.status(400).json({ error: 'Yanlış plan' });
+        const codes = await generatePremiumCodes(projectId, token, plan, count);
+        return res.status(200).json({ codes });
+      }
+      return res.status(200).json({ premiumCodes: await getPremiumCodes(projectId, token) });
     }
 
     // all — overview
