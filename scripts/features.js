@@ -139,7 +139,7 @@ async function refreshAiAuthState() {
   if (typeof isLoggedIn !== 'function' || !isLoggedIn()) {
     area.innerHTML = `
       <button class="chat-login-btn" onclick="openAuthModal('login')">
-        Yazmaq üçün daxil ol
+        ${t('aiLoginToWrite')}
       </button>
     `;
     return;
@@ -150,11 +150,11 @@ async function refreshAiAuthState() {
   area.innerHTML = `
     <div id="ai-input-meta">
       <span id="ai-char-count">0/${charLimit}</span>
-      <span id="ai-daily-count">${isPremium ? '<span class="material-symbols-outlined msi msi--tight">workspace_premium</span>' : ''}Bugün qalan sorğu: ${remaining}/${dailyLimit}</span>
+      <span id="ai-daily-count">${isPremium ? '<span class="material-symbols-outlined msi msi--tight">workspace_premium</span>' : ''}${t('aiDailyRemaining')} ${remaining}/${dailyLimit}</span>
     </div>
     <div id="ai-input-row">
-      <input type="text" id="ai-input" placeholder="Sualını yaz..." autocomplete="off" maxlength="${charLimit}" />
-      <button id="ai-send-btn" onclick="sendMessage()">Göndər</button>
+      <input type="text" id="ai-input" placeholder="${t('aiInputPlaceholder')}" autocomplete="off" maxlength="${charLimit}" />
+      <button id="ai-send-btn" onclick="sendMessage()">${t('btnSend')}</button>
     </div>
   `;
 
@@ -168,7 +168,7 @@ async function refreshAiAuthState() {
 
   if (remaining <= 0) {
     input.disabled     = true;
-    input.placeholder  = 'Sabah davam et — günlük limit bitdi';
+    input.placeholder  = t('aiLimitReachedPlaceholder');
     sendBtn.disabled    = true;
   } else {
     input.focus();
