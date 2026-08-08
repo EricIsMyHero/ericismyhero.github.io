@@ -436,6 +436,72 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* ── Premium kod generatoru ─── */
+    .premium-gen-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .premium-plan-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+    }
+    .premium-plan-name {
+      font-size: .8rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+    .premium-plan-price {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: var(--accent2);
+      margin-bottom: 12px;
+    }
+    .premium-plan-card input[type="number"] {
+      width: 100%;
+      padding: 8px 10px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: .8rem;
+      margin-bottom: 8px;
+      outline: none;
+    }
+    .premium-plan-card button {
+      width: 100%;
+      padding: 9px;
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-weight: 700;
+      font-size: .78rem;
+      cursor: pointer;
+      transition: opacity .18s;
+    }
+    .premium-plan-card button:hover { opacity: .87; }
+    .premium-plan-result {
+      margin-top: 10px;
+      font-size: .72rem;
+      color: var(--muted);
+      word-break: break-all;
+      line-height: 1.6;
+    }
+    .premium-plan-result code {
+      display: block;
+      background: var(--surface2);
+      border-radius: 6px;
+      padding: 4px 8px;
+      margin-top: 4px;
+      color: var(--green);
+      font-weight: 700;
+    }
+
     /* ── Responsive ─── */
     @media (max-width: 768px) {
       .sidebar { width: 60px; padding: 16px 8px; }
@@ -483,6 +549,9 @@
     <button class="nav-item" onclick="showTab('pdfs')" id="nav-pdfs">
       <span class="ni"><span class="material-symbols-outlined">description</span></span><span>PDF statistika</span>
     </button>
+    <button class="nav-item" onclick="showTab('premium')" id="nav-premium">
+      <span class="ni"><span class="material-symbols-outlined">workspace_premium</span></span><span>Premium Kodlar</span>
+    </button>
 
     <div class="sidebar-bottom">
       <button class="logout-btn" onclick="doLogout()">
@@ -523,6 +592,12 @@
     <!-- PDFS -->
     <div class="tab-panel" id="panel-pdfs">
       <div id="pdfs-content"><div class="loading"><div class="spinner"></div>Yüklənir...</div></div>
+    </div>
+
+    <!-- PREMIUM -->
+    <div class="tab-panel" id="panel-premium">
+      <div class="premium-gen-grid" id="premium-gen-grid"></div>
+      <div id="premium-content"><div class="loading"><div class="spinner"></div>Yüklənir...</div></div>
     </div>
 
   </div>
@@ -586,6 +661,7 @@ const TAB_TITLES = {
   chats:    'Chat mesajları',
   requests: 'Material istəkləri',
   pdfs:     'PDF statistika',
+  premium:  'Premium Kodlar',
 };
 
 async function showTab(tab) {
@@ -629,6 +705,7 @@ function renderTab(tab, data) {
   if (tab === 'chats')     renderChats(data.chats);
   if (tab === 'requests')  renderRequests(data.requests);
   if (tab === 'pdfs')      renderPdfs(data);
+  if (tab === 'premium')   renderPremium(data.premiumCodes);
 }
 
 // ── OVERVIEW ───────────────────────────────────────────────────
@@ -849,6 +926,69 @@ function renderPdfs(data) {
     </div>
   `;
   document.getElementById('pdfs-content').innerHTML = html;
+}
+
+// ── PREMIUM KODLAR ────────────────────────────────────────────
+const PREMIUM_PLAN_INFO = {
+  '7d':       { name: '7 günlük',   price: '2.49₼' },
+  '15d':      { name: '15 günlük',  price: '4.99₼' },
+  '32d':      { name: '32 günlük',  price: '9.99₼' },
+  'lifetime': { name: 'Ömürlük',    price: '19.99₼' },
+};
+
+function renderPremium(codes) {
+  codes = codes || [];
+  document.getElementById('premium-gen-grid').innerHTML =
+    Object.entries(PREMIUM_PLAN_INFO).map(([plan, info]) => `
+      <div class="premium-plan-card">
+        <div class="premium-plan-name">${info.name}</div>
+        <div class="premium-plan-price">${info.price}</div>
+        <input type="number" id="premium-count-${plan}" value="1" min="1" max="50">
+        <button onclick="generatePremiumCode('${plan}')">
+          <span class="material-symbols-outlined msi">add_circle</span>Kod yarat
+        </button>
+        <div class="premium-plan-result" id="premium-result-${plan}"></div>
+      </div>
+    `).join('');
+
+  document.getElementById('premium-content').innerHTML = buildPremiumTable(codes);
+}
+
+async function generatePremiumCode(plan) {
+  const countEl  = document.getElementById(`premium-count-${plan}`);
+  const resultEl = document.getElementById(`premium-result-${plan}`);
+  const count = Math.min(Math.max(parseInt(countEl.value) || 1, 1), 50);
+  resultEl.textContent = 'Yaradılır...';
+  try {
+    const res = await fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Admin-Key': adminKey },
+      body: JSON.stringify({ section: 'premium', action: 'generate', plan, count, adminKey }),
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    resultEl.innerHTML = data.codes.map(c => `<code>${c}</code>`).join('');
+    delete cache['premium'];
+  } catch (e) {
+    resultEl.textContent = 'Xəta: ' + e.message;
+  }
+}
+
+function buildPremiumTable(codes) {
+  if (!codes.length) return '<div class="loading">Hələ kod yaradılmayıb.</div>';
+  return `<div class="table-wrap"><table>
+    <thead><tr>
+      <th>Kod</th><th>Plan</th><th>Status</th><th>Yaradılıb</th><th>İstifadə olunub</th>
+    </tr></thead>
+    <tbody>${codes.map(c => `
+      <tr>
+        <td class="td-bold">${esc(c.code)}</td>
+        <td class="td-muted">${(PREMIUM_PLAN_INFO[c.plan] || {}).name || esc(c.plan)}</td>
+        <td><span class="badge ${c.status === 'used' ? 'badge-gray' : 'badge-green'}">${c.status === 'used' ? 'İstifadə olunub' : 'Boşdur'}</span></td>
+        <td class="td-muted">${fmtDate(c.createdAt)}</td>
+        <td class="td-muted">${c.redeemedAt ? fmtDate(c.redeemedAt) : '—'}</td>
+      </tr>`).join('')}
+    </tbody></table></div>`;
 }
 
 // ── Helpers ────────────────────────────────────────────────────
