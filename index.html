@@ -70,10 +70,10 @@
 <!-- PWA INSTALL BANNER                                         -->
 <!-- ═══════════════════════════════════════════════════════════ -->
 <div id="installBanner">
-  <span><span class="material-symbols-outlined msi">smartphone</span> Bu saytı tətbiq kimi əlavə et</span>
+  <span><span class="material-symbols-outlined msi">smartphone</span> <span data-i18n="installBannerText">Bu saytı tətbiq kimi əlavə et</span></span>
   <div class="banner-actions">
-    <button class="banner-btn-dismiss" onclick="dismissBanner()">Sonra</button>
-    <button class="banner-btn-install" onclick="installApp()">Əlavə et</button>
+    <button class="banner-btn-dismiss" onclick="dismissBanner()" data-i18n="installBannerLater">Sonra</button>
+    <button class="banner-btn-install" onclick="installApp()" data-i18n="installBannerInstall">Əlavə et</button>
   </div>
 </div>
 
@@ -89,13 +89,13 @@
 <!-- ═══════════════════════════════════════════════════════════ -->
 <div id="sidebar" class="sidebar">
   <div class="sidebar-header">
-    <span class="sidebar-title">Menyu</span>
+    <span class="sidebar-title" data-i18n="sidebarMenu">Menyu</span>
     <button class="sidebar-close-btn" onclick="closeSidebar()">✕</button>
   </div>
 
   <!-- Tema Seç -->
   <div class="sidebar-section">
-    <div class="sidebar-section-label"><span class="material-symbols-outlined msi">palette</span> Tema Seç</div>
+    <div class="sidebar-section-label"><span class="material-symbols-outlined msi">palette</span> <span data-i18n="sidebarThemeSelect">Tema Seç</span></div>
     <div class="sidebar-theme-options" id="themeOptions">
       <button class="sidebar-theme-opt active" data-theme="unec" onclick="applyTheme('unec',this)">
         <span class="theme-dot" style="background:#003087"></span>
@@ -165,7 +165,7 @@
       </button>
     </div>
     <button class="theme-expand-btn" id="themeExpandBtn" onclick="toggleExtraThemes()">
-      <span id="themeExpandLabel">Daha çox tema</span>
+      <span id="themeExpandLabel" data-i18n="sidebarMoreThemes">Daha çox tema</span>
       <svg id="themeExpandIcon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
     </button>
   </div>
@@ -174,12 +174,12 @@
 
   <!-- Yeniliklər -->
   <div class="sidebar-section">
-    <div class="sidebar-section-label"><span class="material-symbols-outlined msi">notifications</span> Yeniliklər</div>
+    <div class="sidebar-section-label"><span class="material-symbols-outlined msi">notifications</span> <span data-i18n="sidebarNews">Yeniliklər</span></div>
     <a class="sidebar-menu-item" href="https://t.me/unecimtahanmateriallari" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;">
       <span class="sidebar-menu-icon">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
       </span>
-      Teleqram Kanalı
+      <span data-i18n="sidebarTelegramChannel">Teleqram Kanalı</span>
       <span class="sidebar-menu-arrow">›</span>
     </a>
   </div>
@@ -188,12 +188,12 @@
 
   <!-- Təşəkkürlər -->
   <div class="sidebar-section">
-    <div class="sidebar-section-label"><span class="material-symbols-outlined msi">favorite</span> Töhfəçilər</div>
+    <div class="sidebar-section-label"><span class="material-symbols-outlined msi">favorite</span> <span data-i18n="sidebarContributors">Töhfəçilər</span></div>
     <button class="sidebar-menu-item" onclick="closeSidebar(); openThanks();">
       <span class="sidebar-menu-icon">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
       </span>
-      Təşəkkürlər
+      <span data-i18n="sidebarThanks">Təşəkkürlər</span>
       <span class="sidebar-menu-arrow">›</span>
     </button>
   </div>
@@ -202,26 +202,26 @@
 
   <!-- About, Privacy, Terms -->
   <div class="sidebar-section">
-    <div class="sidebar-section-label"><span class="material-symbols-outlined msi">info</span> Sayt haqqında</div>
+    <div class="sidebar-section-label"><span class="material-symbols-outlined msi">info</span> <span data-i18n="sidebarAboutSection">Sayt haqqında</span></div>
     <button class="sidebar-menu-item" onclick="openAboutModal()">
       <span class="sidebar-menu-icon">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       </span>
-      Haqqımızda
+      <span data-i18n="sidebarAboutUs">Haqqımızda</span>
       <span class="sidebar-menu-arrow">›</span>
     </button>
     <button class="sidebar-menu-item" onclick="openPrivacyModal()">
       <span class="sidebar-menu-icon">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
       </span>
-      Məxfilik siyasəti
+      <span data-i18n="sidebarPrivacy">Məxfilik siyasəti</span>
       <span class="sidebar-menu-arrow">›</span>
     </button>
     <button class="sidebar-menu-item" onclick="openTermsModal()">
       <span class="sidebar-menu-icon">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
       </span>
-      İstifadə Şərtləri
+      <span data-i18n="sidebarTerms">İstifadə Şərtləri</span>
       <span class="sidebar-menu-arrow">›</span>
     </button>
   </div>
@@ -238,14 +238,14 @@
   <div class="st-left">
     <div class="st-icon"><span class="material-symbols-outlined">local_cafe</span></div>
     <div class="st-text">
-      <span class="st-title">Layihəyə dəstək ol</span>
-      <span class="st-sub">Birbank və ya m10 ilə töhfə ver</span>
+      <span class="st-title" data-i18n="supportToastTitle">Layihəyə dəstək ol</span>
+      <span class="st-sub" data-i18n="supportToastSub">Birbank və ya m10 ilə töhfə ver</span>
     </div>
   </div>
   <div class="st-right">
     <a href="https://app.birbank.az/qp?t=2&id=3F12353F2088F167E0634C0214ACD220" target="_blank" rel="noopener" class="st-btn st-btn-birbank" onclick="dismissToast()">Birbank</a>
     <a href="https://m10.onelink.me/g54T/cw5bg1gx" target="_blank" rel="noopener" class="st-btn st-btn-m10" onclick="dismissToast()">m10</a>
-    <button class="st-close" onclick="dismissToast()" aria-label="Bağla">✕</button>
+    <button class="st-close" onclick="dismissToast()" aria-label="Bağla" data-i18n-aria="btnClose">✕</button>
   </div>
 </div>
 
@@ -254,7 +254,7 @@
 <!-- ═══════════════════════════════════════════════════════════ -->
 <header>
   <div style="display:flex;align-items:center;gap:12px;">
-    <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleSidebar()" title="Menyu" aria-label="Menyu aç">
+    <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleSidebar()" title="Menyu" aria-label="Menyu aç" data-i18n-title="sidebarMenu" data-i18n-aria="sidebarMenu">>
       <span class="hamburger-line"></span>
       <span class="hamburger-line"></span>
       <span class="hamburger-line"></span>
@@ -279,19 +279,19 @@
   <div class="thanks-modal" id="easterModal">
     <div class="thanks-modal-header">
       <span class="thanks-modal-icon" style="animation:none"><span class="material-symbols-outlined">help</span></span>
-      <h2 class="thanks-modal-title" style="font-size:1rem">Gizli Bölmə</h2>
+      <h2 class="thanks-modal-title" style="font-size:1rem" data-i18n="easterHiddenSection">Gizli Bölmə</h2>
       <button class="thanks-modal-close" onclick="closeEaster()">✕</button>
     </div>
     <div class="easter-body">
       <div class="easter-icon"><span class="material-symbols-outlined">emoji_events</span></div>
-      <h3 class="easter-title">Xüsusi Təşəkkürlər</h3>
-      <p class="easter-desc">Bu sayta <strong>heç bir töhfə vermədiyiniz</strong> üçün sizə xüsusi minnətdarlığımızı bildiririk.</p>
+      <h3 class="easter-title" data-i18n="easterThanksTitle">Xüsusi Təşəkkürlər</h3>
+      <p class="easter-desc" data-i18n-html="easterDesc">Bu sayta <strong>heç bir töhfə vermədiyiniz</strong> üçün sizə xüsusi minnətdarlığımızı bildiririk.</p>
       <div class="easter-list">
         <div class="easter-person"><span class="easter-num"><span class="material-symbols-outlined">military_tech</span></span><span>Vəlizadə Kərim</span></div>
         <div class="easter-person"><span class="easter-num"><span class="material-symbols-outlined">military_tech</span></span><span>Atakişiyev Xəzər</span></div>
         <div class="easter-person"><span class="easter-num"><span class="material-symbols-outlined">military_tech</span></span><span>Paşayev Səid</span></div>
       </div>
-      <p class="easter-footer">Siz olmadan bu sayt tamamilə eyni olardı <span class="material-symbols-outlined msi">auto_awesome</span></p>
+      <p class="easter-footer"><span data-i18n="easterFooter">Siz olmadan bu sayt tamamilə eyni olardı</span> <span class="material-symbols-outlined msi">auto_awesome</span></p>
     </div>
   </div>
 </div>
@@ -301,35 +301,35 @@
   <div class="report-modal">
     <div class="report-modal-header">
       <div class="report-modal-icon"><span class="material-symbols-outlined">warning</span></div>
-      <h2 class="report-modal-title">Xəta Bildir</h2>
+      <h2 class="report-modal-title" data-i18n="reportTitle">Xəta Bildir</h2>
       <button class="report-modal-close" onclick="closeReportModal()">✕</button>
     </div>
     <p class="report-modal-subject" id="report-context"></p>
     <div id="report-form">
       <div class="report-field">
-        <label for="report-type">Xəta növü</label>
+        <label for="report-type" data-i18n="reportTypeLabel">Xəta növü</label>
         <select id="report-type">
-          <option>PDF açılmır</option>
-          <option>PDF yanlış fəndədir</option>
-          <option>Görünüş xətası</option>
-          <option>Köhnə / yanlış material</option>
-          <option>Düymə işləmir</option>
-          <option>Digər</option>
+          <option data-i18n="reportTypePdfNotOpening">PDF açılmır</option>
+          <option data-i18n="reportTypeWrongSubject">PDF yanlış fəndədir</option>
+          <option data-i18n="reportTypeVisual">Görünüş xətası</option>
+          <option data-i18n="reportTypeOldMaterial">Köhnə / yanlış material</option>
+          <option data-i18n="reportTypeButtonBroken">Düymə işləmir</option>
+          <option data-i18n="reportTypeOther">Digər</option>
         </select>
       </div>
       <div class="report-field">
-        <label for="report-message">Xətanın məzmunu</label>
-        <textarea id="report-message" placeholder="Xətanı qısa izah edin..."></textarea>
+        <label for="report-message" data-i18n="reportMessageLabel">Xətanın məzmunu</label>
+        <textarea id="report-message" placeholder="Xətanı qısa izah edin..." data-i18n-placeholder="reportMessagePlaceholder"></textarea>
       </div>
       <div class="report-modal-footer">
-        <button class="report-cancel-btn" onclick="closeReportModal()">Ləğv et</button>
-        <button class="report-send-btn" id="report-send-btn" onclick="sendReport()"><span class="material-symbols-outlined msi">arrow_outward</span> Göndər</button>
+        <button class="report-cancel-btn" onclick="closeReportModal()" data-i18n="btnCancel">Ləğv et</button>
+        <button class="report-send-btn" id="report-send-btn" onclick="sendReport()"><span class="material-symbols-outlined msi">arrow_outward</span> <span data-i18n="btnSend">Göndər</span></button>
       </div>
     </div>
     <div id="report-success" class="report-success hidden">
       <div class="report-success-icon"><span class="material-symbols-outlined">check_circle</span></div>
-      <div class="report-success-title">Təşəkkür edirik!</div>
-      <p class="report-success-desc">Xəta bildirişiniz alındı.<br>Ən qısa zamanda düzəldiləcək.</p>
+      <div class="report-success-title" data-i18n="reportThanks">Təşəkkür edirik!</div>
+      <p class="report-success-desc" data-i18n-html="reportSuccessDesc">Xəta bildirişiniz alındı.<br>Ən qısa zamanda düzəldiləcək.</p>
     </div>
   </div>
 </div>
@@ -339,12 +339,12 @@
   <div class="thanks-modal" id="thanksModal">
     <div class="thanks-modal-header">
       <span class="thanks-modal-icon"><span class="material-symbols-outlined">favorite</span></span>
-      <h2 class="thanks-modal-title">Təşəkkürlər</h2>
+      <h2 class="thanks-modal-title" data-i18n="sidebarThanks">Təşəkkürlər</h2>
       <button class="thanks-modal-close" onclick="closeThanks()">✕</button>
     </div>
-    <p class="thanks-modal-desc">Bu layihəyə töhfə verən hər kəsə ürəkdən təşəkkür edirik:</p>
+    <p class="thanks-modal-desc" data-i18n="thanksDesc">Bu layihəyə töhfə verən hər kəsə ürəkdən təşəkkür edirik:</p>
     <ul class="thanks-list" id="thanks-list"></ul>
-    <div class="thanks-footer-note">Bu sayt tələbələr üçün, tələbələr tərəfindən hazırlanıb <span class="material-symbols-outlined msi">school</span></div>
+    <div class="thanks-footer-note"><span data-i18n="thanksFooterNote">Bu sayt tələbələr üçün, tələbələr tərəfindən hazırlanıb</span> <span class="material-symbols-outlined msi">school</span></div>
   </div>
 </div>
 
@@ -353,25 +353,25 @@
   <div class="thanks-modal">
     <div class="thanks-modal-header">
       <span class="thanks-modal-icon" style="animation:none"><span class="material-symbols-outlined">info</span></span>
-      <h2 class="thanks-modal-title">Sayt Haqqında</h2>
+      <h2 class="thanks-modal-title" data-i18n="aboutTitle">Sayt Haqqında</h2>
       <button class="thanks-modal-close" onclick="closeAboutModal()">✕</button>
     </div> 
     <div class="about-body">
-      <p>UNEC Students Hub, <strong>UNEC tələbələri</strong> tərəfindən hazırlanmış müstəqil tələbə platformasıdır. Məqsədimiz tələbələrin akademik və gündəlik universitet həyatını asanlaşdıran resursları, alətləri və xidmətləri vahid platformada bir araya gətirməkdir. Platformada aşağıdakı xidmətlər təqdim olunur:</p>
+      <p data-i18n-html="aboutIntro">UNEC Students Hub, <strong>UNEC tələbələri</strong> tərəfindən hazırlanmış müstəqil tələbə platformasıdır. Məqsədimiz tələbələrin akademik və gündəlik universitet həyatını asanlaşdıran resursları, alətləri və xidmətləri vahid platformada bir araya gətirməkdir. Platformada aşağıdakı xidmətlər təqdim olunur:</p>
       <div class="about-list">
-        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">menu_book</span></span><span>İmtahan materialları və öyrənmə resursları</span></div>
-        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">search</span></span><span>Onlayn testlər və bilik yoxlama sistemi</span></div>
-        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">calculate</span></span><span>GPA kalkulyatoru</span></div>
-        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">bookmark</span></span><span>İxtisas planı</span></div>
-        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">person</span></span><span>Dashboard və nailiyyət sistemi</span></div>
-        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">local_offer</span></span><span>Material istəkləri</span></div> 
-        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">edit</span></span><span>AI köməkçisi</span></div>
-        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">timer</span></span><span>Taymer və məhsuldarlıq alətləri</span></div>
-        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">family_restroom</span></span><span>Gələcək tələbə xidmətləri və icma funksiyaları</span></div>
+        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">menu_book</span></span><span data-i18n="aboutItem1">İmtahan materialları və öyrənmə resursları</span></div>
+        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">search</span></span><span data-i18n="aboutItem2">Onlayn testlər və bilik yoxlama sistemi</span></div>
+        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">calculate</span></span><span data-i18n="aboutItem3">GPA kalkulyatoru</span></div>
+        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">bookmark</span></span><span data-i18n="aboutItem4">İxtisas planı</span></div>
+        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">person</span></span><span data-i18n="aboutItem5">Dashboard və nailiyyət sistemi</span></div>
+        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">local_offer</span></span><span data-i18n="aboutItem6">Material istəkləri</span></div> 
+        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">edit</span></span><span data-i18n="aboutItem7">AI köməkçisi</span></div>
+        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">timer</span></span><span data-i18n="aboutItem8">Taymer və məhsuldarlıq alətləri</span></div>
+        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">family_restroom</span></span><span data-i18n="aboutItem9">Gələcək tələbə xidmətləri və icma funksiyaları</span></div>
       </div>
-      <p class="about-note"><span class="material-symbols-outlined msi">warning</span> Platforma tələbələr tərəfindən idarə olunur və UNEC və ya hər hansı dövlət qurumu ilə rəsmi əlaqəsi yoxdur. Platformada yerləşdirilən materialların müəllif hüquqları onların qanuni sahiblərinə məxsusdur. Hüquq pozuntusu olduğunu düşünürsünüzsə, bizimlə əlaqə saxlayın.</p>
+      <p class="about-note"><span class="material-symbols-outlined msi">warning</span> <span data-i18n="aboutNote">Platforma tələbələr tərəfindən idarə olunur və UNEC və ya hər hansı dövlət qurumu ilə rəsmi əlaqəsi yoxdur. Platformada yerləşdirilən materialların müəllif hüquqları onların qanuni sahiblərinə məxsusdur. Hüquq pozuntusu olduğunu düşünürsünüzsə, bizimlə əlaqə saxlayın.</span></p>
       <div class="about-contact">
-        <a href="mailto:unecimtahanmateriallari@gmail.com"><span class="material-symbols-outlined msi">mail</span> Əlaqə saxla</a>
+        <a href="mailto:unecimtahanmateriallari@gmail.com"><span class="material-symbols-outlined msi">mail</span> <span data-i18n="aboutContactBtn">Əlaqə saxla</span></a>
         <a href="https://ericismyhero.github.io/my-portfolio/" target="_blank"><span class="material-symbols-outlined msi">language</span> Portfolio</a>
       </div>
     </div>
@@ -383,7 +383,7 @@
   <div class="thanks-modal privacy-modal">
     <div class="thanks-modal-header">
       <span class="thanks-modal-icon" style="animation:none"><span class="material-symbols-outlined">lock</span></span>
-      <h2 class="thanks-modal-title">Məxfilik Siyasəti</h2>
+      <h2 class="thanks-modal-title" data-i18n="privacyTitle">Məxfilik Siyasəti</h2>
       <button class="thanks-modal-close" onclick="closePrivacyModal()">✕</button>
     </div>
     <div class="privacy-body">
@@ -464,7 +464,7 @@
   <div class="thanks-modal privacy-modal">
     <div class="thanks-modal-header">
       <span class="thanks-modal-icon" style="animation:none"><span class="material-symbols-outlined">description</span></span>
-      <h2 class="thanks-modal-title">İstifadə Şərtləri</h2>
+      <h2 class="thanks-modal-title" data-i18n="termsTitle">İstifadə Şərtləri</h2>
       <button class="thanks-modal-close" onclick="closeTermsModal()">✕</button>
     </div>
     <div class="privacy-body">
@@ -546,30 +546,30 @@
     <button class="auth-modal-close" onclick="document.getElementById('authOverlay').classList.add('hidden')">✕</button>
     <div class="auth-logo"><span class="material-symbols-outlined">school</span></div>
     <div class="auth-title">UNEC Students Hub</div>
-    <div class="auth-sub">Hesabına daxil ol, irəliləyişini izlə</div>
+    <div class="auth-sub" data-i18n="authSubtitle">Hesabına daxil ol, irəliləyişini izlə</div>
 
     <!-- Login panel -->
     <div class="auth-panel" id="auth-panel-login">
       <button class="auth-google-btn" onclick="signInWithGoogle()">
         <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-        Google ilə daxil ol
+        <span data-i18n="authGoogleLogin">Google ilə daxil ol</span>
       </button>
-      <div class="auth-divider">və ya email ilə</div>
+      <div class="auth-divider" data-i18n="authOrEmail">və ya email ilə</div>
       <form onsubmit="handleLoginSubmit();return false;" autocomplete="on">
       <div class="auth-field">
-        <label>Email</label>
+        <label data-i18n="authEmailLabel">Email</label>
         <input type="email" id="login-email" placeholder="example@gmail.com" autocomplete="email">
       </div>
       <div class="auth-field">
-        <label>Şifrə</label>
+        <label data-i18n="authPasswordLabel">Şifrə</label>
         <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
       </div>
-      <button type="submit" class="auth-submit-btn">Daxil ol</button>
+      <button type="submit" class="auth-submit-btn" data-i18n="authLoginBtn">Daxil ol</button>
       </form>
       <div class="auth-error"></div>
       <div class="auth-switch">
-        Hesabın yoxdur? <span class="auth-switch-link" onclick="setAuthMode('register')">Qeydiyyat</span>
-        &nbsp;·&nbsp; <span class="auth-switch-link" onclick="setAuthMode('reset')">Şifrəmi unutdum</span>
+        <span data-i18n="authNoAccount">Hesabın yoxdur?</span> <span class="auth-switch-link" onclick="setAuthMode('register')" data-i18n="authRegisterLink">Qeydiyyat</span>
+        &nbsp;·&nbsp; <span class="auth-switch-link" onclick="setAuthMode('reset')" data-i18n="authForgotPassword">Şifrəmi unutdum</span>
       </div>
     </div>
 
@@ -577,40 +577,40 @@
     <div class="auth-panel hidden" id="auth-panel-register">
       <button class="auth-google-btn" onclick="signInWithGoogle()">
         <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-        Google ilə qeydiyyat
+        <span data-i18n="authGoogleRegister">Google ilə qeydiyyat</span>
       </button>
-      <div class="auth-divider">və ya email ilə</div>
+      <div class="auth-divider" data-i18n="authOrEmail">və ya email ilə</div>
       <form onsubmit="handleRegisterSubmit();return false;" autocomplete="on">
       <div class="auth-field">
-        <label>Ad Soyad</label>
+        <label data-i18n="authFullNameLabel">Ad Soyad</label>
         <input type="text" id="reg-name" placeholder="Filankəs Filankəsov" autocomplete="name">
       </div>
       <div class="auth-field">
-        <label>Email</label>
+        <label data-i18n="authEmailLabel">Email</label>
         <input type="email" id="reg-email" placeholder="example@gmail.com" autocomplete="email">
       </div>
       <div class="auth-field">
-        <label>Şifrə</label>
-        <input type="password" id="reg-password" placeholder="minumum 8 simvol, böyük hərf, rəqəm" autocomplete="new-password">
+        <label data-i18n="authPasswordLabel">Şifrə</label>
+        <input type="password" id="reg-password" placeholder="minumum 8 simvol, böyük hərf, rəqəm" autocomplete="new-password" data-i18n-placeholder="authPasswordHint">
       </div>
-      <button type="submit" class="auth-submit-btn">Qeydiyyatdan keç</button>
+      <button type="submit" class="auth-submit-btn" data-i18n="authRegisterBtn">Qeydiyyatdan keç</button>
       </form>
       <div class="auth-error"></div>
       <div class="auth-switch">
-        Hesabın var? <span class="auth-switch-link" onclick="setAuthMode('login')">Daxil ol</span>
+        <span data-i18n="authHaveAccount">Hesabın var?</span> <span class="auth-switch-link" onclick="setAuthMode('login')" data-i18n="authLoginBtn">Daxil ol</span>
       </div>
     </div>
 
     <!-- Reset panel -->
     <div class="auth-panel hidden" id="auth-panel-reset">
       <div class="auth-field">
-        <label>Email</label>
+        <label data-i18n="authEmailLabel">Email</label>
         <input type="email" id="reset-email" placeholder="example@gmail.com">
       </div>
-      <button class="auth-submit-btn" onclick="handleResetSubmit()">Sıfırlama linki göndər</button>
+      <button class="auth-submit-btn" onclick="handleResetSubmit()" data-i18n="authResetBtn">Sıfırlama linki göndər</button>
       <div class="auth-error"></div>
       <div class="auth-switch">
-        <span class="auth-switch-link" onclick="setAuthMode('login')">← Geri qayıt</span>
+        <span class="auth-switch-link" onclick="setAuthMode('login')" data-i18n="authBackLink">← Geri qayıt</span>
       </div>
     </div>
   </div>
@@ -625,8 +625,8 @@
       <div class="pdf-spinner-inner"></div>
       <div class="pdf-spinner-icon">PDF</div>
     </div>
-    <div class="pdf-loading-title" id="pdfLoadingTitle">PDF Açılır...</div>
-    <div class="pdf-loading-subtitle">Fayl hazırlanır, bir az gözləyin</div>
+    <div class="pdf-loading-title" id="pdfLoadingTitle" data-i18n="pdfLoadingTitle">PDF Açılır...</div>
+    <div class="pdf-loading-subtitle" data-i18n="pdfLoadingSub">Fayl hazırlanır, bir az gözləyin</div>
     <div class="pdf-progress-bar">
       <div class="pdf-progress-fill" id="pdfProgressFill"></div>
     </div>
@@ -656,26 +656,26 @@
         <div class="stat-card stat-card--blue">
           <div class="stat-card-icon"><span class="material-symbols-outlined">group</span></div>
           <div class="stat-card-num" data-target="2467" id="sc-students">0</div>
-          <div class="stat-card-label">Aktiv Tələbə</div>
-          <div class="stat-card-sub">Firebase-dən canlı</div>
+          <div class="stat-card-label" data-i18n="statActiveStudents">Aktiv Tələbə</div>
+          <div class="stat-card-sub" data-i18n="statLiveFirebase">Firebase-dən canlı</div>
         </div>
         <div class="stat-card stat-card--cyan">
           <div class="stat-card-icon"><span class="material-symbols-outlined">description</span></div>
           <div class="stat-card-num" data-target="72" id="sc-materials">0</div>
-          <div class="stat-card-label">Material</div>
-          <div class="stat-card-sub">PDF formatında</div>
+          <div class="stat-card-label" data-i18n="statMaterialCard">Material</div>
+          <div class="stat-card-sub" data-i18n="statPdfFormat">PDF formatında</div>
         </div>
         <div class="stat-card stat-card--purple">
           <div class="stat-card-icon"><span class="material-symbols-outlined">menu_book</span></div>
           <div class="stat-card-num" data-target="43" id="sc-subjects">0</div>
-          <div class="stat-card-label">Fənn</div>
-          <div class="stat-card-sub">4 kurs ərzində</div>
+          <div class="stat-card-label" data-i18n="statSubjectCard">Fənn</div>
+          <div class="stat-card-sub" data-i18n="stat4Courses">4 kurs ərzində</div>
         </div>
         <div class="stat-card stat-card--green">
           <div class="stat-card-icon"><span class="material-symbols-outlined">fiber_manual_record</span></div>
           <div class="stat-card-num stat-card-num--text">24/7</div>
-          <div class="stat-card-label">Açıq Platforma</div>
-          <div class="stat-card-sub">Həmişə əlçatan</div>
+          <div class="stat-card-label" data-i18n="statOpenPlatform">Açıq Platforma</div>
+          <div class="stat-card-sub" data-i18n="statAlwaysAvailable">Həmişə əlçatan</div>
         </div>
       </div>
 
@@ -694,50 +694,50 @@
     <!-- ═══ NİYƏ UNEC STUDENTS? ═══ -->
     <div class="why-section">
       <div class="why-section-header">
-        <div class="why-badge">Niyə UNEC Students?</div>
-        <p class="why-subtitle">Tələbə həyatını asanlaşdıran hər şey bir yerdə</p>
+        <div class="why-badge" data-i18n="whyBadge">Niyə UNEC Students?</div>
+        <p class="why-subtitle" data-i18n="whySubtitle">Tələbə həyatını asanlaşdıran hər şey bir yerdə</p>
       </div>
       <div class="why-grid">
         <div class="why-card">
           <div class="why-card-icon why-icon--blue"><span class="material-symbols-outlined">search</span></div>
           <div class="why-card-body">
-            <h3>Sürətli Axtarış</h3>
-            <p>Fənn adını yaz, anında tap. Bütün materiallar indeksləşdirilib.</p>
+            <h3 data-i18n="whyCard1Title">Sürətli Axtarış</h3>
+            <p data-i18n="whyCard1Desc">Fənn adını yaz, anında tap. Bütün materiallar indeksləşdirilib.</p>
           </div>
         </div>
         <div class="why-card">
           <div class="why-card-icon why-icon--cyan"><span class="material-symbols-outlined">auto_stories</span></div>
           <div class="why-card-body">
-            <h3>PDF Preview</h3>
-            <p>Yükləmədən birbaşa brauzerda aç, oxu, hazırlaş.</p>
+            <h3 data-i18n="whyCard2Title">PDF Preview</h3>
+            <p data-i18n="whyCard2Desc">Yükləmədən birbaşa brauzerda aç, oxu, hazırlaş.</p>
           </div>
         </div>
         <div class="why-card">
           <div class="why-card-icon why-icon--purple"><span class="material-symbols-outlined">smart_toy</span></div>
           <div class="why-card-body">
-            <h3>AI Sual–Cavab</h3>
-            <p>Material haqqında sual ver, AI sənə izah etsin.</p>
+            <h3 data-i18n="whyCard3Title">AI Sual–Cavab</h3>
+            <p data-i18n="whyCard3Desc">Material haqqında sual ver, AI sənə izah etsin.</p>
           </div>
         </div>
         <div class="why-card">
           <div class="why-card-icon why-icon--amber"><span class="material-symbols-outlined">school</span></div>
           <div class="why-card-body">
-            <h3>GPA Hesablayıcı</h3>
-            <p>Kreditlərini daxil et, GPA-nı real vaxtda gör.</p>
+            <h3 data-i18n="whyCard4Title">GPA Hesablayıcı</h3>
+            <p data-i18n="whyCard4Desc">Kreditlərini daxil et, GPA-nı real vaxtda gör.</p>
           </div>
         </div>
         <div class="why-card">
           <div class="why-card-icon why-icon--green"><span class="material-symbols-outlined">smartphone</span></div>
           <div class="why-card-body">
-            <h3>Mobil Uyğun</h3>
-            <p>PWA dəstəyi ilə tətbiq kimi quraşdır, oflayn işlə.</p>
+            <h3 data-i18n="whyCard5Title">Mobil Uyğun</h3>
+            <p data-i18n="whyCard5Desc">PWA dəstəyi ilə tətbiq kimi quraşdır, oflayn işlə.</p>
           </div>
         </div>
         <div class="why-card">
           <div class="why-card-icon why-icon--rose"><span class="material-symbols-outlined">star</span></div>
           <div class="why-card-body">
-            <h3>Seçilmişlər</h3>
-            <p>Sevimli materiallarını saxla, tez tap.</p>
+            <h3 data-i18n="whyCard6Title">Seçilmişlər</h3>
+            <p data-i18n="whyCard6Desc">Sevimli materiallarını saxla, tez tap.</p>
           </div>
         </div>
       </div>
@@ -746,44 +746,44 @@
     <!-- ═══ POPULAR MATERIALS PREVIEW ═══ -->
     <div class="popular-section">
       <div class="popular-header">
-        <div class="why-badge">Populyar Materiallar</div>
-        <button class="popular-see-all" onclick="switchBottomTab('courses')">Hamısına bax →</button>
+        <div class="why-badge" data-i18n="popularBadge">Populyar Materiallar</div>
+        <button class="popular-see-all" onclick="switchBottomTab('courses')" data-i18n="seeAll">Hamısına bax →</button>
       </div>
       <div class="popular-cards">
         <div class="popular-card">
           <div class="popular-card-top">
             <span class="popular-card-course">2-ci Kurs</span>
-            <span class="popular-card-badge popular-badge--hot"><span class="material-symbols-outlined msi">local_fire_department</span> Trend</span>
+            <span class="popular-card-badge popular-badge--hot"><span class="material-symbols-outlined msi">local_fire_department</span> <span data-i18n="popularTrend">Trend</span></span>
           </div>
           <h4 class="popular-card-title">Mikroiqtisadiyyat</h4>
           <p class="popular-card-meta">PDF · Semestr sualları</p>
           <div class="popular-card-footer">
-            <span class="popular-card-views"><span class="material-symbols-outlined msi">visibility</span> 199 baxış</span>
-            <button class="popular-card-btn" onclick="switchBottomTab('courses')">Aç →</button>
+            <span class="popular-card-views"><span class="material-symbols-outlined msi">visibility</span> <span data-i18n="popularViews1">199 baxış</span></span>
+            <button class="popular-card-btn" onclick="switchBottomTab('courses')" data-i18n="popularOpen">Aç →</button>
           </div>
         </div>
         <div class="popular-card">
           <div class="popular-card-top">
             <span class="popular-card-course">2-ci Kurs</span>
-            <span class="popular-card-badge popular-badge--new"><span class="material-symbols-outlined msi">auto_awesome</span> Yeni</span>
+            <span class="popular-card-badge popular-badge--new"><span class="material-symbols-outlined msi">auto_awesome</span> <span data-i18n="popularNew">Yeni</span></span>
           </div>
           <h4 class="popular-card-title">Makroiqtisadiyyat</h4>
           <p class="popular-card-meta">PDF · Semestr sualları</p>
           <div class="popular-card-footer">
-            <span class="popular-card-views"><span class="material-symbols-outlined msi">visibility</span> 115 baxış</span>
-            <button class="popular-card-btn" onclick="switchBottomTab('courses')">Aç →</button>
+            <span class="popular-card-views"><span class="material-symbols-outlined msi">visibility</span> <span data-i18n="popularViews2">115 baxış</span></span>
+            <button class="popular-card-btn" onclick="switchBottomTab('courses')" data-i18n="popularOpen">Aç →</button>
           </div>
         </div>
         <div class="popular-card">
           <div class="popular-card-top">
             <span class="popular-card-course">2-ci Kurs</span>
-            <span class="popular-card-badge popular-badge--hot"><span class="material-symbols-outlined msi">local_fire_department</span> Trend</span>
+            <span class="popular-card-badge popular-badge--hot"><span class="material-symbols-outlined msi">local_fire_department</span> <span data-i18n="popularTrend">Trend</span></span>
           </div>
           <h4 class="popular-card-title">Maliyyə Uçotu</h4>
           <p class="popular-card-meta">PDF · Kollekvium sualları</p>
           <div class="popular-card-footer">
-            <span class="popular-card-views"><span class="material-symbols-outlined msi">visibility</span> 69 baxış</span>
-            <button class="popular-card-btn" onclick="switchBottomTab('courses')">Aç →</button>
+            <span class="popular-card-views"><span class="material-symbols-outlined msi">visibility</span> <span data-i18n="popularViews3">69 baxış</span></span>
+            <button class="popular-card-btn" onclick="switchBottomTab('courses')" data-i18n="popularOpen">Aç →</button>
           </div>
         </div>
       </div>
@@ -795,9 +795,9 @@
       <div class="home-footer-links">
         <span class="home-footer-copy">&copy; 2025 - 2026 AliVerse Studio ✦</span>
         <a href="https://ericismyhero.github.io/my-portfolio/" target="_blank" class="home-footer-link">Portfolio</a>
-        <a href="mailto:unecimtahanmateriallari@gmail.com" class="home-footer-link">Əlaqə</a>
-        <span class="home-footer-link" onclick="openPrivacyModal()">Məxfilik</span>
-        <span class="home-footer-link" onclick="openTermsModal()">Şərtlər</span>
+        <a href="mailto:unecimtahanmateriallari@gmail.com" class="home-footer-link" data-i18n="homeFooterContact">Əlaqə</a>
+        <span class="home-footer-link" onclick="openPrivacyModal()" data-i18n="homeFooterPrivacy">Məxfilik</span>
+        <span class="home-footer-link" onclick="openTermsModal()" data-i18n="homeFooterTerms">Şərtlər</span>
       </div>
     </div>
   </div>
@@ -834,7 +834,7 @@
       <div class="search-bar-container" id="searchBarContainer">
         <div class="search-bar-wrapper">
           <div class="search-icon"><span class="material-symbols-outlined">search</span></div>
-          <input type="text" id="searchInput" placeholder="PDF axtar..." autocomplete="off">
+          <input type="text" id="searchInput" placeholder="PDF axtar..." autocomplete="off" data-i18n-placeholder="searchPdfPlaceholder">
           <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
         </div>
         <div class="search-results-info" id="searchResultsInfo"></div>
@@ -880,64 +880,64 @@
     <div class="support-page">
       <div class="support-page-header">
         <div class="support-page-icon"><span class="material-symbols-outlined">local_cafe</span></div>
-        <h2 class="support-page-title">Layihəyə Dəstək Ol</h2>
-        <p class="support-page-desc">Bu sayt tamamilə pulsuz və reklamsızdır. Server xərclərini ödəməyə kömək etsəniz, layihə davam edər.</p>
+        <h2 class="support-page-title" data-i18n="supportPageTitle">Layihəyə Dəstək Ol</h2>
+        <p class="support-page-desc" data-i18n="supportPageDesc">Bu sayt tamamilə pulsuz və reklamsızdır. Server xərclərini ödəməyə kömək etsəniz, layihə davam edər.</p>
       </div>
 
       <div class="support-card">
         <div class="support-card-label">
           <span class="ssb-method-dot ssb-dot-birbank"></span>
-          Birbank / Bank Kartı
+          <span data-i18n="supportBirbankLabel">Birbank / Bank Kartı</span>
         </div>
         <div class="sidebar-support-btns">
           <a href="https://app.birbank.az/qp?t=2&id=3F12353F2088F167E0634C0214ACD220" target="_blank" rel="noopener" class="sidebar-support-btn">
             <span class="ssb-amount">3 ₼</span>
-            <span class="ssb-label">Kofe</span>
+            <span class="ssb-label" data-i18n="supportCoffee">Kofe</span>
           </a>
           <a href="https://app.birbank.az/qp?t=2&id=3F12353F2088F167E0634C0214ACD220" target="_blank" rel="noopener" class="sidebar-support-btn ssb-featured">
             <span class="ssb-pop">★</span>
             <span class="ssb-amount">5 ₼</span>
-            <span class="ssb-label">Populyar</span>
+            <span class="ssb-label" data-i18n="supportPopular">Populyar</span>
           </a>
           <a href="https://app.birbank.az/qp?t=2&id=3F12353F2088F167E0634C0214ACD220" target="_blank" rel="noopener" class="sidebar-support-btn">
             <span class="ssb-amount">7 ₼</span>
-            <span class="ssb-label">Server</span>
+            <span class="ssb-label" data-i18n="supportServer">Server</span>
           </a>
         </div>
         <button class="qr-pay-btn qr-pay-btn--birbank" onclick="openQRModal('birbank')">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/></svg>
-          QR ilə ödəniş et
+          <span data-i18n="supportQrPay">QR ilə ödəniş et</span>
         </button>
       </div>
 
       <div class="support-card" style="margin-top:16px;">
         <div class="support-card-label">
           <span class="ssb-method-dot ssb-dot-m10"></span>
-          m10 ilə sürətli
+          <span data-i18n="supportM10Label">m10 ilə sürətli</span>
         </div>
         <a href="https://m10.onelink.me/g54T/cw5bg1gx" target="_blank" rel="noopener" class="ssb-m10-btn">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          İstənilən məbləği göndər
+          <span data-i18n="supportM10AnyAmount">İstənilən məbləği göndər</span>
         </a>
         <button class="qr-pay-btn qr-pay-btn--m10" onclick="openQRModal('m10')" style="margin-top:10px;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/></svg>
-          QR ilə ödəniş et
+          <span data-i18n="supportQrPay">QR ilə ödəniş et</span>
         </button>
       </div>
 
       <div class="support-trust-row">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        Visa · Mastercard · m10 dəstəklənir
+        <span data-i18n="supportTrustRow">Visa · Mastercard · m10 dəstəklənir</span>
       </div>
 
       <div class="support-divider"></div>
 
       <div class="support-contact-row">
         <a href="mailto:ericismyhero2467@gmail.com" class="support-contact-btn">
-          <span class="material-symbols-outlined msi">mail</span> Əlaqə saxla
+          <span class="material-symbols-outlined msi">mail</span> <span data-i18n="supportContact">Əlaqə saxla</span>
         </a>
         <button class="support-contact-btn" onclick="openThanks()">
-          <span class="material-symbols-outlined msi">favorite</span> Töhfəçilər
+          <span class="material-symbols-outlined msi">favorite</span> <span data-i18n="sidebarContributors">Töhfəçilər</span>
         </button>
       </div>
     </div>
@@ -952,19 +952,19 @@
     <div id="test-landing">
       <div class="test-hero">
         <div class="test-hero-icon"><span class="material-symbols-outlined">target</span></div>
-        <h2 id="test-hero-title">UNEC <span>Test</span><br>Sistemi ᵇᵉᵗᵃ</h2>
-        <p class="test-hero-desc">Bu sistem beta versiyada olduğu üçün cavabların səhv olma ehtimalı vardır.</p>
+        <h2 id="test-hero-title" data-i18n-html="testHeroTitle">UNEC <span>Test</span><br>Sistemi ᵇᵉᵗᵃ</h2>
+        <p class="test-hero-desc" data-i18n="testHeroDesc">Bu sistem beta versiyada olduğu üçün cavabların səhv olma ehtimalı vardır.</p>
       </div>
 
       <div class="test-subject-selector">
-        <div class="test-selector-label">Fənn seçin</div>
+        <div class="test-selector-label" data-i18n="testSelectorLabel">Fənn seçin</div>
         <div class="test-subject-grid" id="testSubjectGrid"></div>
       </div>
 
       <div class="test-config-section" id="testConfigSection" style="display:none;">
         <div class="test-selected-info" id="testSelectedInfo"></div>
         <div class="test-count-row">
-          <div class="test-count-label">Sual sayı</div>
+          <div class="test-count-label" data-i18n="testCountLabel">Sual sayı</div>
           <div class="test-count-btns">
             <button class="test-count-btn active" data-count="10" onclick="selectCount(this)">10</button>
             <button class="test-count-btn" data-count="20" onclick="selectCount(this)">20</button>
@@ -974,7 +974,7 @@
         </div>
         <button class="test-start-btn" onclick="startTest()">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          Testi Başlat
+          <span data-i18n="testStartBtn">Testi Başlat</span>
         </button>
       </div>
     </div>
@@ -983,7 +983,7 @@
     <div id="test-quiz" style="display:none;">
       <div class="test-quiz-header">
         <div class="test-quiz-progress-text">
-          Sual <span id="qCurrentNum">1</span> / <span id="qTotalNum">30</span>
+          <span data-i18n="testQuestionWord">Sual</span> <span id="qCurrentNum">1</span> / <span id="qTotalNum">30</span>
         </div>
         <div class="test-timer" id="testTimer">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -1001,9 +1001,9 @@
       </div>
 
       <div class="test-nav-row">
-        <button class="test-nav-btn" id="testPrevBtn" onclick="quizNav(-1)">← Əvvəlki</button>
-        <button class="test-nav-btn test-nav-next" id="testNextBtn" onclick="quizNav(1)">Növbəti →</button>
-        <button class="test-finish-btn" id="testFinishBtn" onclick="confirmFinishTest()" style="display:none;">✓ Bitir</button>
+        <button class="test-nav-btn" id="testPrevBtn" onclick="quizNav(-1)" data-i18n="testPrev">← Əvvəlki</button>
+        <button class="test-nav-btn test-nav-next" id="testNextBtn" onclick="quizNav(1)" data-i18n="testNext">Növbəti →</button>
+        <button class="test-finish-btn" id="testFinishBtn" onclick="confirmFinishTest()" style="display:none;" data-i18n="testFinish">✓ Bitir</button>
       </div>
 
       <div class="test-answered-info" id="testAnsweredInfo"></div>
@@ -1013,7 +1013,7 @@
     <div id="test-result" style="display:none;">
       <div class="test-result-card">
         <div class="test-result-emoji material-symbols-outlined" id="resultEmoji">emoji_events</div>
-        <h2 class="test-result-title" id="resultTitle">Nəticə</h2>
+        <h2 class="test-result-title" id="resultTitle" data-i18n="testResultTitle">Nəticə</h2>
         <div class="test-result-score" id="resultScore"></div>
         <div class="test-result-percent" id="resultPercent"></div>
         <div class="test-result-bar-wrap">
@@ -1021,12 +1021,12 @@
         </div>
         <div class="test-result-stats" id="resultStats"></div>
         <button class="test-start-btn" style="margin-top:24px;" onclick="resetTest()">
-          <span class="material-symbols-outlined msi">refresh</span> Yenidən Başla
+          <span class="material-symbols-outlined msi">refresh</span> <span data-i18n="testRestartBtn">Yenidən Başla</span>
         </button>
       </div>
 
       <div class="test-review-section">
-        <h3 class="test-review-title">Cavabların Baxışı</h3>
+        <h3 class="test-review-title" data-i18n="testReviewTitle">Cavabların Baxışı</h3>
         <div id="testReviewList"></div>
       </div>
     </div>
@@ -1037,20 +1037,20 @@
 <!-- ═══════════════════════════════════════════════════════════ -->
 <!-- AI WIDGET                                                  -->
 <!-- ═══════════════════════════════════════════════════════════ -->
-<div id="ai-button" onclick="toggleAI()" title="AI Köməkçi">AI</div>
+<div id="ai-button" onclick="toggleAI()" title="AI Köməkçi" data-i18n-title="aiHeaderTitle">AI</div>
 
 <div id="ai-chat">
   <div id="ai-header">
     <div class="ai-header-left">
       <div class="ai-avatar">AI</div>
       <div class="ai-header-info">
-        <span>AI Köməkçi ᵇᵉᵗᵃ</span>
-        <small><span class="ai-status-dot"></span>Onlayn</small>
+        <span data-i18n="aiHeaderTitle">AI Köməkçi</span> ᵇᵉᵗᵃ
+        <small><span class="ai-status-dot"></span><span data-i18n="aiOnline">Onlayn</span></small>
       </div>
     </div>
     <div class="ai-header-right">
       <button class="ai-upgrade-btn" onclick="openPremiumModal()" title="Premium-a yüksəl">
-        <span class="material-symbols-outlined msi msi--tight">workspace_premium</span>Yüksəlt
+        <span class="material-symbols-outlined msi msi--tight">workspace_premium</span><span data-i18n="aiUpgradeBtn">Yüksəlt</span>
       </button>
       <button onclick="toggleAI()" title="Bağla">×</button>
     </div>
@@ -1065,19 +1065,19 @@
     <div class="qr-pay-modal-header">
       <div class="qr-pay-modal-title-row">
         <span class="material-symbols-outlined msi">workspace_premium</span>
-        <span class="qr-pay-modal-title">Premium-a Yüksəl</span>
+        <span class="qr-pay-modal-title" data-i18n="premiumModalTitle">Premium-a Yüksəl</span>
       </div>
       <button class="qr-pay-modal-close" onclick="closePremiumModal()">✕</button>
     </div>
-    <p class="qr-pay-modal-desc">Günlük sorğu limiti 12-yə, mesaj uzunluğu 400 simvola qədər artır.</p>
+    <p class="qr-pay-modal-desc" data-i18n="premiumModalDesc">Günlük sorğu limiti 12-yə, mesaj uzunluğu 400 simvola qədər artır.</p>
 
     <div class="premium-plans" id="premium-plans"></div>
 
     <div class="premium-redeem">
-      <div class="premium-redeem-label">Artıq kodun var?</div>
+      <div class="premium-redeem-label" data-i18n="premiumRedeemLabel">Artıq kodun var?</div>
       <div class="premium-redeem-row">
         <input type="text" id="premium-code-input" placeholder="UNEC-XXXX-XXXX" autocomplete="off">
-        <button onclick="redeemPremiumCode()">Aktivləşdir</button>
+        <button onclick="redeemPremiumCode()" data-i18n="premiumActivateBtn">Aktivləşdir</button>
       </div>
       <div class="premium-redeem-msg" id="premium-redeem-msg"></div>
     </div>
@@ -1199,18 +1199,18 @@
 
     <!-- Hero -->
     <div class="gpa-hero">
-      <div class="gpa-page-badge"><span class="material-symbols-outlined msi">school</span> UNEC · Akademik</div>
+      <div class="gpa-page-badge"><span class="material-symbols-outlined msi">school</span> <span data-i18n="gpaPageBadge">UNEC · Akademik</span></div>
       <h1 class="gpa-page-title">UNEC <span>GPA</span> Calculator</h1>
-      <p class="gpa-hero-sub">GPA-nı real vaxtda hesabla. Kreditlərini izləyərək nəticəni əvvəlcədən gör.</p>
+      <p class="gpa-hero-sub" data-i18n="gpaHeroSub">GPA-nı real vaxtda hesabla. Kreditlərini izləyərək nəticəni əvvəlcədən gör.</p>
     </div>
 
     <!-- Mode Toggle -->
     <div class="gpa-mode-toggle">
       <button class="gpa-mode-btn active" id="gpa-mode-calc" onclick="gpaSetMode('calculator')">
-        <span class="material-symbols-outlined msi">calculate</span> Kalkulyator
+        <span class="material-symbols-outlined msi">calculate</span> <span data-i18n="gpaModeCalc">Kalkulyator</span>
       </button>
       <button class="gpa-mode-btn" id="gpa-mode-pred" onclick="gpaSetMode('predictor')">
-        <span class="material-symbols-outlined msi">target</span> Proqnozlaşdırıcı
+        <span class="material-symbols-outlined msi">target</span> <span data-i18n="gpaModePred">Proqnozlaşdırıcı</span>
       </button>
     </div>
 
@@ -1237,20 +1237,20 @@
       <div class="gpa-stats-row">
         <div class="gpa-stat-cell">
           <span class="gpa-stat-val" id="gpa-stat-total">0</span>
-          <span class="gpa-stat-lbl">Ümumi Kredit</span>
+          <span class="gpa-stat-lbl" data-i18n="gpaTotalCredit">Ümumi Kredit</span>
         </div>
         <div class="gpa-stat-cell">
           <span class="gpa-stat-val" id="gpa-stat-earned">0</span>
-          <span class="gpa-stat-lbl">Qazanılan GPA</span>
+          <span class="gpa-stat-lbl" data-i18n="gpaEarnedGpa">Qazanılan GPA</span>
         </div>
         <div class="gpa-stat-cell">
           <span class="gpa-stat-val" id="gpa-stat-gpa">0.00</span>
-          <span class="gpa-stat-lbl">Ümumi GPA</span>
+          <span class="gpa-stat-lbl" data-i18n="gpaOverallGpa">Ümumi GPA</span>
         </div>
       </div>
       <button class="gpa-share-btn" onclick="gpaShare()">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-        GPA-nı paylaş
+        <span data-i18n="gpaShareBtn">GPA-nı paylaş</span>
       </button>
     </div>
 
@@ -1263,7 +1263,7 @@
     <!-- Calculator View -->
     <div id="gpa-calc-view">
       <div class="gpa-section-header">
-        <div class="gpa-section-title">Fənnlər</div>
+        <div class="gpa-section-title" data-i18n="subjectsLabel">Fənnlər</div>
         <div class="gpa-subject-count-badge" id="gpa-count-badge">1 fənn</div>
       </div>
 
@@ -1271,7 +1271,7 @@
 
       <button class="gpa-add-btn" onclick="addSubject()">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Yeni fənn əlavə et
+        <span data-i18n="gpaAddSubjectBtn">Yeni fənn əlavə et</span>
       </button>
     </div>
 
@@ -1280,32 +1280,32 @@
       <div class="gpa-predictor-card">
         <div class="gpa-predictor-header">
           <div class="gpa-predictor-icon"><span class="material-symbols-outlined">target</span></div>
-          <div class="gpa-predictor-title">Hədəf GPA Proqnozlaşdırıcı</div>
+          <div class="gpa-predictor-title" data-i18n="gpaPredictorTitle">Hədəf GPA Proqnozlaşdırıcı</div>
         </div>
-        <div class="gpa-predictor-sub">
+        <div class="gpa-predictor-sub" data-i18n="gpaPredictorSub">
           Hədəfinizə çatmaq üçün qalan fənlərdən neçə bal lazım olduğunu hesablayın.
         </div>
         <div class="gpa-predictor-inputs">
           <div class="gpa-predictor-group">
-            <label>Hədəf GPA</label>
-            <input class="gpa-predictor-inp" id="gpa-pred-target" type="number" min="0" max="100" step="0.1" placeholder="məs. 80"/>
+            <label data-i18n="gpaTargetLabel">Hədəf GPA</label>
+            <input class="gpa-predictor-inp" id="gpa-pred-target" type="number" min="0" max="100" step="0.1" placeholder="məs. 80" data-i18n-placeholder="gpaTargetPlaceholder"/>
           </div>
           <div class="gpa-predictor-group">
-            <label>Qalan Kredit</label>
-            <input class="gpa-predictor-inp" id="gpa-pred-credits" type="number" min="1" max="300" step="1" placeholder="məs. 30"/>
+            <label data-i18n="gpaRemainingCreditLabel">Qalan Kredit</label>
+            <input class="gpa-predictor-inp" id="gpa-pred-credits" type="number" min="1" max="300" step="1" placeholder="məs. 30" data-i18n-placeholder="gpaRemainingCreditPlaceholder"/>
           </div>
         </div>
         <div id="gpa-target-result"></div>
       </div>
 
       <div class="gpa-section-header">
-        <div class="gpa-section-title">Cari fənlər</div>
+        <div class="gpa-section-title" data-i18n="gpaCurrentSubjects">Cari fənlər</div>
         <div class="gpa-subject-count-badge" id="gpa-count-badge2"></div>
       </div>
       <div id="gpa-subject-list2" style="pointer-events:none;opacity:0.55;"></div>
     </div>
 
-    <div class="gpa-footer">Built for <strong>UNEC Students</strong> · AliVerse Studio ✦</div>
+    <div class="gpa-footer"><span data-i18n-html="gpaFooter">Built for <strong>UNEC Students</strong> · AliVerse Studio</span> ✦</div>
   </div>
 </div>
 
@@ -1318,16 +1318,16 @@
     <div id="dash-guest-view">
       <div class="dash-login-prompt">
         <div class="dash-login-prompt-icon"><span class="material-symbols-outlined">school</span></div>
-        <h3>Öz İrəliləyişini İzlə</h3>
-        <p>Giriş et — streak, XP, GPA və test nəticələrin burada saxlanır.</p>
-        <button class="dash-login-btn" onclick="openAuthModal('login')">Daxil ol / Qeydiyyat</button>
+        <h3 data-i18n="dashLoginPromptTitle">Öz İrəliləyişini İzlə</h3>
+        <p data-i18n="dashLoginPromptDesc">Giriş et — streak, XP, GPA və test nəticələrin burada saxlanır.</p>
+        <button class="dash-login-btn" onclick="openAuthModal('login')" data-i18n="dashLoginBtn">Daxil ol / Qeydiyyat</button>
       </div>
     </div>
 
     <!-- Giriş etmiş -->
     <div id="dash-user-view" style="display:none;">
 
-      <div id="dash-greeting" class="dash-greeting">Salam <span class="material-symbols-outlined msi">waving_hand</span></div>
+      <div id="dash-greeting" class="dash-greeting"><span data-i18n="dashGreeting">Salam</span> <span class="material-symbols-outlined msi">waving_hand</span></div>
       <div id="dash-date" class="dash-date"></div>
 
       <!-- Tələbə Profili -->
@@ -1338,49 +1338,49 @@
             <div class="dash-profile-name"  id="dash-pname">—</div>
             <div class="dash-profile-email" id="dash-pemail">—</div>
           </div>
-          <button class="dash-profile-edit-btn" onclick="toggleProfileEdit()" aria-label="Profili redaktə et" title="Profili redaktə et"><span class="material-symbols-outlined">edit</span></button>
+          <button class="dash-profile-edit-btn" onclick="toggleProfileEdit()" aria-label="Profili redaktə et" title="Profili redaktə et" data-i18n-title="dashEditProfileTitle" data-i18n-aria="dashEditProfileTitle"><span class="material-symbols-outlined">edit</span></button>
         </div>
 
         <!-- Baxış rejimi -->
         <div class="dash-profile-facts" id="dash-profile-facts">
           <div class="dash-fact">
             <span class="dash-fact-icon"><span class="material-symbols-outlined">account_balance</span></span>
-            <span class="dash-fact-label">Fakültə</span>
+            <span class="dash-fact-label" data-i18n="dashFactFaculty">Fakültə</span>
             <span class="dash-fact-val" id="dash-fact-faculty">—</span>
           </div>
           <div class="dash-fact">
             <span class="dash-fact-icon"><span class="material-symbols-outlined">menu_book</span></span>
-            <span class="dash-fact-label">İxtisas</span>
+            <span class="dash-fact-label" data-i18n="dashFactMajor">İxtisas</span>
             <span class="dash-fact-val" id="dash-fact-major">—</span>
           </div>
           <div class="dash-fact">
             <span class="dash-fact-icon"><span class="material-symbols-outlined">school</span></span>
-            <span class="dash-fact-label">Kurs</span>
+            <span class="dash-fact-label" data-i18n="dashFactYear">Kurs</span>
             <span class="dash-fact-val" id="dash-fact-year">—</span>
           </div>
           <div class="dash-fact">
             <span class="dash-fact-icon"><span class="material-symbols-outlined">bolt</span></span>
-            <span class="dash-fact-label">Səviyyə</span>
+            <span class="dash-fact-label" data-i18n="dashFactRank">Səviyyə</span>
             <span class="dash-fact-val" id="dash-fact-rank">—</span>
           </div>
           <div class="dash-fact">
             <span class="dash-fact-icon"><span class="material-symbols-outlined">target</span></span>
-            <span class="dash-fact-label">Həll edilən test</span>
+            <span class="dash-fact-label" data-i18n="dashFactSolved">Həll edilən test</span>
             <span class="dash-fact-val" id="dash-fact-solved">0</span>
           </div>
         </div>
 
         <!-- Redaktə rejimi -->
         <div class="dash-profile-edit hidden" id="dash-profile-edit">
-          <label class="dash-edit-label">Fakültə</label>
-          <input class="dash-edit-input" id="dash-faculty-input" placeholder="məs. İqtisadiyyat">
+          <label class="dash-edit-label" data-i18n="dashFactFaculty">Fakültə</label>
+          <input class="dash-edit-input" id="dash-faculty-input" placeholder="məs. İqtisadiyyat" data-i18n-placeholder="dashEditFacultyPlaceholder">
 
-          <label class="dash-edit-label">İxtisas</label>
-          <input class="dash-edit-input" id="dash-major-input" placeholder="məs. Maliyyə">
+          <label class="dash-edit-label" data-i18n="dashFactMajor">İxtisas</label>
+          <input class="dash-edit-input" id="dash-major-input" placeholder="məs. Maliyyə" data-i18n-placeholder="dashEditMajorPlaceholder">
 
-          <label class="dash-edit-label">Kurs</label>
+          <label class="dash-edit-label" data-i18n="dashFactYear">Kurs</label>
           <select class="dash-edit-input" id="dash-year-input">
-            <option value="">Seç...</option>
+            <option value="" data-i18n="dashEditYearSelect">Seç...</option>
             <option value="1-ci kurs">1-ci kurs</option>
             <option value="2-ci kurs">2-ci kurs</option>
             <option value="3-cü kurs">3-cü kurs</option>
@@ -1388,17 +1388,17 @@
           </select>
 
           <div class="dash-edit-actions">
-            <button class="dash-edit-save" id="dash-profile-save-btn" onclick="handleProfileUpdate()">Yadda saxla</button>
-            <button class="dash-edit-cancel" onclick="toggleProfileEdit(false)">Ləğv et</button>
+            <button class="dash-edit-save" id="dash-profile-save-btn" onclick="handleProfileUpdate()" data-i18n="btnSave">Yadda saxla</button>
+            <button class="dash-edit-cancel" onclick="toggleProfileEdit(false)" data-i18n="btnCancel">Ləğv et</button>
           </div>
         </div>
 
-        <button class="dash-signout-btn" onclick="signOut()">Çıxış</button>
+        <button class="dash-signout-btn" onclick="signOut()" data-i18n="dashSignOut">Çıxış</button>
       </div>
 
       <!-- Statistika -->
       <div class="dash-section-header">
-        <div class="dash-section-title">STATİSTİKA</div>
+        <div class="dash-section-title" data-i18n="dashStatistics">STATİSTİKA</div>
       </div>
       <div class="dash-stats-grid">
         <div class="dash-stat-card">
@@ -1406,7 +1406,7 @@
           <div class="dash-stat-body">
             <div class="dash-stat-top">
               <span class="dash-stat-val" id="dash-streak">0</span>
-              <span class="dash-stat-unit">gün</span>
+              <span class="dash-stat-unit" data-i18n="dashDayUnit">gün</span>
             </div>
             <div class="dash-stat-label">Streak</div>
           </div>
@@ -1416,9 +1416,9 @@
           <div class="dash-stat-body">
             <div class="dash-stat-top">
               <span class="dash-stat-val" id="dash-solved">0</span>
-              <span class="dash-stat-unit">test</span>
+              <span class="dash-stat-unit" data-i18n="dashTestUnit">test</span>
             </div>
-            <div class="dash-stat-label">Həll edilən</div>
+            <div class="dash-stat-label" data-i18n="dashSolved">Həll edilən</div>
           </div>
         </div>
         <div class="dash-stat-card">
@@ -1426,9 +1426,9 @@
           <div class="dash-stat-body">
             <div class="dash-stat-top">
               <span class="dash-stat-val" id="dash-xp">0</span>
-              <span class="dash-stat-unit">xp</span>
+              <span class="dash-stat-unit" data-i18n="dashXpUnit">xp</span>
             </div>
-            <div class="dash-stat-label">Bal</div>
+            <div class="dash-stat-label" data-i18n="dashPoints">Bal</div>
           </div>
         </div>
         <div class="dash-stat-card">
@@ -1449,29 +1449,29 @@
         <svg class="streak-msg-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
       <div class="streak-info-panel hidden" id="streak-info-panel">
-        <div class="streak-info-title"><span class="material-symbols-outlined msi">local_fire_department</span> Streak necə qazanılır?</div>
+        <div class="streak-info-title"><span class="material-symbols-outlined msi">local_fire_department</span> <span data-i18n="streakHowTitle">Streak necə qazanılır?</span></div>
         <div class="streak-info-item">
           <span class="streak-info-icon"><span class="material-symbols-outlined">target</span></span>
-          <div><strong>Quiz həll et</strong> — hər gün ən azı 1 test</div>
+          <div><strong data-i18n="streakQuiz">Quiz həll et</strong> — <span data-i18n="streakQuizDesc">hər gün ən azı 1 test</span></div>
         </div>
         <div class="streak-info-item">
           <span class="streak-info-icon"><span class="material-symbols-outlined">description</span></span>
-          <div><strong>PDF aç</strong> — materialları oxu</div>
+          <div><strong data-i18n="streakPdf">PDF aç</strong> — <span data-i18n="streakPdfDesc">materialları oxu</span></div>
         </div>
         <div class="streak-info-item">
           <span class="streak-info-icon"><span class="material-symbols-outlined">school</span></span>
-          <div><strong>GPA yenilə</strong> — qiymətlərini əlavə et</div>
+          <div><strong data-i18n="streakGpa">GPA yenilə</strong> — <span data-i18n="streakGpaDesc">qiymətlərini əlavə et</span></div>
         </div>
         <div class="streak-info-item">
           <span class="streak-info-icon"><span class="material-symbols-outlined">timer</span></span>
-          <div><strong>Study timer işlət</strong> — ən azı 5 dəqiqə</div>
+          <div><strong data-i18n="streakTimer">Study timer işlət</strong> — <span data-i18n="streakTimerDesc">ən azı 5 dəqiqə</span></div>
         </div>
-        <div class="streak-info-note">Streak hər gün saat 00:00-da sıfırlanır. Günlük aktivlik saxla!</div>
+        <div class="streak-info-note" data-i18n="streakNote">Streak hər gün saat 00:00-da sıfırlanır. Günlük aktivlik saxla!</div>
       </div>
 
       <!-- Səviyyə -->
       <div class="dash-section-header">
-        <div class="dash-section-title">SƏVİYYƏ</div>
+        <div class="dash-section-title" data-i18n="dashLevel">SƏVİYYƏ</div>
       </div>
       <div class="dash-rank-card">
         <div class="dash-rank-header">
@@ -1489,15 +1489,15 @@
 
       <!-- Son quizlər -->
       <div class="dash-section-header">
-        <div class="dash-section-title">SON TEST NƏTİCƏLƏRİ</div>
-        <button class="dash-section-more" onclick="openQuizResultsModal()">Hamısına bax →</button>
+        <div class="dash-section-title" data-i18n="dashRecentResults">SON TEST NƏTİCƏLƏRİ</div>
+        <button class="dash-section-more" onclick="openQuizResultsModal()" data-i18n="seeAll">Hamısına bax →</button>
       </div>
       <div id="dash-recent-quizzes"></div>
 
       <!-- Badges -->
       <div class="dash-section" style="margin-top:20px;">
         <div class="dash-badges-header">
-          <span class="dash-badges-title"><span class="material-symbols-outlined msi">workspace_premium</span>Badgelər</span>
+          <span class="dash-badges-title"><span class="material-symbols-outlined msi">workspace_premium</span><span data-i18n="dashBadges">Badgelər</span></span>
           <span class="dash-badges-count" id="dash-badges-count">0/14</span>
         </div>
         <div class="dash-badges-grid" id="dash-badges-grid"></div>
@@ -1514,11 +1514,11 @@
     <div class="qr-pay-modal-header">
       <div class="qr-pay-modal-title-row">
         <span class="qr-pay-modal-icon material-symbols-outlined" id="qrModalIcon">credit_card</span>
-        <span class="qr-pay-modal-title" id="qrModalTitle">QR ilə Ödəniş</span>
+        <span class="qr-pay-modal-title" id="qrModalTitle" data-i18n="qrPayTitle">QR ilə Ödəniş</span>
       </div>
       <button class="qr-pay-modal-close" onclick="closeQRModal()">✕</button>
     </div>
-    <p class="qr-pay-modal-desc">Tətbiqlə QR kodu skan edin və istədiyiniz məbləği göndərin</p>
+    <p class="qr-pay-modal-desc" data-i18n="qrPayDesc">Tətbiqlə QR kodu skan edin və istədiyiniz məbləği göndərin</p>
     <div class="qr-pay-img-wrap">
       <img id="qrModalImg" src="" alt="QR kod" class="qr-pay-img" />
     </div>
@@ -1530,11 +1530,11 @@
 <div id="quizResultsOverlay" class="quiz-results-overlay hidden" onclick="if(event.target===this)closeQuizResultsModal()">
   <div class="quiz-results-modal">
     <div class="quiz-results-header">
-      <div class="quiz-results-title">Son Test Nəticələri</div>
+      <div class="quiz-results-title" data-i18n="quizResultsTitle">Son Test Nəticələri</div>
       <button class="quiz-results-close" onclick="closeQuizResultsModal()">✕</button>
     </div>
     <div id="quiz-results-body" class="quiz-results-body">
-      <div class="quiz-results-loading">Yüklənir...</div>
+      <div class="quiz-results-loading" data-i18n="loadingText">Yüklənir...</div>
     </div>
   </div>
 </div>
@@ -1549,6 +1549,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
 <script src="pdfs.js"></script>
+<script src="scripts/i18n.js"></script>
 <script src="scripts/data-utils.js"></script>
 <script src="scripts/ui.js"></script>
 <script src="scripts/features.js"></script>
@@ -1619,48 +1620,48 @@
     <div class="curr-header">
       <div class="curr-header-icon"><span class="material-symbols-outlined">menu_book</span></div>
       <h2 id="curr-header-title">UNEC <span>İxtisas</span><br>Planı</h2>
-      <p class="curr-header-sub">İxtisasını seç, fənnlərini, kreditlərini və qayıb limitini öyrən</p>
+      <p class="curr-header-sub" data-i18n="currHeaderSub">İxtisasını seç, fənnlərini, kreditlərini və qayıb limitini öyrən</p>
     </div>
 
     <!-- İxtisas seçici -->
     <div class="curr-selector-wrap">
-      <div class="curr-selector-label">İxtisasını seç</div>
+      <div class="curr-selector-label" data-i18n="currSelectorLabel">İxtisasını seç</div>
       <div class="curr-specialty-grid" id="currSpecialtyGrid">
         <button class="curr-specialty-btn" data-spec="economics" onclick="selectSpecialty('economics')">
           <span class="curr-spec-icon"><span class="material-symbols-outlined">trending_up</span></span>
-          <span class="curr-spec-name">İqtisadiyyat</span>
+          <span class="curr-spec-name" data-i18n="currSpecEconomics">İqtisadiyyat</span>
         </button>
         <button class="curr-specialty-btn" data-spec="finance" onclick="selectSpecialty('finance')">
           <span class="curr-spec-icon"><span class="material-symbols-outlined">payments</span></span>
-          <span class="curr-spec-name">Maliyyə</span>
+          <span class="curr-spec-name" data-i18n="currSpecFinance">Maliyyə</span>
         </button>
         <button class="curr-specialty-btn" data-spec="accounting" onclick="selectSpecialty('accounting')">
           <span class="curr-spec-icon"><span class="material-symbols-outlined">receipt_long</span></span>
-          <span class="curr-spec-name">Mühasibat</span>
+          <span class="curr-spec-name" data-i18n="currSpecAccounting">Mühasibat</span>
         </button>
         <button class="curr-specialty-btn" data-spec="management" onclick="selectSpecialty('management')">
           <span class="curr-spec-icon"><span class="material-symbols-outlined">explore</span></span>
-          <span class="curr-spec-name">Menecment</span>
+          <span class="curr-spec-name" data-i18n="currSpecManagement">Menecment</span>
         </button>
         <button class="curr-specialty-btn" data-spec="marketing" onclick="selectSpecialty('marketing')">
           <span class="curr-spec-icon"><span class="material-symbols-outlined">bar_chart</span></span>
-          <span class="curr-spec-name">Marketinq</span>
+          <span class="curr-spec-name" data-i18n="currSpecMarketing">Marketinq</span>
         </button>
         <button class="curr-specialty-btn" data-spec="design" onclick="selectSpecialty('design')">
           <span class="curr-spec-icon"><span class="material-symbols-outlined">palette</span></span>
-          <span class="curr-spec-name">Dizayn</span>
+          <span class="curr-spec-name" data-i18n="currSpecDesign">Dizayn</span>
         </button>
         <button class="curr-specialty-btn" data-spec="foodEngineering" onclick="selectSpecialty('foodEngineering')">
           <span class="curr-spec-icon"><span class="material-symbols-outlined">restaurant</span></span>
-          <span class="curr-spec-name">Qida mühəndisliyi</span>
+          <span class="curr-spec-name" data-i18n="currSpecFoodEng">Qida mühəndisliyi</span>
         </button>
         <button class="curr-specialty-btn" data-spec="internationalRelations" onclick="selectSpecialty('internationalRelations')">
           <span class="curr-spec-icon"><span class="material-symbols-outlined">public</span></span>
-          <span class="curr-spec-name">Beynəlxalq münasibətlər</span>
+          <span class="curr-spec-name" data-i18n="currSpecIntlRelations">Beynəlxalq münasibətlər</span>
         </button>
         <button class="curr-specialty-btn" data-spec="internationalTradeLogistics" onclick="selectSpecialty('internationalTradeLogistics')">
           <span class="curr-spec-icon"><span class="material-symbols-outlined">directions_boat</span></span>
-          <span class="curr-spec-name">Beynəlxalq ticarət və logistika</span>
+          <span class="curr-spec-name" data-i18n="currSpecIntlTrade">Beynəlxalq ticarət və logistika</span>
         </button>
       </div>
     </div>
@@ -1669,25 +1670,25 @@
     <div id="currPlanPanel" class="curr-plan-panel" style="display:none;">
       <div class="curr-plan-header">
         <div class="curr-plan-spec-badge" id="currSpecBadge"></div>
-        <button class="curr-change-btn" onclick="clearSpecialty()">← Dəyiş</button>
+        <button class="curr-change-btn" onclick="clearSpecialty()" data-i18n="currChangeBtn">← Dəyiş</button>
       </div>
 
       <!-- Semester 1 -->
       <div class="curr-semester-block" id="curr-semester-block-s1">
         <div class="curr-semester-title">
           <span class="curr-sem-num">1</span>
-          <span>I Semestr,I Kurs</span>
+          <span data-i18n="currSem1">I Semestr,I Kurs</span>
           <div class="curr-sem-stats" id="curr-s1-stats"></div>
         </div>
         <div class="curr-table-wrap">
           <table class="curr-table" id="curr-table-s1">
             <thead>
               <tr>
-                <th>Fənn</th>
-                <th>Kredit</th>
-                <th>Saat</th>
-                <th>Qayıb</th>
-                <th>Həftəlik</th>
+                <th data-i18n="currTableSubject">Fənn</th>
+                <th data-i18n="currTableCredit">Kredit</th>
+                <th data-i18n="currTableHours">Saat</th>
+                <th data-i18n="currTableAbsence">Qayıb</th>
+                <th data-i18n="currTableWeekly">Həftəlik</th>
               </tr>
             </thead>
             <tbody id="curr-tbody-s1"></tbody>
@@ -1699,18 +1700,18 @@
       <div class="curr-semester-block" id="curr-semester-block-s2">
         <div class="curr-semester-title">
           <span class="curr-sem-num">2</span>
-          <span>II Semestr, I Kurs</span>
+          <span data-i18n="currSem2">II Semestr, I Kurs</span>
           <div class="curr-sem-stats" id="curr-s2-stats"></div>
         </div>
         <div class="curr-table-wrap">
           <table class="curr-table" id="curr-table-s2">
             <thead>
               <tr>
-                <th>Fənn</th>
-                <th>Kredit</th>
-                <th>Saat</th>
-                <th>Qayıb</th>
-                <th>Həftəlik</th>
+                <th data-i18n="currTableSubject">Fənn</th>
+                <th data-i18n="currTableCredit">Kredit</th>
+                <th data-i18n="currTableHours">Saat</th>
+                <th data-i18n="currTableAbsence">Qayıb</th>
+                <th data-i18n="currTableWeekly">Həftəlik</th>
               </tr>
             </thead>
             <tbody id="curr-tbody-s2"></tbody>
@@ -1722,18 +1723,18 @@
       <div class="curr-semester-block" id="curr-semester-block-s3">
         <div class="curr-semester-title">
           <span class="curr-sem-num">3</span>
-          <span>III Semestr, II Kurs</span>
+          <span data-i18n="currSem3">III Semestr, II Kurs</span>
           <div class="curr-sem-stats" id="curr-s3-stats"></div>
         </div>
         <div class="curr-table-wrap">
           <table class="curr-table" id="curr-table-s3">
             <thead>
               <tr>
-                <th>Fənn</th>
-                <th>Kredit</th>
-                <th>Saat</th>
-                <th>Qayıb</th>
-                <th>Həftəlik</th>
+                <th data-i18n="currTableSubject">Fənn</th>
+                <th data-i18n="currTableCredit">Kredit</th>
+                <th data-i18n="currTableHours">Saat</th>
+                <th data-i18n="currTableAbsence">Qayıb</th>
+                <th data-i18n="currTableWeekly">Həftəlik</th>
               </tr>
             </thead>
             <tbody id="curr-tbody-s3"></tbody>
@@ -1745,18 +1746,18 @@
       <div class="curr-semester-block" id="curr-semester-block-s4">
         <div class="curr-semester-title">
           <span class="curr-sem-num">4</span>
-          <span>IV Semestr, II Kurs</span>
+          <span data-i18n="currSem4">IV Semestr, II Kurs</span>
           <div class="curr-sem-stats" id="curr-s4-stats"></div>
         </div>
         <div class="curr-table-wrap">
           <table class="curr-table" id="curr-table-s4">
             <thead>
               <tr>
-                <th>Fənn</th>
-                <th>Kredit</th>
-                <th>Saat</th>
-                <th>Qayıb</th>
-                <th>Həftəlik</th>
+                <th data-i18n="currTableSubject">Fənn</th>
+                <th data-i18n="currTableCredit">Kredit</th>
+                <th data-i18n="currTableHours">Saat</th>
+                <th data-i18n="currTableAbsence">Qayıb</th>
+                <th data-i18n="currTableWeekly">Həftəlik</th>
               </tr>
             </thead>
             <tbody id="curr-tbody-s4"></tbody>
@@ -1768,18 +1769,18 @@
       <div class="curr-semester-block" id="curr-semester-block-s5">
         <div class="curr-semester-title">
           <span class="curr-sem-num">5</span>
-          <span>V Semestr, III Kurs</span>
+          <span data-i18n="currSem5">V Semestr, III Kurs</span>
           <div class="curr-sem-stats" id="curr-s5-stats"></div>
         </div>
         <div class="curr-table-wrap">
           <table class="curr-table" id="curr-table-s5">
             <thead>
               <tr>
-                <th>Fənn</th>
-                <th>Kredit</th>
-                <th>Saat</th>
-                <th>Qayıb</th>
-                <th>Həftəlik</th>
+                <th data-i18n="currTableSubject">Fənn</th>
+                <th data-i18n="currTableCredit">Kredit</th>
+                <th data-i18n="currTableHours">Saat</th>
+                <th data-i18n="currTableAbsence">Qayıb</th>
+                <th data-i18n="currTableWeekly">Həftəlik</th>
               </tr>
             </thead>
             <tbody id="curr-tbody-s5"></tbody>
@@ -1791,18 +1792,18 @@
       <div class="curr-semester-block" id="curr-semester-block-s6">
         <div class="curr-semester-title">
           <span class="curr-sem-num">6</span>
-          <span>VI Semestr, III Kurs</span>
+          <span data-i18n="currSem6">VI Semestr, III Kurs</span>
           <div class="curr-sem-stats" id="curr-s6-stats"></div>
         </div>
         <div class="curr-table-wrap">
           <table class="curr-table" id="curr-table-s6">
             <thead>
               <tr>
-                <th>Fənn</th>
-                <th>Kredit</th>
-                <th>Saat</th>
-                <th>Qayıb</th>
-                <th>Həftəlik</th>
+                <th data-i18n="currTableSubject">Fənn</th>
+                <th data-i18n="currTableCredit">Kredit</th>
+                <th data-i18n="currTableHours">Saat</th>
+                <th data-i18n="currTableAbsence">Qayıb</th>
+                <th data-i18n="currTableWeekly">Həftəlik</th>
               </tr>
             </thead>
             <tbody id="curr-tbody-s6"></tbody>
@@ -1814,199 +1815,14 @@
       <div class="curr-semester-block" id="curr-semester-block-s7">
         <div class="curr-semester-title">
           <span class="curr-sem-num">7</span>
-          <span>VII Semestr, IV Kurs</span>
+          <span data-i18n="currSem7">VII Semestr, IV Kurs</span>
           <div class="curr-sem-stats" id="curr-s7-stats"></div>
         </div>
         <div class="curr-table-wrap">
           <table class="curr-table" id="curr-table-s7">
             <thead>
               <tr>
-                <th>Fənn</th>
-                <th>Kredit</th>
-                <th>Saat</th>
-                <th>Qayıb</th>
-                <th>Həftəlik</th>
-              </tr>
-            </thead>
-            <tbody id="curr-tbody-s7"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Semester 8 -->
-      <div class="curr-semester-block" id="curr-semester-block-s8">
-        <div class="curr-semester-title">
-          <span class="curr-sem-num">8</span>
-          <span>VIII Semestr, IV Kurs</span>
-          <div class="curr-sem-stats" id="curr-s8-stats"></div>
-        </div>
-        <div class="curr-table-wrap">
-          <table class="curr-table" id="curr-table-s8">
-            <thead>
-              <tr>
-                <th>Fənn</th>
-                <th>Kredit</th>
-                <th>Saat</th>
-                <th>Qayıb</th>
-                <th>Həftəlik</th>
-              </tr>
-            </thead>
-            <tbody id="curr-tbody-s8"></tbody>
-          </table>
-        </div>
-      </div>
-
-
-      <!-- GPA məsləhəti -->
-      <div class="curr-gpa-tip">
-        <div class="curr-gpa-tip-icon"><span class="material-symbols-outlined">lightbulb</span></div>
-        <div class="curr-gpa-tip-text">Bu məlumatlar bir-başa UNEC-in rəsmi saytından alınmışdır, məlumatlar 2024-cü ilə aiddir. Seçmə fənnlərin qarşısında mötərizə ilə fərqləndirilmiş fənlər keçirilməsi ehtimal olunan fənlərdir.</div>
-      </div>
-    </div>
-
-    <!-- Boş vəziyyət -->
-    <div id="currEmptyState" class="curr-empty">
-      <div class="curr-empty-icon"><span class="material-symbols-outlined">school</span></div>
-      <div class="curr-empty-text">Yuxarıdan öz ixtisasını seç</div>
-    </div>
-
-  </div>
-</div>
-
-<!-- ── Material İstəkləri ─────────────────────────────────── -->
-<div id="main-requests" class="main-tab" style="display:none;">
-  <div class="container">
-
-    <div class="req-hero">
-      <div class="req-page-badge"><span class="material-symbols-outlined msi">search</span> Material İstəkləri</div>
-      <h1 class="req-page-title">Axtardığını <span>tapa bilmirsən?</span></h1>
-      <p class="req-hero-sub">İstək yaz — başqa tələbələr kömək etsin.</p>
-    </div>
-
-    <button class="req-new-btn" onclick="openRequestForm()">+ Yeni istək yaz</button>
-
-    <div class="req-form hidden" id="req-form">
-      <textarea class="req-form-textarea" id="req-text-input" maxlength="300" placeholder="Məs: Maliyyə bazarları final sualları axtarıram"></textarea>
-      <div class="req-form-row">
-        <select class="req-form-select" id="req-course-input">
-          <option value="">Kurs (istəyə görə)</option>
-          <option value="1-ci kurs">1-ci kurs</option>
-          <option value="2-ci kurs">2-ci kurs</option>
-          <option value="3-cü kurs">3-cü kurs</option>
-          <option value="4-cü kurs">4-cü kurs</option>
-        </select>
-        <input class="req-form-input" id="req-subject-input" placeholder="Fənn adı (istəyə görə)">
-      </div>
-      <div class="req-form-actions">
-        <button class="req-form-submit" id="req-submit-btn" onclick="submitMaterialRequest()">Göndər</button>
-        <button class="req-form-cancel" onclick="closeRequestForm()">Ləğv et</button>
-      </div>
-    </div>
-
-    <div class="req-filters">
-      <button class="req-filter-btn active" data-filter="all" onclick="setRequestsFilter('all')">Hamısı</button>
-      <button class="req-filter-btn" data-filter="open" onclick="setRequestsFilter('open')">Açıq</button>
-      <button class="req-filter-btn" data-filter="fulfilled" onclick="setRequestsFilter('fulfilled')">Tapılıb</button>
-    </div>
-
-    <div id="req-list" class="req-list">
-      <div class="req-loading">Yüklənir...</div>
-    </div>
-
-  </div>
-</div>
-
-<!-- ── Taymer & İmtahan Geri Sayımı ─────────────────────── -->
-<div id="main-timer" class="main-tab" style="display:none;">
-  <div class="timer-container">
-
-    <!-- Notification banner -->
-    <div class="timer-notif-banner hidden" id="timer-notif-banner">
-      <span><span class="material-symbols-outlined msi">notifications</span> Bildiriş icazəsi ver</span>
-      <button class="timer-notif-btn" onclick="requestTimerNotif()">İcazə ver</button>
-    </div>
-
-    <!-- ── Pomodoro ── -->
-    <div class="timer-section-title">Pomodoro Taymer</div>
-    <div class="pomodoro-card">
-
-      <!-- Mode tabs -->
-      <div class="pomodoro-modes">
-        <button class="pomodoro-mode-btn active" id="pmode-focus"  onclick="pomodoroSetMode('focus')">Fokus</button>
-        <button class="pomodoro-mode-btn"        id="pmode-short"  onclick="pomodoroSetMode('short')">Qısa fasilə</button>
-        <button class="pomodoro-mode-btn"        id="pmode-long"   onclick="pomodoroSetMode('long')">Uzun fasilə</button>
-      </div>
-
-      <!-- Circle -->
-      <div class="pomodoro-circle-wrap">
-        <svg class="pomodoro-svg" viewBox="0 0 200 200">
-          <circle class="pomodoro-track"    cx="100" cy="100" r="90"/>
-          <circle class="pomodoro-progress" cx="100" cy="100" r="90"
-            id="pomodoro-ring"
-            style="stroke-dasharray:565.48;stroke-dashoffset:0"/>
-        </svg>
-        <div class="pomodoro-center">
-          <div class="pomodoro-time" id="pomodoro-time">25:00</div>
-          <div class="pomodoro-label" id="pomodoro-mode-label">Fokus</div>
-        </div>
-      </div>
-
-      <!-- Session dots -->
-      <div class="pomodoro-sessions">
-        <div class="pomodoro-dot" id="pdot-0"></div>
-        <div class="pomodoro-dot" id="pdot-1"></div>
-        <div class="pomodoro-dot" id="pdot-2"></div>
-        <div class="pomodoro-dot" id="pdot-3"></div>
-      </div>
-
-      <!-- Controls -->
-      <div class="pomodoro-controls">
-        <button class="pomodoro-btn-secondary" onclick="pomodoroReset()" title="Sıfırla">↺</button>
-        <button class="pomodoro-btn-main" id="pomodoro-play-btn" onclick="pomodoroToggle()"><span class="material-symbols-outlined">play_arrow</span></button>
-        <button class="pomodoro-btn-secondary" onclick="pomodoroSkip()" title="Keç"><span class="material-symbols-outlined">skip_next</span></button>
-      </div>
-
-      <!-- Stats -->
-      <div class="pomodoro-stats">
-        <div class="pomodoro-stat">
-          <div class="pomodoro-stat-val" id="pstat-done">0</div>
-          <div class="pomodoro-stat-lbl">Sessiya</div>
-        </div>
-        <div class="pomodoro-stat">
-          <div class="pomodoro-stat-val" id="pstat-mins">0</div>
-          <div class="pomodoro-stat-lbl">Dəq (bu gün)</div>
-        </div>
-      </div>
-
-    </div><!-- /pomodoro-card -->
-
-    <!-- ── Exam Countdown ── -->
-    <div class="timer-section-title">İmtahan Geri Sayımı</div>
-
-    <div class="exam-form hidden" id="exam-form">
-      <div class="exam-form-row">
-        <input class="exam-form-input" id="exam-name-input" placeholder="Fənn adı (məs: Makroiqtisadiyyat)" maxlength="60">
-      </div>
-      <div class="exam-form-row">
-        <input class="exam-form-input" id="exam-date-input" type="date">
-      </div>
-      <div class="exam-form-actions">
-        <button class="exam-form-cancel" onclick="hideExamForm()">Ləğv et</button>
-        <button class="exam-form-submit" onclick="addExam()">Əlavə et</button>
-      </div>
-    </div>
-
-    <button class="exam-add-btn" onclick="showExamForm()">＋ İmtahan əlavə et</button>
-
-    <div class="exam-list" id="exam-list">
-      <p class="exam-empty">İmtahan əlavə edilməyib.</p>
-    </div>
-
-  </div>
-</div>
-
-  <script src="scripts/curriculum.js"></script>
-  <script src="scripts/badges.js"></script>
-  <script src="scripts/timer.js"></script>
-</body>
-</html>
+                <th data-i18n="currTableSubject">Fənn</th>
+                <th data-i18n="currTableCredit">Kredit</th>
+                <th data-i18n="currTableHours">Saat</th>
+        
