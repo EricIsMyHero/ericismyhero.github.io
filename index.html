@@ -1048,10 +1048,40 @@
         <small><span class="ai-status-dot"></span>Onlayn</small>
       </div>
     </div>
-    <button onclick="toggleAI()" title="Bağla">×</button>
+    <div class="ai-header-right">
+      <button class="ai-upgrade-btn" onclick="openPremiumModal()" title="Premium-a yüksəl">
+        <span class="material-symbols-outlined msi msi--tight">workspace_premium</span>Yüksəlt
+      </button>
+      <button onclick="toggleAI()" title="Bağla">×</button>
+    </div>
   </div>
   <div id="ai-messages"></div>
   <div id="ai-input-area"></div>
+</div>
+
+<!-- ── Premium Modalı ────────────────────────────────────────── -->
+<div id="premiumOverlay" class="qr-pay-overlay hidden" onclick="if(event.target===this)closePremiumModal()">
+  <div class="qr-pay-modal premium-modal">
+    <div class="qr-pay-modal-header">
+      <div class="qr-pay-modal-title-row">
+        <span class="material-symbols-outlined msi">workspace_premium</span>
+        <span class="qr-pay-modal-title">Premium-a Yüksəl</span>
+      </div>
+      <button class="qr-pay-modal-close" onclick="closePremiumModal()">✕</button>
+    </div>
+    <p class="qr-pay-modal-desc">Günlük sorğu limiti 12-yə, mesaj uzunluğu 400 simvola qədər artır.</p>
+
+    <div class="premium-plans" id="premium-plans"></div>
+
+    <div class="premium-redeem">
+      <div class="premium-redeem-label">Artıq kodun var?</div>
+      <div class="premium-redeem-row">
+        <input type="text" id="premium-code-input" placeholder="UNEC-XXXX-XXXX" autocomplete="off">
+        <button onclick="redeemPremiumCode()">Aktivləşdir</button>
+      </div>
+      <div class="premium-redeem-msg" id="premium-redeem-msg"></div>
+    </div>
+  </div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════ -->
