@@ -19,8 +19,8 @@ export default async function handler(req, res) {
 
   const { question, context } = req.body;
   if (!question) return res.status(400).json({ error: 'Missing question' });
-  if (typeof question !== 'string' || question.length > 250) {
-    return res.status(400).json({ error: 'Sual maksimum 250 simvol ola bilər' });
+  if (typeof question !== 'string' || question.length > 400) {
+    return res.status(400).json({ error: 'Sual maksimum 400 simvol ola bilər' });
   }
 
   try {
