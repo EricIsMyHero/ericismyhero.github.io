@@ -90,7 +90,7 @@ function refreshChatAuthState() {
   if (typeof isLoggedIn !== 'function' || !isLoggedIn()) {
     area.innerHTML = `
       <button class="chat-login-btn" onclick="openAuthModal('login')">
-        Yazmaq üçün daxil ol
+        ${typeof t === 'function' ? t('aiLoginToWrite') : 'Yazmaq üçün daxil ol'}
       </button>
     `;
     return;
