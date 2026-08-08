@@ -51,10 +51,19 @@ function hidePdfLoading() {
 }
 
 // ── AI Widget ─────────────────────────────────────────────────
-const BACKEND_URL    = "https://ericismyhero-github-io.vercel.app";
-const AI_DAILY_LIMIT = 5;
-const AI_CHAR_LIMIT  = 250;
+const BACKEND_URL   = "https://ericismyhero-github-io.vercel.app";
+const AI_FREE_DAILY = 5;
+const AI_FREE_CHARS = 250;
+const AI_PREM_DAILY = 12;
+const AI_PREM_CHARS = 400;
 let aiOpen = false;
+
+const PREMIUM_PLANS_INFO = [
+  { key: '7d',       name: '7 gün',   price: '2.49₼' },
+  { key: '15d',      name: '15 gün',  price: '4.99₼' },
+  { key: '32d',      name: '32 gün',  price: '9.99₼' },
+  { key: 'lifetime', name: 'Ömürlük', price: '19.99₼' },
+];
 
 function toggleAI() {
   aiOpen = !aiOpen;
@@ -74,19 +83,32 @@ function _aiTodayStr() {
   return new Date().toISOString().slice(0, 10);
 }
 
+function _aiIsPremiumActive(d) {
+  if (!d) return false;
+  if (d.premiumLifetime) return true;
+  if (d.premiumExpiresAt && new Date(d.premiumExpiresAt) > new Date()) return true;
+  return false;
+}
+
 async function _aiGetUsage() {
+  const free = { count: 0, remaining: AI_FREE_DAILY, dailyLimit: AI_FREE_DAILY, charLimit: AI_FREE_CHARS, isPremium: false };
   const user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
   const db   = typeof getDb === 'function' ? getDb() : null;
-  if (!user || !db) return { count: 0, remaining: AI_DAILY_LIMIT };
+  if (!user || !db) return free;
   try {
     const ref  = db.collection('users').doc(user.uid).collection('progress').doc('main');
     const snap = await ref.get();
     const d    = snap.data() || {};
+
+    const isPremium  = _aiIsPremiumActive(d);
+    const dailyLimit = isPremium ? AI_PREM_DAILY : AI_FREE_DAILY;
+    const charLimit  = isPremium ? AI_PREM_CHARS : AI_FREE_CHARS;
     const count = (d.aiAskDate === _aiTodayStr()) ? (d.aiAskCount || 0) : 0;
-    return { count, remaining: Math.max(0, AI_DAILY_LIMIT - count) };
+
+    return { count, remaining: Math.max(0, dailyLimit - count), dailyLimit, charLimit, isPremium, premiumPlan: d.premiumPlan };
   } catch (e) {
     console.warn('[AI] limit oxunmadı:', e);
-    return { count: 0, remaining: AI_DAILY_LIMIT };
+    return free;
   }
 }
 
@@ -123,15 +145,15 @@ async function refreshAiAuthState() {
     return;
   }
 
-  const { remaining } = await _aiGetUsage();
+  const { remaining, dailyLimit, charLimit, isPremium } = await _aiGetUsage();
 
   area.innerHTML = `
     <div id="ai-input-meta">
-      <span id="ai-char-count">0/${AI_CHAR_LIMIT}</span>
-      <span id="ai-daily-count">Bugün qalan sorğu: ${remaining}/${AI_DAILY_LIMIT}</span>
+      <span id="ai-char-count">0/${charLimit}</span>
+      <span id="ai-daily-count">${isPremium ? '<span class="material-symbols-outlined msi msi--tight">workspace_premium</span>' : ''}Bugün qalan sorğu: ${remaining}/${dailyLimit}</span>
     </div>
     <div id="ai-input-row">
-      <input type="text" id="ai-input" placeholder="Sualını yaz..." autocomplete="off" maxlength="${AI_CHAR_LIMIT}" />
+      <input type="text" id="ai-input" placeholder="Sualını yaz..." autocomplete="off" maxlength="${charLimit}" />
       <button id="ai-send-btn" onclick="sendMessage()">Göndər</button>
     </div>
   `;
@@ -141,7 +163,7 @@ async function refreshAiAuthState() {
 
   input.addEventListener('keydown', e => { if (e.key === 'Enter') sendMessage(); });
   input.addEventListener('input', () => {
-    document.getElementById('ai-char-count').textContent = `${input.value.length}/${AI_CHAR_LIMIT}`;
+    document.getElementById('ai-char-count').textContent = `${input.value.length}/${charLimit}`;
   });
 
   if (remaining <= 0) {
@@ -150,6 +172,71 @@ async function refreshAiAuthState() {
     sendBtn.disabled    = true;
   } else {
     input.focus();
+  }
+}
+
+// ── Premium modalı ───────────────────────────────────────────
+function openPremiumModal() {
+  if (typeof isLoggedIn !== 'function' || !isLoggedIn()) {
+    if (typeof openAuthModal === 'function') openAuthModal('login');
+    return;
+  }
+  document.getElementById('premium-plans').innerHTML = PREMIUM_PLANS_INFO.map(p => `
+    <button class="premium-plan-btn" onclick="choosePremiumPlan('${p.key}')">
+      <span class="premium-plan-btn-name">${p.name}</span>
+      <span class="premium-plan-btn-price">${p.price}</span>
+    </button>
+  `).join('');
+  const msg = document.getElementById('premium-redeem-msg');
+  msg.textContent = '';
+  document.getElementById('premium-code-input').value = '';
+  document.getElementById('premiumOverlay').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePremiumModal() {
+  document.getElementById('premiumOverlay').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+function choosePremiumPlan(key) {
+  const plan = PREMIUM_PLANS_INFO.find(p => p.key === key);
+  if (!plan) return;
+  closePremiumModal();
+  openQRModal('birbank', `Seçdiyin plan: ${plan.name} (${plan.price}) — bu məbləği göndər, kodu al və "Yüksəlt" bölməsində aktivləşdir.`);
+}
+
+async function redeemPremiumCode() {
+  const input = document.getElementById('premium-code-input');
+  const msg   = document.getElementById('premium-redeem-msg');
+  const code  = input.value.trim();
+  if (!code) return;
+
+  const user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
+  if (!user) { if (typeof openAuthModal === 'function') openAuthModal('login'); return; }
+
+  msg.style.color  = 'var(--muted)';
+  msg.textContent  = 'Yoxlanılır...';
+
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/redeem-code`, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ code, uid: user.uid })
+    });
+    const d = await res.json();
+    if (!res.ok) {
+      msg.style.color = 'var(--red)';
+      msg.textContent = d.error || 'Kod düzgün deyil.';
+      return;
+    }
+    msg.style.color = 'var(--green)';
+    msg.textContent = 'Uğurlu! Premium aktivləşdi.';
+    input.value = '';
+    setTimeout(() => { closePremiumModal(); refreshAiAuthState(); }, 1200);
+  } catch (e) {
+    msg.style.color = 'var(--red)';
+    msg.textContent = 'Bağlantı xətası.';
   }
 }
 
@@ -259,12 +346,13 @@ async function sendMessage() {
 
   const input = document.getElementById('ai-input');
   if (!input) return;
-  const text = input.value.trim().slice(0, AI_CHAR_LIMIT);
+
+  const usage = await _aiGetUsage();
+  const text  = input.value.trim().slice(0, usage.charLimit);
   if (!text) return;
 
-  const { remaining } = await _aiGetUsage();
-  if (remaining <= 0) {
-    addBotMsg('Günlük sorğu limitin bitdi (' + AI_DAILY_LIMIT + '/' + AI_DAILY_LIMIT + '). Sabah yenidən cəhd et.');
+  if (usage.remaining <= 0) {
+    addBotMsg('Günlük sorğu limitin bitdi (' + usage.dailyLimit + '/' + usage.dailyLimit + '). Sabah yenidən cəhd et, ya da Premium-a yüksəl.');
     refreshAiAuthState();
     return;
   }
@@ -666,7 +754,7 @@ function resetTest() {
 }
 
 // ── QR Ödəniş Modali ──────────────────────────────────────────
-function openQRModal(type) {
+function openQRModal(type, customNote) {
   const overlay = document.getElementById('qrPayOverlay');
   const img     = document.getElementById('qrModalImg');
   const title   = document.getElementById('qrModalTitle');
@@ -678,13 +766,13 @@ function openQRModal(type) {
     img.alt   = 'Birbank QR';
     title.textContent = 'Birbank QR';
     icon.textContent  = 'account_balance';
-    note.textContent  = 'Birbank tətbiqini açın → QR Skan → kodu oxudun';
+    note.textContent  = customNote || 'Birbank tətbiqini açın → QR Skan → kodu oxudun';
   } else {
     img.src   = 'images/m10qr.png';
     img.alt   = 'm10 QR';
     title.textContent = 'm10 QR';
     icon.textContent  = 'account_balance_wallet';
-    note.textContent  = 'm10 tətbiqini açın → Köçürmə → QR Skan edin';
+    note.textContent  = customNote || 'm10 tətbiqini açın → Köçürmə → QR Skan edin';
   }
 
   overlay.classList.remove('hidden');
