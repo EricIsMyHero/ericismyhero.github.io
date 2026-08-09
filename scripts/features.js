@@ -72,7 +72,7 @@ function toggleAI() {
     chat.classList.add('ai-open');
     refreshAiAuthState();
     if (!document.getElementById('ai-messages').children.length) {
-      addBotMsg('Salam! UNEC materialları haqqında sualını ver — cavablayayım.');
+      addBotMsg(t('aiGreeting'));
     }
   } else {
     chat.classList.remove('ai-open');
@@ -352,7 +352,7 @@ async function sendMessage() {
   if (!text) return;
 
   if (usage.remaining <= 0) {
-    addBotMsg('Günlük sorğu limitin bitdi (' + usage.dailyLimit + '/' + usage.dailyLimit + '). Sabah yenidən cəhd et, ya da Premium-a yüksəl.');
+    addBotMsg(t('aiLimitReached').replace(/{n}/g, usage.dailyLimit));
     refreshAiAuthState();
     return;
   }
@@ -367,14 +367,14 @@ async function sendMessage() {
     const res = await fetch(`${BACKEND_URL}/api/ask`, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ question: text, context: await buildContext(text) })
+      body:    JSON.stringify({ question: text, context: await buildContext(text), lang: (typeof lang !== 'undefined' ? lang : 'az') })
     });
     removeTyping();
-    if (!res.ok) { addBotMsg('Server xəta verdi (' + res.status + ').'); }
-    else { const d = await res.json(); addBotMsg(d.reply || 'Cavab alınmadı.'); }
+    if (!res.ok) { addBotMsg(t('aiServerError') + ' (' + res.status + ').'); }
+    else { const d = await res.json(); addBotMsg(d.reply || t('aiNoReply')); }
   } catch (e) {
     removeTyping();
-    addBotMsg('Bağlantı xətası.');
+    addBotMsg(t('aiConnError'));
   } finally {
     refreshAiAuthState();
   }
