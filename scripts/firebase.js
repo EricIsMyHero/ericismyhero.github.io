@@ -3,7 +3,7 @@
 // Config Vercel serverless function-dan alınır (/api/firebase-config)
 // ============================================================
 
-let _app, _auth, _db, _analytics;
+let _app, _auth, _db;
 
 // ── Firebase SDK yüklənib-yüklənmədiyini yoxla ───────────────
 function _fbReady() {
@@ -31,9 +31,9 @@ async function initFirebase() {
 
     // Offline persistence söndürüldü (Firebase 9 compat SDK deprecation xəbərdarlığından qaçmaq üçün)
 
-    if (typeof firebase.analytics === 'function') {
-      _analytics = firebase.analytics();
-    }
+    // Qeyd: firebase.analytics() qəsdən çağırılmır — index.html-dəki
+    // gtag (G-HZCMB8RSH3) tək analitika mənbəyidir. İkisi də aktiv olsaydı
+    // hər hadisə iki fərqli GA4 stream-ə (ikiqat) yazılardı.
 
     _auth.onAuthStateChanged(onAuthStateChange);
 
@@ -374,7 +374,7 @@ function _yesterdayStr() {
 // ANALYTICS
 // ============================================================
 function _logEvent(name, params = {}) {
-  if (_analytics) _analytics.logEvent(name, params);
+  if (typeof gtag === 'function') gtag('event', name, params);
 }
 
 // ============================================================
