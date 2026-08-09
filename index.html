@@ -13,6 +13,24 @@
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://unecstudentshub.com/">
 
+  <!-- ═══ Structured Data (Google üçün) ═══════════════════════ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "UNEC Students Hub",
+    "url": "https://unecstudentshub.com/",
+    "description": "UNEC tələbələri üçün imtahan materialları, sual bankı, Pomodoro taymer, GPA hesablayıcı, tələbə çatı və daha çox.",
+    "inLanguage": ["az", "en"],
+    "publisher": {
+      "@type": "Organization",
+      "name": "UNEC Students Hub",
+      "url": "https://unecstudentshub.com/",
+      "logo": "https://unecstudentshub.com/og-image.png"
+    }
+  }
+  </script>
+
   <!-- ═══ Open Graph (Facebook, WhatsApp, Discord, Telegram) ══ -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://unecstudentshub.com/">
@@ -1825,4 +1843,189 @@
                 <th data-i18n="currTableSubject">Fənn</th>
                 <th data-i18n="currTableCredit">Kredit</th>
                 <th data-i18n="currTableHours">Saat</th>
-        
+                <th data-i18n="currTableAbsence">Qayıb</th>
+                <th data-i18n="currTableWeekly">Həftəlik</th>
+              </tr>
+            </thead>
+            <tbody id="curr-tbody-s7"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Semester 8 -->
+      <div class="curr-semester-block" id="curr-semester-block-s8">
+        <div class="curr-semester-title">
+          <span class="curr-sem-num">8</span>
+          <span data-i18n="currSem8">VIII Semestr, IV Kurs</span>
+          <div class="curr-sem-stats" id="curr-s8-stats"></div>
+        </div>
+        <div class="curr-table-wrap">
+          <table class="curr-table" id="curr-table-s8">
+            <thead>
+              <tr>
+                <th data-i18n="currTableSubject">Fənn</th>
+                <th data-i18n="currTableCredit">Kredit</th>
+                <th data-i18n="currTableHours">Saat</th>
+                <th data-i18n="currTableAbsence">Qayıb</th>
+                <th data-i18n="currTableWeekly">Həftəlik</th>
+              </tr>
+            </thead>
+            <tbody id="curr-tbody-s8"></tbody>
+          </table>
+        </div>
+      </div>
+
+
+      <!-- GPA məsləhəti -->
+      <div class="curr-gpa-tip">
+        <div class="curr-gpa-tip-icon"><span class="material-symbols-outlined">lightbulb</span></div>
+        <div class="curr-gpa-tip-text" data-i18n="currGpaTip">Bu məlumatlar bir-başa UNEC-in rəsmi saytından alınmışdır, məlumatlar 2024-cü ilə aiddir. Seçmə fənnlərin qarşısında mötərizə ilə fərqləndirilmiş fənlər keçirilməsi ehtimal olunan fənlərdir.</div>
+      </div>
+    </div>
+
+    <!-- Boş vəziyyət -->
+    <div id="currEmptyState" class="curr-empty">
+      <div class="curr-empty-icon"><span class="material-symbols-outlined">school</span></div>
+      <div class="curr-empty-text" data-i18n="currEmptyText">Yuxarıdan öz ixtisasını seç</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── Material İstəkləri ─────────────────────────────────── -->
+<div id="main-requests" class="main-tab" style="display:none;">
+  <div class="container">
+
+    <div class="req-hero">
+      <div class="req-page-badge"><span class="material-symbols-outlined msi">search</span> <span data-i18n="reqPageBadge">Material İstəkləri</span></div>
+      <h1 class="req-page-title" data-i18n-html="reqPageTitle">Axtardığını <span>tapa bilmirsən?</span></h1>
+      <p class="req-hero-sub" data-i18n="reqHeroSub">İstək yaz — başqa tələbələr kömək etsin.</p>
+    </div>
+
+    <button class="req-new-btn" onclick="openRequestForm()" data-i18n="reqNewBtn">+ Yeni istək yaz</button>
+
+    <div class="req-form hidden" id="req-form">
+      <textarea class="req-form-textarea" id="req-text-input" maxlength="300" placeholder="Məs: Maliyyə bazarları final sualları axtarıram" data-i18n-placeholder="reqTextPlaceholder"></textarea>
+      <div class="req-form-row">
+        <select class="req-form-select" id="req-course-input">
+          <option value="" data-i18n="reqCourseSelectDefault">Kurs (istəyə görə)</option>
+          <option value="1-ci kurs">1-ci kurs</option>
+          <option value="2-ci kurs">2-ci kurs</option>
+          <option value="3-cü kurs">3-cü kurs</option>
+          <option value="4-cü kurs">4-cü kurs</option>
+        </select>
+        <input class="req-form-input" id="req-subject-input" placeholder="Fənn adı (istəyə görə)" data-i18n-placeholder="reqSubjectPlaceholder">
+      </div>
+      <div class="req-form-actions">
+        <button class="req-form-submit" id="req-submit-btn" onclick="submitMaterialRequest()" data-i18n="btnSend">Göndər</button>
+        <button class="req-form-cancel" onclick="closeRequestForm()" data-i18n="btnCancel">Ləğv et</button>
+      </div>
+    </div>
+
+    <div class="req-filters">
+      <button class="req-filter-btn active" data-filter="all" onclick="setRequestsFilter('all')" data-i18n="reqFilterAll">Hamısı</button>
+      <button class="req-filter-btn" data-filter="open" onclick="setRequestsFilter('open')" data-i18n="reqFilterOpen">Açıq</button>
+      <button class="req-filter-btn" data-filter="fulfilled" onclick="setRequestsFilter('fulfilled')" data-i18n="reqFilterFulfilled">Tapılıb</button>
+    </div>
+
+    <div id="req-list" class="req-list">
+      <div class="req-loading" data-i18n="loadingText">Yüklənir...</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── Taymer & İmtahan Geri Sayımı ─────────────────────── -->
+<div id="main-timer" class="main-tab" style="display:none;">
+  <div class="timer-container">
+
+    <!-- Notification banner -->
+    <div class="timer-notif-banner hidden" id="timer-notif-banner">
+      <span><span class="material-symbols-outlined msi">notifications</span> <span data-i18n="timerNotifBanner">Bildiriş icazəsi ver</span></span>
+      <button class="timer-notif-btn" onclick="requestTimerNotif()" data-i18n="timerNotifBtn">İcazə ver</button>
+    </div>
+
+    <!-- ── Pomodoro ── -->
+    <div class="timer-section-title" data-i18n="timerPomodoroTitle">Pomodoro Taymer</div>
+    <div class="pomodoro-card">
+
+      <!-- Mode tabs -->
+      <div class="pomodoro-modes">
+        <button class="pomodoro-mode-btn active" id="pmode-focus"  onclick="pomodoroSetMode('focus')" data-i18n="timerFocus">Fokus</button>
+        <button class="pomodoro-mode-btn"        id="pmode-short"  onclick="pomodoroSetMode('short')" data-i18n="timerShortBreak">Qısa fasilə</button>
+        <button class="pomodoro-mode-btn"        id="pmode-long"   onclick="pomodoroSetMode('long')" data-i18n="timerLongBreak">Uzun fasilə</button>
+      </div>
+
+      <!-- Circle -->
+      <div class="pomodoro-circle-wrap">
+        <svg class="pomodoro-svg" viewBox="0 0 200 200">
+          <circle class="pomodoro-track"    cx="100" cy="100" r="90"/>
+          <circle class="pomodoro-progress" cx="100" cy="100" r="90"
+            id="pomodoro-ring"
+            style="stroke-dasharray:565.48;stroke-dashoffset:0"/>
+        </svg>
+        <div class="pomodoro-center">
+          <div class="pomodoro-time" id="pomodoro-time">25:00</div>
+          <div class="pomodoro-label" id="pomodoro-mode-label" data-i18n="timerFocus">Fokus</div>
+        </div>
+      </div>
+
+      <!-- Session dots -->
+      <div class="pomodoro-sessions">
+        <div class="pomodoro-dot" id="pdot-0"></div>
+        <div class="pomodoro-dot" id="pdot-1"></div>
+        <div class="pomodoro-dot" id="pdot-2"></div>
+        <div class="pomodoro-dot" id="pdot-3"></div>
+      </div>
+
+      <!-- Controls -->
+      <div class="pomodoro-controls">
+        <button class="pomodoro-btn-secondary" onclick="pomodoroReset()" title="Sıfırla">↺</button>
+        <button class="pomodoro-btn-main" id="pomodoro-play-btn" onclick="pomodoroToggle()"><span class="material-symbols-outlined">play_arrow</span></button>
+        <button class="pomodoro-btn-secondary" onclick="pomodoroSkip()" title="Keç"><span class="material-symbols-outlined">skip_next</span></button>
+      </div>
+
+      <!-- Stats -->
+      <div class="pomodoro-stats">
+        <div class="pomodoro-stat">
+          <div class="pomodoro-stat-val" id="pstat-done">0</div>
+          <div class="pomodoro-stat-lbl" data-i18n="timerSession">Sessiya</div>
+        </div>
+        <div class="pomodoro-stat">
+          <div class="pomodoro-stat-val" id="pstat-mins">0</div>
+          <div class="pomodoro-stat-lbl" data-i18n="timerMinsToday">Dəq (bu gün)</div>
+        </div>
+      </div>
+
+    </div><!-- /pomodoro-card -->
+
+    <!-- ── Exam Countdown ── -->
+    <div class="timer-section-title" data-i18n="timerExamCountdown">İmtahan Geri Sayımı</div>
+
+    <div class="exam-form hidden" id="exam-form">
+      <div class="exam-form-row">
+        <input class="exam-form-input" id="exam-name-input" placeholder="Fənn adı (məs: Makroiqtisadiyyat)" maxlength="60" data-i18n-placeholder="examNamePlaceholder">
+      </div>
+      <div class="exam-form-row">
+        <input class="exam-form-input" id="exam-date-input" type="date">
+      </div>
+      <div class="exam-form-actions">
+        <button class="exam-form-cancel" onclick="hideExamForm()" data-i18n="btnCancel">Ləğv et</button>
+        <button class="exam-form-submit" onclick="addExam()" data-i18n="examAddConfirm">Əlavə et</button>
+      </div>
+    </div>
+
+    <button class="exam-add-btn" onclick="showExamForm()" data-i18n="examAddBtnMain">＋ İmtahan əlavə et</button>
+
+    <div class="exam-list" id="exam-list">
+      <p class="exam-empty" data-i18n="examEmptyText">İmtahan əlavə edilməyib.</p>
+    </div>
+
+  </div>
+</div>
+
+  <script src="scripts/curriculum.js"></script>
+  <script src="scripts/badges.js"></script>
+  <script src="scripts/timer.js"></script>
+</body>
+</html>
