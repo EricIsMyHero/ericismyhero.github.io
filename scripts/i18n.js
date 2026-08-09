@@ -688,7 +688,10 @@ function applyI18n(root) {
     el.textContent = t(el.getAttribute('data-i18n'));
   });
   root.querySelectorAll('[data-i18n-html]').forEach(el => {
-    el.innerHTML = t(el.getAttribute('data-i18n-html'));
+    const raw = t(el.getAttribute('data-i18n-html'));
+    el.innerHTML = (typeof DOMPurify !== 'undefined')
+      ? DOMPurify.sanitize(raw, { ALLOWED_TAGS: ['strong', 'span', 'br'], ALLOWED_ATTR: [] })
+      : raw;
   });
   root.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
     el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
