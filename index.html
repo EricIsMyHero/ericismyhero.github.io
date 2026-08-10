@@ -34,7 +34,7 @@
   <!-- ═══ Open Graph (Facebook, WhatsApp, Discord, Telegram) ══ -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://unecstudentshub.com/">
-  <meta property="og:title" content="UNEC Students Hub - Tələbə Platforması">
+  <meta property="og:title" content="UNEC Students Hub — Tələbə Platforması">
   <meta property="og:description" content="İmtahan materialları, sual bankı, Pomodoro taymer, GPA hesablayıcı və tələbə çatı. UNEC tələbələri üçün hər şey bir yerdə.">
   <meta property="og:image" content="https://unecstudentshub.com/og-image.png">
   <meta property="og:image:width" content="1200">
@@ -45,7 +45,7 @@
 
   <!-- ═══ Twitter / X Card ══════════════════════════════════════ -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="UNEC Students Hub - Tələbə Platforması">
+  <meta name="twitter:title" content="UNEC Students Hub — Tələbə Platforması">
   <meta name="twitter:description" content="İmtahan materialları, sual bankı, Pomodoro taymer, GPA hesablayıcı və tələbə çatı. UNEC tələbələri üçün hər şey bir yerdə.">
   <meta name="twitter:image" content="https://unecstudentshub.com/og-image.png">
 
@@ -272,12 +272,11 @@
 <!-- ═══════════════════════════════════════════════════════════ -->
 <header>
   <div style="display:flex;align-items:center;gap:12px;">
-    <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleSidebar()" title="Menyu" aria-label="Menyu aç" data-i18n-title="sidebarMenu" data-i18n-aria="sidebarMenu">>
+    <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleSidebar()" title="Menyu" aria-label="Menyu aç" data-i18n-title="sidebarMenu" data-i18n-aria="sidebarMenu">
       <span class="hamburger-line"></span>
       <span class="hamburger-line"></span>
       <span class="hamburger-line"></span>
     </button>
-    <div class="logo" id="logo-easter" onclick="easterEggClick()">UNEC Students Hub</div>
   </div>
   <div class="header-right">
     <button id="authHeaderBtn" class="header-auth-btn"></button>
@@ -664,10 +663,10 @@
     <!-- ═══ YENİ HERO ═══ -->
     <div class="hero hero-v2">
       <div class="hero-badge" id="hero-badge">
-        <span class="hero-badge-dot"></span>UNEC Students Hub
+        <span class="hero-badge-dot"></span><span data-i18n="badge">UNEC Students Hub</span>
       </div>
-      <h1 id="hero-title">UNEC <span>Students</span><br>Hub</h1>
-      <p id="hero-desc">UNEC tələbələri üçün materiallar, alətlər və toplum. Bir yerdə hər şey.</p>
+      <h1 id="hero-title" data-i18n-html="heroTitle" onclick="easterEggClick()" style="cursor:pointer;">UNEC <span>Students</span><br>Hub</h1>
+      <p id="hero-desc" data-i18n="heroDesc">UNEC tələbələri üçün materiallar, alətlər və toplum. Bir yerdə hər şey.</p>
 
       <!-- ── BIG STAT CARDS ── -->
       <div class="stat-cards-grid">
@@ -700,11 +699,11 @@
       <!-- köhnə stat elementlər — JS hələ bunlara baxır -->
       <div style="display:none">
         <div id="stat-courses">4</div>
-        <div id="stat-courses-label">Kurs</div>
+        <div id="stat-courses-label" data-i18n="statCourses">Kurs</div>
         <div id="stat-subjects">43</div>
-        <div id="stat-subjects-label">Fənn</div>
+        <div id="stat-subjects-label" data-i18n="statSubjects">Fənn</div>
         <div id="stat-pdfs">72</div>
-        <div id="stat-pdfs-label">PDF</div>
+        <div id="stat-pdfs-label" data-i18n="statPdfs">PDF</div>
         <div id="stat-monthly-visitors">—</div>
       </div>
     </div>
@@ -809,7 +808,7 @@
 
     <!-- Footer content in home tab -->
     <div class="home-footer-block">
-      <p class="home-footer-note" id="footer-text">Bu sayt rəsmi deyildir. Yalnız tələbələrin imtahan zamanı materialları daha rahat və əlçatan tapması üçün hazırlanıb.</p>
+      <p class="home-footer-note" id="footer-text" data-i18n="footer">Bu sayt rəsmi deyildir. Yalnız tələbələrin imtahan zamanı materialları daha rahat və əlçatan tapması üçün hazırlanıb.</p>
       <div class="home-footer-links">
         <span class="home-footer-copy">&copy; 2025 - 2026 AliVerse Studio ✦</span>
         <a href="https://ericismyhero.github.io/my-portfolio/" target="_blank" class="home-footer-link">Portfolio</a>
@@ -826,26 +825,26 @@
   <div class="container">
 
     <div id="view-home">
-      <p class="section-label" id="label-courses">Kurslar</p>
+      <p class="section-label" id="label-courses" data-i18n="coursesLabel">Kurslar</p>
       <div class="courses-grid" id="courses-grid"></div>
     </div>
 
     <div id="view-subjects" class="hidden">
       <div class="back-btn" onclick="goTo('home')">
-        <span>←</span> <span id="back1-text">Kurslara qayıt</span>
+        <span>←</span> <span id="back1-text" data-i18n="back1">Kurslara qayıt</span>
       </div>
       <div class="breadcrumb">
-        <span class="breadcrumb-item" onclick="goTo('home')" id="bc-home">Ana səhifə</span>
+        <span class="breadcrumb-item" onclick="goTo('home')" id="bc-home" data-i18n="bcHome">Ana səhifə</span>
         <span class="breadcrumb-sep">›</span>
         <span class="breadcrumb-current" id="bc-course"></span>
       </div>
       <div class="tab-bar">
-        <button class="tab-btn active" id="tab-subjects-btn" onclick="switchTab('subjects')"><span class="material-symbols-outlined">menu_book</span><span id="label-subjects">Fənlər</span>
+        <button class="tab-btn active" id="tab-subjects-btn" onclick="switchTab('subjects')"><span class="material-symbols-outlined">menu_book</span><span id="label-subjects" data-i18n="subjectsLabel">Fənlər</span>
         </button>
-        <button class="tab-btn" id="tab-extras-btn" onclick="switchTab('extras')"><span class="material-symbols-outlined">inventory_2</span><span id="label-extras">Əlavələr</span>
+        <button class="tab-btn" id="tab-extras-btn" onclick="switchTab('extras')"><span class="material-symbols-outlined">inventory_2</span><span id="label-extras" data-i18n="extrasLabel">Əlavələr</span>
         </button>
         <button class="tab-btn" id="tab-favorites-btn" onclick="switchTab('favorites')">
-          ★ <span id="label-favorites">Seçilmişlər</span>
+          ★ <span id="label-favorites" data-i18n="favoritesLabel">Seçilmişlər</span>
         </button>
       </div>
 
@@ -871,17 +870,17 @@
 
     <div id="view-pdfs" class="hidden">
       <div class="back-btn" onclick="goTo('subjects')">
-        <span>←</span> <span id="back2-text">Fənlərə qayıt</span>
+        <span>←</span> <span id="back2-text" data-i18n="back2">Fənlərə qayıt</span>
       </div>
       <div class="breadcrumb">
-        <span class="breadcrumb-item" onclick="goTo('home')" id="bc-home2">Ana səhifə</span>
+        <span class="breadcrumb-item" onclick="goTo('home')" id="bc-home2" data-i18n="bcHome">Ana səhifə</span>
         <span class="breadcrumb-sep">›</span>
         <span class="breadcrumb-item" onclick="goTo('subjects')" id="bc-course2"></span>
         <span class="breadcrumb-sep">›</span>
         <span class="breadcrumb-current" id="bc-subject"></span>
       </div>
       <div class="pdf-section-header">
-        <p class="section-label" id="label-pdfs">PDF Materiallar</p>
+        <p class="section-label" id="label-pdfs" data-i18n="pdfsLabel">PDF Materiallar</p>
         <div class="pdf-subject-title" id="pdf-subject-title"></div>
       </div>
       <div class="pdf-items" id="pdf-items"></div>
