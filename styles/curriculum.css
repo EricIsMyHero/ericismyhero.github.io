@@ -279,3 +279,59 @@
   .curr-td-name { min-width: 110px; }
   .curr-sem-stats { display: none; }
 }
+
+/* ── Kurslar bölməsi: İxtisas filtri ────────────────────────── */
+.major-filter {
+  margin: 14px 0 16px;
+}
+.major-filter-label {
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.major-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.major-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: .8rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.major-chip .material-symbols-outlined { font-size: 18px; }
+.major-chip:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
+.major-chip.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(59, 130, 246, 0.35);
+}
+@media (max-width: 640px) {
+  .major-chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+  }
+  .major-chip { flex: 0 0 auto; }
+}
