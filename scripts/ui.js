@@ -4,6 +4,7 @@
 // - Naviqasiya (goTo, getCurrentView)
 // - Render — Kurslar (renderCourses, openSubjects, switchTab)
 // - Render — Fənlər (renderSubjects)
+// - İxtisas filtri (setMajor, renderMajorFilter, subjectMatchesMajor)
 // - Render — PDF Səhifəsi (openPDFs)
 // - Render — Əlavələr (renderExtras)
 // - Render — Seçilmişlər (renderFavorites, removeFavAndRefresh)
@@ -274,14 +275,147 @@ function removeFavAndRefresh(filePath) {
   renderFavorites();
 }
 
+// ── İxtisas filtri ───────────────────────────────────────────
+// Hansı ixtisasda hansı fənn var — scripts/curriculum.js (CURRICULUM_DATA) əsasında.
+// pdfs.js-dəki fənn adı ixtisasın 8 semestrindən birində varsa, həmin ixtisasda göstərilir.
+// Planda olmayan fənn üçün pdfs.js-də əl ilə:  majors: ["ecology", "statistics"]
+const MAJOR_LS_KEY = 'subjects_major_filter';
+
+const MAJOR_I18N_KEYS = {
+  economics: 'currSpecEconomics', finance: 'currSpecFinance', accounting: 'currSpecAccounting',
+  management: 'currSpecManagement', marketing: 'currSpecMarketing', design: 'currSpecDesign',
+  foodEngineering: 'currSpecFoodEng', internationalRelations: 'currSpecIntlRelations',
+  internationalTradeLogistics: 'currSpecIntlTrade', ecology: 'currSpecEcology',
+  statistics: 'currSpecStatistics', publicAdministration: 'currSpecPublicAdmin',
+  businessManagement: 'currSpecBusinessMgmt'
+};
+
+// Eyni fənnin fərqli yazılışları (pdfs.js adı → curriculum.js adı)
+const SUBJECT_ALIASES = {
+  'Liner cebir ve matematiksel analiz': 'Xətti cəbr və riyazi analiz',
+  'Azerbaycanın tarihi': 'Azərbaycanın tarixi',
+  'Azərbaycan tarixi': 'Azərbaycanın tarixi',
+  'Bilgi işlem teknolojileri': 'İKT - baza komputer bilikləri',
+  'Olasılık teorisi ve matematiksel istatistik': 'Ehtimal nəzəriyyəsi və riyazi statistika'
+};
+
+function normSubjectName(raw) {
+  let s = String(raw || '').trim();
+  // "Seçmə fənn - 1 (Qiymət siyasəti)" → "Qiymət siyasəti"
+  const sel = s.match(/^seçmə fənn\s*(?:-\s*\d+)?\s*\((.+)\)\s*$/i);
+  if (sel) s = sel[1];
+  s = s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+       .replace(/ı/g, 'i').replace(/ə/g, 'e')
+       .replace(/kompyuter/g, 'komputer')
+       .replace(/\s*-\s*/g, '-').replace(/\s+/g, ' ').trim();
+  // Xarici dil: A1/A2/B1/B1+ (pdfs.js)  ↔  -1/-2/-3/-4 (curriculum.js)
+  s = s.replace(/^xarici dilde isguzar ve akademik kommunikasiya\s*-?\s*(a1|a2|b1\+|b1|[1-4])$/,
+    (_, l) => 'xarici dil ' + ({ a1: 1, a2: 2, b1: 3, 'b1+': 4 }[l] || l));
+  return s;
+}
+
+let _aliasNorm = null;
+function canonSubjectName(raw) {
+  if (!_aliasNorm) {
+    _aliasNorm = {};
+    Object.entries(SUBJECT_ALIASES).forEach(([a, b]) => { _aliasNorm[normSubjectName(a)] = normSubjectName(b); });
+  }
+  const n = normSubjectName(raw);
+  return _aliasNorm[n] || n;
+}
+
+const _majorSubjectCache = {};
+function getMajorSubjectSet(majorKey) {
+  if (_majorSubjectCache[majorKey]) return _majorSubjectCache[majorKey];
+  const set = new Set();
+  const major = (typeof CURRICULUM_DATA !== 'undefined') ? CURRICULUM_DATA[majorKey] : null;
+  if (major) {
+    for (let sem = 1; sem <= 8; sem++) {
+      (major['semester' + sem] || []).forEach(s => set.add(canonSubjectName(s.name)));
+    }
+  }
+  return (_majorSubjectCache[majorKey] = set);
+}
+
+function subjectMatchesMajor(subjectName, subj, majorKey) {
+  if (!majorKey || majorKey === 'all') return true;
+  if (Array.isArray(subj.majors) && subj.majors.includes(majorKey)) return true;
+  return getMajorSubjectSet(majorKey).has(canonSubjectName(subjectName));
+}
+
+function getSelectedMajor() {
+  let key = 'all';
+  try { key = localStorage.getItem(MAJOR_LS_KEY) || 'all'; } catch (e) {}
+  if (key !== 'all' && !(typeof CURRICULUM_DATA !== 'undefined' && CURRICULUM_DATA[key])) key = 'all';
+  return key;
+}
+
+function setMajor(key) {
+  if (key !== 'all' && !(typeof CURRICULUM_DATA !== 'undefined' && CURRICULUM_DATA[key])) key = 'all';
+  try { localStorage.setItem(MAJOR_LS_KEY, key); } catch (e) {}
+  if (typeof gtag === 'function') gtag('event', 'major_filter', { event_category: 'Filter', event_label: key });
+  renderSubjects(currentCourse);
+  const si = document.getElementById('searchInput');
+  if (si && si.value.trim()) filterSubjects(si.value.trim().toLowerCase());
+}
+
+function renderMajorFilter() {
+  if (typeof CURRICULUM_DATA === 'undefined') return;
+  const t    = translations[lang];
+  const grid = document.getElementById('subjects-grid');
+  if (!grid) return;
+
+  let box = document.getElementById('major-filter');
+  if (!box) {
+    box = document.createElement('div');
+    box.id = 'major-filter';
+    box.className = 'major-filter';
+    box.addEventListener('click', (e) => {
+      const chip = e.target.closest('.major-chip');
+      if (chip) setMajor(chip.dataset.major);
+    });
+    grid.parentNode.insertBefore(box, grid);
+  }
+
+  const selected = getSelectedMajor();
+  const chip = (key, icon, label) => `
+    <button type="button" class="major-chip${key === selected ? ' active' : ''}" data-major="${key}" aria-pressed="${key === selected}">
+      ${icon ? `<span class="material-symbols-outlined">${icon}</span>` : ''}<span>${label}</span>
+    </button>`;
+
+  box.innerHTML = `
+    <div class="major-filter-label">${t.majorFilterLabel}</div>
+    <div class="major-chips" role="group" aria-label="${t.majorFilterLabel}">
+      ${chip('all', 'apps', t.majorAll)}
+      ${Object.entries(CURRICULUM_DATA).map(([key, m]) =>
+        chip(key, m.icon, t[MAJOR_I18N_KEYS[key]] || m.name)).join('')}
+    </div>`;
+
+  // Seçilmiş çip görünməyibsə üfüqi sürüşdür (səhifəni sürüşdürmədən)
+  const chips  = box.querySelector('.major-chips');
+  const active = box.querySelector('.major-chip.active');
+  if (chips && active && chips.scrollWidth > chips.clientWidth) {
+    chips.scrollLeft = active.offsetLeft - (chips.clientWidth - active.offsetWidth) / 2;
+  }
+}
+
 // ── Render — Fənlər (Semester qrupları ilə) ──────────────────
 function renderSubjects(courseName) {
   const t    = translations[lang];
   const grid = document.getElementById('subjects-grid');
   grid.innerHTML = '';
+  renderMajorFilter();
   const icons = ['bar_chart','straighten','calendar_month','lightbulb','edit_note','trending_up','science','settings','target','push_pin','account_balance','payments','trending_down','eco','link','assignment','calculate','emoji_events'];
 
-  const allEntries = Object.entries(data[courseName].subjects);
+  const majorKey   = getSelectedMajor();
+  const allEntries = Object.entries(data[courseName].subjects)
+    .filter(([name, subj]) => subjectMatchesMajor(name, subj, majorKey));
+
+  if (allEntries.length === 0) {
+    grid.innerHTML = `<div class="empty-favs" style="grid-column:1/-1;">${t.noMajorSubjects}</div>`;
+    return;
+  }
+
   const sem1 = allEntries.filter(([, subj]) => subj.semester === 1);
   const sem2 = allEntries.filter(([, subj]) => subj.semester === 2);
 
