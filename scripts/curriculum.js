@@ -44,11 +44,11 @@ const CURRICULUM_DATA = {
       { name: 'Mülki müdafiə',                                    credit: 3, hours: 45, absenceLimit: 5, weekly: 3 },
     ],
     semester6: [
-      { name: 'Ekonometrika',                           credit: 10, hours: 60, absenceLimit: 5, weekly: 4 },
+      { name: 'Ekonometrika',                           credit: 10, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Sosial sahələrin iqtisadiyyatı',         credit: 6, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Seçmə fənn - 1',                         credit: 3, hours: 45, absenceLimit: 7, weekly: 3 },
+      { name: 'Seçmə fənn - 1',                         credit: 3, hours: 45, absenceLimit: 5, weekly: 3 },
       { name: 'Seçmə fənn - 2',                         credit: 7, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Seçmə fənn - 3',                         credit: 4, hours: 45, absenceLimit: 7, weekly: 3 },
+      { name: 'Seçmə fənn - 3',                         credit: 4, hours: 45, absenceLimit: 5, weekly: 3 },
     ],
     semester7: [
       { name: 'İnkişaf iqtisadiyyatı',               credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
@@ -61,7 +61,7 @@ const CURRICULUM_DATA = {
       { name: 'İstehsalat təcrübəsi / layihə',         credit: 6, hours: 0, absenceLimit: 0, weekly: 0 },
       { name: 'Seçmə fənn - 1',                        credit: 6, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Seçmə fənn - 2',                        credit: 8, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Seçmə fənn - 3',                        credit: 4, hours: 75, absenceLimit: 5, weekly: 3 },
+      { name: 'Seçmə fənn - 3',                        credit: 4, hours: 45, absenceLimit: 5, weekly: 3 },
       { name: 'Seçmə fənn - 4',                        credit: 6, hours: 60, absenceLimit: 7, weekly: 4 },
     ],
   },
@@ -315,7 +315,7 @@ const CURRICULUM_DATA = {
     name: 'Dizayn', icon: 'palette',
     semester1: [
       { name: 'Azərbaycanın tarixi',            credit: 5, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Xarici dildə işgüzar və akademik kommunikasiya-1', credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
+      { name: 'Xarici dildə işgüzar və akademik kommunikasiya-1', credit: 4, hours: 45, absenceLimit: 5, weekly: 3 },
       { name: 'Rəsm-1',                          credit: 6, hours: 45, absenceLimit: 5, weekly: 3 },
       { name: 'Rəngkarlıq-1',                    credit: 5, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Dizaynın əsasları-1',             credit: 5, hours: 45, absenceLimit: 5, weekly: 3 },
@@ -323,7 +323,7 @@ const CURRICULUM_DATA = {
     ],
     semester2: [
       { name: 'Azərbaycan dilində işgüzar və akademik kommunikasiya', credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Xarici dildə işgüzar və akademik kommunikasiya-2', credit: 3, hours: 45, absenceLimit: 5, weekly: 3 },
+      { name: 'Xarici dildə işgüzar və akademik kommunikasiya-2', credit: 3, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Rəsm-2',                          credit: 5, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Rəngkarlıq-2',                    credit: 5, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Dizaynın əsasları-2',             credit: 5, hours: 45, absenceLimit: 5, weekly: 3 },
@@ -350,8 +350,8 @@ const CURRICULUM_DATA = {
       { name: 'Seçmə fənn - 2 (Geyimin modelləşdirilməsi)', credit: 5, hours: 45, absenceLimit: 5, weekly: 3 },
       { name: 'Seçmə fənn - 3 (Koloristika)',    credit: 5, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Seçmə fənn - 4 (Bədii qrafika)',  credit: 5, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Seçmə fənn - 5 (Məhsulların bədii tərtibatı)', credit: 5, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Seçmə fənn - 6 (Geyimin layihələndirilməsi)', credit: 5, hours: 45, absenceLimit: 5, weekly: 3 },
+      { name: 'Seçmə fənn - 5 (Məhsulların bədii tərtibatı (Sənaye dizaynı))', credit: 5, hours: 60, absenceLimit: 7, weekly: 4 },
+      { name: 'Seçmə fənn - 6 (Geyimin layihələndirilməsi (Geyim dizaynı))', credit: 5, hours: 45, absenceLimit: 5, weekly: 3 },
     ],
     semester6: [
       { name: 'Seçmə fənn - 1 (Moda və kostyum tarixi)', credit: 6, hours: 60, absenceLimit: 7, weekly: 4 },
@@ -366,8 +366,8 @@ const CURRICULUM_DATA = {
       { name: 'Multikulturalizmə giriş',         credit: 3, hours: 45, absenceLimit: 5, weekly: 3 },
       { name: 'Seçmə fənn - 2 (Parçaların bədii tərtibatı)', credit: 6, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Seçmə fənn - 3 (Tətbiqi mexanika)', credit: 6, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Seçmə fənn - 4 (Portfolio)',      credit: 6, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Seçmə fənn - 5 (Maketləşdirmə)',  credit: 6, hours: 60, absenceLimit: 7, weekly: 4 },
+      { name: 'Seçmə fənn - 4 (Portfolio (Sənaye dizaynı))',      credit: 6, hours: 60, absenceLimit: 7, weekly: 4 },
+      { name: 'Seçmə fənn - 5 (Maketləşdirmə (Sənaye dizaynı))',  credit: 6, hours: 60, absenceLimit: 7, weekly: 4 },
     ],
     semester8: [
       { name: 'İstehsalat təcrübəsi',            credit: 21, hours: 0, absenceLimit: 0, weekly: 0 },
@@ -380,14 +380,14 @@ const CURRICULUM_DATA = {
     name: 'Qida mühəndisliyi', icon: 'restaurant',
     semester1: [
       { name: 'Azərbaycan tarixi',                          credit: 5, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Xarici dildə işgüzar və akademik kommunikasiya-1', credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
+      { name: 'Xarici dildə işgüzar və akademik kommunikasiya-1', credit: 4, hours: 45, absenceLimit: 5, weekly: 3 },
       { name: 'Xətti cəbr və analitik həndəsə',             credit: 4, hours: 45, absenceLimit: 5, weekly: 3 },
       { name: 'Ümumi kimya',                                credit: 6, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Analitik kimya',                             credit: 5, hours: 45, absenceLimit: 5, weekly: 3 },
       { name: 'Fizikanın əsasları',                         credit: 6, hours: 60, absenceLimit: 7, weekly: 4 },
     ],
     semester2: [
-      { name: 'Xarici dildə işgüzar və akademik kommunikasiya-2', credit: 3, hours: 45, absenceLimit: 5, weekly: 3 },
+      { name: 'Xarici dildə işgüzar və akademik kommunikasiya-2', credit: 3, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Riyazi analiz',                              credit: 8, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Üzvi kimya',                                 credit: 5, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Tətbiqi Fizika',                             credit: 5, hours: 60, absenceLimit: 7, weekly: 4 },
@@ -407,7 +407,7 @@ const CURRICULUM_DATA = {
       { name: 'Qida məhsullarının biokimyası',              credit: 7, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Qida mikrobiologiyası',                      credit: 7, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Qida məhsullarının keyfiyyətinə texniki-kimyəvi nəzarət', credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Seçmə fənn - 1 (Qida mühəndisliyi dizaynı)', credit: 5, hours: 45, absenceLimit: 5, weekly: 3 },
+      { name: 'Seçmə fənn - 1 (Qida mühəndisliyi dizaynı və iqtisadiyyatı)', credit: 5, hours: 45, absenceLimit: 5, weekly: 3 },
       { name: 'Seçmə fənn (Fəlsəfə)',                       credit: 3, hours: 45, absenceLimit: 5, weekly: 3 },
     ],
     semester5: [
@@ -820,7 +820,8 @@ const CURRICULUM_DATA = {
 /* =============================================================
    FƏNN ŞİFRLƏRİ  –  Rəsmi tədris planı (Forma №1) üzrə
    Hər fənnin öz şifri var. pdfs.js-də fənnə  code: "00591"  yazılanda
-   Kurslar bölməsində ixtisas filtri məhz bu şifrlərə görə işləyir.
+   Kurslar bölməsində ixtisas filtri bu şifrlərə (və fənn adlarına) görə işləyir.
+   Qeyd: eyni fənnin şifri ixtisaslara görə fərqli ola bilər (məs. Xarici dil).
 
    semester: 1–8  (P–1 → 1, Y–1 → 2, P–2 → 3, Y–2 → 4, P–3 → 5, Y–3 → 6, P–4 → 7, Y–4 → 8)
    prereq  : öncə keçilməli fənnin şifri
@@ -970,6 +971,297 @@ const CURRICULUM_CODES = {
       { code: '01224', name: 'Yumşaq bacarıqlar (Soft skills)',  credit: 9,  semester: 2 },
       { code: '01225', name: 'Sərt bacarıqlar (Hard skills)',    credit: 10, semester: 7 },
       { code: '00454', name: 'İstehsalat təcrübəsi / layihə',    credit: 6,  semester: 8 },
+    ],
+  },
+
+  /* ─── 6006023 – QİDA MÜHƏNDİSLİYİ (bakalavriat, 4 il / 8 semestr) ── */
+  foodEngineering: {
+    name: 'Qida mühəndisliyi',
+    specialtyCode: '6006023',
+    // Qeyd: planda “Süd texnologiyası / Pendirin texnologiyası / Dəniz məhsullarının emalı texnologiyası”
+    // qrupunda 00228 şifri iki dəfə yazılıb (4 şifr, 3 fənn). Burada 00847, 00661, 00228 götürülüb.
+
+    // Ümumi fənlər
+    general: [
+      { code: '00004', name: 'Azərbaycan dilində işgüzar və akademik kommunikasiya', credit: 4, semester: 3 },
+      { code: '00005', name: 'Azərbaycan tarixi',                                    credit: 5, semester: 1 },
+      { code: '01222', name: 'Xarici dildə işgüzar və akademik kommunikasiya-1',     credit: 4, semester: 1 },
+      { code: '00073', name: 'Xarici dildə işgüzar və akademik kommunikasiya-2',     credit: 3, semester: 2, prereq: ['01222'] },
+      { code: '00932', name: 'Xarici dildə işgüzar və akademik kommunikasiya-3',     credit: 4, semester: 3, prereq: ['00073'] },
+      { code: '00933', name: 'Xarici dildə işgüzar və akademik kommunikasiya-4',     credit: 4, semester: 4, prereq: ['00932'] },
+    ],
+
+    // Seçmə fənlər (ümumi fənlər üzrə)
+    generalElectives: [
+      { title: 'Seçmə fənn (ümumi) – 1', credit: 3, semester: 4, subjects: [
+        { code: '00341', name: 'Fəlsəfə' },
+        { code: '00830', name: 'Sosiologiya' },
+        { code: '00149', name: 'AR Konstitusiyası və hüququn əsasları' },
+        { code: '00574', name: 'Məntiq' },
+        { code: '00317', name: 'Etika və estetika' },
+        { code: '00632', name: 'Multikulturalizmə giriş' },
+      ]},
+      { title: 'Seçmə fənn (ümumi) – 2', credit: 3, semester: 5, subjects: [
+        { code: '00402', name: 'İnformasiya texnologiyaları' },
+        { code: '00404', name: 'İnformasiyanın idarə edilməsi' },
+        { code: '00758', name: 'Sahibkarlığın əsasları və biznesə giriş' },
+        { code: '00671', name: 'Politologiya' },
+      ]},
+    ],
+
+    // İxtisas fənləri
+    major: [
+      { code: '00055', name: 'Xətti cəbr və analitik həndəsə',                          credit: 4, semester: 1 },
+      { code: '00040', name: 'Riyazi analiz',                                           credit: 8, semester: 2 },
+      { code: '00891', name: 'Tətbiqi riyaziyyat',                                      credit: 4, semester: 3 },
+      { code: '00051', name: 'Ümumi kimya',                                             credit: 6, semester: 1 },
+      { code: '00003', name: 'Analitik kimya',                                          credit: 5, semester: 1 },
+      { code: '00115', name: 'Üzvi kimya',                                              credit: 5, semester: 2 },
+      { code: '00697', name: 'Qida kimyası',                                            credit: 4, semester: 3 },
+      { code: '00014', name: 'Fizikanın əsasları',                                      credit: 6, semester: 1 },
+      { code: '00113', name: 'Tətbiqi Fizika',                                          credit: 5, semester: 2 },
+      { code: '00066', name: 'İxtisasa giriş',                                          credit: 4, semester: 2 },
+      { code: '00482', name: 'Kompüter əsaslı mühəndis qrafikası',                      credit: 4, semester: 5 },
+      { code: '00703', name: 'Qida məhsullarının soyudulma texnologiyası',              credit: 8, semester: 5 },
+      { code: '00704', name: 'Qida məhsullarının təhlükəsizliyi',                       credit: 6, semester: 6 },
+      { code: '00699', name: 'Qida məhsullarının biokimyası',                           credit: 7, semester: 4 },
+      { code: '00756', name: 'Sağlamlıq və əməyin mühafizəsi',                          credit: 4, semester: 7 },
+      { code: '00464', name: 'Keyfiyyəti idarəetmə sistemləri',                         credit: 5, semester: 7 },
+      { code: '00705', name: 'Qida mikrobiologiyası',                                   credit: 7, semester: 4 },
+      { code: '00709', name: 'Qida sənayesində texnoloji əməliyyatlar',                 credit: 4, semester: 7 },
+      { code: '00700', name: 'Qida məhsullarının keyfiyyətinə texniki-kimyəvi nəzarət', credit: 4, semester: 4 },
+      { code: '00707', name: 'Qida mühəndisliyində qidalanma və sağlamlıq',             credit: 7, semester: 3 },
+      { code: '00696', name: 'Qida biotexnologiyası',                                   credit: 4, semester: 6 },
+      { code: '00708', name: 'Qida sənayesi müəssisələrində texnoloji layihələndirmə',  credit: 6, semester: 6 },
+      { code: '00034', name: 'Mülki müdafiə',                                           credit: 3, semester: 5 },
+    ],
+
+    // Seçmə fənlər (ixtisas fənləri üzrə)
+    majorElectives: [
+      { title: 'Seçmə fənn (ixtisas) – 1', credit: 5, semester: 2, subjects: [
+        { code: '00076', name: 'Biologiya' },
+        { code: '00099', name: 'Qida toksikologiyası və çirkləndiricilər' },
+        { code: '00098', name: 'Qida müəssisələrində HACCP standartları' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 2', credit: 7, semester: 3, subjects: [
+        { code: '00909', name: 'Ümumi mikrobiologiya' },
+        { code: '00369', name: 'Hazır qida istehsalı texnologiyası' },
+        { code: '00898', name: 'Tibbi və funksional qidalar kimyası' },
+        { code: '00952', name: 'Fiziki kimya' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 3', credit: 4, semester: 6, subjects: [
+        { code: '00252', name: 'Ədədi analiz' },
+        { code: '00564', name: 'Maye mexanikası' },
+        { code: '00877', name: 'Termodinamika' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 4', credit: 6, semester: 5, subjects: [
+        { code: '00458', name: 'İstilik və kütlə transferi' },
+        { code: '00510', name: 'Kütləvə enerji balansları' },
+        { code: '00721', name: 'Reaksiya kinetikası' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 5', credit: 6, semester: 5, subjects: [
+        { code: '00203', name: 'Bölmə əməliyyatları laboratoriyası' },
+        { code: '00134', name: 'Alkoqollu və alkoqolsuz içkilərin texnologiyası' },
+        { code: '00698', name: 'Qida konsentratlarının texnologiyası' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 6', credit: 5, semester: 4, subjects: [
+        { code: '00706', name: 'Qida mühəndisliyi dizaynı və iqtisadiyyatı' },
+        { code: '00838', name: 'Statistika' },
+        { code: '00444', name: 'İqtisadiyyat' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 7', credit: 5, semester: 6, subjects: [
+        { code: '00940', name: 'Yağ texnologiyası' },
+        { code: '00953', name: 'Qida əlavələri' },
+        { code: '00701', name: 'Qida məhsullarının qablaşdırılması' },
+        { code: '00954', name: 'Təhlil nəticələrinin qiymətləndirilməsi' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 8', credit: 5, semester: 6, subjects: [
+        { code: '00854', name: 'Taxıl texnologiyası' },
+        { code: '00691', name: 'Qənnadı məmulatların texnologiyası' },
+        { code: '00191', name: 'Bitkiçilik məhsullarının texnologiyası' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 9', credit: 5, semester: 7, subjects: [
+        { code: '00586', name: 'Meyvə və tərəvəz texnologiyası' },
+        { code: '00607', name: 'Müalicəvi dərman bitkilərinin istehsal texnologiyası' },
+        { code: '00215', name: 'Qida məhsullarının qurutma texnologiyası' },
+        { code: '00344', name: 'Ferment və fermentasiya texnologiyası' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 10', credit: 6, semester: 7, subjects: [
+        { code: '00318', name: 'Ət texnologiyası' },
+        { code: '00348', name: 'Funksional qida məhsullarının texnologiyası' },
+        { code: '00702', name: 'Qida məhsullarının saxlanması texnologiyası' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 11', credit: 6, semester: 7, subjects: [
+        { code: '00847', name: 'Süd texnologiyası' },
+        { code: '00661', name: 'Pendirin texnologiyası' },
+        { code: '00228', name: 'Dəniz məhsullarının emalı texnologiyası' },
+      ]},
+    ],
+
+    // Təcrübə və buraxılış işi
+    practice: [
+      { code: '00861', name: 'Təcrübə',       credit: 21, semester: 8 },
+      { code: '00210', name: 'Buraxılış işi', credit: 9, semester: 8 },
+    ],
+  },
+
+  /* ─── 6003005 – DİZAYN (sahələr üzrə, bakalavriat, 4 il / 8 semestr) ── */
+  design: {
+    name: 'Dizayn',
+    specialtyCode: '6003005',
+    // İstiqamətlər: 1) Sənaye dizaynı  2) Qrafik dizayn  3) Mühit dizaynı  4) Geyim dizaynı
+    // (‘istiqamət üzrə’ seçmələrdə hər istiqamət üçün ayrı fənn var, fənnin sonunda mötərizədə yazılıb)
+
+    // Ümumi fənlər
+    general: [
+      { code: '00004', name: 'Azərbaycan dilində işgüzar və akademik kommunikasiya', credit: 4, semester: 2 },
+      { code: '00005', name: 'Azərbaycanın tarixi',                                  credit: 5, semester: 1 },
+      { code: '00122', name: 'Xarici dildə işgüzar və akademik kommunikasiya-1',     credit: 4, semester: 1 },
+      { code: '00073', name: 'Xarici dildə işgüzar və akademik kommunikasiya-2',     credit: 3, semester: 2, prereq: ['00122'] },
+      { code: '00932', name: 'Xarici dildə işgüzar və akademik kommunikasiya-3',     credit: 4, semester: 3, prereq: ['00073'] },
+      { code: '01079', name: 'Xarici dildə işgüzar və akademik kommunikasiya-4',     credit: 4, semester: 4, prereq: ['00932'] },
+    ],
+
+    // Seçmə fənlər (ümumi fənlər üzrə)
+    generalElectives: [
+      { title: 'Seçmə fənn (ümumi) – 1', credit: 3, semester: 7, subjects: [
+        { code: '00341', name: 'Fəlsəfə' },
+        { code: '00830', name: 'Sosiologiya' },
+        { code: '00980_1', name: 'Hüququn əsasları' },
+        { code: '00574', name: 'Məntiq' },
+        { code: '00317', name: 'Etika və estetika' },
+        { code: '00941', name: 'Yaradıcılıq psixologiyası' },
+      ]},
+      { title: 'Seçmə fənn (ümumi) – 2', credit: 3, semester: 4, subjects: [
+        { code: '00402', name: 'İnformasiya texnologiyaları' },
+        { code: '00404', name: 'İnformasiyanın idarə edilməsi' },
+        { code: '00758', name: 'Sahibkarlığın əsasları və biznesə giriş' },
+        { code: '00671', name: 'Politologiya' },
+      ]},
+    ],
+
+    // İxtisas fənləri
+    major: [
+      { code: '00039', name: 'Rəsm-1',                  credit: 6, semester: 1 },
+      { code: '00103', name: 'Rəsm-2',                  credit: 5, semester: 2, prereq: ['00039'] },
+      { code: '00745', name: 'Rəsm-3',                  credit: 5, semester: 3, prereq: ['00103'] },
+      { code: '00746', name: 'Rəsm-4',                  credit: 4, semester: 4, prereq: ['00745'] },
+      { code: '00038', name: 'Rəngkarlıq-1',            credit: 5, semester: 1 },
+      { code: '00102', name: 'Rəngkarlıq-2',            credit: 5, semester: 2, prereq: ['00038'] },
+      { code: '00728', name: 'Rəngkarlıq-3',            credit: 4, semester: 3, prereq: ['00102'] },
+      { code: '00729', name: 'Rəngkarlıq-4',            credit: 4, semester: 4, prereq: ['00728'] },
+      { code: '00663', name: 'Perspektiva',             credit: 6, semester: 3 },
+      { code: '00008', name: 'Dizaynın əsasları-1',     credit: 5, semester: 1 },
+      { code: '00079', name: 'Dizaynın əsasları-2',     credit: 5, semester: 2, prereq: ['00008'] },
+      { code: '00312', name: 'Erqonomika',              credit: 5, semester: 3 },
+      { code: '00007', name: 'Dizayn tarixi',           credit: 5, semester: 1 },
+      { code: '00632', name: 'Multikulturalizmə giriş', credit: 3, semester: 7 },
+      { code: '00034', name: 'Mülki müdafiə',           credit: 3, semester: 6 },
+    ],
+
+    // Seçmə fənlər (ixtisas fənləri üzrə)
+    majorElectives: [
+      { title: 'Seçmə fənn (ixtisas) – 1', credit: 5, semester: 5, subjects: [
+        { code: '00716', name: 'Qrafik dizayn proqramları' },
+        { code: '00237', name: 'Dizayn məhsullarının bədii layihələndirməsi' },
+        { code: '00568', name: 'Məhsul dizaynı' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 2', credit: 6, semester: 6, subjects: [
+        { code: '00603', name: 'Moda və kostyum tarixi' },
+        { code: '00506', name: 'Kostyumda estetik mədəniyyət' },
+        { code: '00609', name: 'Müasir geyim sənəti' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 3', credit: 8, semester: 2, subjects: [
+        { code: '00100', name: 'Qrafik dizayn' },
+        { code: '00101', name: 'Reklamda firma stili' },
+        { code: '00075', name: 'Aydentika və brend-dizayn' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 4', credit: 6, semester: 7, subjects: [
+        { code: '00660', name: 'Parçaların bədii tərtibatı' },
+        { code: '00355', name: 'Geyim və aksessuarların dizaynı' },
+        { code: '00612', name: 'Müasir incəsənət' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 5', credit: 6, semester: 6, subjects: [
+        { code: '00604', name: 'Moda və stil' },
+        { code: '00339', name: 'Fashion illyustrasiya' },
+        { code: '00602', name: 'Moda tendensiyaları' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 6', credit: 6, semester: 6, subjects: [
+        { code: '00226', name: 'Dekorativ tətbiqi sənət' },
+        { code: '00786', name: 'Şərq xalqlarının dekorativ tətbiqi sənəti' },
+        { code: '00654', name: 'Ornament tarixi' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 7', credit: 6, semester: 6, subjects: [
+        { code: '00507', name: 'Kostyumun kompozisiyası' },
+        { code: '00238', name: 'Dizayn və texniki estetika' },
+        { code: '00156', name: 'Azərbaycan incəsənət tarixi' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 8', credit: 5, semester: 5, subjects: [
+        { code: '00358', name: 'Geyimin modelləşdirilməsi' },
+        { code: '00354', name: 'Geyim formalarının və dizayn-layihələndirmənin əsasları' },
+        { code: '00505', name: 'Kostyum dizaynında ornament' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 9', credit: 5, semester: 5, subjects: [
+        { code: '00471', name: 'Koloristika' },
+        { code: '00239', name: 'Dizaynda rəng qammaları' },
+        { code: '00240', name: 'Dizaynda staylinq' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 10', credit: 6, semester: 3, subjects: [
+        { code: '00500', name: 'Konstruktivləşmənin əsasları' },
+        { code: '00356', name: 'Geyimin konstruksiyası' },
+        { code: '00161', name: 'Bədii konstruksiyalaşdırma' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 11', credit: 7, semester: 4, subjects: [
+        { code: '00514', name: 'Layihə qrafikası' },
+        { code: '00573', name: 'Məmulatların bədii layihələndirilməsi' },
+        { code: '00516', name: 'Layihələndirmənin əsasları' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 12', credit: 3, semester: 6, subjects: [
+        { code: '00548', name: 'Material, texnika və texnologiya' },
+        { code: '00872', name: 'Tekstil məmulatların bədii tərtibatı' },
+        { code: '00873', name: 'Tekstildə ornament kompozisiyaları' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 13', credit: 8, semester: 4, subjects: [
+        { code: '00372', name: 'Heykəltəraşlıq' },
+        { code: '00477', name: 'Komposiziya' },
+        { code: '00666', name: 'Plastik anatomiya' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 14', credit: 6, semester: 7, subjects: [
+        { code: '00890', name: 'Tətbiqi mexanika' },
+        { code: '00205', name: 'Brend və reklam' },
+        { code: '00359', name: 'Gön-dəri məmulatlarının bədii layihələndirilməsi' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 15', credit: 5, semester: 5, subjects: [
+        { code: '00162', name: 'Bədii qrafika' },
+        { code: '00150', name: 'Art-dizayn obyektlərinin layihələndirilməsi' },
+        { code: '00774', name: 'Sənaye dizaynı' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 16 (istiqamət üzrə)', credit: 5, semester: 5, subjects: [
+        { code: '00569', name: 'Məhsulların bədii tərtibatı (Sənaye dizaynı)' },
+        { code: '00123', name: '«SketchUp», «Blender» (Qrafik dizayn)' },
+        { code: '00631', name: 'Mühit və interyer dizaynı (Mühit dizaynı)' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 17 (istiqamət üzrə)', credit: 5, semester: 5, subjects: [
+        { code: '00357', name: 'Geyimin layihələndirilməsi (Geyim dizaynı)' },
+        { code: '00431', name: 'İnteryer və tekstil dizaynı (Mühit dizaynı)' },
+        { code: '00727', name: 'Reklam və dizayn (Qrafik dizayn)' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 18 (istiqamət üzrə)', credit: 6, semester: 7, subjects: [
+        { code: '00673', name: 'Portfolio (Sənaye dizaynı)' },
+        { code: '00601', name: 'Moda portfoliosu (Geyim dizaynı)' },
+        { code: '00236', name: 'Dizayn layihələrinin portfoliosu (Qrafik dizayn)' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 19 (istiqamət üzrə)', credit: 6, semester: 7, subjects: [
+        { code: '00520', name: 'Maketləşdirmə (Sənaye dizaynı)' },
+        { code: '00353', name: 'Geyim dizaynında maketləşdirmə (Geyim dizaynı)' },
+        { code: '00630', name: 'Mühit dizaynında maketləşdirmə (Mühit dizaynı)' },
+      ]},
+    ],
+
+    // Təcrübə və buraxılış işi
+    practice: [
+      { code: '00861', name: 'Təcrübə',       credit: 21, semester: 8 },
+      { code: '00210', name: 'Buraxılış işi', credit: 9, semester: 8 },
     ],
   },
 };
