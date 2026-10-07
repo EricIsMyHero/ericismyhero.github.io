@@ -817,6 +817,163 @@ const CURRICULUM_DATA = {
   },
 };
 
+/* =============================================================
+   FƏNN ŞİFRLƏRİ  –  Rəsmi tədris planı (Forma №1) üzrə
+   Hər fənnin öz şifri var. pdfs.js-də fənnə  code: "00591"  yazılanda
+   Kurslar bölməsində ixtisas filtri məhz bu şifrlərə görə işləyir.
+
+   semester: 1–8  (P–1 → 1, Y–1 → 2, P–2 → 3, Y–2 → 4, P–3 → 5, Y–3 → 6, P–4 → 7, Y–4 → 8)
+   prereq  : öncə keçilməli fənnin şifri
+   Seçmə fənn qrupları: istənilən bir fənn seçilir; qrupdakı hər fənnin öz şifri var.
+   ============================================================= */
+const CURRICULUM_CODES = {
+
+  /* ─── 6004004 – İQTİSADİYYAT (bakalavriat, 4 il / 8 semestr) ── */
+  economics: {
+    name: 'İqtisadiyyat',
+    specialtyCode: '6004004',
+
+    // Ümumi fənlər
+    general: [
+      { code: '00004', name: 'Azərbaycan dilində işgüzar və akademik kommunikasiya', credit: 4, semester: 2 },
+      { code: '00005', name: 'Azərbaycanın tarixi',                                   credit: 5, semester: 1 },
+      { code: '01222', name: 'Xarici dildə işgüzar və akademik kommunikasiya-1',      credit: 4, semester: 1 },
+      { code: '00122', name: 'Xarici dildə işgüzar və akademik kommunikasiya-2',      credit: 3, semester: 2, prereq: ['01222'] },
+      { code: '00760', name: 'Xarici dildə işgüzar və akademik kommunikasiya-3',      credit: 4, semester: 3, prereq: ['00122'] },
+      { code: '00934', name: 'Xarici dildə işgüzar və akademik kommunikasiya-4',      credit: 4, semester: 4, prereq: ['00760'] },
+    ],
+
+    // Seçmə fənlər (ümumi fənlər üzrə)
+    generalElectives: [
+      { title: 'Seçmə fənn (ümumi) – 1', credit: 3, semester: 6, subjects: [
+        { code: '00341', name: 'Fəlsəfə' },
+        { code: '00830', name: 'Sosiologiya' },
+        { code: '00149', name: 'AR Konstitusiyası və hüququn əsasları' },
+        { code: '00574', name: 'Məntiq' },
+        { code: '00316', name: 'Etika' },
+        { code: '00632', name: 'Multikulturalizmə giriş' },
+      ]},
+      { title: 'Seçmə fənn (ümumi) – 2', credit: 3, semester: 7, subjects: [
+        { code: '00402', name: 'İnformasiya texnologiyaları' },
+        { code: '00404', name: 'İnformasiyanın idarə edilməsi' },
+        { code: '00758', name: 'Sahibkarlığın əsasları və biznesə giriş' },
+        { code: '00671', name: 'Politologiya' },
+      ]},
+    ],
+
+    // İxtisas fənləri
+    major: [
+      { code: '00021', name: 'İqtisadiyyata giriş',                        credit: 6,  semester: 2 },
+      { code: '00591', name: 'Mikroiqtisadiyyat',                          credit: 10, semester: 3 },
+      { code: '00523', name: 'Makroiqtisadiyyat',                          credit: 10, semester: 4 },
+      { code: '00056', name: 'Xətti cəbr və riyazi analiz',                credit: 8,  semester: 1 },
+      { code: '00071', name: 'Ehtimal nəzəriyyəsi və riyazi statistika',   credit: 8,  semester: 2 },
+      { code: '00016', name: 'İKT - baza komputer bilikləri',              credit: 8,  semester: 1 },
+      { code: '00837', name: 'Statistika',                                 credit: 10, semester: 5 },
+      { code: '00282', name: 'Ekonometrika',                               credit: 10, semester: 6 },
+      { code: '00031', name: 'Menecment',                                  credit: 7,  semester: 5 },
+      { code: '00821', name: 'Sosial sahələrin iqtisadiyyatı',             credit: 6,  semester: 6 },
+      { code: '00171', name: 'Beynəlxalq iqtisadiyyat',                    credit: 4,  semester: 5 },
+      { code: '00411', name: 'İnkişaf iqtisadiyyatı',                      credit: 4,  semester: 7 },
+      { code: '00157', name: 'Azərbaycan iqtisadiyyatı',                   credit: 6,  semester: 4 },
+      { code: '00736', name: 'Rəqəmsal iqtisadiyyat (Sahə iqtisadiyyatı)', credit: 6,  semester: 5 },
+      { code: '00332', name: 'Ətraf mühitin iqtisadiyyatı',                credit: 6,  semester: 3 },
+      { code: '00438', name: 'İqtisadi fikir tarixi',                      credit: 4,  semester: 4 },
+      { code: '00307', name: 'Əməyin iqtisadiyyatı',                       credit: 4,  semester: 3 },
+      { code: '00034', name: 'Mülki müdafiə',                              credit: 3,  semester: 5 },
+    ],
+
+    // Seçmə fənlər (ixtisas fənləri üzrə)
+    majorElectives: [
+      { title: 'Seçmə fənn (ixtisas) – 1', credit: 6, semester: 4, subjects: [
+        { code: '00531', name: 'Maliyyə uçotu' },
+        { code: '00525', name: 'Maliyyə hesabatlılığı' },
+        { code: '00936', name: 'Xərclərin idarə edilməsi' },
+        { code: '00749', name: 'Risk və nəzarət' },
+        { code: '00618', name: 'Mühasibatda proqram təminatı' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 2', credit: 7, semester: 6, subjects: [
+        { code: '00160', name: 'Bank işi' },
+        { code: '00788', name: 'Sığorta' },
+        { code: '00529', name: 'Maliyyə riyaziyyatı' },
+        { code: '00222', name: 'Davranış maliyyəsi' },
+        { code: '00130', name: 'Aktivlərin qiymətləndirilməsi və idarə edilməsi' },
+        { code: '00681', name: 'Maliyyə mühəndisliyi' },
+        { code: '00617', name: 'Könüllülük fəaliyyəti' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 3', credit: 6, semester: 8, subjects: [
+        { code: '00736', name: 'Rəqəmsal iqtisadiyyat (Sahə iqtisadiyyatı)' },
+        { code: '00779', name: 'Sənaye iqtisadiyyatı' },
+        { code: '00332', name: 'Ətraf mühitin iqtisadiyyatı' },
+        { code: '00157', name: 'Azərbaycan iqtisadiyyatı' },
+        { code: '00821', name: 'Sosial sahələrin iqtisadiyyatı' },
+        { code: '00428', name: 'İnstitutsional iqtisadiyyat' },
+        { code: '00148', name: 'Aqrar iqtisadiyyat' },
+        { code: '00221', name: 'Davranış iqtisadiyyatı' },
+        { code: '01226', name: 'Yaşıl iqtisadiyyatın əsasları' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 4', credit: 6, semester: 3, subjects: [
+        { code: '00532', name: 'Marketinq' },
+        { code: '00726', name: 'Reklam işi' },
+        { code: '00173', name: 'Beynəlxalq marketinq' },
+        { code: '00710', name: 'Qiymət siyasəti' },
+        { code: '00938', name: 'Xidmətlərin marketinqi' },
+        { code: '00943', name: 'Yeni məhsulların inkişaf etdirilməsi' },
+        { code: '00378', name: 'İctimaiyyətlə əlaqələr' },
+        { code: '00385', name: 'İdman marketinqi' },
+        { code: '00501', name: 'Könüllülük fəaliyyəti' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 5', credit: 6, semester: 8, subjects: [
+        { code: '00200', name: 'Biznesin əsasları' },
+        { code: '00517', name: 'Liderlik' },
+        { code: '00880', name: 'Təşkilat nəzəriyyəsi' },
+        { code: '00823', name: 'Sosial sahibkarlıq' },
+        { code: '00501', name: 'Könüllülük fəaliyyəti' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 6', credit: 7, semester: 7, subjects: [
+        { code: '00682', name: 'Proseslərin idarə edilməsi' },
+        { code: '00175', name: 'Beynəlxalq menecment' },
+        { code: '00610', name: 'Müasir idarəetmə metodları' },
+        { code: '00414', name: 'İnkişafın idarə edilməsi' },
+        { code: '01221', name: 'Dayanaqlı inkişaf' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 7', credit: 8, semester: 8, subjects: [
+        { code: '00436', name: 'İqtisadi dinamikanın əsasları' },
+        { code: '00418', name: 'İnnovasiya iqtisadiyyatı' },
+        { code: '00345', name: 'Firmalar, bazarlar və rəqabət' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 8', credit: 4, semester: 8, subjects: [
+        { code: '00439', name: 'İqtisadi siyasət' },
+        { code: '00172', name: 'Beynəlxalq makroiqtisadiyyat' },
+        { code: '00521', name: 'Makroiqtisadi göstəricilərin qiymətləndirilməsi və inkişafın diaqnostikası' },
+        { code: '00410', name: 'İnkişaf etməkdə olan ölkələrin makroiqtisadiyyatı' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 9', credit: 4, semester: 6, subjects: [
+        { code: '00859', name: 'Təbii sərvətlərin iqtisadiyyatı' },
+        { code: '00169', name: 'Beynəlxalq biznes iqtisadiyyatı' },
+        { code: '00413', name: 'İnkişafda institutların rolu' },
+        { code: '00182', name: 'Bilik iqtisadiyyatı' },
+        { code: '01141', name: 'Avropa İttifaqında Effektiv Layihə İdarəetməsi: Ən Yaxşı Təcrübələr və Nümunə Tədqiqatlar (EUPMO)' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 10', credit: 6, semester: 7, subjects: [
+        { code: '00888', name: 'Tətbiqi ekonometrika' },
+        { code: '00635', name: 'Müqayisəli iqtisadi sistemlər' },
+        { code: '00437', name: 'İqtisadi diplomatiya' },
+        { code: '00724', name: 'Regional iqtisadiyyat' },
+        { code: '00412', name: 'İnkişaf mikroiqtisadiyyatı' },
+      ]},
+    ],
+
+    // Təcrübə
+    practice: [
+      { code: '01223', name: 'Karyera planlaması',               credit: 5,  semester: 1 },
+      { code: '01224', name: 'Yumşaq bacarıqlar (Soft skills)',  credit: 9,  semester: 2 },
+      { code: '01225', name: 'Sərt bacarıqlar (Hard skills)',    credit: 10, semester: 7 },
+      { code: '00454', name: 'İstehsalat təcrübəsi / layihə',    credit: 6,  semester: 8 },
+    ],
+  },
+};
+
 /* ── localStorage ──────────────────────────────────────────── */
 const CURR_LS_KEY = 'unec_selected_specialty';
 function getSavedSpecialty()  { try { return localStorage.getItem(CURR_LS_KEY) || null; } catch { return null; } }
