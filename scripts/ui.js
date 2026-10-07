@@ -4,7 +4,7 @@
 // - Naviqasiya (goTo, getCurrentView)
 // - Render — Kurslar (renderCourses, openSubjects, switchTab)
 // - Render — Fənlər (renderSubjects)
-// - İxtisas filtri (setMajor, renderMajorFilter, subjectMatchesMajor)
+// - İxtisas filtri (setMajor, renderMajorFilter, subjectMatchesMajor, fənn şifri)
 // - Render — PDF Səhifəsi (openPDFs)
 // - Render — Əlavələr (renderExtras)
 // - Render — Seçilmişlər (renderFavorites, removeFavAndRefresh)
@@ -115,7 +115,8 @@ function filterSubjects(query) {
 
   cards.forEach(card => {
     const subjectName = card.querySelector('h4').textContent.toLowerCase();
-    const matches = !query || subjectName.includes(query);
+    const subjectCode = (card.dataset.code || '').toLowerCase();
+    const matches = !query || subjectName.includes(query) || (subjectCode && subjectCode.includes(query));
     card.style.display = matches ? 'flex' : 'none';
     if (matches) visibleCount++;
   });
@@ -276,9 +277,11 @@ function removeFavAndRefresh(filePath) {
 }
 
 // ── İxtisas filtri ───────────────────────────────────────────
-// Hansı ixtisasda hansı fənn var — scripts/curriculum.js (CURRICULUM_DATA) əsasında.
-// pdfs.js-dəki fənn adı ixtisasın 8 semestrindən birində varsa, həmin ixtisasda göstərilir.
-// Planda olmayan fənn üçün pdfs.js-də əl ilə:  majors: ["ecology", "statistics"]
+// Hansı ixtisasda hansı fənn var — scripts/curriculum.js əsasında.
+// 1) Fənnin şifri (pdfs.js-də  code: "00591") ixtisasın CURRICULUM_CODES siyahısındadırsa → göstərilir.
+// 2) Şifr yazılmayıbsa və ya ixtisasın şifr siyahısı yoxdursa → fənn adı CURRICULUM_DATA /
+//    CURRICULUM_CODES adları ilə tutuşdurulur.
+// 3) Əl ilə təyin üçün pdfs.js-də:  majors: ["ecology", "statistics"]
 const MAJOR_LS_KEY = 'subjects_major_filter';
 
 const MAJOR_I18N_KEYS = {
@@ -325,6 +328,23 @@ function canonSubjectName(raw) {
 }
 
 const _majorSubjectCache = {};
+const _majorCodeCache = {};
+
+// İxtisasın şifr siyahısı (CURRICULUM_CODES) — yoxdursa null
+function getMajorCodeSet(majorKey) {
+  if (majorKey in _majorCodeCache) return _majorCodeCache[majorKey];
+  const src = (typeof CURRICULUM_CODES !== 'undefined') ? CURRICULUM_CODES[majorKey] : null;
+  let set = null;
+  if (src) {
+    set = new Set();
+    ['general', 'major', 'practice'].forEach(k => (src[k] || []).forEach(x => set.add(String(x.code).trim())));
+    ['generalElectives', 'majorElectives'].forEach(k => (src[k] || []).forEach(g =>
+      (g.subjects || []).forEach(x => set.add(String(x.code).trim()))));
+  }
+  return (_majorCodeCache[majorKey] = set);
+}
+
+// İxtisasın fənn adları (şifr yazılmamış fənlər üçün ehtiyat yol)
 function getMajorSubjectSet(majorKey) {
   if (_majorSubjectCache[majorKey]) return _majorSubjectCache[majorKey];
   const set = new Set();
@@ -334,13 +354,33 @@ function getMajorSubjectSet(majorKey) {
       (major['semester' + sem] || []).forEach(s => set.add(canonSubjectName(s.name)));
     }
   }
+  const src = (typeof CURRICULUM_CODES !== 'undefined') ? CURRICULUM_CODES[majorKey] : null;
+  if (src) {
+    ['general', 'major', 'practice'].forEach(k => (src[k] || []).forEach(x => set.add(canonSubjectName(x.name))));
+    ['generalElectives', 'majorElectives'].forEach(k => (src[k] || []).forEach(g =>
+      (g.subjects || []).forEach(x => set.add(canonSubjectName(x.name)))));
+  }
   return (_majorSubjectCache[majorKey] = set);
+}
+
+// Fənnin şifri: fənn səviyyəsində code, yoxdursa PDF-lərdən birincisi
+function getSubjectCode(subj) {
+  if (subj && subj.code) return String(subj.code).trim();
+  const p = subj && Array.isArray(subj.pdfs) ? subj.pdfs.find(x => x.code) : null;
+  return p ? String(p.code).trim() : '';
 }
 
 function subjectMatchesMajor(subjectName, subj, majorKey) {
   if (!majorKey || majorKey === 'all') return true;
   if (Array.isArray(subj.majors) && subj.majors.includes(majorKey)) return true;
+  const codes = getMajorCodeSet(majorKey);
+  const code  = getSubjectCode(subj);
+  if (codes && code) return codes.has(code);
   return getMajorSubjectSet(majorKey).has(canonSubjectName(subjectName));
+}
+
+function codeBadgeHTML(code) {
+  return code ? `<span class="code-badge" title="Fənn şifri">${code}</span>` : '';
 }
 
 function getSelectedMajor() {
@@ -431,11 +471,14 @@ function renderSubjects(courseName) {
     entries.forEach(([subjectName, subj]) => {
       const div = document.createElement('div');
       div.className = 'subject-card animate-in';
+      const subjCode = getSubjectCode(subj);
+      div.dataset.code = subjCode;
       div.innerHTML = `
         <div class="subject-icon"><span class="material-symbols-outlined">${icons[iconIndex % icons.length]}</span></div>
         <div class="subject-info">
           <h4>${subjectName}</h4>
           <div class="pdf-count">
+            ${codeBadgeHTML(subjCode)}
             ${getTypeBadgeHTML(subj.type)}
             <span class="pdf-badge">PDF ${subj.pdfs.length}</span>
           </div>
@@ -466,6 +509,7 @@ function openPDFs(subjectName) {
   titleEl.innerHTML = `
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
       <span>${subjectName}</span>
+      ${codeBadgeHTML(getSubjectCode(subj))}
       <button class="info-btn" onclick="toggleInfoPanel()" title="Bu fənn haqqında">?</button>
     </div>
     <div style="margin-top:6px;">${getTypeBadgeHTML(type)}</div>
@@ -503,7 +547,7 @@ function openPDFs(subjectName) {
         <div class="pdf-file-icon"><span>PDF</span></div>
         <div class="pdf-info">
           <div class="pdf-name"><span class="pdf-number">${index + 1}.</span> ${pdf.name}</div>
-          <div class="pdf-meta">Fayl adı: ${pdf.file} ${typeBadge}</div>
+          <div class="pdf-meta">Fayl adı: ${pdf.file} ${codeBadgeHTML(pdf.code ? String(pdf.code).trim() : getSubjectCode(subj))} ${typeBadge}</div>
           <div class="pdf-rating" data-course="${currentCourse}" data-subject="${subjectName}" data-file="${pdf.file}"></div>
         </div>
       </div>
