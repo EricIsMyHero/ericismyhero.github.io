@@ -51,6 +51,9 @@ const I18N = {
     footer: "Bu sayt rəsmi deyildir. Yalnız tələbələrin imtahan zamanı materialları daha rahat və əlçatan tapması üçün hazırlanıb.",
     semesterFall: "Payız Semestri",
     semesterSpring: "Yaz Semestri",
+    majorFilterLabel: "İxtisas",
+    majorAll: "Hamısı",
+    noMajorSubjects: "Bu ixtisas üçün bu kursda hələ fənn yoxdur.",
 
     // ── PWA quraşdırma bannerı ──────────────────────────────
     installBannerText: "Bu saytı tətbiq kimi əlavə et",
@@ -281,6 +284,10 @@ const I18N = {
     currSpecFoodEng: "Qida mühəndisliyi",
     currSpecIntlRelations: "Beynəlxalq münasibətlər",
     currSpecIntlTrade: "Beynəlxalq ticarət və logistika",
+    currSpecEcology: "Ekologiya",
+    currSpecStatistics: "Statistika",
+    currSpecPublicAdmin: "Dövlət və bələdiyyə idarəetməsi",
+    currSpecBusinessMgmt: "Biznesin idarə edilməsi",
     currChangeBtn: "← Dəyiş",
     currTableSubject: "Fənn",
     currTableCredit: "Kredit",
@@ -378,6 +385,9 @@ const I18N = {
     footer: "This site is unofficial. Created to help students find exam materials more easily.",
     semesterFall: "Fall Semester",
     semesterSpring: "Spring Semester",
+    majorFilterLabel: "Major",
+    majorAll: "All",
+    noMajorSubjects: "No subjects for this major in this course yet.",
 
     // ── PWA install banner ───────────────────────────────────
     installBannerText: "Add this site as an app",
@@ -608,6 +618,10 @@ const I18N = {
     currSpecFoodEng: "Food Engineering",
     currSpecIntlRelations: "International Relations",
     currSpecIntlTrade: "International Trade & Logistics",
+    currSpecEcology: "Ecology",
+    currSpecStatistics: "Statistics",
+    currSpecPublicAdmin: "Public & Municipal Administration",
+    currSpecBusinessMgmt: "Business Administration",
     currChangeBtn: "← Change",
     currTableSubject: "Subject",
     currTableCredit: "Credit",
