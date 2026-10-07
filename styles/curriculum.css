@@ -335,3 +335,19 @@
   }
   .major-chip { flex: 0 0 auto; }
 }
+
+/* ── Fənn şifri nişanı ──────────────────────────────────────── */
+.code-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--muted);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.5;
+}
