@@ -279,8 +279,9 @@ function removeFavAndRefresh(filePath) {
 // ── İxtisas filtri ───────────────────────────────────────────
 // Hansı ixtisasda hansı fənn var — scripts/curriculum.js əsasında.
 // 1) Fənnin şifri (pdfs.js-də  code: "00591") ixtisasın CURRICULUM_CODES siyahısındadırsa → göstərilir.
-// 2) Şifr yazılmayıbsa və ya ixtisasın şifr siyahısı yoxdursa → fənn adı CURRICULUM_DATA /
-//    CURRICULUM_CODES adları ilə tutuşdurulur.
+// 2) Şifr yazılmayıbsa, ixtisasın siyahısında yoxdursa və ya ixtisasın şifr siyahısı yoxdursa →
+//    fənn adı CURRICULUM_DATA / CURRICULUM_CODES adları ilə tutuşdurulur
+//    (eyni fənnin şifri ixtisaslara görə fərqli ola bilər, məs. Xarici dil).
 // 3) Əl ilə təyin üçün pdfs.js-də:  majors: ["ecology", "statistics"]
 const MAJOR_LS_KEY = 'subjects_major_filter';
 
@@ -375,7 +376,7 @@ function subjectMatchesMajor(subjectName, subj, majorKey) {
   if (Array.isArray(subj.majors) && subj.majors.includes(majorKey)) return true;
   const codes = getMajorCodeSet(majorKey);
   const code  = getSubjectCode(subj);
-  if (codes && code) return codes.has(code);
+  if (codes && code && codes.has(code)) return true;
   return getMajorSubjectSet(majorKey).has(canonSubjectName(subjectName));
 }
 
