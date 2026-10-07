@@ -25,29 +25,29 @@ const data = {
     icon: "menu_book",
     subjects: {
       "Xətti cəbr və riyazi analiz": {
-        type: "test", semester: 1, pdfs: [
+        type: "test", semester: 1, code: "00056", pdfs: [
           { name: "Xətti Cəbr və Riyazi Analiz Q26", file: "xcraQ26.pdf", pdfType: "semester"}
         ]
       },
       "İKT - Baza kompüter bilikləri": {
-        type: "test", semester: 1, pdfs: [
+        type: "test", semester: 1, code: "00016", pdfs: [
           { name: "İKT - Baza Kompüter Bilikləri Q26", file: "iktQ26.pdf", pdfType: "semester"},
           { name: "İKT - Baza Kompüter Bilikləri Q25", file: "iktQ25.pdf", pdfType: "semester"}
         ]
       },
       "Azərbaycanın tarixi": {
-        type: "test", semester: 1, pdfs: [
+        type: "test", semester: 1, code: "00005", pdfs: [
           { name: "Azərbaycanın Tarixi Q26", file: "aztarixiQ26.pdf", pdfType: "semester"}
         ]
       },
       "Karyera planlaması": {
-        type: "test", semester: 1, pdfs: [
+        type: "test", semester: 1, code: "01223", pdfs: [
           { name: "Karyera Planlaması Q26", file: "karyeraQ26.pdf", pdfType: "semester"},
           { name: "Karyera Planlaması Q25", file: "karyeraQ25.pdf", pdfType: "semester"}
         ]
       },
       "Xarici dildə işgüzar və akademik kommunikasiya A1": {
-        type: "test", semester: 1, pdfs: [
+        type: "test", semester: 1, code: "01222", pdfs: [
           { name: "White Death A1", file: "whitedeathA1.pdf", pdfType: "midterm"}
         ]
       },
@@ -62,30 +62,30 @@ const data = {
         ]
       },
       "Fizikanın əsasları": {
-        type: "yazili", semester: 1, pdfs: [
+        type: "yazili", semester: 1, code: "00014", pdfs: [
           { name: "Fizikanın Əsasları", file: "fizikaninesaslarikollek1.pdf", pdfType: "midterm"}
         ]
       },
       "Ümumi kimya": {
-        type: "yazili", semester: 1, pdfs: [
+        type: "yazili", semester: 1, code: "00051", pdfs: [
           { name: "Ümumi Kimya", file: "umumikimyakollek1.pdf", pdfType: "midterm"},
           { name: "Ümumi Kimya - 36-75", file: "umumikimya36-75.pdf", pdfType: "semester"}
         ]
       },
       "Ehtimal nəzəriyyəsi və riyazi statistika": {
-        type: "test", semester: 2, pdfs: [
+        type: "test", semester: 2, code: "00071", pdfs: [
           { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika Y26", file: "enrsY26.pdf", pdfType: "semester"},
           { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika Y25", file: "enrsY25.pdf", pdfType: "semester"},
           { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika Y23", file: "enrsY23.pdf", pdfType: "semester"}
         ]
       },
       "Xarici dildə işgüzar və akademik kommunikasiya A2": {
-        type: "test", semester: 2, pdfs: [
+        type: "test", semester: 2, code: "00122", pdfs: [
           { name: "Robinson Crusoe A2", file: "robinsoncrusoeA2.pdf", pdfType: "midterm"}
         ]
       },
       "Azərbaycan dilində işgüzar və akademik kommunikasiya": {
-        type: "test", semester: 2, pdfs: [
+        type: "test", semester: 2, code: "00004", pdfs: [
           { name: "ADİAK Y26", file: "adiakY26.pdf", pdfType: "semester"},
           { name: "ADİAK Q26", file: "adiakQ26.pdf", pdfType: "semester"},
           { name: "ADİAK Y25", file: "adiakY25.pdf", pdfType: "semester"},
@@ -93,19 +93,19 @@ const data = {
         ]
       },
       "Yumşaq bacarıqlar (Soft skills)": {
-        type: "test", semester: 2, pdfs: [
+        type: "test", semester: 2, code: "01224", pdfs: [
           { name: "Soft Skills Y26", file: "softskillsY26.pdf", pdfType: "semester"},
           { name: "Soft Skills Y25", file: "softskillsY25.pdf", pdfType: "semester"}
         ]
       },
       "İqtisadiyyata giriş": {
-        type: "yazili", semester: 2, pdfs: [
+        type: "yazili", semester: 2, code: "00021", pdfs: [
           { name: "İqtisadiyyata Giriş", file: "iqtisadiyyat1.pdf", pdfType: "semester"},
           { name: "İqtisadiyyata Giriş", file: "iqtisadiyyat2.pdf", pdfType: "semester"}
         ]
       },
       "Mülki müdafiə": {
-        type: "test", semester: 2, pdfs: [
+        type: "test", semester: 2, code: "00034", pdfs: [
           { name: "Mülki Müdafiə Q26", file: "mulkimudafieQ26.pdf", pdfType: "semester"},
           { name: "Mülki Müdafiə Y24", file: "mulkimudafieY24.pdf", pdfType: "semester"},
           { name: "Mülki Müdafiə Q23", file: "mulkimudafieQ23.pdf", pdfType: "semester"}
@@ -161,19 +161,19 @@ const data = {
         ]
       },
       "Liner cebir ve matematiksel analiz": {
-        type: "test", semester: 1, pdfs: [
+        type: "test", semester: 1, code: "00056", pdfs: [
           { name: "Liner Cebir ve Matematiksel Analiz Q26", file: "lcmaQ26.pdf", pdfType: "semester"},
           { name: "Liner Cebir ve Matematiksel Analiz Q23", file: "lcmaQ23.pdf", pdfType: "semester"}
         ]
       },
       "Azerbaycanın tarihi": {
-        type: "test", semester: 1, pdfs: [
+        type: "test", semester: 1, code: "00005", pdfs: [
           { name: "Azerbaycanın Tarihi Q26", file: "aztarixiQ26.pdf", pdfType: "semester"},
           { name: "Azerbaycanın Tarihi Q25", file: "aztarihiQ25.pdf", pdfType: "semester"}
         ]
       },
       "Bilgi işlem teknolojileri": {
-        type: "test", semester: 1, pdfs: [
+        type: "test", semester: 1, code: "00016", pdfs: [
           { name: "Bilgi İşlem Teknolojileri", file: "bit1.pdf", pdfType: "semester"}
         ]
       },
@@ -183,7 +183,7 @@ const data = {
         ]
       },
       "Olasılık teorisi ve matematiksel istatistik": {
-        type: "test", semester: 2, pdfs: [
+        type: "test", semester: 2, code: "00071", pdfs: [
           { name: "Olasılık Teorisi ve Matematiksel İstatistik Y26", file: "otmiY26.pdf", pdfType: "semester"}
         ]
       }
@@ -193,7 +193,7 @@ const data = {
     icon: "menu_book",
     subjects: {
       "Mikroiqtisadiyyat": {
-        type: "yazili", semester: 1, pdfs: [
+        type: "yazili", semester: 1, code: "00591", pdfs: [
           { name: "Mikroiqtisadiyyat", file: "mikroiqt1.pdf", pdfType: "semester"},
           { name: "Mikroiqtisadiyyat ", file: "mikroiqt2.pdf", pdfType: "semester"},
           { name: "Mikroiqtisadiyyat", file: "mikroiqt3.pdf", pdfType: "semester"},
@@ -202,23 +202,23 @@ const data = {
         ]
       },
       "Qiymət siyasəti": {
-        type: "yazili", semester: 1, pdfs: [
+        type: "yazili", semester: 1, code: "00710", pdfs: [
           { name: "Qiymət Siyasəti", file: "qiymetkollek1.pdf", pdfType: "midterm"}
         ]
       },
       "Əməyin iqtisadiyyatı": {
-        type: "yazili", semester: 1, pdfs: [
+        type: "yazili", semester: 1, code: "00307", pdfs: [
           { name: "Əməyin İqtisadiyyatı", file: "emek1.pdf", pdfType: "semester"},
           { name: "Əməyin İqtisadiyyatı", file: "emekkollek1.pdf", pdfType: "midterm"}
         ]
       },
       "Xarici dildə işgüzar və akademik kommunikasiya B1": {
-        type: "test", semester: 1, pdfs: [
+        type: "test", semester: 1, code: "00760", pdfs: [
           { name: "Forrest Gump B1", file: "forrestgumpB1.pdf", pdfType: "midterm"}
         ]
       },
       "Ətraf mühitin iqtisadiyyatı": {
-        type: "yazili", semester: 1, pdfs: [
+        type: "yazili", semester: 1, code: "00332", pdfs: [
           { name: "Ətraf Mühitin İqtisadiyyatı", file: "emi1.pdf", pdfType: "semester"},
           { name: "Ətraf Mühitin İqtisadiyyatı", file: "emi2.pdf", pdfType: "semester"},
           { name: "Ətraf Mühitin İqtisadiyyatı", file: "emikollek1.pdf", pdfType: "midterm"},
@@ -226,7 +226,7 @@ const data = {
         ]
       }, 
       "Sosial sahibkarlıq": {
-        type: "test", semester: 1, pdfs: [
+        type: "test", semester: 1, code: "00823", pdfs: [
           { name: "Sosial Sahibkarlıq", file: "sosialsahibkarlıgQ26.pdf", pdfType: "semester"}
         ]
       },
@@ -236,33 +236,33 @@ const data = {
         ]
       },
       "Azərbaycan iqtisadiyyatı": {
-        type: "yazili", semester: 2, pdfs: [
+        type: "yazili", semester: 2, code: "00157", pdfs: [
           { name: "Azərbaycan İqtisadiyyatı", file: "aziqt1.pdf", pdfType: "semester"},
           { name: "Azərbaycan İqtisadiyyatı", file: "aziqt2.pdf", pdfType: "semester"},
           { name: "Azərbaycan İqtisadiyyatı", file: "aziqt3.pdf", pdfType: "semester"}
         ]
       },
       "Makroiqtisadiyyat": {
-        type: "yazili", semester: 2, pdfs: [
+        type: "yazili", semester: 2, code: "00523", pdfs: [
           { name: "Makroiqtisadiyyat", file: "makroiqt1.pdf", pdfType: "semester"},
           { name: "Makroiqtisadiyyat", file: "makroiqtkollek1.pdf", pdfType: "midterm"},
           { name: "Makroiqtisadiyyat", file: "makroiqtmesele1.pdf", pdfType: "task"}
         ]
       },
       "Maliyyə uçotu": {
-        type: "test", semester: 2, pdfs: [
+        type: "test", semester: 2, code: "00531", pdfs: [
           { name: "Maliyyə Uçotu Y26", file: "maliyyeY26.pdf", pdfType: "semester"},
           { name: "Maliyyə Uçotu Q26", file: "maliyyeQ26.pdf", pdfType: "semester"},
           { name: "Maliyyə Uçotu", file: "maliyyekollek1.pdf", pdfType: "midterm"}
         ]
       },
       "Xarici dildə işgüzar və akademik kommunikasiya B1+": {
-        type: "test", semester: 2, pdfs: [
+        type: "test", semester: 2, code: "00934", pdfs: [
           { name: "Sherlock Holmes B1+", file: "sherlockholmesB1+.pdf", pdfType: "midterm"}
         ]
       },
       "İqtisadi fikir tarixi": {
-        type: "yazili", semester: 2, pdfs: [
+        type: "yazili", semester: 2, code: "00438", pdfs: [
           { name: "İqtisadi Fikir Tarixi", file: "iqtfkrtrx1.pdf", pdfType: "semester"},
           { name: "İqtisadi Fikir Tarixi", file: "iqtfkrtrx2.pdf", pdfType: "semester"},
           { name: "İqtisadi Fikir Tarixi", file: "iqtfkrtrx3.pdf", pdfType: "semester"},
@@ -280,12 +280,12 @@ const data = {
         ]
       },
       "Xərclərin idarə edilməsi": { 
-        type: "test", semester: 2, pdfs: [
+        type: "test", semester: 2, code: "00936", pdfs: [
           { name: "Xərclərin İdarə Edilməsi Y24", file: "xerclerY24.pdf", pdfType: "semester"}
         ]
       },
       "Marketinq": { 
-        type: "test", semester: 2, pdfs: [
+        type: "test", semester: 2, code: "00532", pdfs: [
           { name: "Marketinq Y26", file: "marketingY26.pdf", pdfType: "semester"}
         ]
       }
@@ -295,14 +295,14 @@ const data = {
     icon: "menu_book",
     subjects: {
       "Mülki müdafiə": {
-        type: "test", semester: 1, pdfs: [
+        type: "test", semester: 1, code: "00034", pdfs: [
           { name: "Mülki Müdafiə Q26", file: "mulkimudafieQ26.pdf", pdfType: "semester"},
           { name: "Mülki Müdafiə Y24", file: "mulkimudafieY24.pdf", pdfType: "old"},
           { name: "Mülki Müdafiə Q23", file: "mulkimudafieQ23.pdf", pdfType: "old"}
         ]
       },
       "Statistika": {
-        type: "yazili", semester: 1, pdfs: [
+        type: "yazili", semester: 1, code: "00837", pdfs: [
           { name: "Statistika", file: "statistika.pdf", pdfType: "optional"}
         ]
       }
@@ -312,7 +312,7 @@ const data = {
     icon: "menu_book",
     subjects: {
       "Menecment": {
-        type: "test", semester: 1, pdfs: [
+        type: "test", semester: 1, code: "00031", pdfs: [
           { name: "Management material", file: "Manage.pdf", pdfType: "optional"}
         ]
       }
