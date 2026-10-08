@@ -321,12 +321,23 @@ const data = {
           { name: "Sosial Sahələrin İqtisadiyyatı", file: "sosialiqt2.pdf", pdfType: "semester"},
           { name: "Sosial Sahələrin İqtisadiyyatı", file: "sosialiqt3.pdf", pdfType: "semester"}
         ]
-      },
+      }, 
       "Ekonometrika": {
-        type: "yazili", semester: 2, code: "00821", pdfs: [
+        type: "yazili", semester: 2, code: "00282", pdfs: [
           { name: "Ekonometrika", file: "ekonometrika1.pdf", pdfType: "semester"},
           { name: "Ekonometrika", file: "ekonometrikakollek1.pdf", pdfType: "midterm"},
           { name: "Ekonometrika", file: "ekonometrikamesele1.pdf", pdfType: "task"}
+        ]
+      },
+      "Beynəlxalq biznes iqtisadiyyatı": {
+        type: "yazili", semester: 2, code: "00169", pdfs: [
+          { name: "Beynəlxalq Biznes İqtisadiyyatı", file: "beynelxalqbizneskollek1.pdf", pdfType: "midterm"}
+        ]
+      },
+      "AR Konstitusiyası və hüququn əsasları": {
+        type: "test", semester: 2, code: "00149", pdfs: [
+          { name: "AR Konstitusiyası və Hüququn Əsasları", file: "arkonstitusiyaQ24.pdf", pdfType: "semester"},
+          { name: "AR Konstitusiyası və Hüququn Əsasları", file: "arkonstitusiyaQ23.pdf", pdfType: "semester"}
         ]
       }
     }
@@ -353,7 +364,8 @@ const extrasData = {
     { name: "Robinson Crusoe - Azərbaycan", file: "robinsonazeA2.pdf", desc: "Robinson Crusoe Azərbaycan dilindəki versiyası", pdfType: "optional"}
   ],
   "3-cü kurs": [
-    { name: "Nümunə Material", file: "numune3.pdf", desc: "Əlavə qeydlər" },
+    { name: "Sosial sahələrin iqtisadiyyatı", file: "sosialiqt1.pdf", desc: "Əlavə qeydlər" },
+    { name: "Beynəlxalq biznes iqtisadiyyatı", file: "beynelxalqbizneselave1.pdf", desc: "Əlavə qeydlər" },
     { name: "Statistika", file: "statistikaelave1.pdf", desc: "Bəzi bir çox sualın cavabı var"}
   ],
   "4-cü kurs": [
