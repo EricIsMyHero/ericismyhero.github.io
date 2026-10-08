@@ -351,3 +351,15 @@
   font-variant-numeric: tabular-nums;
   line-height: 1.5;
 }
+
+/* Planda fənn şifrləri (seçmə fənnlərdə bir neçə şifr) */
+.curr-codes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 5px;
+}
+.curr-codes .code-badge {
+  font-size: .62rem;
+  padding: 1px 6px;
+}
