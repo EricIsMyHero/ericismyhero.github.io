@@ -316,6 +316,11 @@ const data = {
           { name: "Rəqəmsal İqtisadiyyat", file: "reqemsaliqt1.pdf", pdfType: "semester"}
         ]
       },
+      "Firmanın iqtisadiyyatı": {
+        type: "test", semester: 1, code: "00345", pdfs: [
+          { name: "Firmanın iqtisadiyyatı", file: "firmaiqtQ26.pdf", pdfType: "semester"}
+        ]
+      },
       "Menecment": {
         type: "yazili", semester: 1, code: "00031", pdfs: [
           { name: "Menecment", file: "menecment1.pdf", pdfType: "semester"},
