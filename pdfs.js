@@ -309,6 +309,25 @@ const data = {
           { name: "Statistika", file: "statistika1.pdf", pdfType: "semester"},
           { name: "Statistika", file: "statistikamesele1.pdf", pdfType: "task"}
         ]
+      },
+      "Menecment": {
+        type: "yazili", semester: 1, code: "00031", pdfs: [
+          { name: "Menecment", file: "menecment1.pdf", pdfType: "semester"}
+        ]
+      },
+      "Sosial sahələrin iqtisadiyyatı": {
+        type: "yazili", semester: 2, code: "00821", pdfs: [
+          { name: "Sosial Sahələrin İqtisadiyyatı", file: "sosialiqt1.pdf", pdfType: "semester"},
+          { name: "Sosial Sahələrin İqtisadiyyatı", file: "sosialiqt2.pdf", pdfType: "semester"},
+          { name: "Sosial Sahələrin İqtisadiyyatı", file: "sosialiqt3.pdf", pdfType: "semester"}
+        ]
+      },
+      "Ekonometrika": {
+        type: "yazili", semester: 2, code: "00821", pdfs: [
+          { name: "Ekonometrika", file: "ekonometrika1.pdf", pdfType: "semester"},
+          { name: "Ekonometrika", file: "ekonometrikakollek1.pdf", pdfType: "midterm"},
+          { name: "Ekonometrika", file: "ekonometrikamesele1.pdf", pdfType: "task"}
+        ]
       }
     }
   },
