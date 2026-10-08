@@ -386,9 +386,9 @@ const extrasData = {
     { name: "Robinson Crusoe - Azərbaycan", file: "robinsonazeA2.pdf", desc: "Robinson Crusoe Azərbaycan dilindəki versiyası", pdfType: "optional"}
   ],
   "3-cü kurs": [
-    { name: "Sosial sahələrin iqtisadiyyatı", file: "sosialiqt1.pdf", desc: "Əlavə qeydlər" },
-    { name: "Beynəlxalq biznes iqtisadiyyatı", file: "beynelxalqbizneselave1.pdf", desc: "Əlavə qeydlər" },
-    { name: "Statistika", file: "statistikaelave1.pdf", desc: "Bəzi bir çox sualın cavabı var"}
+    { name: "Sosial sahələrin iqtisadiyyatı", file: "sosialiqtelave1.pdf", desc: "Əlavə qeydlər", pdfType: "optional"},
+    { name: "Beynəlxalq biznes iqtisadiyyatı", file: "beynelxalqbizneselave1.pdf", desc: "20 ballıq suallar", pdfType: "optional"},
+    { name: "Statistika", file: "statistikaelave1.pdf", desc: "Bəzi bir çox sualın cavabı var", pdfType: "optional"}
   ],
   "4-cü kurs": [
     { name: "Nümunə Material", file: "numune4.pdf", desc: "Əlavə qeydlər" }
