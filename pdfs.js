@@ -209,6 +209,7 @@ const data = {
       "Əməyin iqtisadiyyatı": {
         type: "yazili", semester: 1, code: "00307", pdfs: [
           { name: "Əməyin İqtisadiyyatı", file: "emek1.pdf", pdfType: "semester"},
+          { name: "Əməyin İqtisadiyyatı", file: "emek2.pdf", pdfType: "semester"},
           { name: "Əməyin İqtisadiyyatı", file: "emekkollek1.pdf", pdfType: "midterm"}
         ]
       },
@@ -221,6 +222,7 @@ const data = {
         type: "yazili", semester: 1, code: "00332", pdfs: [
           { name: "Ətraf Mühitin İqtisadiyyatı", file: "emi1.pdf", pdfType: "semester"},
           { name: "Ətraf Mühitin İqtisadiyyatı", file: "emi2.pdf", pdfType: "semester"},
+          { name: "Ətraf Mühitin İqtisadiyyatı", file: "emi3.pdf", pdfType: "semester"},
           { name: "Ətraf Mühitin İqtisadiyyatı", file: "emikollek1.pdf", pdfType: "midterm"},
           { name: "Ətraf Mühitin İqtisadiyyatı", file: "emikollek2.pdf", pdfType: "midterm"}
         ]
