@@ -203,6 +203,7 @@ const data = {
       },
       "Qiymət siyasəti": {
         type: "yazili", semester: 1, code: "00710", pdfs: [
+          { name: "Qiymət Siyasəti", file: "qiymet1.pdf", pdfType: "semester"},
           { name: "Qiymət Siyasəti", file: "qiymetkollek1.pdf", pdfType: "midterm"}
         ]
       },
@@ -310,16 +311,34 @@ const data = {
           { name: "Statistika", file: "statistikamesele1.pdf", pdfType: "task"}
         ]
       },
+      "Rəqəmsal iqtisadiyyat (Sahə iqtisadiyyatı)": {
+        type: "yazili", semester: 1, code: "00736", pdfs: [
+          { name: "Rəqəmsal İqtisadiyyat", file: "reqemsaliqt1.pdf", pdfType: "semester"}
+        ]
+      },
       "Menecment": {
         type: "yazili", semester: 1, code: "00031", pdfs: [
-          { name: "Menecment", file: "menecment1.pdf", pdfType: "semester"}
+          { name: "Menecment", file: "menecment1.pdf", pdfType: "semester"},
+          { name: "Menecment", file: "menecment2.pdf", pdfType: "semester"},
+          { name: "Menecment", file: "menecment3.pdf", pdfType: "semester"},
+          { name: "Menecment", file: "menecment4.pdf", pdfType: "semester"},
+          { name: "Menecment", file: "menecmentkollek1.pdf", pdfType: "midterm"}
+        ]
+      },
+      "Beynəlxalq iqtisadiyyat": {
+        type: "test", semester: 1, code: "00171", pdfs: [
+          { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqt1.pdf", pdfType: "semester"},
+          { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqt2.pdf", pdfType: "semester"},
+          { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqt3.pdf", pdfType: "semester"},
+          { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqtkollek1.pdf", pdfType: "midterm"},
         ]
       },
       "Sosial sahələrin iqtisadiyyatı": {
         type: "yazili", semester: 2, code: "00821", pdfs: [
           { name: "Sosial Sahələrin İqtisadiyyatı", file: "sosialiqt1.pdf", pdfType: "semester"},
           { name: "Sosial Sahələrin İqtisadiyyatı", file: "sosialiqt2.pdf", pdfType: "semester"},
-          { name: "Sosial Sahələrin İqtisadiyyatı", file: "sosialiqt3.pdf", pdfType: "semester"}
+          { name: "Sosial Sahələrin İqtisadiyyatı", file: "sosialiqt3.pdf", pdfType: "semester"},
+          { name: "Sosial Sahələrin İqtisadiyyatı", file: "sosialiqtkollek1.pdf", pdfType: "midterm"}
         ]
       }, 
       "Ekonometrika": {
@@ -331,9 +350,12 @@ const data = {
       },
       "Beynəlxalq biznes iqtisadiyyatı": {
         type: "yazili", semester: 2, code: "00169", pdfs: [
-          { name: "Beynəlxalq Biznes İqtisadiyyatı", file: "beynelxalqbizneskollek1.pdf", pdfType: "midterm"}
+          { name: "Beynəlxalq Biznes İqtisadiyyatı", file: "beynelxalqbiznes1.pdf", pdfType: "semester"},
+          { name: "Beynəlxalq Biznes İqtisadiyyatı", file: "beynelxalqbiznes2.pdf", pdfType: "semester"},
+          { name: "Beynəlxalq Biznes İqtisadiyyatı", file: "beynelxalqbizneskollek1.pdf", pdfType: "midterm"},
+          { name: "Beynəlxalq Biznes İqtisadiyyatı", file: "beynelxalqbizneskollek2.pdf", pdfType: "midterm"}
         ]
-      },
+      }, 
       "AR Konstitusiyası və hüququn əsasları": {
         type: "test", semester: 2, code: "00149", pdfs: [
           { name: "AR Konstitusiyası və Hüququn Əsasları", file: "arkonstitusiyaQ24.pdf", pdfType: "semester"},
