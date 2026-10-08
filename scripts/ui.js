@@ -277,12 +277,12 @@ function removeFavAndRefresh(filePath) {
 }
 
 // ── İxtisas filtri ───────────────────────────────────────────
-// Hansı ixtisasda hansı fənn var — scripts/curriculum.js əsasında.
-// 1) Fənnin şifri (pdfs.js-də  code: "00591") ixtisasın CURRICULUM_CODES siyahısındadırsa → göstərilir.
-// 2) Şifr yazılmayıbsa, ixtisasın siyahısında yoxdursa və ya ixtisasın şifr siyahısı yoxdursa →
-//    fənn adı CURRICULUM_DATA / CURRICULUM_CODES adları ilə tutuşdurulur
-//    (eyni fənnin şifri ixtisaslara görə fərqli ola bilər, məs. Xarici dil).
-// 3) Əl ilə təyin üçün pdfs.js-də:  majors: ["ecology", "statistics"]
+// Kurs + ixtisas seçiləndə yalnız həmin ixtisasın həmin kursdakı (2 semestr) fənləri göstərilir.
+// Mənbə: scripts/curriculum.js — CURRICULUM_DATA (code / codes) və CURRICULUM_CODES.
+// 1) pdfs.js-də fənnə  code: "00591"  yazılıbsa → şifr ixtisasın həmin kurs şifrlərindədirsə göstərilir.
+// 2) Ad ilə də yoxlanılır (eyni fənnin şifri ixtisaslara görə fərqli ola bilər, məs. Xarici dil;
+//    şifr yazılmamış fənlər də beləcə tapılır).
+// 3) Əl ilə təyin üçün pdfs.js-də (kursdan asılı olmayaraq):  majors: ["ecology", "statistics"]
 const MAJOR_LS_KEY = 'subjects_major_filter';
 
 const MAJOR_I18N_KEYS = {
@@ -329,40 +329,36 @@ function canonSubjectName(raw) {
   return _aliasNorm[n] || n;
 }
 
-const _majorSubjectCache = {};
-const _majorCodeCache = {};
+const _majorIndexCache = {};
 
-// İxtisasın şifr siyahısı (CURRICULUM_CODES) — yoxdursa null
-function getMajorCodeSet(majorKey) {
-  if (majorKey in _majorCodeCache) return _majorCodeCache[majorKey];
-  const src = (typeof CURRICULUM_CODES !== 'undefined') ? CURRICULUM_CODES[majorKey] : null;
-  let set = null;
-  if (src) {
-    set = new Set();
-    ['general', 'major', 'practice'].forEach(k => (src[k] || []).forEach(x => set.add(String(x.code).trim())));
-    ['generalElectives', 'majorElectives'].forEach(k => (src[k] || []).forEach(g =>
-      (g.subjects || []).forEach(x => set.add(String(x.code).trim()))));
-  }
-  return (_majorCodeCache[majorKey] = set);
-}
+// İxtisasın kurs üzrə şifr və fənn adı indeksi: { codes: {1..4: Set}, names: {1..4: Set} }
+function getMajorIndex(majorKey) {
+  if (_majorIndexCache[majorKey]) return _majorIndexCache[majorKey];
+  const mk  = () => ({ 1: new Set(), 2: new Set(), 3: new Set(), 4: new Set() });
+  const idx = { codes: mk(), names: mk() };
+  const courseOf = sem => Math.min(4, Math.max(1, Math.ceil(sem / 2)));
+  const addCode  = (sem, c) => { if (c) idx.codes[courseOf(sem)].add(String(c).trim()); };
+  const addName  = (sem, n) => { if (n) idx.names[courseOf(sem)].add(canonSubjectName(n)); };
 
-// İxtisasın fənn adları (şifr yazılmamış fənlər üçün ehtiyat yol)
-function getMajorSubjectSet(majorKey) {
-  if (_majorSubjectCache[majorKey]) return _majorSubjectCache[majorKey];
-  const set = new Set();
   const major = (typeof CURRICULUM_DATA !== 'undefined') ? CURRICULUM_DATA[majorKey] : null;
   if (major) {
     for (let sem = 1; sem <= 8; sem++) {
-      (major['semester' + sem] || []).forEach(s => set.add(canonSubjectName(s.name)));
+      (major['semester' + sem] || []).forEach(e => {
+        addName(sem, e.name);
+        addCode(sem, e.code);
+        (e.codes || []).forEach(c => addCode(sem, c));
+      });
     }
   }
   const src = (typeof CURRICULUM_CODES !== 'undefined') ? CURRICULUM_CODES[majorKey] : null;
   if (src) {
-    ['general', 'major', 'practice'].forEach(k => (src[k] || []).forEach(x => set.add(canonSubjectName(x.name))));
+    ['general', 'major', 'practice'].forEach(k => (src[k] || []).forEach(x => {
+      addName(x.semester, x.name); addCode(x.semester, x.code);
+    }));
     ['generalElectives', 'majorElectives'].forEach(k => (src[k] || []).forEach(g =>
-      (g.subjects || []).forEach(x => set.add(canonSubjectName(x.name)))));
+      (g.subjects || []).forEach(x => { addName(g.semester, x.name); addCode(g.semester, x.code); })));
   }
-  return (_majorSubjectCache[majorKey] = set);
+  return (_majorIndexCache[majorKey] = idx);
 }
 
 // Fənnin şifri: fənn səviyyəsində code, yoxdursa PDF-lərdən birincisi
@@ -372,13 +368,20 @@ function getSubjectCode(subj) {
   return p ? String(p.code).trim() : '';
 }
 
-function subjectMatchesMajor(subjectName, subj, majorKey) {
+// "1-ci kurs" → 1,  "3-cü kurs" → 3  (tanınmasa null → bütün kurslar)
+function courseNumber(courseName) {
+  const n = parseInt(courseName, 10);
+  return (n >= 1 && n <= 4) ? n : null;
+}
+
+function subjectMatchesMajor(subjectName, subj, majorKey, courseNo) {
   if (!majorKey || majorKey === 'all') return true;
   if (Array.isArray(subj.majors) && subj.majors.includes(majorKey)) return true;
-  const codes = getMajorCodeSet(majorKey);
-  const code  = getSubjectCode(subj);
-  if (codes && code && codes.has(code)) return true;
-  return getMajorSubjectSet(majorKey).has(canonSubjectName(subjectName));
+  const idx     = getMajorIndex(majorKey);
+  const courses = courseNo ? [courseNo] : [1, 2, 3, 4];
+  const code    = getSubjectCode(subj);
+  const name    = canonSubjectName(subjectName);
+  return courses.some(c => (code && idx.codes[c].has(code)) || idx.names[c].has(name));
 }
 
 function codeBadgeHTML(code) {
@@ -451,7 +454,7 @@ function renderSubjects(courseName) {
 
   const majorKey   = getSelectedMajor();
   const allEntries = Object.entries(data[courseName].subjects)
-    .filter(([name, subj]) => subjectMatchesMajor(name, subj, majorKey));
+    .filter(([name, subj]) => subjectMatchesMajor(name, subj, majorKey, courseNumber(courseName)));
 
   if (allEntries.length === 0) {
     grid.innerHTML = `<div class="empty-favs" style="grid-column:1/-1;">${t.noMajorSubjects}</div>`;
