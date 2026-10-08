@@ -5,8 +5,9 @@
    Fənn sətirlərində şifr (rəsmi tədris planına görə):
      code:  '00591'                 → adi fənn
      codes: ['00532', '00726', ...] → seçmə fənn qrupu (bu şifrlərdən biri seçilir)
-   Şifri olan ixtisaslar: İqtisadiyyat, Dizayn, Qida mühəndisliyi,
-   Beynəlxalq münasibətlər, Beynəlxalq ticarət və logistika.
+   Şifri olan ixtisaslar: İqtisadiyyat, Maliyyə, Dizayn, Qida mühəndisliyi,
+   Beynəlxalq münasibətlər, Beynəlxalq ticarət və logistika,
+   Turizm işinin təşkili, Sosial iş.
    ============================================================= */
 
 const CURRICULUM_DATA = {
@@ -76,60 +77,60 @@ const CURRICULUM_DATA = {
   finance: {
     name: 'Maliyyə', icon: 'payments',
     semester1: [
-      { name: 'Azərbaycan dilində işgüzar və akademik kommunikasiya', credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Xarici dildə işgüzar və akademik kommunikasiya-1',    credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'İqtisadiyyata giriş',                                  credit: 6, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Xətti cəbr və riyazi analiz',                          credit: 8, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'İKT - baza kompyüter bilikləri',                       credit: 8, hours: 60, absenceLimit: 7, weekly: 4 },
+      { name: 'Azərbaycan dilində işgüzar və akademik kommunikasiya', credit: 4, hours: 60, absenceLimit: 7, weekly: 4, code: '00004' },
+      { name: 'Xarici dildə işgüzar və akademik kommunikasiya-1',    credit: 4, hours: 90, absenceLimit: 11, weekly: 6, code: '00058' },
+      { name: 'İqtisadiyyata giriş',                                  credit: 6, hours: 60, absenceLimit: 7, weekly: 4, code: '00021' },
+      { name: 'Xətti cəbr və riyazi analiz',                          credit: 8, hours: 60, absenceLimit: 7, weekly: 4, code: '00056' },
+      { name: 'İKT - baza kompyüter bilikləri',                       credit: 8, hours: 60, absenceLimit: 7, weekly: 4, code: '00016' },
     ],
     semester2: [
-      { name: 'Azərbaycanın tarixi',                                  credit: 5, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Xarici dildə işgüzar və akademik kommunikasiya-2',     credit: 3, hours: 75, absenceLimit: 9, weekly: 5 },
-      { name: 'Ehtimal nəzəriyyəsi və riyazi statistika',             credit: 8, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Karyera planlaması',                                   credit: 5, hours: 30, absenceLimit: 3, weekly: 2 },
-      { name: 'Yumşaq bacarıqlar (Soft skills)',                      credit: 9, hours: 30, absenceLimit: 3, weekly: 2 },
+      { name: 'Azərbaycanın tarixi',                                  credit: 5, hours: 60, absenceLimit: 7, weekly: 4, code: '00005' },
+      { name: 'Xarici dildə işgüzar və akademik kommunikasiya-2',     credit: 3, hours: 75, absenceLimit: 9, weekly: 5, code: '00122' },
+      { name: 'Ehtimal nəzəriyyəsi və riyazi statistika',             credit: 8, hours: 60, absenceLimit: 7, weekly: 4, code: '00071' },
+      { name: 'Karyera planlaması',                                   credit: 5, hours: 45, absenceLimit: 5, weekly: 3, code: '00023' },
+      { name: 'Yumşaq bacarıqlar (Soft skills)',                      credit: 9, hours: 45, absenceLimit: 5, weekly: 3, code: '00118' },
     ],
     semester3: [
-      { name: 'Xarici dildə işgüzar və akademik kommunikasiya-3',     credit: 4, hours: 90, absenceLimit: 11, weekly: 6 },
-      { name: 'Mikroiqtisadiyyat',                                    credit: 10, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Maliyyə uçotu',                                        credit: 6, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Vergitutma',                                           credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Seçmə fənn - 1 (Biznesin əsasları)',                   credit: 6, hours: 60, absenceLimit: 7, weekly: 4 },
+      { name: 'Xarici dildə işgüzar və akademik kommunikasiya-3',     credit: 4, hours: 90, absenceLimit: 11, weekly: 6, code: '00760' },
+      { name: 'Mikroiqtisadiyyat',                                    credit: 10, hours: 60, absenceLimit: 7, weekly: 4, code: '00591' },
+      { name: 'Korporativ maliyyə',                                   credit: 6, hours: 60, absenceLimit: 7, weekly: 4, code: '00503' },
+      { name: 'Maliyyə bazarları',                                    credit: 4, hours: 60, absenceLimit: 7, weekly: 4, code: '00524' },
+      { name: 'Seçmə fənn - 1 (Biznesin əsasları)',                   credit: 6, hours: 60, absenceLimit: 7, weekly: 4, codes: ['00200', '00517', '00880', '00823', '00501'] },
     ],
     semester4: [
-      { name: 'Xarici dildə işgüzar və akademik kommunikasiya-4',     credit: 4, hours: 90, absenceLimit: 11, weekly: 6 },
-      { name: 'Makroiqtisadiyyat',                                    credit: 10, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Korporativ maliyyə',                                   credit: 6, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Maliyyə risklərinin idarə edilməsi',                   credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Seçmə fənn - 1 (Marketinq)',                           credit: 6, hours: 60, absenceLimit: 7, weekly: 4 },
+      { name: 'Xarici dildə işgüzar və akademik kommunikasiya-4',     credit: 4, hours: 75, absenceLimit: 9, weekly: 5, code: '00934' },
+      { name: 'Makroiqtisadiyyat',                                    credit: 10, hours: 60, absenceLimit: 7, weekly: 4, code: '00523' },
+      { name: 'Maliyyə uçotu',                                        credit: 6, hours: 60, absenceLimit: 7, weekly: 4, code: '00531' },
+      { name: 'Maliyyə risklərinin idarə edilməsi',                   credit: 4, hours: 60, absenceLimit: 7, weekly: 4, code: '00528' },
+      { name: 'Seçmə fənn - 1 (Marketinq)',                           credit: 6, hours: 60, absenceLimit: 7, weekly: 4, codes: ['00532', '00726', '00173', '00710', '00938', '00943', '00378', '00385'] },
     ],
     semester5: [
-      { name: 'Dövlət maliyyəsi',                                     credit: 6, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Maliyyə bazarları',                                    credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Seçmə fənn - 1 (Maliyyə hesabatlılığı)',               credit: 6, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Seçmə fənn - 2 (Rəqəmsal iqtisadiyyat)',               credit: 6, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Seçmə fənn - 3 (İqtisadi dinamikanın əsasları)',       credit: 8, hours: 60, absenceLimit: 7, weekly: 4 },
+      { name: 'Dövlət maliyyəsi',                                     credit: 6, hours: 60, absenceLimit: 7, weekly: 4, code: '00246' },
+      { name: 'Seçmə fənn - 1 (Maliyyə uçotu)',                       credit: 6, hours: 60, absenceLimit: 7, weekly: 4, codes: ['00531', '00525', '00936', '00749', '00618'] },
+      { name: 'Seçmə fənn - 2 (Rəqəmsal iqtisadiyyat)',               credit: 6, hours: 60, absenceLimit: 7, weekly: 4, codes: ['00736', '00779', '00332', '00157', '00821', '00428', '00148', '00221', '00501'] },
+      { name: 'Seçmə fənn - 3 (İqtisadi dinamikanın əsasları)',       credit: 8, hours: 60, absenceLimit: 7, weekly: 4, codes: ['00436', '00418', '00345'] },
+      { name: 'Seçmə fənn - 4 (Sabit gəlirli qiymətli kağızlar)',     credit: 4, hours: 45, absenceLimit: 5, weekly: 3, codes: ['00755', '00611', '00759', '00207'] },
     ],
     semester6: [
-      { name: 'Statistika',                                           credit: 10, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Menecment',                                            credit: 7, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'İnvestisiyanın idarə edilməsi',                        credit: 6, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Seçmə fənn - 1 (Maliyyə təhlili)',                     credit: 4, hours: 45, absenceLimit: 5, weekly: 3 },
-      { name: 'Seçmə fənn - 2 (İnformasiya texnologiyaları)',         credit: 3, hours: 45, absenceLimit: 5, weekly: 3 },
+      { name: 'Statistika',                                           credit: 10, hours: 60, absenceLimit: 7, weekly: 4, code: '00837' },
+      { name: 'Menecment',                                            credit: 7, hours: 60, absenceLimit: 7, weekly: 4, code: '00031' },
+      { name: 'İnvestisiyanın idarə edilməsi',                        credit: 6, hours: 60, absenceLimit: 7, weekly: 4, code: '00432' },
+      { name: 'Seçmə fənn (İnformasiya texnologiyaları)',             credit: 3, hours: 45, absenceLimit: 5, weekly: 3, codes: ['00402', '00404', '00758', '00671'] },
+      { name: 'Seçmə fənn - 1 (Maliyyə təhlili)',                     credit: 4, hours: 45, absenceLimit: 5, weekly: 3, codes: ['00530', '00795', '00249'] },
     ],
     semester7: [
-      { name: 'Mülki müdafiə',                                        credit: 3, hours: 45, absenceLimit: 5, weekly: 3 },
-      { name: 'Ekonometrika',                                         credit: 10, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Seçmə fənn - 1 (Bank işi)',                            credit: 7, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Seçmə fənn - 2 (Sabit gəlirli qiymətli kağızlar)',     credit: 4, hours: 45, absenceLimit: 5, weekly: 3 },
-      { name: 'Seçmə fənn - 3 (Alternativ investisiyalar)',           credit: 6, hours: 60, absenceLimit: 7, weekly: 4 },
+      { name: 'Ekonometrika',                                         credit: 10, hours: 60, absenceLimit: 7, weekly: 4, code: '00282' },
+      { name: 'Vergitutma',                                           credit: 4, hours: 60, absenceLimit: 7, weekly: 4, code: '00917' },
+      { name: 'Mülki müdafiə',                                        credit: 3, hours: 45, absenceLimit: 5, weekly: 3, code: '00034' },
+      { name: 'Seçmə fənn - 1 (Bank işi)',                            credit: 7, hours: 60, absenceLimit: 7, weekly: 4, codes: ['00160', '00788', '00529', '00222', '00130', '00681', '00617'] },
+      { name: 'Seçmə fənn - 2 (Alternativ investisiyalar)',           credit: 6, hours: 60, absenceLimit: 7, weekly: 4, codes: ['00139', '00672', '00527', '00180'] },
     ],
     semester8: [
-      { name: 'Maliyyə menecmenti',                                   credit: 4, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Sərt bacarıqlar (Hard skills)',                        credit: 10, hours: 30, absenceLimit: 3, weekly: 2 },
-      { name: 'İstehsalat təcrübəsi / layihə',                        credit: 6, hours: 0, absenceLimit: 0, weekly: 0 },
-      { name: 'Seçmə fənn - 1 (Proseslərin idarə edilməsi)',          credit: 7, hours: 60, absenceLimit: 7, weekly: 4 },
-      { name: 'Seçmə fənn - 2 (Fəlsəfə)',                             credit: 3, hours: 45, absenceLimit: 5, weekly: 3 },
+      { name: 'Maliyyə menecmenti',                                   credit: 4, hours: 60, absenceLimit: 7, weekly: 4, code: '00526' },
+      { name: 'Sərt bacarıqlar (Hard skills)',                        credit: 10, hours: 45, absenceLimit: 5, weekly: 3, code: '00787' },
+      { name: 'İstehsalat təcrübəsi / layihə',                        credit: 6, hours: 0, absenceLimit: 0, weekly: 0, code: '00454' },
+      { name: 'Seçmə fənn (Fəlsəfə)',                                 credit: 3, hours: 45, absenceLimit: 5, weekly: 3, codes: ['00341', '00830', '00149', '00574', '00316', '00632'] },
+      { name: 'Seçmə fənn - 1 (Proseslərin idarə edilməsi)',          credit: 7, hours: 60, absenceLimit: 7, weekly: 4, codes: ['00682', '00175', '00610', '00414'] },
     ],
   },
 
@@ -819,6 +820,133 @@ const CURRICULUM_DATA = {
       { name: 'Seçmə fənn - 1 (Risk və nəzarət)',       credit: 6, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Seçmə fənn - 3 (Rəqəmsal iqtisadiyyat)', credit: 6, hours: 60, absenceLimit: 7, weekly: 4 },
       { name: 'Seçmə fənn - 7 (İqtisadi dinamikanın əsasları)', credit: 8, hours: 60, absenceLimit: 7, weekly: 4 },
+    ],
+  },
+
+/* ─── TURİZM İŞİNİN TƏŞKİLİ ──────────────────────────────────────── */
+  tourism: {
+    name: 'Turizm işinin təşkili', icon: 'luggage',
+    semester1: [
+      { name: 'Azərbaycan dilində işgüzar və akademik kommunikasiya', credit: 4, hours: 45, absenceLimit: 5, weekly: 3, code: '00004' },
+      { name: 'Azərbaycanın tarixi', credit: 5, hours: 60, absenceLimit: 7, weekly: 4, code: '00005' },
+      { name: 'Xarici dildə işgüzar və akademik kommunikasiya-1', credit: 4, hours: 90, absenceLimit: 11, weekly: 6, code: '01222' },
+      { name: 'Turizmə giriş', credit: 5, hours: 45, absenceLimit: 5, weekly: 2, code: '00059_1' },
+      { name: 'Biznes riyaziyyatı', credit: 6, hours: 45, absenceLimit: 5, weekly: 2, code: '00069_1' },
+      { name: 'Mülki müdafiə və ilkin tibbi yardım', credit: 6, hours: 60, absenceLimit: 7, weekly: 4, code: '00068' },
+    ],
+    semester2: [
+      { name: 'Xarici dildə işgüzar və akademik kommunikasiya-2', credit: 3, hours: 75, absenceLimit: 9, weekly: 5, code: '00073' },
+      { name: 'Seçmə fənn (İnformasiya texnologiyaları)', credit: 3, hours: 45, absenceLimit: 5, weekly: 3, codes: ['00402', '00405', '00758', '00671'] },
+      { name: 'Biznes statistikası', credit: 5, hours: 45, absenceLimit: 5, weekly: 2, code: '00342' },
+      { name: 'Menecmentin əsasları', credit: 5, hours: 45, absenceLimit: 5, weekly: 2, code: '00394' },
+      { name: 'Mikroiqtisadiyyat', credit: 5, hours: 45, absenceLimit: 5, weekly: 3, code: '00927' },
+      { name: 'Turizm məhsulunun hazırlanması', credit: 5, hours: 60, absenceLimit: 7, weekly: 4, code: '00956' },
+      { name: 'Sosial tədqiqata giriş', credit: 4, hours: 45, absenceLimit: 5, weekly: 3, code: '00400' },
+    ],
+    semester3: [
+      { name: 'Xarici dildə işgüzar və akademik kommunikasiya-3', credit: 4, hours: 60, absenceLimit: 7, weekly: 4, code: '01035' },
+      { name: 'Seçmə fənn (Fəlsəfə)', credit: 3, hours: 45, absenceLimit: 5, weekly: 3, codes: ['00341', '00830', '00149', '00574', '00317', '00632'] },
+      { name: 'Turizmin coğrafiyası', credit: 5, hours: 45, absenceLimit: 5, weekly: 3, code: '00314' },
+      { name: 'Makroiqtisadiyyat', credit: 5, hours: 60, absenceLimit: 7, weekly: 4, code: '00489' },
+      { name: 'Turizm hüququ', credit: 5, hours: 60, absenceLimit: 7, weekly: 4, code: '00419' },
+      { name: 'Seçmə fənn - 1 (Dünya turizm bazarı)', credit: 8, hours: 60, absenceLimit: 7, weekly: 4, codes: ['00434', '00583', '00633', '00754'] },
+    ],
+    semester4: [
+      { name: 'Xarici dildə işgüzar və akademik kommunikasiya-4', credit: 4, hours: 60, absenceLimit: 7, weekly: 4, code: '01042' },
+      { name: 'Marketinqin əsasları', credit: 5, hours: 45, absenceLimit: 5, weekly: 3, code: '00364' },
+      { name: 'Mühasibat uçotu', credit: 5, hours: 45, absenceLimit: 5, weekly: 3, code: '00763' },
+      { name: 'Turizm siyasəti və planlaşdırılması', credit: 5, hours: 60, absenceLimit: 7, weekly: 4, code: '00769' },
+      { name: 'Qonaqpərvərlik sahəsinin idarə edilməsi', credit: 5, hours: 60, absenceLimit: 7, weekly: 4, code: '00715' },
+      { name: 'Seçmə fənn - 2 (Mədəniyyətlərarası səriştələr)', credit: 6, hours: 60, absenceLimit: 7, weekly: 4, codes: ['00800', '00851', '00875', '00901'] },
+    ],
+    semester5: [
+      { name: 'Turizmdə nəqliyyat', credit: 5, hours: 60, absenceLimit: 7, weekly: 4, code: '00948' },
+      { name: 'Dayanıqlı turizm', credit: 4, hours: 60, absenceLimit: 7, weekly: 4, code: '00955' },
+      { name: 'Keyfiyyət əsaslı tədqiqat metodları', credit: 5, hours: 60, absenceLimit: 7, weekly: 4, code: '00957' },
+      { name: 'Seçmə fənn - 3 (Turizm iqtisadiyyatı)', credit: 8, hours: 60, absenceLimit: 7, weekly: 4, codes: ['00958', '00959', '00960', '00961', '00962'] },
+      { name: 'Seçmə fənn - 4 (Turizmdə strateji idarəetmə)', credit: 8, hours: 60, absenceLimit: 7, weekly: 4, codes: ['00963', '00964', '00965', '00966', '00967'] },
+    ],
+    semester6: [
+      { name: 'İdarəetmə uçotu və korporativ qərarların verilməsi', credit: 5, hours: 60, absenceLimit: 7, weekly: 4, code: '00968' },
+      { name: 'İnsan resurslarının idarə edilməsi', credit: 4, hours: 45, absenceLimit: 5, weekly: 3, code: '00969' },
+      { name: 'Destinasiyaların idarə edilməsi', credit: 4, hours: 45, absenceLimit: 5, weekly: 3, code: '00970' },
+      { name: 'Bronlaşdırma sistemləri', credit: 4, hours: 60, absenceLimit: 7, weekly: 4, code: '00971' },
+      { name: 'Turist davranışı və psixologiyası', credit: 5, hours: 60, absenceLimit: 7, weekly: 4, code: '00972' },
+      { name: 'Seçmə fənn - 5 (Müalicəvi və sağlamlıq turizminin təşkili)', credit: 8, hours: 60, absenceLimit: 7, weekly: 4, codes: ['00973', '00974', '00975', '00976', '00977'] },
+    ],
+    semester7: [
+      { name: 'Turizmdə vasitəçilər', credit: 4, hours: 60, absenceLimit: 7, weekly: 4, code: '00978' },
+      { name: 'Kəmiyyət əsaslı tədqiqat metodları', credit: 4, hours: 60, absenceLimit: 7, weekly: 4, code: '00979' },
+      { name: 'Seçmə fənn - 6 (Macəra və idman turizmi)', credit: 8, hours: 60, absenceLimit: 7, weekly: 4, codes: ['00129', '00399', '00735', '00791'] },
+      { name: 'Seçmə fənn - 7 (Konqres, tədbirlər və konfransların təşkili)', credit: 8, hours: 60, absenceLimit: 7, weekly: 4, codes: ['00256', '00141', '00777', '00106'] },
+      { name: 'Seçmə fənn - 8 (Turizmdə proqnozlaşdırma və planlaşdırma)', credit: 6, hours: 60, absenceLimit: 7, weekly: 3, codes: ['00822', '00869', '00315', '00575'] },
+    ],
+    semester8: [
+      { name: 'İstehsalat təcrübəsi', credit: 21, hours: 0, absenceLimit: 0, weekly: 0, code: '00861' },
+      { name: 'Buraxılış işi', credit: 9, hours: 0, absenceLimit: 0, weekly: 0, code: '00210' },
+    ],
+  },
+
+/* ─── SOSİAL İŞ ──────────────────────────────────────── */
+  socialWork: {
+    name: 'Sosial iş', icon: 'volunteer_activism',
+    semester1: [
+      { name: 'Azərbaycanın tarixi', credit: 5, hours: 60, absenceLimit: 7, weekly: 4, code: '00005' },
+      { name: 'Xarici dildə işgüzar və akademik kommunikasiya-1', credit: 4, hours: 45, absenceLimit: 5, weekly: 3, code: '01222' },
+      { name: 'Sosiologiya', credit: 4, hours: 45, absenceLimit: 5, weekly: 3, code: '00045' },
+      { name: 'İnformatika', credit: 4, hours: 45, absenceLimit: 5, weekly: 3, code: '00020' },
+      { name: 'Sosial işə giriş', credit: 6, hours: 60, absenceLimit: 7, weekly: 4, code: '00043' },
+      { name: 'Sosial işin nəzəriyyəsi və təcrübəsi-1', credit: 7, hours: 60, absenceLimit: 7, weekly: 4, code: '00044' },
+    ],
+    semester2: [
+      { name: 'Azərbaycan dilində işgüzar və akademik kommunikasiya', credit: 4, hours: 60, absenceLimit: 7, weekly: 4, code: '00004' },
+      { name: 'Xarici dildə işgüzar və akademik kommunikasiya-2', credit: 3, hours: 60, absenceLimit: 7, weekly: 4, code: '00073' },
+      { name: 'Sosial işdə riyazi metodlar', credit: 4, hours: 45, absenceLimit: 5, weekly: 3, code: '00111' },
+      { name: 'Psixologiya', credit: 4, hours: 45, absenceLimit: 5, weekly: 3, code: '00097' },
+      { name: 'Sosial iş təcrübəsində etik prinsiplər', credit: 6, hours: 45, absenceLimit: 5, weekly: 3, code: '00109' },
+      { name: 'Sosial işin nəzəriyyəsi və təcrübəsi-2', credit: 4, hours: 45, absenceLimit: 5, weekly: 3, code: '00112' },
+      { name: 'Sosial işdə idarəetmə', credit: 5, hours: 45, absenceLimit: 5, weekly: 3, code: '00110' },
+    ],
+    semester3: [
+      { name: 'Xarici dildə işgüzar və akademik kommunikasiya-3', credit: 4, hours: 60, absenceLimit: 7, weekly: 4, code: '00932' },
+      { name: 'Sosial statistika', credit: 4, hours: 45, absenceLimit: 5, weekly: 3, code: '00826' },
+      { name: 'Sosial proqramlar və xidmətlər', credit: 5, hours: 45, absenceLimit: 5, weekly: 3, code: '00819' },
+      { name: 'Qloballaşma və beynəlxalq sosial iş', credit: 5, hours: 60, absenceLimit: 7, weekly: 4, code: '00714' },
+      { name: 'Sosial psixologiya', credit: 6, hours: 60, absenceLimit: 7, weekly: 4, code: '00820' },
+      { name: 'Seçmə fənn - 1 (Sosial işin təşkili mexanizmləri)', credit: 6, hours: 60, absenceLimit: 7, weekly: 4, codes: ['00816', '00828', '00664'] },
+    ],
+    semester4: [
+      { name: 'Xarici dildə işgüzar və akademik kommunikasiya-4', credit: 4, hours: 60, absenceLimit: 7, weekly: 4, code: '01042' },
+      { name: 'Fərdlər, qruplar və ailələrlə sosial iş', credit: 6, hours: 60, absenceLimit: 7, weekly: 4, code: '00343' },
+      { name: 'Azərbaycanda sosial yardım sistemi', credit: 6, hours: 45, absenceLimit: 5, weekly: 3, code: '00158' },
+      { name: 'Sosial pedaqogika', credit: 5, hours: 60, absenceLimit: 7, weekly: 4, code: '00818' },
+      { name: 'Mülki müdafiə', credit: 3, hours: 45, absenceLimit: 5, weekly: 3, code: '00034' },
+      { name: 'Seçmə fənn - 2 (Ailə və sosial iş)', credit: 6, hours: 60, absenceLimit: 7, weekly: 4, codes: ['00126', '00881', '00772'] },
+    ],
+    semester5: [
+      { name: 'Seçmə fənn (İqtisadiyyat)', credit: 3, hours: 45, absenceLimit: 5, weekly: 3, codes: ['00441', '00149', '00422'] },
+      { name: 'Neyrobiologiya', credit: 4, hours: 45, absenceLimit: 5, weekly: 3, code: '00644' },
+      { name: 'Sosial siyasət', credit: 5, hours: 60, absenceLimit: 7, weekly: 4, code: '00824' },
+      { name: 'Defektologiya', credit: 6, hours: 60, absenceLimit: 7, weekly: 4, code: '00225' },
+      { name: 'Seçmə fənn - 3 (Miqrantlarla sosial iş)', credit: 6, hours: 60, absenceLimit: 7, weekly: 4, codes: ['00595', '00349', '00125', '00748'] },
+      { name: 'Seçmə fənn - 4 (Sosial işdə məşğulluq və kadr potensialı)', credit: 6, hours: 60, absenceLimit: 7, weekly: 4, codes: ['00809', '00227', '00856'] },
+    ],
+    semester6: [
+      { name: 'Seçmə fənn (Müasir təbiətşünaslıq konsepsiyası)', credit: 3, hours: 45, absenceLimit: 5, weekly: 3, codes: ['00614', '00608', '00350', '00632', '00341', '00671', '00574'] },
+      { name: 'Sosial işdə tədqiqat metodları', credit: 9, hours: 60, absenceLimit: 7, weekly: 4, code: '00811' },
+      { name: 'Psixi sağlamlıq', credit: 6, hours: 60, absenceLimit: 7, weekly: 4, code: '00683' },
+      { name: 'Seçmə fənn - 5 (Sosial iqtisadiyyat)', credit: 6, hours: 60, absenceLimit: 7, weekly: 4, codes: ['00807', '00784', '00823'] },
+      { name: 'Seçmə fənn - 6 (Sosial işin qiymətləndirilməsi)', credit: 6, hours: 60, absenceLimit: 7, weekly: 4, codes: ['00815', '00829', '00827'] },
+    ],
+    semester7: [
+      { name: 'Keys menecment', credit: 6, hours: 60, absenceLimit: 7, weekly: 4, code: '00467' },
+      { name: 'Seçmə fənn - 7 (Sosial işin iqtisadiyyatı və idarə edilməsi)', credit: 6, hours: 60, absenceLimit: 7, weekly: 4, codes: ['00814', '00810', '00725'] },
+      { name: 'Seçmə fənn - 8 (Sosial işin investisiya və maliyyə problemləri)', credit: 6, hours: 60, absenceLimit: 7, weekly: 4, codes: ['00813', '00299', '00950', '00420'] },
+      { name: 'Seçmə fənn - 9 (Sosial iş fəaliyyətində innovasiyalar)', credit: 6, hours: 60, absenceLimit: 7, weekly: 4, codes: ['00808', '00911', '00717'] },
+      { name: 'Seçmə fənn - 10 (Sosial işin inteqrasiya modeli)', credit: 6, hours: 60, absenceLimit: 7, weekly: 4, codes: ['00812', '00686', '00127'] },
+    ],
+    semester8: [
+      { name: 'İstehsalat təcrübəsi', credit: 30, hours: 0, absenceLimit: 0, weekly: 0, code: '00862' },
     ],
   },
 };
@@ -1549,6 +1677,396 @@ const CURRICULUM_CODES = {
     ],
 
     // Təcrübə və buraxılış işi
+    practice: [
+      { code: '00862', name: 'Təcrübə', credit: 30, semester: 8 },
+    ],
+  },
+
+  /* ─── 6004005 – MALİYYƏ – MALIYYƏ (bakalavriat, 4 il / 8 semestr) ── */
+  finance: {
+    name: 'Maliyyə',
+    specialtyCode: '6004005',
+    // İstiqamətlər: 1) Dövlət maliyyəsi (Büdcə sistemi, Dövlətin gəlir və xərclərinin idarə edilməsi, Beynəlxalq vergitutma)
+    //   2) Korporativ maliyyə (Sahibkarlıq maliyyəsi və vençur kapitalı, Maliyyə təhlili, Portfelin idarə edilməsi, Maliyyə modelləşdirilməsi)
+    //   3) İnvestisiyanın idarə edilməsi (Sabit gəlirli qiymətli kağızlar, Opsiyonlar və fyuçerslər, Şirkət birləşmələri, Alternativ investisiyalar)
+
+    // Ümumi fənlər
+    general: [
+      { code: '00004', name: 'Azərbaycan dilində işgüzar və akademik kommunikasiya', credit: 4, semester: 1 },
+      { code: '00005', name: 'Azərbaycanın tarixi', credit: 5, semester: 2 },
+      { code: '00058', name: 'Xarici dildə işgüzar və akademik kommunikasiya-1', credit: 4, semester: 1 },
+      { code: '00122', name: 'Xarici dildə işgüzar və akademik kommunikasiya-2', credit: 3, semester: 2, prereq: ['00058'] },
+      { code: '00760', name: 'Xarici dildə işgüzar və akademik kommunikasiya-3', credit: 4, semester: 3, prereq: ['00122'] },
+      { code: '00934', name: 'Xarici dildə işgüzar və akademik kommunikasiya-4', credit: 4, semester: 4, prereq: ['00760'] },
+    ],
+
+    // Seçmə fənlər (ümumi fənlər üzrə)
+    generalElectives: [
+      { title: 'Seçmə fənn (ümumi) – 1', credit: 3, semester: 8, subjects: [
+        { code: '00341', name: 'Fəlsəfə' },
+        { code: '00830', name: 'Sosiologiya' },
+        { code: '00149', name: 'AR Konstitusiyası və hüququn əsasları' },
+        { code: '00574', name: 'Məntiq' },
+        { code: '00316', name: 'Etika' },
+        { code: '00632', name: 'Multikulturalizmə giriş' },
+      ]},
+      { title: 'Seçmə fənn (ümumi) – 2', credit: 3, semester: 6, subjects: [
+        { code: '00402', name: 'İnformasiya texnologiyaları' },
+        { code: '00404', name: 'İnformasiyanın idarə edilməsi' },
+        { code: '00758', name: 'Sahibkarlığın əsasları və biznesə giriş' },
+        { code: '00671', name: 'Politologiya' },
+      ]},
+    ],
+
+    // İxtisas fənləri
+    major: [
+      { code: '00021', name: 'İqtisadiyyata giriş', credit: 6, semester: 1 },
+      { code: '00591', name: 'Mikroiqtisadiyyat', credit: 10, semester: 3 },
+      { code: '00523', name: 'Makroiqtisadiyyat', credit: 10, semester: 4 },
+      { code: '00056', name: 'Xətti cəbr və riyazi analiz', credit: 8, semester: 1 },
+      { code: '00071', name: 'Ehtimal nəzəriyyəsi və riyazi statistika', credit: 8, semester: 2 },
+      { code: '00016', name: 'İKT - baza kompyüter bilikləri', credit: 8, semester: 1 },
+      { code: '00837', name: 'Statistika', credit: 10, semester: 6 },
+      { code: '00282', name: 'Ekonometrika', credit: 10, semester: 7 },
+      { code: '00031', name: 'Menecment', credit: 7, semester: 6 },
+      { code: '00531', name: 'Maliyyə uçotu', credit: 6, semester: 4 },
+      { code: '00503', name: 'Korporativ maliyyə', credit: 6, semester: 3 },
+      { code: '00246', name: 'Dövlət maliyyəsi', credit: 6, semester: 5 },
+      { code: '00524', name: 'Maliyyə bazarları', credit: 4, semester: 3 },
+      { code: '00432', name: 'İnvestisiyanın idarə edilməsi', credit: 6, semester: 6 },
+      { code: '00528', name: 'Maliyyə risklərinin idarə edilməsi', credit: 4, semester: 4 },
+      { code: '00917', name: 'Vergitutma', credit: 4, semester: 7 },
+      { code: '00526', name: 'Maliyyə menecmenti', credit: 4, semester: 8 },
+      { code: '00034', name: 'Mülki müdafiə', credit: 3, semester: 7 },
+    ],
+
+    // Seçmə fənlər (ixtisas fənləri üzrə)
+    majorElectives: [
+      { title: 'Seçmə fənn (ixtisas) – 1', credit: 6, semester: 5, subjects: [
+        { code: '00531', name: 'Maliyyə uçotu' },
+        { code: '00525', name: 'Maliyyə hesabatlılığı' },
+        { code: '00936', name: 'Xərclərin idarə edilməsi' },
+        { code: '00749', name: 'Risk və nəzarət' },
+        { code: '00618', name: 'Mühasibatda proqram təminatı' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 2', credit: 7, semester: 7, subjects: [
+        { code: '00160', name: 'Bank işi' },
+        { code: '00788', name: 'Sığorta' },
+        { code: '00529', name: 'Maliyyə riyaziyyatı' },
+        { code: '00222', name: 'Davranış maliyyəsi' },
+        { code: '00130', name: 'Aktivlərin qiymətləndirilməsi və idarə edilməsi' },
+        { code: '00681', name: 'Maliyyə mühəndisliyi' },
+        { code: '00617', name: 'Könüllülük fəaliyyəti' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 3', credit: 6, semester: 5, subjects: [
+        { code: '00736', name: 'Rəqəmsal iqtisadiyyat (Sahə iqtisadiyyatı)' },
+        { code: '00779', name: 'Sənaye iqtisadiyyatı' },
+        { code: '00332', name: 'Ətraf mühitin iqtisadiyyatı' },
+        { code: '00157', name: 'Azərbaycan iqtisadiyyatı' },
+        { code: '00821', name: 'Sosial sahələrin iqtisadiyyatı' },
+        { code: '00428', name: 'İnstitutsional iqtisadiyyat' },
+        { code: '00148', name: 'Aqrar iqtisadiyyat' },
+        { code: '00221', name: 'Davranış iqtisadiyyatı' },
+        { code: '00501', name: 'Könüllülük fəaliyyəti' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 4', credit: 6, semester: 4, subjects: [
+        { code: '00532', name: 'Marketinq' },
+        { code: '00726', name: 'Reklam işi' },
+        { code: '00173', name: 'Beynəlxalq marketinq' },
+        { code: '00710', name: 'Qiymət siyasəti' },
+        { code: '00938', name: 'Xidmətlərin marketinqi' },
+        { code: '00943', name: 'Yeni məhsulların inkişaf etdirilməsi' },
+        { code: '00378', name: 'İctimaiyyətlə əlaqələr' },
+        { code: '00385', name: 'İdman marketinqi' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 5', credit: 6, semester: 3, subjects: [
+        { code: '00200', name: 'Biznesin əsasları' },
+        { code: '00517', name: 'Liderlik' },
+        { code: '00880', name: 'Təşkilat nəzəriyyəsi' },
+        { code: '00823', name: 'Sosial sahibkarlıq' },
+        { code: '00501', name: 'Könüllülük fəaliyyəti' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 6', credit: 7, semester: 8, subjects: [
+        { code: '00682', name: 'Proseslərin idarə edilməsi' },
+        { code: '00175', name: 'Beynəlxalq menecment' },
+        { code: '00610', name: 'Müasir idarəetmə metodları' },
+        { code: '00414', name: 'İnkişafın idarə edilməsi' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 7', credit: 8, semester: 5, subjects: [
+        { code: '00436', name: 'İqtisadi dinamikanın əsasları' },
+        { code: '00418', name: 'İnnovasiya iqtisadiyyatı' },
+        { code: '00345', name: 'Firmanın iqtisadiyyatı' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 8', credit: 4, semester: 5, subjects: [
+        { code: '00755', name: 'Sabit gəlirli qiymətli kağızlar və törəmə maliyyə alətləri' },
+        { code: '00611', name: 'Opsiyonlar və fyuçerslər' },
+        { code: '00759', name: 'Sahibkarlıq maliyyəsi və vençur kapitalı' },
+        { code: '00207', name: 'Büdcə sistemi' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 9', credit: 4, semester: 6, subjects: [
+        { code: '00530', name: 'Maliyyə təhlili' },
+        { code: '00795', name: 'Şirkət birləşmələri, satınalmalar və özəl kapital' },
+        { code: '00249', name: 'Dövlətin gəlir və xərclərinin idarə edilməsi' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 10', credit: 6, semester: 7, subjects: [
+        { code: '00139', name: 'Alternativ investisiyalar' },
+        { code: '00672', name: 'Portfelin idarə edilməsi' },
+        { code: '00527', name: 'Maliyyə modelləşdirilməsi' },
+        { code: '00180', name: 'Beynəlxalq vergitutma' },
+      ]},
+    ],
+
+    // Təcrübə
+    practice: [
+      { code: '00023', name: 'Karyera planlaması', credit: 5, semester: 2 },
+      { code: '00118', name: 'Yumşaq bacarıqlar (Soft skills)', credit: 9, semester: 2 },
+      { code: '00787', name: 'Sərt bacarıqlar (Hard skills)', credit: 10, semester: 8 },
+      { code: '00454', name: 'İstehsalat təcrübəsi / layihə', credit: 6, semester: 8 },
+    ],
+  },
+
+  /* ─── 6008008 – TURİZM İŞİNİN TƏŞKİLİ – TURIZM IŞININ TƏŞKILI (bakalavriat, 4 il / 8 semestr) ── */
+  tourism: {
+    name: 'Turizm işinin təşkili',
+    specialtyCode: '6008008',
+    // Qeyd: plan UNEC-in Zaqatala filialı üçündür. Xarici dil-1 və -2 fənlərində PDF-dəki saat və həftəlik yük rəqəmləri bir-birinə uyğun gəlmir, həftəlik dərs yükü sütunu əsas götürülüb.
+
+    // Ümumi fənlər
+    general: [
+      { code: '00004', name: 'Azərbaycan dilində işgüzar və akademik kommunikasiya', credit: 4, semester: 1 },
+      { code: '00005', name: 'Azərbaycanın tarixi', credit: 5, semester: 1 },
+      { code: '01222', name: 'Xarici dildə işgüzar və akademik kommunikasiya-1', credit: 4, semester: 1 },
+      { code: '00073', name: 'Xarici dildə işgüzar və akademik kommunikasiya-2', credit: 3, semester: 2, prereq: ['01222'] },
+      { code: '01035', name: 'Xarici dildə işgüzar və akademik kommunikasiya-3', credit: 4, semester: 3, prereq: ['00073'] },
+      { code: '01042', name: 'Xarici dildə işgüzar və akademik kommunikasiya-4', credit: 4, semester: 4, prereq: ['01035'] },
+    ],
+
+    // Seçmə fənlər (ümumi fənlər üzrə)
+    generalElectives: [
+      { title: 'Seçmə fənn (ümumi) – 1', credit: 3, semester: 3, subjects: [
+        { code: '00341', name: 'Fəlsəfə' },
+        { code: '00830', name: 'Sosiologiya' },
+        { code: '00149', name: 'AR Konstitusiyası və hüququn əsasları' },
+        { code: '00574', name: 'Məntiq' },
+        { code: '00317', name: 'Etika və estetika' },
+        { code: '00632', name: 'Multikulturalizmə giriş' },
+      ]},
+      { title: 'Seçmə fənn (ümumi) – 2', credit: 3, semester: 2, subjects: [
+        { code: '00402', name: 'İnformasiya texnologiyaları' },
+        { code: '00405', name: 'İnformasiyanın idarə edilməsi və məlumatlar bazasının yaradılması' },
+        { code: '00758', name: 'Sahibkarlığın əsasları və biznesə giriş' },
+        { code: '00671', name: 'Politologiya' },
+      ]},
+    ],
+
+    // İxtisas fənləri
+    major: [
+      { code: '00059_1', name: 'Turizmə giriş', credit: 5, semester: 1 },
+      { code: '00314', name: 'Turizmin coğrafiyası', credit: 5, semester: 3 },
+      { code: '00069_1', name: 'Biznes riyaziyyatı', credit: 6, semester: 1 },
+      { code: '00342', name: 'Biznes statistikası', credit: 5, semester: 2 },
+      { code: '00394', name: 'Menecmentin əsasları', credit: 5, semester: 2 },
+      { code: '00364', name: 'Marketinqin əsasları', credit: 5, semester: 4 },
+      { code: '00927', name: 'Mikroiqtisadiyyat', credit: 5, semester: 2 },
+      { code: '00489', name: 'Makroiqtisadiyyat', credit: 5, semester: 3 },
+      { code: '00763', name: 'Mühasibat uçotu', credit: 5, semester: 4 },
+      { code: '00968', name: 'İdarəetmə uçotu və korporativ qərarların verilməsi', credit: 5, semester: 6 },
+      { code: '00948', name: 'Turizmdə nəqliyyat', credit: 5, semester: 5 },
+      { code: '00956', name: 'Turizm məhsulunun hazırlanması', credit: 5, semester: 2 },
+      { code: '00769', name: 'Turizm siyasəti və planlaşdırılması', credit: 5, semester: 4 },
+      { code: '00955', name: 'Dayanıqlı turizm', credit: 4, semester: 5 },
+      { code: '00969', name: 'İnsan resurslarının idarə edilməsi', credit: 4, semester: 6 },
+      { code: '00970', name: 'Destinasiyaların idarə edilməsi', credit: 4, semester: 6 },
+      { code: '00715', name: 'Qonaqpərvərlik sahəsinin idarə edilməsi', credit: 5, semester: 4 },
+      { code: '00419', name: 'Turizm hüququ', credit: 5, semester: 3 },
+      { code: '00978', name: 'Turizmdə vasitəçilər', credit: 4, semester: 7 },
+      { code: '00400', name: 'Sosial tədqiqata giriş', credit: 4, semester: 2 },
+      { code: '00957', name: 'Keyfiyyət əsaslı tədqiqat metodları', credit: 5, semester: 5 },
+      { code: '00979', name: 'Kəmiyyət əsaslı tədqiqat metodları', credit: 4, semester: 7 },
+      { code: '00971', name: 'Bronlaşdırma sistemləri', credit: 4, semester: 6 },
+      { code: '00972', name: 'Turist davranışı və psixologiyası', credit: 5, semester: 6 },
+      { code: '00068', name: 'Mülki müdafiə və ilkin tibbi yardım', credit: 6, semester: 1 },
+    ],
+
+    // Seçmə fənlər (ixtisas fənləri üzrə)
+    majorElectives: [
+      { title: 'Seçmə fənn (ixtisas) – 1', credit: 8, semester: 3, subjects: [
+        { code: '00434', name: 'Dünya turizm bazarı' },
+        { code: '00583', name: 'Beynəlxalq və regional turizm bazarında Azərbaycan' },
+        { code: '00633', name: 'Beynəlxalq turizm bazarlarında inkişaf trendləri' },
+        { code: '00754', name: 'Müasir turizm bazarının beynəlxalq xarakteri' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 2', credit: 6, semester: 4, subjects: [
+        { code: '00800', name: 'Mədəniyyətlərarası səriştələr' },
+        { code: '00851', name: 'Türk dünyası mədəniyyətlərinə inteqrasiya' },
+        { code: '00875', name: 'Mədəni irs və turizm' },
+        { code: '00901', name: 'Tarixi və mədəni turizm' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 3', credit: 8, semester: 5, subjects: [
+        { code: '00958', name: 'Turizm iqtisadiyyatı' },
+        { code: '00959', name: 'Turizm və rəqəmsal iqtisadiyyat' },
+        { code: '00960', name: 'Turizmin sosial-iqtisadi inkişafa təsiri' },
+        { code: '00961', name: 'Maliyyə və investisiya' },
+        { code: '00962', name: 'Biznesdə keyfiyyət təminatı' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 4', credit: 8, semester: 5, subjects: [
+        { code: '00963', name: 'Turizmdə strateji idarəetmə' },
+        { code: '00964', name: 'Kollektivdə işin təşkili' },
+        { code: '00965', name: 'Müştəri məlumatı və paylama kanalının idarə olunması' },
+        { code: '00966', name: 'Maliyyə risklərinin idarə edilməsi' },
+        { code: '00967', name: 'İnvestisiyaların idarə edilməsi' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 5', credit: 8, semester: 6, subjects: [
+        { code: '00973', name: 'Müalicə və sağlamlıq turizminin təşkili' },
+        { code: '00974', name: 'Sanatoriya və kurort müəssisələrində işin təşkili' },
+        { code: '00975', name: 'Turizmdə sanitariya və gigiyena' },
+        { code: '00976', name: 'Balneologiya' },
+        { code: '00977', name: 'Kneziterapiya' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 6', credit: 8, semester: 7, subjects: [
+        { code: '00129', name: 'Macəra və idman turizmi' },
+        { code: '00399', name: 'Kruiz turizminin təşkili' },
+        { code: '00735', name: 'Qış turizminin təşkili xüsusiyyətləri' },
+        { code: '00791', name: 'Dağ turizminin təşkili xüsusiyyətləri' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 7', credit: 8, semester: 7, subjects: [
+        { code: '00256', name: 'Konqres, tədbirlər və konfransların təşkili' },
+        { code: '00141', name: 'Hadisə turizmi' },
+        { code: '00777', name: 'MİCE turizmi' },
+        { code: '00106', name: 'Alternativ turizm' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 8', credit: 6, semester: 7, subjects: [
+        { code: '00822', name: 'Turizmdə proqnozlaşdırma və planlaşdırma' },
+        { code: '00869', name: 'Turizm xidmətlərinin keyfiyyətinin yüksəldilməsi yolları' },
+        { code: '00315', name: 'Turizmdə marka (branding)' },
+        { code: '00575', name: 'Turizm marketinqi' },
+      ]},
+    ],
+
+    // Təcrübə
+    practice: [
+      { code: '00861', name: 'Təcrübə', credit: 21, semester: 8 },
+      { code: '00210', name: 'Buraxılış işi', credit: 9, semester: 8 },
+    ],
+  },
+
+  /* ─── 6008006 – SOSİAL İŞ – SOSIAL IŞ (bakalavriat, 4 il / 8 semestr) ── */
+  socialWork: {
+    name: 'Sosial iş',
+    specialtyCode: '6008006',
+
+    // Ümumi fənlər
+    general: [
+      { code: '00004', name: 'Azərbaycan dilində işgüzar və akademik kommunikasiya', credit: 4, semester: 2 },
+      { code: '00005', name: 'Azərbaycanın tarixi', credit: 5, semester: 1 },
+      { code: '01222', name: 'Xarici dildə işgüzar və akademik kommunikasiya-1', credit: 4, semester: 1 },
+      { code: '00073', name: 'Xarici dildə işgüzar və akademik kommunikasiya-2', credit: 3, semester: 2, prereq: ['01222'] },
+      { code: '00932', name: 'Xarici dildə işgüzar və akademik kommunikasiya-3', credit: 4, semester: 3, prereq: ['00073'] },
+      { code: '01042', name: 'Xarici dildə işgüzar və akademik kommunikasiya-4', credit: 4, semester: 4, prereq: ['00932'] },
+    ],
+
+    // Seçmə fənlər (ümumi fənlər üzrə)
+    generalElectives: [
+      { title: 'Seçmə fənn (ümumi) – 1', credit: 3, semester: 6, subjects: [
+        { code: '00614', name: 'Müasir təbiətşünaslıq konsepsiyası' },
+        { code: '00608', name: 'Müasir dövrün sosial problemləri' },
+        { code: '00350', name: 'Genderə giriş' },
+        { code: '00632', name: 'Multikulturalizmə giriş' },
+        { code: '00341', name: 'Fəlsəfə' },
+        { code: '00671', name: 'Politologiya' },
+        { code: '00574', name: 'Məntiq' },
+      ]},
+      { title: 'Seçmə fənn (ümumi) – 2', credit: 3, semester: 5, subjects: [
+        { code: '00441', name: 'İqtisadiyyat' },
+        { code: '00149', name: 'AR Konstitusiyası və hüququn əsasları' },
+        { code: '00422', name: 'İnsan hüquqları' },
+      ]},
+    ],
+
+    // İxtisas fənləri
+    major: [
+      { code: '00111', name: 'Sosial işdə riyazi metodlar', credit: 4, semester: 2 },
+      { code: '00045', name: 'Sosiologiya', credit: 4, semester: 1 },
+      { code: '00020', name: 'İnformatika', credit: 4, semester: 1 },
+      { code: '00097', name: 'Psixologiya', credit: 4, semester: 2 },
+      { code: '00644', name: 'Neyrobiologiya', credit: 4, semester: 5 },
+      { code: '00043', name: 'Sosial işə giriş', credit: 6, semester: 1 },
+      { code: '00109', name: 'Sosial iş təcrübəsində etik prinsiplər', credit: 6, semester: 2 },
+      { code: '00044', name: 'Sosial işin nəzəriyyəsi və təcrübəsi-1', credit: 7, semester: 1 },
+      { code: '00112', name: 'Sosial işin nəzəriyyəsi və təcrübəsi-2', credit: 4, semester: 2, prereq: ['00044'] },
+      { code: '00826', name: 'Sosial statistika', credit: 4, semester: 3 },
+      { code: '00819', name: 'Sosial proqramlar və xidmətlər', credit: 5, semester: 3 },
+      { code: '00824', name: 'Sosial siyasət', credit: 5, semester: 5 },
+      { code: '00343', name: 'Fərdlər, qruplar və ailələrlə sosial iş', credit: 6, semester: 4 },
+      { code: '00225', name: 'Defektologiya', credit: 6, semester: 5 },
+      { code: '00811', name: 'Sosial işdə tədqiqat metodları', credit: 9, semester: 6 },
+      { code: '00683', name: 'Psixi sağlamlıq', credit: 6, semester: 6 },
+      { code: '00158', name: 'Azərbaycanda sosial yardım sistemi', credit: 6, semester: 4 },
+      { code: '00714', name: 'Qloballaşma və beynəlxalq sosial iş', credit: 5, semester: 3 },
+      { code: '00820', name: 'Sosial psixologiya', credit: 6, semester: 3 },
+      { code: '00818', name: 'Sosial pedaqogika', credit: 5, semester: 4 },
+      { code: '00467', name: 'Keys menecment', credit: 6, semester: 7 },
+      { code: '00110', name: 'Sosial işdə idarəetmə', credit: 5, semester: 2 },
+      { code: '00034', name: 'Mülki müdafiə', credit: 3, semester: 4 },
+    ],
+
+    // Seçmə fənlər (ixtisas fənləri üzrə)
+    majorElectives: [
+      { title: 'Seçmə fənn (ixtisas) – 1', credit: 6, semester: 3, subjects: [
+        { code: '00816', name: 'Sosial işin təşkili mexanizmləri' },
+        { code: '00828', name: 'Sosial və iqtisadi mühitin sosial işə təsiri' },
+        { code: '00664', name: 'Peşə etikası' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 2', credit: 6, semester: 5, subjects: [
+        { code: '00595', name: 'Miqrantlarla sosial iş' },
+        { code: '00349', name: 'Gənclərlə sosial iş' },
+        { code: '00125', name: 'Ahıllarla sosial iş' },
+        { code: '00748', name: 'Rifah sistemləri' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 3', credit: 6, semester: 4, subjects: [
+        { code: '00126', name: 'Ailə və sosial iş' },
+        { code: '00881', name: 'Təşkilat və icmalarla sosial iş' },
+        { code: '00772', name: 'Şəhərsalma və şəhərlərdə sosial iş' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 4', credit: 6, semester: 7, subjects: [
+        { code: '00814', name: 'Sosial işin iqtisadiyyatı və idarə edilməsi' },
+        { code: '00810', name: 'Sosial işdə müasir yanaşmalar' },
+        { code: '00725', name: 'Regional sosial iş' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 5', credit: 6, semester: 7, subjects: [
+        { code: '00813', name: 'Sosial işin investisiya və maliyyə problemləri' },
+        { code: '00299', name: 'Əlilliyi olan insanlarla sosial iş' },
+        { code: '00950', name: 'Yerli icra orqanları və sosial iş' },
+        { code: '00420', name: 'İnsan davranışı və sosial mühit' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 6', credit: 6, semester: 7, subjects: [
+        { code: '00808', name: 'Sosial iş fəaliyyətində innovasiyalar' },
+        { code: '00911', name: 'Uşaq və yeniyetmələrlə sosial iş' },
+        { code: '00717', name: 'Qruplarla sosial iş' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 7', credit: 6, semester: 6, subjects: [
+        { code: '00807', name: 'Sosial iqtisadiyyat' },
+        { code: '00784', name: 'Sənayedə sosial iş' },
+        { code: '00823', name: 'Sosial sahibkarlıq' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 8', credit: 6, semester: 7, subjects: [
+        { code: '00812', name: 'Sosial işin inteqrasiya modeli' },
+        { code: '00686', name: 'Qaçqın və məcburi köçkünlərlə sosial iş' },
+        { code: '00127', name: 'Ailələrdə klinik sosial xidmət' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 9', credit: 6, semester: 5, subjects: [
+        { code: '00809', name: 'Sosial işdə məşğulluq və kadr potensialı' },
+        { code: '00227', name: 'Demoqrafiya və məşğulluq' },
+        { code: '00856', name: 'Təbii fəlakətlərdə sosial iş' },
+      ]},
+      { title: 'Seçmə fənn (ixtisas) – 10', credit: 6, semester: 6, subjects: [
+        { code: '00815', name: 'Sosial işin qiymətləndirilməsi' },
+        { code: '00829', name: 'Sosial-tibbi xidmətlər' },
+        { code: '00827', name: 'Sosial təminat sistemi' },
+      ]},
+    ],
+
+    // Təcrübə
     practice: [
       { code: '00862', name: 'Təcrübə', credit: 30, semester: 8 },
     ],
