@@ -283,7 +283,22 @@ function removeFavAndRefresh(filePath) {
 // 2) Ad ilə də yoxlanılır (eyni fənnin şifri ixtisaslara görə fərqli ola bilər, məs. Xarici dil;
 //    şifr yazılmamış fənlər də beləcə tapılır).
 // 3) Əl ilə təyin üçün pdfs.js-də (kursdan asılı olmayaraq):  majors: ["ecology", "statistics"]
+// 4) Tudifak fənləri heç bir ixtisasda və "Hamısı"-da görünmür — yalnız "Tudifak" çipində.
 const MAJOR_LS_KEY = 'subjects_major_filter';
+
+// ── Tudifak bölməsi ──────────────────────────────────────────
+// Bu fənlər ayrıca "Tudifak" çipində görünür; heç bir ixtisasda və "Hamısı"-da çıxmır.
+// Siyahı pdfs.js-dəki fənn adlarıdır. Yeni fənn əlavə etmək üçün ya bura yazın,
+// ya da pdfs.js-də həmin fənnə  tudifak: true  əlavə edin.
+const TUDIFAK_KEY   = 'tudifak';
+const TUDIFAK_LABEL = 'Tudifak';
+const TUDIFAK_SUBJECTS = [
+  'Liner cebir ve matematiksel analiz',
+  'Azerbaycanın tarihi',
+  'Bilgi işlem teknolojileri',
+  'Yönetim ve organizasyon',
+  'Olasılık teorisi ve matematiksel istatistik'
+];
 
 const MAJOR_I18N_KEYS = {
   economics: 'currSpecEconomics', finance: 'currSpecFinance', accounting: 'currSpecAccounting',
@@ -295,12 +310,9 @@ const MAJOR_I18N_KEYS = {
 };
 
 // Eyni fənnin fərqli yazılışları (pdfs.js adı → curriculum.js adı)
+// Qeyd: Türkcə adlı fənlər (Tudifak) buraya bağlanmır — onlar ayrıca bölmədədir.
 const SUBJECT_ALIASES = {
-  'Liner cebir ve matematiksel analiz': 'Xətti cəbr və riyazi analiz',
-  'Azerbaycanın tarihi': 'Azərbaycanın tarixi',
-  'Azərbaycan tarixi': 'Azərbaycanın tarixi',
-  'Bilgi işlem teknolojileri': 'İKT - baza komputer bilikləri',
-  'Olasılık teorisi ve matematiksel istatistik': 'Ehtimal nəzəriyyəsi və riyazi statistika'
+  'Azərbaycan tarixi': 'Azərbaycanın tarixi'
 };
 
 function normSubjectName(raw) {
@@ -374,7 +386,22 @@ function courseNumber(courseName) {
   return (n >= 1 && n <= 4) ? n : null;
 }
 
+let _tudifakSet = null;
+function isTudifakSubject(subjectName, subj) {
+  if (subj && subj.tudifak === true) return true;
+  if (!_tudifakSet) _tudifakSet = new Set(TUDIFAK_SUBJECTS.map(normSubjectName));
+  return _tudifakSet.has(normSubjectName(subjectName));
+}
+
+function isValidMajorKey(key) {
+  return key === 'all' || key === TUDIFAK_KEY ||
+    (typeof CURRICULUM_DATA !== 'undefined' && !!CURRICULUM_DATA[key]);
+}
+
 function subjectMatchesMajor(subjectName, subj, majorKey, courseNo) {
+  const tudifak = isTudifakSubject(subjectName, subj);
+  if (majorKey === TUDIFAK_KEY) return tudifak;   // Tudifak çipi: yalnız Tudifak fənləri
+  if (tudifak) return false;                      // Hamısı + ixtisaslar: Tudifak fənləri çıxmır
   if (!majorKey || majorKey === 'all') return true;
   if (Array.isArray(subj.majors) && subj.majors.includes(majorKey)) return true;
   const idx     = getMajorIndex(majorKey);
@@ -391,12 +418,12 @@ function codeBadgeHTML(code) {
 function getSelectedMajor() {
   let key = 'all';
   try { key = localStorage.getItem(MAJOR_LS_KEY) || 'all'; } catch (e) {}
-  if (key !== 'all' && !(typeof CURRICULUM_DATA !== 'undefined' && CURRICULUM_DATA[key])) key = 'all';
+  if (!isValidMajorKey(key)) key = 'all';
   return key;
 }
 
 function setMajor(key) {
-  if (key !== 'all' && !(typeof CURRICULUM_DATA !== 'undefined' && CURRICULUM_DATA[key])) key = 'all';
+  if (!isValidMajorKey(key)) key = 'all';
   try { localStorage.setItem(MAJOR_LS_KEY, key); } catch (e) {}
   if (typeof gtag === 'function') gtag('event', 'major_filter', { event_category: 'Filter', event_label: key });
   renderSubjects(currentCourse);
@@ -434,6 +461,7 @@ function renderMajorFilter() {
       ${chip('all', 'apps', t.majorAll)}
       ${Object.entries(CURRICULUM_DATA).map(([key, m]) =>
         chip(key, m.icon, t[MAJOR_I18N_KEYS[key]] || m.name)).join('')}
+      ${chip(TUDIFAK_KEY, 'translate', TUDIFAK_LABEL)}
     </div>`;
 
   // Seçilmiş çip görünməyibsə üfüqi sürüşdür (səhifəni sürüşdürmədən)
