@@ -299,13 +299,15 @@ const data = {
       "Mülki müdafiə": {
         type: "test", semester: 1, code: "00034", pdfs: [
           { name: "Mülki Müdafiə Q26", file: "mulkimudafieQ26.pdf", pdfType: "semester"},
-          { name: "Mülki Müdafiə Y24", file: "mulkimudafieY24.pdf", pdfType: "old"},
-          { name: "Mülki Müdafiə Q23", file: "mulkimudafieQ23.pdf", pdfType: "old"}
+          { name: "Mülki Müdafiə Y25", file: "mulkimudafieY25.pdf", pdfType: "semester"},
+          { name: "Mülki Müdafiə Y24", file: "mulkimudafieY24.pdf", pdfType: "semester"},
+          { name: "Mülki Müdafiə Q23", file: "mulkimudafieQ23.pdf", pdfType: "semester"}
         ]
       },
       "Statistika": {
         type: "yazili", semester: 1, code: "00837", pdfs: [
-          { name: "Statistika", file: "statistika.pdf", pdfType: "optional"}
+          { name: "Statistika", file: "statistika1.pdf", pdfType: "semester"},
+          { name: "Statistika", file: "statistikamesele1.pdf", pdfType: "task"}
         ]
       }
     }
@@ -332,7 +334,8 @@ const extrasData = {
     { name: "Robinson Crusoe - Azərbaycan", file: "robinsonazeA2.pdf", desc: "Robinson Crusoe Azərbaycan dilindəki versiyası", pdfType: "optional"}
   ],
   "3-cü kurs": [
-    { name: "Nümunə Material", file: "numune3.pdf", desc: "Əlavə qeydlər" }
+    { name: "Nümunə Material", file: "numune3.pdf", desc: "Əlavə qeydlər" },
+    { name: "Statistika", file: "statistikaelave1.pdf", desc: "Bəzi bir çox sualın cavabı var"}
   ],
   "4-cü kurs": [
     { name: "Nümunə Material", file: "numune4.pdf", desc: "Əlavə qeydlər" }
