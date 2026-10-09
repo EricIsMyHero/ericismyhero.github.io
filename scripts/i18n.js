@@ -288,6 +288,8 @@ const I18N = {
     currSpecStatistics: "Statistika",
     currSpecPublicAdmin: "Dövlət və bələdiyyə idarəetməsi",
     currSpecBusinessMgmt: "Biznesin idarə edilməsi",
+    currSpecTourism: "Turizm işinin təşkili",
+    currSpecSocialWork: "Sosial iş",
     currChangeBtn: "← Dəyiş",
     currTableSubject: "Fənn",
     currTableCredit: "Kredit",
@@ -302,7 +304,7 @@ const I18N = {
     currSem6: "VI Semestr, III Kurs",
     currSem7: "VII Semestr, IV Kurs",
     currSem8: "VIII Semestr, IV Kurs",
-    currGpaTip: "Bu məlumatlar bir-başa UNEC-in rəsmi saytından alınmışdır, məlumatlar 2024-cü ilə aiddir. Seçmə fənnlərin qarşısında mötərizə ilə fərqləndirilmiş fənlər keçirilməsi ehtimal olunan fənlərdir.",
+    currGpaTip: "Bu məlumatlar bir-başa UNEC-in rəsmi saytından alınmışdır, məlumatlar 2026-cı ilə aiddir. Seçmə fənnlərin qarşısında mötərizə ilə fərqləndirilmiş fənlər keçirilməsi ehtimal olunan fənlərdir.",
     currEmptyText: "Yuxarıdan öz ixtisasını seç",
 
     // ── Material İstəkləri ────────────────────────────────────
@@ -622,6 +624,8 @@ const I18N = {
     currSpecStatistics: "Statistics",
     currSpecPublicAdmin: "Public & Municipal Administration",
     currSpecBusinessMgmt: "Business Administration",
+    currSpecTourism: "Tourism Business Organization",
+    currSpecSocialWork: "Social Work",
     currChangeBtn: "← Change",
     currTableSubject: "Subject",
     currTableCredit: "Credit",
@@ -636,7 +640,7 @@ const I18N = {
     currSem6: "Semester VI, Year III",
     currSem7: "Semester VII, Year IV",
     currSem8: "Semester VIII, Year IV",
-    currGpaTip: "This data was taken directly from UNEC's official website and reflects 2024. Subjects marked in parentheses are elective subjects that may or may not be offered.",
+    currGpaTip: "This data was taken directly from UNEC's official website and reflects 2026. Subjects marked in parentheses are elective subjects that may or may not be offered.",
     currEmptyText: "Choose your specialty above",
 
     // ── Material Requests ────────────────────────────────────
