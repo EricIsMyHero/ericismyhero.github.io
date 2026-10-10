@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Crawl-delay for polite bots
+Crawl-delay: 10
+
+# Block private/admin paths
+Disallow: /admin-panel/
+Disallow: /api/
+Disallow: /.env
+Disallow: /scripts/firebase-config.js
+
+# Sitemap location
+Sitemap: https://unecstudentshub.com/sitemap.xml
