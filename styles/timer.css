@@ -1,0 +1,425 @@
+/* ============================================================
+   TIMER.CSS — Pomodoro + İmtahan Geri Sayımı
+   ============================================================ */
+
+.timer-container {
+  padding: 16px 16px 96px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* ── Section headers — uses unified .section-label from base.css ── */
+.timer-section-title {
+  margin: 24px 0 10px;
+}
+
+/* ── Pomodoro Card ────────────────────────────────────────── */
+.pomodoro-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 28px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Mode tabs */
+.pomodoro-modes {
+  display: flex;
+  gap: 6px;
+  background: var(--surface2, #f1f5f9);
+  border-radius: 12px;
+  padding: 4px;
+  width: 100%;
+}
+.pomodoro-mode-btn {
+  flex: 1;
+  padding: 8px 6px;
+  font-size: .75rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all .18s;
+  white-space: nowrap;
+}
+.pomodoro-mode-btn.active {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(99,102,241,.25);
+}
+
+/* Circular timer */
+.pomodoro-circle-wrap {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+.pomodoro-svg {
+  transform: rotate(-90deg);
+  width: 200px;
+  height: 200px;
+}
+.pomodoro-track {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 8;
+}
+.pomodoro-progress {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 565.48; /* 2π × 90 */
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset .5s linear, stroke .3s;
+}
+.pomodoro-progress.break-mode {
+  stroke: #22c55e;
+}
+.pomodoro-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+.pomodoro-time {
+  font-size: 2.6rem;
+  font-weight: 900;
+  letter-spacing: -.02em;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.pomodoro-label {
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+/* Session dots */
+.pomodoro-sessions {
+  display: flex;
+  gap: 8px;
+}
+.pomodoro-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: background .3s;
+}
+.pomodoro-dot.done {
+  background: var(--accent);
+}
+
+/* Controls */
+.pomodoro-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.pomodoro-btn-secondary {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all .18s;
+  font-size: 1.1rem;
+}
+.pomodoro-btn-secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.pomodoro-btn-main {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(99,102,241,.35);
+  transition: transform .15s, box-shadow .15s;
+  font-size: 1.5rem;
+}
+.pomodoro-btn-main:hover {
+  transform: scale(1.07);
+  box-shadow: 0 6px 20px rgba(99,102,241,.45);
+}
+.pomodoro-btn-main:active {
+  transform: scale(.96);
+}
+
+/* Stats row */
+.pomodoro-stats {
+  display: flex;
+  gap: 0;
+  width: 100%;
+  background: var(--surface2, #f8fafc);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.pomodoro-stat {
+  flex: 1;
+  padding: 10px 8px;
+  text-align: center;
+  border-right: 1px solid var(--border);
+}
+.pomodoro-stat:last-child { border-right: none; }
+.pomodoro-stat-val {
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: var(--text);
+}
+.pomodoro-stat-lbl {
+  font-size: .65rem;
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-top: 2px;
+}
+
+/* ── Exam Countdown Cards ─────────────────────────────────── */
+.exam-add-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1.5px dashed var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .18s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.exam-add-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(99,102,241,.04);
+}
+
+/* Add exam form */
+.exam-form {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+.exam-form.hidden { display: none; }
+.exam-form-row {
+  display: flex;
+  gap: 8px;
+}
+.exam-form-input {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  background: var(--surface2, #f8fafc);
+  color: var(--text);
+  font-size: .85rem;
+  outline: none;
+  transition: border-color .18s;
+}
+.exam-form-input:focus { border-color: var(--accent); }
+.exam-form-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.exam-form-submit {
+  padding: 9px 18px;
+  border-radius: 10px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-size: .82rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.exam-form-cancel {
+  padding: 9px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-size: .82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Exam list */
+.exam-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.exam-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+}
+.exam-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--accent);
+  border-radius: 4px 0 0 4px;
+}
+.exam-card.exam-urgent::before { background: #ef4444; }
+.exam-card.exam-soon::before   { background: #f59e0b; }
+.exam-card.exam-ok::before     { background: #22c55e; }
+.exam-card.exam-past::before   { background: var(--muted); opacity: .4; }
+
+.exam-countdown {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 52px;
+}
+.exam-days {
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--text);
+}
+.exam-days-lbl {
+  font-size: .62rem;
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.exam-card.exam-urgent .exam-days { color: #ef4444; }
+.exam-card.exam-soon   .exam-days { color: #f59e0b; }
+.exam-card.exam-ok     .exam-days { color: #22c55e; }
+.exam-card.exam-past   .exam-days { color: var(--muted); }
+
+.exam-info {
+  flex: 1;
+  min-width: 0;
+}
+.exam-name {
+  font-size: .9rem;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.exam-date-str {
+  font-size: .75rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.exam-badge {
+  font-size: .68rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.exam-badge-urgent {
+  background: rgba(239,68,68,.12);
+  color: #ef4444;
+}
+.exam-badge-soon {
+  background: rgba(245,158,11,.12);
+  color: #f59e0b;
+}
+.exam-badge-ok {
+  background: rgba(34,197,94,.12);
+  color: #22c55e;
+}
+.exam-badge-past {
+  background: var(--surface2, #f1f5f9);
+  color: var(--muted);
+}
+
+.exam-delete-btn {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: color .18s, background .18s;
+  opacity: .5;
+}
+.exam-delete-btn:hover {
+  opacity: 1;
+  color: #ef4444;
+  background: rgba(239,68,68,.08);
+}
+
+.exam-empty {
+  text-align: center;
+  color: var(--muted);
+  font-size: .85rem;
+  padding: 24px 0 8px;
+}
+
+/* ── Notification permission banner ─────────────────────────  */
+.timer-notif-banner {
+  background: rgba(99,102,241,.08);
+  border: 1px solid rgba(99,102,241,.2);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: .8rem;
+  color: var(--text);
+}
+.timer-notif-banner.hidden { display: none; }
+.timer-notif-btn {
+  margin-left: auto;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-size: .75rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}

@@ -1,0 +1,295 @@
+/* ============================================================
+   REQUESTS.CSS — Material İstəkləri
+   ============================================================ */
+
+#main-requests .container { max-width: 600px; padding-bottom: 100px; }
+
+/* ── Hero ──────────────────────────────────────────────────── */
+.req-hero { text-align: center; padding: 28px 0 20px; }
+
+.req-page-badge {
+  display: inline-block;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--accent2);
+  background: var(--glow);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 14px;
+  margin-bottom: 14px;
+}
+
+.req-page-title {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--text);
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+.req-page-title span {
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.req-hero-sub {
+  font-size: .9rem;
+  color: var(--muted);
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+/* ── Yeni istək düyməsi ────────────────────────────────────── */
+.req-new-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  font-size: .92rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 16px;
+  transition: opacity 0.2s;
+}
+.req-new-btn:hover { opacity: .9; }
+
+/* ── Form ──────────────────────────────────────────────────── */
+.req-form {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.req-form-textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 12px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  font-size: .88rem;
+  font-family: inherit;
+  resize: vertical;
+  outline: none;
+}
+.req-form-textarea:focus { border-color: var(--accent); }
+
+.req-form-row {
+  display: flex;
+  gap: 8px;
+}
+
+.req-form-select,
+.req-form-input {
+  flex: 1;
+  min-width: 0;
+  padding: 9px 12px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-size: .82rem;
+  font-family: inherit;
+  outline: none;
+}
+.req-form-select { cursor: pointer; }
+.req-form-select:focus,
+.req-form-input:focus { border-color: var(--accent); }
+
+.req-form-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+.req-form-submit {
+  flex: 1;
+  padding: 11px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: .85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.req-form-submit:disabled { opacity: .6; cursor: not-allowed; }
+.req-form-cancel {
+  padding: 11px 16px;
+  background: transparent;
+  color: var(--muted);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-size: .85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.req-form-cancel:hover { border-color: var(--muted); color: var(--text); }
+
+/* ── Filtrlər ──────────────────────────────────────────────── */
+.req-filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.req-filter-btn {
+  padding: 7px 14px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--muted);
+  font-size: .78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.req-filter-btn:hover { border-color: var(--accent); }
+.req-filter-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* ── Siyahı ────────────────────────────────────────────────── */
+.req-list { display: flex; flex-direction: column; gap: 10px; }
+
+.req-loading,
+.req-empty {
+  text-align: center;
+  color: var(--muted);
+  font-size: .88rem;
+  padding: 36px 0;
+}
+
+.req-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+.req-item-fulfilled { opacity: .6; }
+
+.req-item-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.req-avatar {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent3));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .82rem;
+  font-weight: 700;
+}
+
+.req-meta { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.req-name { font-size: .84rem; font-weight: 700; color: var(--text); }
+.req-time { font-size: .72rem; color: var(--muted); }
+
+.req-status {
+  flex-shrink: 0;
+  font-size: .72rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.req-status-open      { background: rgba(34,197,94,.12); color: #22c55e; }
+.req-status-fulfilled { background: rgba(100,116,139,.15); color: var(--muted); }
+
+.req-text {
+  font-size: .88rem;
+  color: var(--text);
+  line-height: 1.5;
+  margin-bottom: 10px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.req-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.req-tag {
+  font-size: .7rem;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 20px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--accent2);
+}
+
+.req-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.req-upvote-btn {
+  font-size: .78rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.req-upvote-btn:hover { border-color: var(--accent); color: var(--text); }
+.req-upvote-btn.active {
+  background: var(--glow);
+  border-color: var(--accent);
+  color: var(--accent2);
+}
+
+.req-fulfill-btn {
+  font-size: .78rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: rgba(34,197,94,.1);
+  border: 1px solid rgba(34,197,94,.3);
+  color: #22c55e;
+  cursor: pointer;
+}
+.req-fulfill-btn:hover { background: rgba(34,197,94,.2); }
+
+.req-delete-btn {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: .85rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.req-delete-btn:hover { color: #ef4444; background: rgba(239,68,68,.1); }
+
+@media (max-width: 480px) {
+  .req-page-title { font-size: 1.35rem; }
+  .req-form-row { flex-direction: column; }
+}
