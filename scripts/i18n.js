@@ -48,7 +48,7 @@ const I18N = {
     statPdfs: "PDF",
     noFavorites: "Hələ seçilən PDF yoxdur. ★ basaraq əlavə edin.",
     noExtras: "Bu kurs üçün hələ əlavə material yoxdur.",
-    footer: "Bu sayt rəsmi deyildir. Yalnız tələbələrin imtahan zamanı materialları daha rahat və əlçatan tapması üçün hazırlanıb.",
+    footer: "UNEC Students Hub müstəqil tələbə təşəbbüsüdür. Platforma UNEC tərəfindən idarə olunmur, universitetlə rəsmi əlaqəsi yoxdur və universiteti rəsmi şəkildə təmsil etmir.",
     semesterFall: "Payız Semestri",
     semesterSpring: "Yaz Semestri",
     majorFilterLabel: "İxtisas",
