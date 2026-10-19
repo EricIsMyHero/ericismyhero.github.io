@@ -1,0 +1,20 @@
+/* ================================================================
+   LEGACY.CSS — Köhnə (dəyişməyən məntiqli) ekranların yeni dizayn sistemi ilə uyğunlaşdırılması:
+   Testlər, Dashboard, Taymer, Material İstəkləri, İxtisas Planı, Dəstək, Auth modalı,
+   Təşəkkürlər / Haqqımızda / Məxfilik / Şərtlər modalları, PWA banneri, AI köməkçi.
+   Bu fayl ən sonda yüklənir; yalnız vizual qaydalar (rəng, radius, boşluq) dəyişir.
+   ================================================================ */
+
+/* Köhnə ekranların ortaq üst sətri (geri + başlıq) */
+.legacy-head { max-width: 1180px; margin: 0 auto; padding: 0 var(--page-gutter); }
+.page-head-title { flex: 1; margin: 0; font-size: 1.375rem; font-weight: 800; letter-spacing: -0.01em; }
+
+/* Görünməyən "Dəstək ol" toast-ı klaviatura fokusuna düşməsin (yalnız göstərilərkən əlçatan) */
+.support-toast:not(.st-visible) { visibility: hidden; transition: top 0.45s cubic-bezier(0.34,1.56,0.64,1), visibility 0s linear 0.45s; }
+.support-toast.st-visible { visibility: visible; }
+
+@media (max-width: 480px) {
+  .support-toast { padding: 10px 12px; gap: 8px; width: calc(100vw - 32px); max-width: 420px; }
+  .st-left { gap: 8px; }
+  .st-title, .st-sub { white-space: normal; overflow: visible; text-overflow: clip; line-height: 1.25; }
+}
