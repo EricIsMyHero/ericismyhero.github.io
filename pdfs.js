@@ -383,12 +383,13 @@ const data = {
 
 const extrasData = {
   "1-ci kurs": [
+    { name: "Robinson Crusoe - Azərbaycan", file: "robinsonazeA2.pdf", desc: "Robinson Crusoe Azərbaycan dilindəki versiyası", pdfType: "optional"},
     { name: "Ehtimal nəzəriyyəsi və riyazi statistika - Kollekvium", file: "enrskollektaplarla1.pdf", desc: "Bir çox testin yanında həlli yolu var", pdfType: "optional"},
     { name: "Azərbaycan dilində işgüzar və akademik kommunikasiya - Test", file: "adiaktest1.pdf", desc: "ADİAK fənninə aid test", pdfType: "optional"},
     { name: "Ümumi kimya - 20 ballar", file: "umumikimya20ballar.pdf", desc: "Ümumi Kimya fənninin 20 ballıq sualları", pdfType: "optional"}
   ],
   "2-ci kurs": [
-    { name: "Robinson Crusoe - Azərbaycan", file: "robinsonazeA2.pdf", desc: "Robinson Crusoe Azərbaycan dilindəki versiyası", pdfType: "optional"}
+    { name: "Forrest Gump - Azərbaycan", file: "forrestgumpB1.pdf", desc: "Forrest Gump Azərbaycan dilindəki versiyası", pdfType: "optional"}
   ],
   "3-cü kurs": [
     { name: "Sosial sahələrin iqtisadiyyatı", file: "sosialiqtelave1.pdf", desc: "Əlavə qeydlər", pdfType: "optional"},
