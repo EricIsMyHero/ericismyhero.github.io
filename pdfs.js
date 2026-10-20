@@ -331,7 +331,7 @@ const data = {
         ]
       },
       "Beynəlxalq iqtisadiyyat": {
-        type: "test", semester: 1, code: "00171", pdfs: [
+        type: "yazili", semester: 1, code: "00171", pdfs: [
           { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqt1.pdf", pdfType: "semester"},
           { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqt2.pdf", pdfType: "semester"},
           { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqt3.pdf", pdfType: "semester"},
