@@ -322,12 +322,12 @@ const data = {
         ]
       },
       "Menecment": {
-        type: "yazili", semester: 1, code: "00031", pdfs: [
-          { name: "Menecment", file: "menecment1.pdf", pdfType: "semester"},
-          { name: "Menecment", file: "menecment2.pdf", pdfType: "semester"},
-          { name: "Menecment", file: "menecment3.pdf", pdfType: "semester"},
-          { name: "Menecment", file: "menecment4.pdf", pdfType: "semester"},
-          { name: "Menecment", file: "menecmentkollek1.pdf", pdfType: "midterm"}
+        type: "test", semester: 1, code: "00031", pdfs: [
+          { name: "Menecment", file: "menecment1.pdf", pdfType: "old"},
+          { name: "Menecment", file: "menecment2.pdf", pdfType: "old"},
+          { name: "Menecment", file: "menecment3.pdf", pdfType: "old"},
+          { name: "Menecment", file: "menecment4.pdf", pdfType: "old"},
+          { name: "Menecment", file: "menecmentkollek1.pdf", pdfType: "old"}
         ]
       },
       "Beynəlxalq iqtisadiyyat": {
