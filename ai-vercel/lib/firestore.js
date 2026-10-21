@@ -1,9 +1,10 @@
 // lib/firestore.js
-// Firestore REST (service account) — yalnız server tərəfdə, ödəniş qeydləri üçün.
-// Brauzer bu kolleksiyalara birbaşa yazmır; qaydalar üçün PAYMENTS-SETUP.md-ə bax.
+// Firestore REST (service account) — yalnız server tərəfdə, ödəniş qeydləri və push abunəçiləri üçün.
+// Brauzer bu kolleksiyalara birbaşa yazmır; qaydalar üçün PAYMENTS-SETUP.md və PUSH-SETUP.md-ə bax.
 import crypto from 'node:crypto';
 
-const SCOPE = 'https://www.googleapis.com/auth/datastore';
+// Eyni access token həm Firestore-a (datastore), həm də FCM push göndərişinə (firebase.messaging) yarayır.
+const SCOPE = 'https://www.googleapis.com/auth/datastore https://www.googleapis.com/auth/firebase.messaging';
 let _tok = { value: null, exp: 0 };
 
 export function serviceAccount(env = process.env) {
@@ -117,4 +118,28 @@ export async function runQuery(structuredQuery, env = process.env) {
   if (!res.ok) throw new Error(`Firestore sorğu xətası: ${res.status}`);
   const rows = await res.json();
   return rows.filter(r => r.document).map(r => docResult(r.document));
+}
+
+/** Sənədi tam əvəz et; yoxdursa yarat (upsert). */
+export async function setDoc(path, data, env = process.env) {
+  const res = await fetch(`${base(env)}/${path}`, await authed(env, { method: 'PATCH', body: JSON.stringify({ fields: toFields(data) }) }));
+  if (!res.ok) throw new Error(`Firestore yazma xətası: ${res.status}`);
+  return docResult(await res.json());
+}
+
+/** Sənədi sil (olmayan sənəd xəta sayılmır). */
+export async function deleteDoc(path, env = process.env) {
+  const res = await fetch(`${base(env)}/${path}`, await authed(env, { method: 'DELETE' }));
+  if (!res.ok && res.status !== 404) throw new Error(`Firestore silmə xətası: ${res.status}`);
+  return true;
+}
+
+/** Kolleksiyanı səhifə-səhifə oxu → { docs: [{ id, data }], nextPageToken } */
+export async function listDocs(collection, { pageSize = 300, pageToken } = {}, env = process.env) {
+  const q = new URLSearchParams({ pageSize: String(pageSize) });
+  if (pageToken) q.set('pageToken', pageToken);
+  const res = await fetch(`${base(env)}/${collection}?${q}`, await authed(env));
+  if (!res.ok) throw new Error(`Firestore siyahı xətası: ${res.status}`);
+  const json = await res.json();
+  return { docs: (json.documents || []).map(docResult), nextPageToken: json.nextPageToken || null };
 }
