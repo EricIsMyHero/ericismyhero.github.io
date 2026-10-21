@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UNEC Admin Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* Ana səhifə ilə eyni dizayn kodu (bax: styles/base.css :root) */
+    :root {
+      --bg:       #020a18;
+      --surface:  #061428;
+      --surface2: #0a1e3a;
+      --border:   rgba(0,102,204,0.18);
+      --accent:   #0066CC;
+      --accent2:  #4DA6FF;
+      --text:     #e8eef8;
+      --muted:    #5a7a9e;
+      --green:    #22c55e;
+      --red:      #ef4444;
+      --yellow:   #f59e0b;
+    }
+
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal; font-style: normal;
+      font-size: inherit; line-height: 1;
+      letter-spacing: normal; text-transform: none;
+      display: inline-block; white-space: nowrap; word-wrap: normal;
+      direction: ltr; -webkit-font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+      font-variation-settings: 'FILL' 0, 'wght' 450, 'GRAD' 0, 'opsz' 24;
+      vertical-align: middle;
+    }
+    .msi { font-size: 1.05em; vertical-align: -0.22em; margin-right: 0.2em; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Arial Nova', 'Nunito', 'Arial', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ── Login screen ─── */
+    #login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .login-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px 36px;
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+    }
+    .login-logo {
+      font-size: 2.5rem;
+      margin-bottom: 8px;
+    }
+    .login-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .login-sub {
+      color: var(--muted);
+      font-size: .82rem;
+      margin-bottom: 28px;
+    }
+    .login-input {
+      width: 100%;
+      padding: 13px 16px;
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: .95rem;
+      outline: none;
+      margin-bottom: 12px;
+      transition: border-color .18s;
+      text-align: center;
+      letter-spacing: .1em;
+    }
+    .login-input:focus { border-color: var(--accent); }
+    .login-btn {
+      width: 100%;
+      padding: 13px;
+      background: var(--accent);
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-size: .95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity .18s;
+    }
+    .login-btn:hover { opacity: .88; }
+    .login-error {
+      color: var(--red);
+      font-size: .8rem;
+      margin-top: 10px;
+      min-height: 18px;
+    }
+
+    /* ── App layout ─── */
+    #app { display: none; }
+
+    .sidebar {
+      position: fixed;
+      left: 0; top: 0; bottom: 0;
+      width: 220px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      z-index: 100;
+    }
+    .sidebar-logo {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text);
+      padding: 0 8px 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 8px;
+    }
+    .sidebar-logo span { color: var(--accent); }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--muted);
+      transition: all .18s;
+      border: none;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+    }
+    .nav-item:hover { background: var(--surface2); color: var(--text); }
+    .nav-item.active { background: rgba(99,102,241,.15); color: var(--accent); }
+    .nav-item .ni { font-size: 1.1rem; }
+    .sidebar-bottom {
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .logout-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--red);
+      border: none;
+      background: transparent;
+      width: 100%;
+    }
+    .logout-btn:hover { background: rgba(239,68,68,.08); }
+
+    .main-content {
+      margin-left: 220px;
+      padding: 28px;
+      min-height: 100vh;
+    }
+
+    /* ── Topbar ─── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+    }
+    .page-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
+    .refresh-btn {
+      padding: 8px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--muted);
+      font-size: .8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .18s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .refresh-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── Tab panels ─── */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── Summary cards ─── */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .summary-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .summary-val {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--text);
+    }
+    .summary-lbl {
+      font-size: .72rem;
+      color: var(--muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      margin-top: 4px;
+    }
+    .summary-card .accent { color: var(--accent); }
+    .summary-card .green  { color: var(--green); }
+    .summary-card .yellow { color: var(--yellow); }
+    .summary-card .red    { color: var(--red); }
+
+    /* ── Section ─── */
+    .section { margin-bottom: 32px; }
+    .section-title {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    /* ── Table ─── */
+    .table-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .83rem;
+    }
+    thead {
+      background: var(--surface2);
+    }
+    th {
+      padding: 12px 16px;
+      text-align: left;
+      font-size: .68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    td {
+      padding: 11px 16px;
+      border-top: 1px solid var(--border);
+      color: var(--text);
+    }
+    tr:hover td { background: var(--surface2); }
+    .td-muted { color: var(--muted); font-size: .78rem; }
+    .td-bold { font-weight: 700; }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: .7rem;
+      font-weight: 700;
+    }
+    .badge-green  { background: rgba(34,197,94,.15);  color: var(--green); }
+    .badge-yellow { background: rgba(245,158,11,.15); color: var(--yellow); }
+    .badge-red    { background: rgba(239,68,68,.15);  color: var(--red); }
+    .badge-blue   { background: rgba(99,102,241,.15); color: var(--accent2); }
+    .badge-gray   { background: var(--surface2); color: var(--muted); }
+
+    /* ── Bar chart ─── */
+    .bar-chart {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .bar-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .bar-row:last-child { margin-bottom: 0; }
+    .bar-name {
+      width: 180px;
+      font-size: .78rem;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex-shrink: 0;
+    }
+    .bar-track {
+      flex: 1;
+      height: 8px;
+      background: var(--surface2);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 20px;
+      transition: width .5s;
+    }
+    .bar-count {
+      width: 36px;
+      text-align: right;
+      font-size: .78rem;
+      font-weight: 700;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
+    /* ── Chat messages ─── */
+    .chat-subject-group {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+    .chat-subject-header {
+      padding: 14px 18px;
+      background: var(--surface2);
+      font-weight: 700;
+      font-size: .88rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+    }
+    .chat-subject-header:hover { background: var(--border); }
+    .chat-msg-list { display: none; }
+    .chat-msg-list.open { display: block; }
+    .chat-msg {
+      padding: 12px 18px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .chat-msg:hover { background: var(--surface2); }
+    .chat-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .75rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .chat-msg-body { flex: 1; }
+    .chat-msg-meta {
+      font-size: .7rem;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+    .chat-msg-meta strong { color: var(--text); }
+    .chat-msg-text {
+      font-size: .83rem;
+      color: var(--text);
+      line-height: 1.45;
+    }
+    .chat-msg.deleted .chat-msg-text {
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* ── Search bar ─── */
+    .search-bar {
+      width: 100%;
+      padding: 11px 16px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: .85rem;
+      outline: none;
+      margin-bottom: 16px;
+      transition: border-color .18s;
+    }
+    .search-bar:focus { border-color: var(--accent); }
+
+    /* ── Loading ─── */
+    .loading {
+      padding: 48px;
+      text-align: center;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+    .spinner {
+      width: 28px;
+      height: 28px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      margin: 0 auto 12px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Premium kod generatoru ─── */
+    .premium-gen-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .premium-plan-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+    }
+    .premium-plan-name {
+      font-size: .8rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+    .premium-plan-price {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: var(--accent2);
+      margin-bottom: 12px;
+    }
+    .premium-plan-card input[type="number"] {
+      width: 100%;
+      padding: 8px 10px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: .8rem;
+      margin-bottom: 8px;
+      outline: none;
+    }
+    .premium-plan-card button {
+      width: 100%;
+      padding: 9px;
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-weight: 700;
+      font-size: .78rem;
+      cursor: pointer;
+      transition: opacity .18s;
+    }
+    .premium-plan-card button:hover { opacity: .87; }
+    .premium-plan-result {
+      margin-top: 10px;
+      font-size: .72rem;
+      color: var(--muted);
+      word-break: break-all;
+      line-height: 1.6;
+    }
+    .premium-plan-result code {
+      display: block;
+      background: var(--surface2);
+      border-radius: 6px;
+      padding: 4px 8px;
+      margin-top: 4px;
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    /* ── Push bildirişlər ─── */
+    .push-form {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      max-width: 640px;
+    }
+    .push-form-head { font-size: .95rem; font-weight: 800; margin-bottom: 4px; }
+    .push-form label {
+      display: flex;
+      justify-content: space-between;
+      font-size: .72rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin: 14px 0 6px;
+    }
+    .push-form input, .push-form textarea, .push-form select {
+      width: 100%;
+      padding: 10px 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: .85rem;
+      font-family: inherit;
+      outline: none;
+    }
+    .push-form textarea { resize: vertical; }
+    .push-form input:focus, .push-form textarea:focus, .push-form select:focus { border-color: var(--accent); }
+    .push-form #push-email { margin-top: 8px; }
+    .push-preview {
+      margin-top: 16px;
+      padding: 12px 14px;
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+    }
+    .push-preview-lbl { font-size: .66rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 6px; }
+    .push-preview b { display: block; font-size: .85rem; }
+    .push-preview span { display: block; font-size: .78rem; color: var(--muted); white-space: pre-wrap; margin-top: 2px; }
+    .push-actions { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+    .push-btn {
+      padding: 10px 18px;
+      background: var(--accent);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-weight: 700;
+      font-size: .8rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity .18s;
+    }
+    .push-btn:hover { opacity: .87; }
+    .push-btn.secondary { background: var(--surface2); border: 1px solid var(--border); color: var(--text); }
+    .push-btn:disabled { opacity: .5; cursor: not-allowed; }
+    .push-result { margin-top: 14px; font-size: .8rem; line-height: 1.6; color: var(--muted); white-space: pre-line; }
+    .push-result.ok  { color: var(--green); }
+    .push-result.err { color: var(--red); }
+
+    /* ── Responsive ─── */
+    @media (max-width: 768px) {
+      .sidebar { width: 60px; padding: 16px 8px; }
+      .sidebar-logo, .nav-item span, .logout-btn span { display: none; }
+      .nav-item { justify-content: center; padding: 12px; }
+      .main-content { margin-left: 60px; padding: 16px; }
+      .bar-name { width: 100px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── LOGIN ─────────────────────────────────────────────────── -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo"><span class="material-symbols-outlined">shield</span></div>
+    <div class="login-title">Admin Panel</div>
+    <div class="login-sub">UNEC Tələbə Platforması</div>
+    <input class="login-input" id="admin-key-input"
+           type="password" placeholder="Admin kodu"
+           onkeydown="if(event.key==='Enter') doLogin()">
+    <button class="login-btn" onclick="doLogin()">Daxil ol</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
+<!-- ── APP ───────────────────────────────────────────────────── -->
+<div id="app">
+
+  <div class="sidebar">
+    <div class="sidebar-logo"><span class="material-symbols-outlined msi">shield</span><span>UNEC</span> Admin</div>
+
+    <button class="nav-item active" onclick="showTab('overview')" id="nav-overview">
+      <span class="ni"><span class="material-symbols-outlined">bar_chart</span></span><span>Ümumi baxış</span>
+    </button>
+    <button class="nav-item" onclick="showTab('users')" id="nav-users">
+      <span class="ni"><span class="material-symbols-outlined">group</span></span><span>İstifadəçilər</span>
+    </button>
+    <button class="nav-item" onclick="showTab('chats')" id="nav-chats">
+      <span class="ni"><span class="material-symbols-outlined">chat_bubble</span></span><span>Chat mesajları</span>
+    </button>
+    <button class="nav-item" onclick="showTab('requests')" id="nav-requests">
+      <span class="ni"><span class="material-symbols-outlined">assignment</span></span><span>Material istəkləri</span>
+    </button>
+    <button class="nav-item" onclick="showTab('pdfs')" id="nav-pdfs">
+      <span class="ni"><span class="material-symbols-outlined">description</span></span><span>PDF statistika</span>
+    </button>
+    <button class="nav-item" onclick="showTab('premium')" id="nav-premium">
+      <span class="ni"><span class="material-symbols-outlined">workspace_premium</span></span><span>Premium Kodlar</span>
+    </button>
+    <button class="nav-item" onclick="showTab('push')" id="nav-push">
+      <span class="ni"><span class="material-symbols-outlined">notifications</span></span><span>Bildirişlər</span>
+    </button>
+
+    <div class="sidebar-bottom">
+      <button class="logout-btn" onclick="doLogout()">
+        <span><span class="material-symbols-outlined">logout</span></span><span>Çıxış</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="topbar">
+      <div class="page-title" id="page-title">Ümumi baxış</div>
+      <button class="refresh-btn" onclick="refreshCurrent()"><span class="material-symbols-outlined msi">refresh</span> Yenilə</button>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div class="tab-panel active" id="panel-overview">
+      <div id="overview-content"><div class="loading"><div class="spinner"></div>Yüklənir...</div></div>
+    </div>
+
+    <!-- USERS -->
+    <div class="tab-panel" id="panel-users">
+      <input class="search-bar" id="users-search" placeholder="Ad, email, fakültə axtar..." oninput="filterUsers()">
+      <div id="users-content"><div class="loading"><div class="spinner"></div>Yüklənir...</div></div>
+    </div>
+
+    <!-- CHATS -->
+    <div class="tab-panel" id="panel-chats">
+      <input class="search-bar" id="chats-search" placeholder="Mesaj, istifadəçi axtar..." oninput="filterChats()">
+      <div id="chats-content"><div class="loading"><div class="spinner"></div>Yüklənir...</div></div>
+    </div>
+
+    <!-- REQUESTS -->
+    <div class="tab-panel" id="panel-requests">
+      <input class="search-bar" id="requests-search" placeholder="İstək axtar..." oninput="filterRequests()">
+      <div id="requests-content"><div class="loading"><div class="spinner"></div>Yüklənir...</div></div>
+    </div>
+
+    <!-- PDFS -->
+    <div class="tab-panel" id="panel-pdfs">
+      <div id="pdfs-content"><div class="loading"><div class="spinner"></div>Yüklənir...</div></div>
+    </div>
+
+    <!-- PREMIUM -->
+    <div class="tab-panel" id="panel-premium">
+      <div class="premium-gen-grid" id="premium-gen-grid"></div>
+      <div id="premium-content"><div class="loading"><div class="spinner"></div>Yüklənir...</div></div>
+    </div>
+
+    <!-- PUSH -->
+    <div class="tab-panel" id="panel-push">
+      <div class="summary-grid" id="push-stats"><div class="loading"><div class="spinner"></div>Yüklənir...</div></div>
+
+      <div class="push-form">
+        <div class="push-form-head">Yeni bildiriş göndər</div>
+
+        <label for="push-title">Başlıq <span id="push-title-count">0/80</span></label>
+        <input id="push-title" maxlength="80" placeholder="Məs: Yeni material əlavə olundu" oninput="pushPreview()">
+
+        <label for="push-body">Mətn <span id="push-body-count">0/240</span></label>
+        <textarea id="push-body" rows="3" maxlength="240" placeholder="Qısa və aydın yaz — bildirişdə 2-3 sətir görünür" oninput="pushPreview()"></textarea>
+
+        <label for="push-url">Klik linki (boşdursa — ana səhifə)</label>
+        <input id="push-url" placeholder="#/requests  və ya  https://unecstudentshub.com/...  və ya  https://t.me/...">
+
+        <label for="push-audience">Kimə</label>
+        <select id="push-audience" onchange="pushAudienceChanged()">
+          <option value="all">Hamıya (icazə verənlərin hamısı)</option>
+          <option value="az">Yalnız Azərbaycan dilini seçənlər</option>
+          <option value="en">Yalnız English seçənlər</option>
+          <option value="user">Konkret istifadəçi (test üçün)</option>
+        </select>
+        <input id="push-email" type="email" placeholder="İstifadəçinin email ünvanı (saytda hesabı olan)" style="display:none">
+
+        <div class="push-preview">
+          <div class="push-preview-lbl">Önizləmə</div>
+          <b id="push-prev-title">UNEC Students Hub</b>
+          <span id="push-prev-body">Mətn burada görünəcək</span>
+        </div>
+
+        <div class="push-actions">
+          <button class="push-btn secondary" id="push-count-btn" onclick="pushSend(true)">
+            <span class="material-symbols-outlined msi">group</span>Neçə cihaza gedəcək?
+          </button>
+          <button class="push-btn" id="push-send-btn" onclick="pushSend(false)">
+            <span class="material-symbols-outlined msi">send</span>Göndər
+          </button>
+        </div>
+        <div class="push-result" id="push-result"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── Config ─────────────────────────────────────────────────────
+const API = 'https://ericismyhero-github-io.vercel.app/api/admin-data';
+
+// ── State ──────────────────────────────────────────────────────
+let adminKey = '';
+let currentTab = 'overview';
+let cache = {};
+
+// ── Auth ───────────────────────────────────────────────────────
+async function doLogin() {
+  const key = document.getElementById('admin-key-input').value.trim();
+  if (!key) return;
+
+  const errEl = document.getElementById('login-error');
+  errEl.textContent = 'Yoxlanılır...';
+
+  try {
+    const res = await apiFetch('all', key);
+    if (res.error) throw new Error(res.error);
+
+    adminKey = key;
+    cache['overview'] = res;
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    renderOverview(res);
+  } catch (e) {
+    errEl.textContent = e.message === 'Səlahiyyətsiz giriş' ? 'Yanlış kod.' : 'Xəta: ' + e.message;
+  }
+}
+
+function doLogout() {
+  adminKey = '';
+  cache = {};
+  document.getElementById('admin-key-input').value = '';
+  document.getElementById('login-error').textContent = '';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+}
+
+// ── API ────────────────────────────────────────────────────────
+async function apiFetch(section, key) {
+  const k = key || adminKey;
+  const res = await fetch(API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-Admin-Key': k },
+    body: JSON.stringify({ section, adminKey: k }),
+  });
+  return res.json();
+}
+
+// ── Tab navigation ─────────────────────────────────────────────
+const TAB_TITLES = {
+  overview: 'Ümumi baxış',
+  users:    'İstifadəçilər',
+  chats:    'Chat mesajları',
+  requests: 'Material istəkləri',
+  pdfs:     'PDF statistika',
+  premium:  'Premium Kodlar',
+  push:     'Bildirişlər',
+};
+
+async function showTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('nav-' + tab).classList.add('active');
+  document.getElementById('panel-' + tab).classList.add('active');
+  document.getElementById('page-title').textContent = TAB_TITLES[tab];
+
+  if (cache[tab]) {
+    renderTab(tab, cache[tab]);
+    return;
+  }
+  await loadTab(tab);
+}
+
+async function loadTab(tab) {
+  if (tab === 'push') return loadPush();
+  const section = tab === 'overview' ? 'all' : tab;
+  document.getElementById(tab + '-content').innerHTML =
+    '<div class="loading"><div class="spinner"></div>Yüklənir...</div>';
+  try {
+    const data = await apiFetch(section);
+    if (data.error) throw new Error(data.error);
+    cache[tab] = data;
+    renderTab(tab, data);
+  } catch (e) {
+    document.getElementById(tab + '-content').innerHTML =
+      `<div class="loading" style="color:var(--red)">Xəta: ${e.message}</div>`;
+  }
+}
+
+function refreshCurrent() {
+  delete cache[currentTab];
+  loadTab(currentTab);
+}
+
+function renderTab(tab, data) {
+  if (tab === 'overview')  renderOverview(data);
+  if (tab === 'users')     renderUsers(data.users);
+  if (tab === 'chats')     renderChats(data.chats);
+  if (tab === 'requests')  renderRequests(data.requests);
+  if (tab === 'pdfs')      renderPdfs(data);
+  if (tab === 'premium')   renderPremium(data.premiumCodes);
+}
+
+// ── OVERVIEW ───────────────────────────────────────────────────
+function renderOverview(data) {
+  const s = data.summary || {};
+  const html = `
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="summary-val accent">${s.totalUsers || 0}</div>
+        <div class="summary-lbl">Ümumi istifadəçi</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-val green">${s.activeToday || 0}</div>
+        <div class="summary-lbl">Bu gün aktiv</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-val yellow">${s.totalRequests || 0}</div>
+        <div class="summary-lbl">Material istəkləri</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-val red">${s.openRequests || 0}</div>
+        <div class="summary-lbl">Açıq istəklər</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Ən çox açılan PDF-lər (son 500 açılış)</div>
+      ${renderBarChart(data.pdfOpens || [], 8)}
+    </div>
+
+    <div class="section">
+      <div class="section-title">Ən aktiv istifadəçilər (XP sırası)</div>
+      ${renderTopUsersTable(data.topUsers || [])}
+    </div>
+
+    <div class="section">
+      <div class="section-title">Son material istəkləri</div>
+      ${renderRequestsTable((data.requests || []).slice(0, 8))}
+    </div>
+  `;
+  document.getElementById('overview-content').innerHTML = html;
+}
+
+function renderBarChart(items, limit) {
+  if (!items.length) return '<div class="loading">Məlumat yoxdur.</div>';
+  const top = items.slice(0, limit);
+  const max = top[0]?.count || 1;
+  return `<div class="bar-chart">${top.map(item => `
+    <div class="bar-row">
+      <div class="bar-name" title="${esc(item.name)}">${esc(item.name)}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round(item.count/max*100)}%"></div></div>
+      <div class="bar-count">${item.count}</div>
+    </div>`).join('')}</div>`;
+}
+
+function renderTopUsersTable(users) {
+  if (!users.length) return '<div class="loading">İstifadəçi yoxdur.</div>';
+  return `<div class="table-wrap"><table>
+    <thead><tr>
+      <th>#</th><th>Ad</th><th>Email</th><th>Fakültə</th><th>XP</th><th>Streak</th><th>Testlər</th><th>Son giriş</th>
+    </tr></thead>
+    <tbody>${users.slice(0, 10).map((u, i) => `
+      <tr>
+        <td class="td-muted">${i+1}</td>
+        <td class="td-bold">${esc(u.name)}</td>
+        <td class="td-muted">${esc(u.email)}</td>
+        <td class="td-muted">${esc(u.faculty || '—')}</td>
+        <td><span class="badge badge-blue">${u.xp} XP</span></td>
+        <td><span class="badge ${u.streak > 5 ? 'badge-green' : 'badge-gray'}">${u.streak} <span class="material-symbols-outlined msi">local_fire_department</span></span></td>
+        <td class="td-muted">${u.totalTests || 0}</td>
+        <td class="td-muted">${fmtDate(u.lastLogin)}</td>
+      </tr>`).join('')}
+    </tbody></table></div>`;
+}
+
+// ── USERS ──────────────────────────────────────────────────────
+let _allUsers = [];
+
+function renderUsers(users) {
+  _allUsers = users || [];
+  document.getElementById('users-content').innerHTML = buildUsersTable(_allUsers);
+}
+
+function filterUsers() {
+  const q = document.getElementById('users-search').value.toLowerCase();
+  const filtered = _allUsers.filter(u =>
+    (u.name+u.email+u.faculty+u.major).toLowerCase().includes(q));
+  document.getElementById('users-content').innerHTML = buildUsersTable(filtered);
+}
+
+function buildUsersTable(users) {
+  if (!users.length) return '<div class="loading">İstifadəçi tapılmadı.</div>';
+  return `<div class="table-wrap"><table>
+    <thead><tr>
+      <th>Ad</th><th>Email</th><th>Fakültə / İxtisas</th><th>Kurs</th>
+      <th>XP</th><th>Streak</th><th>Testlər</th><th>Qeydiyyat</th><th>Son giriş</th>
+    </tr></thead>
+    <tbody>${users.map(u => `
+      <tr>
+        <td class="td-bold">${esc(u.name)}</td>
+        <td class="td-muted">${esc(u.email)}</td>
+        <td class="td-muted">${esc(u.faculty||'—')} / ${esc(u.major||'—')}</td>
+        <td class="td-muted">${u.year || '—'}</td>
+        <td><span class="badge badge-blue">${u.xp} XP</span></td>
+        <td><span class="badge ${u.streak > 5 ? 'badge-green' : 'badge-gray'}">${u.streak} <span class="material-symbols-outlined msi">local_fire_department</span></span></td>
+        <td class="td-muted">${u.totalTests || 0}</td>
+        <td class="td-muted">${fmtDate(u.createdAt)}</td>
+        <td class="td-muted">${fmtDate(u.lastLogin)}</td>
+      </tr>`).join('')}
+    </tbody></table></div>`;
+}
+
+// ── CHATS ──────────────────────────────────────────────────────
+let _allChats = [];
+
+function renderChats(chats) {
+  _allChats = chats || [];
+  document.getElementById('chats-content').innerHTML = buildChatsHtml(_allChats);
+}
+
+function filterChats() {
+  const q = document.getElementById('chats-search').value.toLowerCase();
+  const filtered = _allChats.map(group => ({
+    ...group,
+    messages: group.messages.filter(m =>
+      (m.text + m.userName + m.userEmail).toLowerCase().includes(q))
+  })).filter(g => g.messages.length > 0);
+  document.getElementById('chats-content').innerHTML = buildChatsHtml(filtered);
+}
+
+function buildChatsHtml(chats) {
+  if (!chats.length) return '<div class="loading">Chat tapılmadı.</div>';
+  return chats.map((group, gi) => `
+    <div class="chat-subject-group">
+      <div class="chat-subject-header" onclick="toggleChatGroup(${gi})">
+        <span><span class="material-symbols-outlined msi">chat_bubble</span> ${esc(group.subject)}</span>
+        <span class="badge badge-blue">${group.count} mesaj</span>
+      </div>
+      <div class="chat-msg-list" id="chatgroup-${gi}">
+        ${group.messages.map(m => `
+          <div class="chat-msg ${m.deleted ? 'deleted' : ''}">
+            <div class="chat-avatar">${(m.userName||'?')[0].toUpperCase()}</div>
+            <div class="chat-msg-body">
+              <div class="chat-msg-meta">
+                <strong>${esc(m.userName)}</strong>
+                · ${esc(m.userEmail)}
+                · ${fmtDate(m.ts)}
+                ${m.deleted ? '· <span style="color:var(--red)">Silindi</span>' : ''}
+              </div>
+              <div class="chat-msg-text">${esc(m.text)}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function toggleChatGroup(gi) {
+  const el = document.getElementById('chatgroup-' + gi);
+  el.classList.toggle('open');
+}
+
+// ── REQUESTS ───────────────────────────────────────────────────
+let _allRequests = [];
+
+function renderRequests(requests) {
+  _allRequests = requests || [];
+  document.getElementById('requests-content').innerHTML = buildRequestsTable(_allRequests);
+}
+
+function filterRequests() {
+  const q = document.getElementById('requests-search').value.toLowerCase();
+  const filtered = _allRequests.filter(r =>
+    (r.text + r.userName + r.userEmail).toLowerCase().includes(q));
+  document.getElementById('requests-content').innerHTML = buildRequestsTable(filtered);
+}
+
+function renderRequestsTable(requests) {
+  return buildRequestsTable(requests);
+}
+
+function buildRequestsTable(requests) {
+  if (!requests.length) return '<div class="loading">İstək tapılmadı.</div>';
+  return `<div class="table-wrap"><table>
+    <thead><tr>
+      <th>İstək</th><th>İstifadəçi</th><th>Upvote</th><th>Status</th><th>Tarix</th>
+    </tr></thead>
+    <tbody>${requests.map(r => `
+      <tr>
+        <td class="td-bold">${esc(r.text)}</td>
+        <td class="td-muted">${esc(r.userName)} <br><small>${esc(r.userEmail)}</small></td>
+        <td><span class="badge badge-blue">▲ ${r.upvotes}</span></td>
+        <td><span class="badge ${r.found ? 'badge-green' : 'badge-yellow'}">${r.found ? 'Tapıldı' : 'Açıq'}</span></td>
+        <td class="td-muted">${fmtDate(r.createdAt)}</td>
+      </tr>`).join('')}
+    </tbody></table></div>`;
+}
+
+// ── PDFS ───────────────────────────────────────────────────────
+function renderPdfs(data) {
+  const opens   = data.pdfOpens   || [];
+  const ratings = data.pdfRatings || [];
+  const html = `
+    <div class="section">
+      <div class="section-title">Ən çox açılan PDF-lər</div>
+      ${renderBarChart(opens, 20)}
+    </div>
+    <div class="section">
+      <div class="section-title">PDF reytinqləri (səs sayına görə)</div>
+      ${ratings.length ? `<div class="table-wrap"><table>
+        <thead><tr><th>PDF ID</th><th>Ortalama reytinq</th><th>Səs sayı</th></tr></thead>
+        <tbody>${ratings.map(r => `
+          <tr>
+            <td class="td-bold">${esc(r.id)}</td>
+            <td><span class="badge badge-yellow">${Number(r.avgRating).toFixed(1)} <span class="material-symbols-outlined msi">star</span></span></td>
+            <td class="td-muted">${r.totalVotes} səs</td>
+          </tr>`).join('')}
+        </tbody></table></div>` : '<div class="loading">Reytinq yoxdur.</div>'}
+    </div>
+  `;
+  document.getElementById('pdfs-content').innerHTML = html;
+}
+
+// ── PREMIUM KODLAR ────────────────────────────────────────────
+const PREMIUM_PLAN_INFO = {
+  '7d':       { name: '7 günlük',   price: '2.49₼' },
+  '15d':      { name: '15 günlük',  price: '4.99₼' },
+  '32d':      { name: '32 günlük',  price: '9.99₼' },
+  'lifetime': { name: 'Ömürlük',    price: '19.99₼' },
+};
+
+function renderPremium(codes) {
+  codes = codes || [];
+  document.getElementById('premium-gen-grid').innerHTML =
+    Object.entries(PREMIUM_PLAN_INFO).map(([plan, info]) => `
+      <div class="premium-plan-card">
+        <div class="premium-plan-name">${info.name}</div>
+        <div class="premium-plan-price">${info.price}</div>
+        <input type="number" id="premium-count-${plan}" value="1" min="1" max="50">
+        <button onclick="generatePremiumCode('${plan}')">
+          <span class="material-symbols-outlined msi">add_circle</span>Kod yarat
+        </button>
+        <div class="premium-plan-result" id="premium-result-${plan}"></div>
+      </div>
+    `).join('');
+
+  document.getElementById('premium-content').innerHTML = buildPremiumTable(codes);
+}
+
+async function generatePremiumCode(plan) {
+  const countEl  = document.getElementById(`premium-count-${plan}`);
+  const resultEl = document.getElementById(`premium-result-${plan}`);
+  const count = Math.min(Math.max(parseInt(countEl.value) || 1, 1), 50);
+  resultEl.textContent = 'Yaradılır...';
+  try {
+    const res = await fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Admin-Key': adminKey },
+      body: JSON.stringify({ section: 'premium', action: 'generate', plan, count, adminKey }),
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    resultEl.innerHTML = data.codes.map(c => `<code>${c}</code>`).join('');
+    delete cache['premium'];
+  } catch (e) {
+    resultEl.textContent = 'Xəta: ' + e.message;
+  }
+}
+
+function buildPremiumTable(codes) {
+  if (!codes.length) return '<div class="loading">Hələ kod yaradılmayıb.</div>';
+  return `<div class="table-wrap"><table>
+    <thead><tr>
+      <th>Kod</th><th>Plan</th><th>Status</th><th>Yaradılıb</th><th>İstifadə olunub</th>
+    </tr></thead>
+    <tbody>${codes.map(c => `
+      <tr>
+        <td class="td-bold">${esc(c.code)}</td>
+        <td class="td-muted">${(PREMIUM_PLAN_INFO[c.plan] || {}).name || esc(c.plan)}</td>
+        <td><span class="badge ${c.status === 'used' ? 'badge-gray' : 'badge-green'}">${c.status === 'used' ? 'İstifadə olunub' : 'Boşdur'}</span></td>
+        <td class="td-muted">${fmtDate(c.createdAt)}</td>
+        <td class="td-muted">${c.redeemedAt ? fmtDate(c.redeemedAt) : '—'}</td>
+      </tr>`).join('')}
+    </tbody></table></div>`;
+}
+
+// ── PUSH BİLDİRİŞLƏR ──────────────────────────────────────────
+const PUSH_API = API.replace('/admin-data', '/push-send');
+const PUSH_ERRORS = {
+  unauthorized:            'Admin kodu yanlışdır.',
+  push_disabled:           'Push aktiv deyil: Vercel-də FIREBASE_VAPID_KEY və FIREBASE_SERVICE_ACCOUNT təyin edilməlidir.',
+  title_and_body_required: 'Başlıq və mətn boş ola bilməz.',
+  invalid_url:             'Link yanlışdır: "#/marşrut", "/yol" və ya unecstudentshub.com / t.me linki olmalıdır.',
+  invalid_audience:        'Auditoriya yanlışdır.',
+  user_not_found:          'Bu email ilə istifadəçi tapılmadı.',
+};
+let pushBusy = false;
+
+async function pushApi(payload) {
+  const res = await fetch(PUSH_API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-Admin-Key': adminKey },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok || data.error) {
+    throw new Error(PUSH_ERRORS[data.error] || data.message || data.error || ('HTTP ' + res.status));
+  }
+  return data;
+}
+
+async function loadPush() {
+  const el = document.getElementById('push-stats');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div>Yüklənir...</div>';
+  try {
+    const d = await pushApi({ action: 'stats' });
+    el.innerHTML = `
+      <div class="summary-card"><div class="summary-val accent">${d.total}</div><div class="summary-lbl">Abunəçi cihaz</div></div>
+      <div class="summary-card"><div class="summary-val green">${d.loggedIn}</div><div class="summary-lbl">Hesabla bağlı</div></div>
+      <div class="summary-card"><div class="summary-val">${d.az}</div><div class="summary-lbl">Azərbaycan dili</div></div>
+      <div class="summary-card"><div class="summary-val">${d.en}</div><div class="summary-lbl">English</div></div>`;
+  } catch (e) {
+    el.innerHTML = `<div class="loading" style="color:var(--red)">${esc(e.message)}</div>`;
+  }
+  pushPreview();
+}
+
+function pushPreview() {
+  const t = document.getElementById('push-title').value;
+  const b = document.getElementById('push-body').value;
+  document.getElementById('push-title-count').textContent = t.length + '/80';
+  document.getElementById('push-body-count').textContent = b.length + '/240';
+  document.getElementById('push-prev-title').textContent = t.trim() || 'UNEC Students Hub';
+  document.getElementById('push-prev-body').textContent = b.trim() || 'Mətn burada görünəcək';
+}
+
+function pushAudienceChanged() {
+  const user = document.getElementById('push-audience').value === 'user';
+  document.getElementById('push-email').style.display = user ? 'block' : 'none';
+}
+
+function pushSetBusy(on) {
+  pushBusy = on;
+  document.getElementById('push-send-btn').disabled = on;
+  document.getElementById('push-count-btn').disabled = on;
+}
+
+function pushResult(text, kind) {
+  const out = document.getElementById('push-result');
+  out.textContent = text;
+  out.className = 'push-result' + (kind ? ' ' + kind : '');
+}
+
+// dryRun=true → yalnız alıcı sayını göstərir; false → sayı göstərir, təsdiq alır və göndərir
+async function pushSend(dryRun) {
+  if (pushBusy) return;
+  const payload = {
+    action:   'send',
+    title:    document.getElementById('push-title').value.trim(),
+    body:     document.getElementById('push-body').value.trim(),
+    url:      document.getElementById('push-url').value.trim(),
+    audience: document.getElementById('push-audience').value,
+    email:    document.getElementById('push-email').value.trim(),
+  };
+  if (!payload.title || !payload.body) return pushResult('Başlıq və mətn boş ola bilməz.', 'err');
+  if (payload.audience === 'user' && !payload.email) return pushResult('İstifadəçinin email ünvanını yaz.', 'err');
+
+  pushSetBusy(true);
+  pushResult('Yoxlanılır...');
+  try {
+    const dry = await pushApi({ ...payload, dryRun: true });
+    if (dryRun) return pushResult(`Bu bildiriş ${dry.total} cihaza gedəcək.`);
+    if (!dry.total) return pushResult('Alıcı yoxdur: bu auditoriyada abunəçi cihaz tapılmadı.', 'err');
+    if (!confirm(`"${payload.title}"\n\nBu bildiriş ${dry.total} cihaza göndərilsin? Geri qaytarmaq mümkün deyil.`)) return pushResult('Ləğv edildi.');
+
+    pushResult(`${dry.total} cihaza göndərilir... (pəncərəni bağlama)`);
+    const r = await pushApi({ ...payload, dryRun: false });
+    const lines = [`Göndərildi: ${r.sent} / ${r.total}`];
+    if (r.removed) lines.push(`Köhnəlmiş token silindi: ${r.removed}`);
+    if (r.failed)  lines.push(`Uğursuz: ${r.failed} (${Object.entries(r.errors || {}).map(([k, v]) => k + ': ' + v).join(', ')})`);
+    if (r.errors && r.errors.PERMISSION_DENIED) lines.push('İcazə xətası: Firebase Cloud Messaging API (V1) aktivdirmi və service account-un FCM icazəsi varmı? (PUSH-SETUP.md, 2-ci bölmə)');
+    if (r.partial) lines.push(`Diqqət: vaxt limitinə görə ${r.notAttempted} cihaza çatılmadı. Eyni bildirişi təkrar göndərmə — artıq alanlara da gedər.`);
+    pushResult(lines.join('\n'), r.sent > 0 && !r.partial ? 'ok' : 'err');
+    loadPush();
+  } catch (e) {
+    pushResult('Xəta: ' + e.message, 'err');
+  } finally {
+    pushSetBusy(false);
+  }
+}
+
+// ── Helpers ────────────────────────────────────────────────────
+function esc(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function fmtDate(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleDateString('az-AZ', { day:'numeric', month:'short', year:'numeric' });
+}
+</script>
+</body>
+</html>
