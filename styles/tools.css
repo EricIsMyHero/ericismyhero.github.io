@@ -586,6 +586,22 @@ body.in-quiz[data-route="tests"] #ai-button { opacity: 0; visibility: hidden; po
 .timer-notif-text { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: var(--fs-sm); font-weight: 600; }
 .timer-notif-text .ic { color: var(--accent2); }
 
+/* ── Push bildiriş kartı (yeniliklər paneli + ayarlar) ─── */
+.push-box {
+  display: flex; align-items: center; gap: 12px;
+  margin: 0 0 14px; padding: 12px 12px 12px 14px;
+  border: 1px solid var(--color-border-strong); border-radius: var(--r-md);
+  background: var(--color-primary-soft);
+}
+.push-box[hidden] { display: none; }
+.push-box[data-state="on"] { background: color-mix(in srgb, var(--accent) 8%, var(--color-surface-elevated)); }
+.push-ic { flex: 0 0 auto; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: var(--color-surface-inner); color: var(--accent2); }
+.push-ic .ic { font-size: 1.1rem; }
+.push-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.push-text b { font-size: var(--fs-sm); font-weight: 700; }
+.push-text small { font-size: var(--fs-xs); color: var(--color-text-secondary); line-height: 1.4; }
+.push-box .btn { flex: 0 0 auto; }
+
 .timer-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; }
 @media (min-width: 900px) { .timer-grid { grid-template-columns: minmax(0, 440px) minmax(0, 1fr); gap: 32px; align-items: start; } }
 .timer-col .section-head { margin-top: 16px; }
