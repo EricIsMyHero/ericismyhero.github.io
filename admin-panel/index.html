@@ -1116,13 +1116,23 @@ const PUSH_ERRORS = {
 let pushBusy = false;
 
 async function pushApi(payload) {
-  const res = await fetch(PUSH_API, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'X-Admin-Key': adminKey },
-    body: JSON.stringify(payload),
-  });
+  let res;
+  try {
+    res = await fetch(PUSH_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Admin-Key': adminKey },
+      body: JSON.stringify(payload),
+    });
+  } catch (e) {
+    // fetch özü uğursuz oldu: adətən funksiya Vercel-də yoxdur (404) və ya çökür (5xx) — brauzer bunu "CORS" kimi göstərir
+    throw new Error('Serverə qoşulmaq olmadı. ' + PUSH_API + ' ünvanını brauzerdə aç: {"error":"method_not_allowed"} görünməlidir. ' +
+      '"NOT_FOUND" → ai-vercel/api/push-send.js deploy olunmayıb; "FUNCTION_INVOCATION_FAILED" → Vercel → Logs-a bax. (PUSH-SETUP.md, 10-cu bölmə)');
+  }
   const data = await res.json().catch(() => ({}));
   if (!res.ok || data.error) {
+    if (data.error === 'module_load_failed') {
+      throw new Error('Server kodu yüklənmədi: ' + (data.message || '') + ' — ai-vercel qovluğunun bütün faylları (xüsusən lib/firestore.js və lib/push.js) deploy olunubmu?');
+    }
     throw new Error(PUSH_ERRORS[data.error] || data.message || data.error || ('HTTP ' + res.status));
   }
   return data;

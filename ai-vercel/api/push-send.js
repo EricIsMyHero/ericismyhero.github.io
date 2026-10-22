@@ -4,13 +4,11 @@
 //   POST { action: 'send', title, body, url?, audience, email?, dryRun? }
 //        audience: 'all' | 'az' | 'en' | 'user' (user → email lazımdır; test üçün özünə göndər)
 // Başlıq: X-Admin-Key = ADMIN_SECRET_KEY (admin-data.js ilə eyni açar).
+//
+// Qeyd: üstdə yalnız daxili `node:crypto` import olunur. Layihə modulları handler daxilində yüklənir —
+// beləliklə fayl çatışmazlığı / yanlış export kimi deploy xətası olsa belə preflight (OPTIONS) uğurlu olur
+// və admin paneli qaranlıq "CORS" səhvi əvəzinə real xəta mesajını görür.
 import crypto from 'node:crypto';
-import { body } from '../lib/payments.js';
-import { createDoc } from '../lib/firestore.js';
-import {
-  LOG_COLLECTION, LIMITS, AUDIENCES, pushEnabled, cleanText, cleanUrl,
-  listTokens, findUidByEmail, sendMany,
-} from '../lib/push.js';
 
 function setCors(res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -27,17 +25,31 @@ function isAdmin(req, b) {
   return crypto.timingSafeEqual(h(key), h(secret));
 }
 
+async function loadModules() {
+  const [payments, firestore, push] = await Promise.all([
+    import('../lib/payments.js'), import('../lib/firestore.js'), import('../lib/push.js'),
+  ]);
+  return { ...payments, ...firestore, ...push };
+}
+
 export default async function handler(req, res) {
   setCors(res);
   res.setHeader('Cache-Control', 'no-store');
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'method_not_allowed' });
 
-  const b = body(req);
-  if (!isAdmin(req, b)) return res.status(401).json({ error: 'unauthorized' });
-  if (!pushEnabled()) return res.status(503).json({ error: 'push_disabled' });
+  let m;
+  try { m = await loadModules(); } catch (e) {
+    console.error('[push-send] modul yüklənmədi:', e);
+    return res.status(500).json({ error: 'module_load_failed', message: String((e && e.message) || e).slice(0, 300) });
+  }
+  const { body, createDoc, LOG_COLLECTION, LIMITS, AUDIENCES, pushEnabled, cleanText, cleanUrl, listTokens, findUidByEmail, sendMany } = m;
 
   try {
+    const b = body(req);
+    if (!isAdmin(req, b)) return res.status(401).json({ error: 'unauthorized' });
+    if (!pushEnabled()) return res.status(503).json({ error: 'push_disabled' });
+
     if (b.action === 'stats') {
       const all = await listTokens();
       return res.status(200).json({
@@ -85,7 +97,7 @@ export default async function handler(req, res) {
 
     return res.status(200).json({ ok: true, ...stats, partial: stats.notAttempted > 0 });
   } catch (e) {
-    console.error('[push-send] xəta:', e.message);
-    return res.status(500).json({ error: 'server_error', message: e.message });
+    console.error('[push-send] xəta:', e);
+    return res.status(500).json({ error: 'server_error', message: String((e && e.message) || e).slice(0, 300) });
   }
 }

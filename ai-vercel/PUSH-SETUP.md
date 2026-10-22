@@ -31,10 +31,14 @@ Cihaz: sw.js "push" hadisəsi ◀───────────────�
 
 ## 2. Service account icazəsi
 
-`FIREBASE_SERVICE_ACCOUNT` artıq Vercel-də var (Firestore üçün). Firebase-in standart `firebase-adminsdk-…` service account-u adətən FCM göndərə bilir. Admin paneldə **PERMISSION_DENIED** görsən:
+**Adətən heç nə etmək lazım deyil.** `FIREBASE_SERVICE_ACCOUNT`-dakı `firebase-adminsdk-…` service account-u FCM göndərə bilir. Əvvəlcə 6-cı bölmədəki testi et. Yalnız admin paneldə **PERMISSION_DENIED** görsən bunu et:
 
-- Google Cloud Console → **IAM** → həmin service account-a **Firebase Cloud Messaging API Admin** (və ya *Firebase Admin SDK Administrator Service Agent*) rolunu ver;
-- 1-ci bölmədəki **FCM API (V1)**-in aktiv olduğunu yenidən yoxla.
+1. Service account-un e-poçtunu tap: Firebase Console → Project settings → **Service accounts** (və ya Vercel-dəki `FIREBASE_SERVICE_ACCOUNT` JSON-da `client_email` — `…@…iam.gserviceaccount.com` formasındadır).
+2. Google Cloud Console → **IAM & Admin → IAM** → **Grant access**:
+   - **New principals:** həmin `…@….iam.gserviceaccount.com` ünvanı (öz Gmail ünvanını yox);
+   - **Role:** **Firebase Cloud Messaging API Admin**.
+3. Heç bir **"… Service Agent"** rolu seçmə. Bunlar yalnız Google-un öz service agent-lərinə verilir; belə rolu başqa principal-a verməyə çalışsan *"Only service accounts can be granted ServiceAgent roles"* xətası çıxır.
+4. 1-ci bölmədəki **FCM API (V1)**-in aktiv olduğunu yoxla.
 
 ## 3. Vercel mühit dəyişənləri
 
@@ -79,7 +83,7 @@ Dəyişən fayllar:
 | `ai-vercel/lib/firestore.js` | FCM scope-u, `setDoc` / `deleteDoc` / `listDocs` |
 | `ai-vercel/vercel.json` | `push-send` üçün 60 saniyə vaxt limiti |
 
-Repo-ya push et: GitHub Pages saytı, Vercel isə `ai-vercel`-i əvvəlki kimi yeniləyir.
+Repo-ya push et: GitHub Pages saytı yeniləyir. **`ai-vercel` qovluğunun hamısı** (yeni və dəyişən fayllar, o cümlədən `lib/firestore.js`) Vercel-in deploy etdiyi repo/qovluğa çatmalıdır — Vercel-ə ayrıca repo qoşmusansa, faylları ora da köçür. Sonra Vercel → **Deployments**-də son deploy-un **Ready** olduğunu yoxla.
 
 ## 6. Yoxlama (ardıcıllıqla)
 
@@ -122,6 +126,8 @@ Tövsiyələr: tez-tez göndərmə (istifadəçilər icazəni ləğv edər), qı
 | --- | --- |
 | Sayt "Bildirişləri aktiv etmək alınmadı" deyir | Brauzer konsolunda xətaya bax. `push_disabled` → 3-cü bölmə; `messaging/token-subscribe-failed` → 1-ci bölmənin 4-cü addımı (API restrictions) və VAPID açarının **eyni Firebase layihəsindən** olması |
 | Admin paneldə *"Push aktiv deyil"* | `FIREBASE_VAPID_KEY` və ya `FIREBASE_SERVICE_ACCOUNT` yoxdur, ya da dəyişəndən sonra Redeploy edilməyib |
+| Admin paneldə *"Serverə qoşulmaq olmadı"* / konsolda *"CORS … preflight … does not have HTTP ok status"* | CORS özü problem deyil — funksiya Vercel-də ya yoxdur, ya da çökür. `https://ericismyhero-github-io.vercel.app/api/push-send` ünvanını brauzerdə aç: **`{"error":"method_not_allowed"}`** görünməlidir. `NOT_FOUND` → `ai-vercel/api/push-send.js` deploy olunmayıb (5-ci bölmə: faylların Vercel-in repo-suna çatdığını və son deploy-un *Ready* olduğunu yoxla; *Failed*-dirsə Build Logs-a bax). `FUNCTION_INVOCATION_FAILED` → Vercel → **Logs**-a bax |
+| Admin paneldə *"Server kodu yüklənmədi: …"* | `ai-vercel` fayllarının bir hissəsi deploy olunmayıb və ya köhnə qalıb (məs. *"does not provide an export named 'deleteDoc'"* → `lib/firestore.js` köhnədir). Bütün faylları yenidən yüklə |
 | `PERMISSION_DENIED` | 2-ci bölmə |
 | `SENDER_ID_MISMATCH` | Token başqa Firebase layihəsinin VAPID açarı ilə alınıb; açarı yoxla (belə tokenlər avtomatik silinir) |
 | "Göndərildi" yazır, amma bildiriş görünmür | İşletim sisteminin *Rahatsız etmə / Focus Assist* rejimi, brauzerin sayt bildirişi parametri, Android-də batareya qənaəti. Chrome-da `chrome://serviceworker-internals` və DevTools → Application → Service Workers |
