@@ -4,7 +4,7 @@
 // Axın:
 //   1. İstifadəçi "Aç" düyməsinə basır → brauzer icazə soruşur (yalnız klikdən sonra).
 //   2. /sw.js qeydiyyatdan keçir, FCM bu brauzer üçün token verir.
-//   3. Token /api/push-subscribe vasitəsilə serverə (Firestore: push_tokens) yazılır.
+//   3. Token /api/push vasitəsilə serverə (Firestore: push_tokens) yazılır.
 //   4. Admin paneldən göndəriləndə server FCM ilə həmin tokenlərə push yollayır, sw.js göstərir.
 //
 // Düymə/kart HTML-də `[data-push-box]` olan hər elementin içinə çəkilir (yeniliklər paneli + ayarlar).
@@ -14,7 +14,7 @@
   'use strict';
 
   const U = window.UNEC || {};
-  const API = ((typeof BACKEND_URL !== 'undefined' && BACKEND_URL) || 'https://ericismyhero-github-io.vercel.app') + '/api/push-subscribe';
+  const API = ((typeof BACKEND_URL !== 'undefined' && BACKEND_URL) || 'https://ericismyhero-github-io.vercel.app') + '/api/push';
   const K_ON = 'push_on';        // '1' — istifadəçi bu cihazda bildirişi aktiv edib
   const K_META = 'push_meta';    // { token, uid, lang, ts } — serverə axırıncı göndərilən vəziyyət
   const RESYNC_MS = 7 * 24 * 60 * 60 * 1000;

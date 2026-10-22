@@ -9,10 +9,10 @@ Bu sistem sayt **bağlı olanda belə** (telefon/kompüter kilidli, brauzer arxa
 ─────────────────                        ───────────────                      ──────────
 1. "Aç" düyməsi → brauzer icazə soruşur
 2. /sw.js qeydiyyatdan keçir, FCM token alır ───────────────────────────────▶ token
-3. token ──▶ POST /api/push-subscribe ──▶ FCM-də yoxlayır, Firestore-a yazır
+3. token ──▶ POST /api/push (subscribe) ──▶ FCM-də yoxlayır, Firestore-a yazır
                                           (push_tokens kolleksiyası)
 
-Admin panel ▶ POST /api/push-send ──────▶ tokenləri oxuyur ──▶ FCM HTTP v1 ──▶ cihaz
+Admin panel ▶ POST /api/push (send) ─────▶ tokenləri oxuyur ──▶ FCM HTTP v1 ──▶ cihaz
                                           ölü tokenləri silir                  │
 Cihaz: sw.js "push" hadisəsi ◀─────────────────────────────────────────────────┘
        → bildiriş göstərilir → klikdə saytı açır
@@ -46,7 +46,7 @@ Vercel → layihə → **Settings → Environment Variables**:
 
 | Dəyişən | Nə üçün | Qeyd |
 | --- | --- | --- |
-| `FIREBASE_VAPID_KEY` | **Yeni.** 1-ci bölmənin 3-cü addımındakı public key | Yoxdursa push söndürülü qalır (`/api/push-subscribe` → `enabled:false`) |
+| `FIREBASE_VAPID_KEY` | **Yeni.** 1-ci bölmənin 3-cü addımındakı public key | Yoxdursa push söndürülü qalır (`/api/push` → `enabled:false`) |
 | `FIREBASE_SERVICE_ACCOUNT` | Mövcud | Firestore + FCM göndərişi |
 | `FIREBASE_API_KEY` | Mövcud | Daxil olmuş istifadəçinin tokenini yoxlamaq üçün |
 | `ADMIN_SECRET_KEY` | Mövcud | Admin panelinin giriş kodu (push göndərişi də bununla qorunur) |
@@ -79,15 +79,16 @@ Dəyişən fayllar:
 | `index.html` | Firebase Messaging SDK, `push.js`, yeniliklər və ayarlar panelində kart, məxfilik bəndi |
 | `scripts/i18n-app.js`, `styles/tools.css` | AZ/EN mətnlər və kartın görünüşü |
 | `admin-panel/index.html` | **Bildirişlər** bölməsi |
-| `ai-vercel/api/push-subscribe.js`, `ai-vercel/api/push-send.js`, `ai-vercel/lib/push.js` *(yeni)* | Abunə və göndəriş API-si |
+| `ai-vercel/api/push.js`, `ai-vercel/lib/push.js` *(yeni)* | Abunə və göndəriş API-si (**tək funksiya** — aşağıdakı xəbərdarlığa bax) |
 | `ai-vercel/lib/firestore.js` | FCM scope-u, `setDoc` / `deleteDoc` / `listDocs` |
-| `ai-vercel/vercel.json` | `push-send` üçün 60 saniyə vaxt limiti |
+
+> ⚠️ **Vercel Hobby planında bir layihədə ən çoxu 12 serverless funksiya ola bilər** (`ai-vercel/api/` qovluğundakı hər `.js` fayl bir funksiyadır; `lib/` sayılmır). Bu paketdə push üçün cəmi **bir** fayl (`api/push.js`) var, ona görə `api/` qovluğunda 12 fayl qalır — limitə sığır. Bu paketin əvvəlki versiyası iki fayl (`push-send.js`, `push-subscribe.js`) əlavə edirdi → 13 funksiya → Vercel build-i *Failed* olurdu və sayt köhnə deploy-da qalırdı (`/api/push-send` → `NOT_FOUND`). **Əgər o iki faylı repo-ya artıq yükləmisənsə, onları SİL** (`ai-vercel/api/push-send.js` və `ai-vercel/api/push-subscribe.js`), yoxsa yenə 13 olar. `vercel.json`-a heç nə əlavə etmək lazım deyil.
 
 Repo-ya push et: GitHub Pages saytı yeniləyir. **`ai-vercel` qovluğunun hamısı** (yeni və dəyişən fayllar, o cümlədən `lib/firestore.js`) Vercel-in deploy etdiyi repo/qovluğa çatmalıdır — Vercel-ə ayrıca repo qoşmusansa, faylları ora da köçür. Sonra Vercel → **Deployments**-də son deploy-un **Ready** olduğunu yoxla.
 
 ## 6. Yoxlama (ardıcıllıqla)
 
-1. Brauzerdə `https://ericismyhero-github-io.vercel.app/api/push-subscribe` aç → `{"enabled":true,"vapidKey":"B…"}` görünməlidir. `enabled:false` olarsa 3-cü bölməni yoxla.
+1. Brauzerdə `https://ericismyhero-github-io.vercel.app/api/push` aç → `{"enabled":true,"vapidKey":"B…"}` görünməlidir. `enabled:false` olarsa 3-cü bölməni yoxla.
 2. Saytı **Ctrl+F5** ilə yenilə (köhnə JS keşdə qalmasın) → yuxarıdakı 🔔 → **Aç** → brauzerin icazə sorğusunda **İcazə ver**. "Bildirişlər aktiv edildi" yazısı çıxmalıdır.
 3. Admin panel → **Bildirişlər** → "Abunəçi cihaz" sayı 1 olmalıdır.
 4. **İlk test özünə:** saytda hesabınla daxil ol → Kimə: *Konkret istifadəçi* → öz email-ini yaz → başlıq/mətn yaz → **Göndər**. Bildiriş gəlməlidir.
@@ -115,10 +116,10 @@ Tövsiyələr: tez-tez göndərmə (istifadəçilər icazəni ləğv edər), qı
 
 ## 9. Məhdudiyyətlər və böyümə
 
-- Bir göndəriş eyni anda 25 sorğu ilə gedir və **50 saniyədən** sonra yeni sorğu başlatmır (Vercel limiti). Minlərlə cihaz üçün bu kifayətdir. Qismən göndəriş olarsa admin paneli bunu qırmızı xəbərdarlıqla göstərir — eyni bildirişi təkrar göndərmə (artıq alanlara da gedər).
+- Server bir sorğuda eyni anda 25 FCM sorğusu ilə işləyir və **~8 saniyədən** sonra yeni sorğu başlatmır (Vercel-in qısa vaxt limitinə sığmaq üçün; `PUSH_DEADLINE_MS` mühit dəyişəni ilə dəyişdirmək olar, 1000–280000 ms). Cihaz çoxdursa server cavabda *davam kursoru* qaytarır, **admin paneli avtomatik növbəti hissəni göndərir** ("Göndərilir... 600 / 2300") — hər cihaza ən çoxu bir dəfə gedir. Göndəriş bitənə qədər admin pəncərəsini bağlama. Pəncərə bağlansa və ya şəbəkə kəssə panel nə qədərinin getdiyini yazır — eyni bildirişi təkrar göndərmə (artıq alanlara da gedər).
 - Dəfələrlə on minlərlə cihaza çatsan, FCM **topic** abunəliyinə və ya növbə sisteminə keçmək lazım olacaq.
 - Köhnəlmiş/silinmiş tokenlər göndəriş zamanı avtomatik təmizlənir. Sayt aktiv abunəliyi hər 7 gündən bir serverdə təzələyir.
-- `/api/push-subscribe` açıq endpoint-dir, amma uydurma token bazaya düşmür: hər token əvvəlcə FCM-də `validate_only` ilə yoxlanır.
+- `/api/push`-un `subscribe` əməliyyatı açıqdır, amma uydurma token bazaya düşmür: hər token əvvəlcə FCM-də `validate_only` ilə yoxlanır.
 
 ## 10. Problemlərin həlli
 
@@ -126,7 +127,9 @@ Tövsiyələr: tez-tez göndərmə (istifadəçilər icazəni ləğv edər), qı
 | --- | --- |
 | Sayt "Bildirişləri aktiv etmək alınmadı" deyir | Brauzer konsolunda xətaya bax. `push_disabled` → 3-cü bölmə; `messaging/token-subscribe-failed` → 1-ci bölmənin 4-cü addımı (API restrictions) və VAPID açarının **eyni Firebase layihəsindən** olması |
 | Admin paneldə *"Push aktiv deyil"* | `FIREBASE_VAPID_KEY` və ya `FIREBASE_SERVICE_ACCOUNT` yoxdur, ya da dəyişəndən sonra Redeploy edilməyib |
-| Admin paneldə *"Serverə qoşulmaq olmadı"* / konsolda *"CORS … preflight … does not have HTTP ok status"* | CORS özü problem deyil — funksiya Vercel-də ya yoxdur, ya da çökür. `https://ericismyhero-github-io.vercel.app/api/push-send` ünvanını brauzerdə aç: **`{"error":"method_not_allowed"}`** görünməlidir. `NOT_FOUND` → `ai-vercel/api/push-send.js` deploy olunmayıb (5-ci bölmə: faylların Vercel-in repo-suna çatdığını və son deploy-un *Ready* olduğunu yoxla; *Failed*-dirsə Build Logs-a bax). `FUNCTION_INVOCATION_FAILED` → Vercel → **Logs**-a bax |
+| Admin paneldə *"Serverə qoşulmaq olmadı"* / konsolda *"CORS … preflight … does not have HTTP ok status"* | CORS özü problem deyil — funksiya Vercel-də ya yoxdur, ya da çökür. `https://ericismyhero-github-io.vercel.app/api/push` ünvanını brauzerdə aç: **`{"enabled":true,"vapidKey":"B…"}`** görünməlidir. `NOT_FOUND` → funksiya deploy olunmayıb: Vercel → **Deployments**-də son deploy *Failed*-dirsə, Build Logs-a bax. Ən çox rast gəlinən səbəb: *"No more than 12 Serverless Functions can be added to a Deployment on the Hobby plan"* → `ai-vercel/api/` qovluğunda 12-dən çox `.js` fayl var (5-ci bölmədəki xəbərdarlığa bax; köhnə `push-send.js` / `push-subscribe.js` silinməlidir). `FUNCTION_INVOCATION_FAILED` → Vercel → **Logs**-a bax |
+| Vercel build *Failed*, loqda *"12 Serverless Functions"* | `ai-vercel/api/` qovluğunda 12-dən çox fayl var. Yalnız `push.js` qalmalıdır; `push-send.js` və `push-subscribe.js` silinsin, sonra yenidən deploy |
+| Admin paneldə *"Göndərilir… X / Y"* uzun çəkir | Normaldır: cihaz çox olanda göndəriş hissə-hissə gedir (hər hissə ~8 san.). Pəncərəni bağlama, bitməsini gözlə |
 | Admin paneldə *"Server kodu yüklənmədi: …"* | `ai-vercel` fayllarının bir hissəsi deploy olunmayıb və ya köhnə qalıb (məs. *"does not provide an export named 'deleteDoc'"* → `lib/firestore.js` köhnədir). Bütün faylları yenidən yüklə |
 | `PERMISSION_DENIED` | 2-ci bölmə |
 | `SENDER_ID_MISMATCH` | Token başqa Firebase layihəsinin VAPID açarı ilə alınıb; açarı yoxla (belə tokenlər avtomatik silinir) |

@@ -77,11 +77,13 @@ Sayt bağlı olanda belə, bildiriş icazəsi vermiş istifadəçilərə admin p
 
 | Endpoint | Metod | Nə edir |
 | --- | --- | --- |
-| `/api/push-subscribe` | GET | `{ enabled, vapidKey }` — push aktivdirmi və public VAPID açarı |
-| `/api/push-subscribe` | POST | `{ action: 'subscribe', token, lang?, idToken? }` və ya `{ action: 'unsubscribe', token }` — saytdakı "Aç/Söndür" düyməsi |
-| `/api/push-send` | POST | **Admin** (`X-Admin-Key`): `{ action: 'stats' }` və ya `{ action: 'send', title, body, url?, audience: 'all'\|'az'\|'en'\|'user', email?, dryRun? }` |
+| `/api/push` | GET | `{ enabled, vapidKey }` — push aktivdirmi və public VAPID açarı |
+| `/api/push` | POST | `{ action: 'subscribe', token, lang?, idToken? }` və ya `{ action: 'unsubscribe', token }` — saytdakı "Aç/Söndür" düyməsi |
+| `/api/push` | POST | **Admin** (`X-Admin-Key`): `{ action: 'stats' }` və ya `{ action: 'send', title, body, url?, audience: 'all'\|'az'\|'en'\|'user', email?, dryRun?, after? }` — bir sorğu ~8 san. işləyir, cihaz çoxdursa `cursor` qaytarır (admin paneli onunla davam edir) |
+
+> Push üçün **bir** serverless funksiya istifadə olunur (`api/push.js`): Vercel Hobby planında layihədə ən çoxu 12 funksiya ola bilər, `api/` qovluğuna yeni fayl əlavə etməzdən əvvəl sayı yoxla.
 
 Mühit dəyişənləri: `FIREBASE_VAPID_KEY` (yeni), mövcud `FIREBASE_SERVICE_ACCOUNT`, `FIREBASE_API_KEY`, `ADMIN_SECRET_KEY`; istəyə bağlı `SITE_URL`.
-Fayllar: `lib/push.js` (göndəriş məntiqi), `api/push-subscribe.js`, `api/push-send.js`.
+Fayllar: `lib/push.js` (göndəriş məntiqi), `api/push.js`. İstəyə bağlı: `PUSH_DEADLINE_MS` (bir sorğuda göndərişə ayrılan vaxt, standart 8000).
 
 > ⚠️ Firestore-da `push_tokens` və `push_log` kolleksiyaları üçün brauzer girişi qadağan olunmalıdır (`allow read, write: if false`) — bax `PUSH-SETUP.md`, 4-cü bölmə.

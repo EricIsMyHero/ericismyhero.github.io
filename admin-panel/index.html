@@ -1104,13 +1104,14 @@ function buildPremiumTable(codes) {
 }
 
 // ── PUSH BİLDİRİŞLƏR ──────────────────────────────────────────
-const PUSH_API = API.replace('/admin-data', '/push-send');
+const PUSH_API = API.replace('/admin-data', '/push');
 const PUSH_ERRORS = {
   unauthorized:            'Admin kodu yanlışdır.',
   push_disabled:           'Push aktiv deyil: Vercel-də FIREBASE_VAPID_KEY və FIREBASE_SERVICE_ACCOUNT təyin edilməlidir.',
   title_and_body_required: 'Başlıq və mətn boş ola bilməz.',
   invalid_url:             'Link yanlışdır: "#/marşrut", "/yol" və ya unecstudentshub.com / t.me linki olmalıdır.',
   invalid_audience:        'Auditoriya yanlışdır.',
+  invalid_cursor:          'Davam kursoru yanlışdır — göndərişi yenidən başlat.',
   user_not_found:          'Bu email ilə istifadəçi tapılmadı.',
 };
 let pushBusy = false;
@@ -1125,8 +1126,8 @@ async function pushApi(payload) {
     });
   } catch (e) {
     // fetch özü uğursuz oldu: adətən funksiya Vercel-də yoxdur (404) və ya çökür (5xx) — brauzer bunu "CORS" kimi göstərir
-    throw new Error('Serverə qoşulmaq olmadı. ' + PUSH_API + ' ünvanını brauzerdə aç: {"error":"method_not_allowed"} görünməlidir. ' +
-      '"NOT_FOUND" → ai-vercel/api/push-send.js deploy olunmayıb; "FUNCTION_INVOCATION_FAILED" → Vercel → Logs-a bax. (PUSH-SETUP.md, 10-cu bölmə)');
+    throw new Error('Serverə qoşulmaq olmadı. ' + PUSH_API + ' ünvanını brauzerdə aç: {"enabled":true,"vapidKey":"B…"} görünməlidir. ' +
+      '"NOT_FOUND" → ai-vercel/api/push.js deploy olunmayıb (Vercel → Deployments: son deploy Ready olmalıdır); "FUNCTION_INVOCATION_FAILED" → Vercel → Logs-a bax. (PUSH-SETUP.md, 10-cu bölmə)');
   }
   const data = await res.json().catch(() => ({}));
   if (!res.ok || data.error) {
@@ -1196,23 +1197,34 @@ async function pushSend(dryRun) {
 
   pushSetBusy(true);
   pushResult('Yoxlanılır...');
+  const agg = { sent: 0, failed: 0, removed: 0, errors: {} };
+  let after = null, last = {};
   try {
     const dry = await pushApi({ ...payload, dryRun: true });
     if (dryRun) return pushResult(`Bu bildiriş ${dry.total} cihaza gedəcək.`);
     if (!dry.total) return pushResult('Alıcı yoxdur: bu auditoriyada abunəçi cihaz tapılmadı.', 'err');
     if (!confirm(`"${payload.title}"\n\nBu bildiriş ${dry.total} cihaza göndərilsin? Geri qaytarmaq mümkün deyil.`)) return pushResult('Ləğv edildi.');
 
-    pushResult(`${dry.total} cihaza göndərilir... (pəncərəni bağlama)`);
-    const r = await pushApi({ ...payload, dryRun: false });
-    const lines = [`Göndərildi: ${r.sent} / ${r.total}`];
-    if (r.removed) lines.push(`Köhnəlmiş token silindi: ${r.removed}`);
-    if (r.failed)  lines.push(`Uğursuz: ${r.failed} (${Object.entries(r.errors || {}).map(([k, v]) => k + ': ' + v).join(', ')})`);
-    if (r.errors && r.errors.PERMISSION_DENIED) lines.push('İcazə xətası: Firebase Cloud Messaging API (V1) aktivdirmi və service account-un FCM icazəsi varmı? (PUSH-SETUP.md, 2-ci bölmə)');
-    if (r.partial) lines.push(`Diqqət: vaxt limitinə görə ${r.notAttempted} cihaza çatılmadı. Eyni bildirişi təkrar göndərmə — artıq alanlara da gedər.`);
-    pushResult(lines.join('\n'), r.sent > 0 && !r.partial ? 'ok' : 'err');
+    // Server bir sorğuda ~8 san. işləyir; çox cihaz varsa `cursor` qaytarır və biz qalanlara davam edirik (təkrar getmir).
+    for (let round = 0; round < 500; round++) {
+      pushResult(`Göndərilir... ${agg.sent + agg.failed + agg.removed} / ${dry.total}  (pəncərəni bağlama)`);
+      last = await pushApi({ ...payload, dryRun: false, after });
+      agg.sent += last.sent; agg.failed += last.failed; agg.removed += last.removed;
+      for (const [k, v] of Object.entries(last.errors || {})) agg.errors[k] = (agg.errors[k] || 0) + v;
+      after = last.cursor || null;
+      if (!after || !last.attempted) break;
+    }
+    const done = agg.sent + agg.failed + agg.removed;
+    const lines = [`Göndərildi: ${agg.sent} / ${dry.total}`];
+    if (agg.removed) lines.push(`Köhnəlmiş token silindi: ${agg.removed}`);
+    if (agg.failed)  lines.push(`Uğursuz: ${agg.failed} (${Object.entries(agg.errors).map(([k, v]) => k + ': ' + v).join(', ')})`);
+    if (agg.errors.PERMISSION_DENIED) lines.push('İcazə xətası: Firebase Cloud Messaging API (V1) aktivdirmi və service account-un FCM icazəsi varmı? (PUSH-SETUP.md, 2-ci bölmə)');
+    if (last.stopped) lines.push(`Diqqət: göndəriş dayandırıldı, ${Math.max(0, dry.total - done)} cihaza çatılmadı. Eyni bildirişi təkrar göndərmə — artıq alanlara da gedər.`);
+    pushResult(lines.join('\n'), agg.sent > 0 && !last.stopped ? 'ok' : 'err');
     loadPush();
   } catch (e) {
-    pushResult('Xəta: ' + e.message, 'err');
+    const done = agg.sent + agg.failed + agg.removed;
+    pushResult('Xəta: ' + e.message + (done ? `\nXətadan əvvəl ${done} cihaza göndərilmişdi — eyni bildirişi təkrar göndərmə.` : ''), 'err');
   } finally {
     pushSetBusy(false);
   }

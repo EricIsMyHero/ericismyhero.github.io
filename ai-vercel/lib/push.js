@@ -16,6 +16,13 @@ const DEAD_CODES = new Set(['UNREGISTERED', 'SENDER_ID_MISMATCH']);
 // Bu xətalarda davam etməyin mənası yoxdur (icazə / API söndürülüb) → göndəriş dayandırılır
 const FATAL_CODES = new Set(['PERMISSION_DENIED', 'UNAUTHENTICATED']);
 
+/** Bir sorğuda göndərişə ayrılan vaxt (ms). Standart 8 san. (Vercel-in 10 san. limitinə sığır); PUSH_DEADLINE_MS ilə dəyişir. */
+export const deadlineMs = (env = process.env) => {
+  const n = parseInt(env.PUSH_DEADLINE_MS, 10);
+  return Number.isFinite(n) && n >= 1000 ? Math.min(n, 280000) : 8000;
+};
+export const CURSOR_RE = /^[0-9a-f]{64}$/;
+
 export const siteUrl = (env = process.env) => (env.SITE_URL || 'https://unecstudentshub.com').replace(/\/+$/, '');
 export const pushEnabled = (env = process.env) => !!(env.FIREBASE_SERVICE_ACCOUNT && env.FIREBASE_VAPID_KEY);
 
@@ -83,6 +90,7 @@ export function isDeadToken(r) {
 }
 
 // ── Abunəçilər ────────────────────────────────────────────────
+const byId = (a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
 const toItem = (r) => ({ id: r.id, token: r.data.token, uid: r.data.uid || null, lang: r.data.lang || 'az' });
 
 /** Abunəçi siyahısı. Filtr: { uid } və ya { lang }; filtrsiz — hamısı. */
@@ -93,7 +101,7 @@ export async function listTokens({ uid, lang } = {}, env = process.env) {
       from: [{ collectionId: COLLECTION }],
       where: { fieldFilter: { field: { fieldPath: field }, op: 'EQUAL', value: { stringValue: uid || lang } } },
     }, env);
-    return rows.map(toItem).filter(x => x.token);
+    return rows.map(toItem).filter(x => x.token).sort(byId);
   }
   const out = [];
   let pageToken = null;
@@ -102,7 +110,7 @@ export async function listTokens({ uid, lang } = {}, env = process.env) {
     for (const d of page.docs) { const it = toItem(d); if (it.token) out.push(it); }
     pageToken = page.nextPageToken;
   } while (pageToken);
-  return out;
+  return out.sort(byId);
 }
 
 /** Email → uid (users/{uid} sənədlərindəki `email` sahəsi). Tapılmasa null. */
@@ -122,18 +130,20 @@ export async function findUidByEmail(email, env = process.env) {
 
 // ── Kütləvi göndəriş ──────────────────────────────────────────
 /**
- * items = [{ id, token }]. Eyni anda `concurrency` sorğu; `deadlineMs`-dən sonra yeni sorğu başlamır
+ * items = [{ id, token }] (id-yə görə sıralı). Eyni anda `concurrency` sorğu; `deadlineMs`-dən sonra yeni sorğu başlamır
  * (serverless vaxt limiti üçün). Ölü tokenlər bazadan silinir.
+ * Qaytarır: { total, sent, failed, removed, attempted, notAttempted, stopped, lastId, errors }
+ *   stopped: null (hamısı işləndi) | 'deadline' (vaxt bitdi — lastId-dən sonra davam etmək olar) | 'fatal' (icazə xətası — dayandırıldı)
  * `send` yalnız testlər üçün dəyişdirilə bilər.
  */
-export async function sendMany(items, payload, { concurrency = 25, deadlineMs = 50000, send = fcmSend } = {}) {
+export async function sendMany(items, payload, { concurrency = 25, deadlineMs: limit = deadlineMs(), send = fcmSend } = {}) {
   const started = Date.now();
-  const stats = { total: items.length, sent: 0, failed: 0, removed: 0, notAttempted: 0, errors: {} };
+  const stats = { total: items.length, sent: 0, failed: 0, removed: 0, errors: {} };
   let next = 0;
   let fatal = false;
 
   async function worker() {
-    while (!fatal && Date.now() - started < deadlineMs) {
+    while (!fatal && Date.now() - started < limit) {
       const idx = next++;
       if (idx >= items.length) return;
       const it = items[idx];
@@ -156,6 +166,11 @@ export async function sendMany(items, payload, { concurrency = 25, deadlineMs = 
   }
 
   await Promise.all(Array.from({ length: Math.min(concurrency, items.length) }, worker));
-  stats.notAttempted = stats.total - stats.sent - stats.failed - stats.removed;
+  // İşçilər elementləri ardıcıl götürür → işlənənlər həmişə items[0..attempted) prefiksidir
+  const attempted = Math.min(next, items.length);
+  stats.attempted = attempted;
+  stats.notAttempted = items.length - attempted;
+  stats.stopped = attempted >= items.length ? null : (fatal ? 'fatal' : 'deadline');
+  stats.lastId = attempted > 0 ? items[attempted - 1].id : null;
   return stats;
 }
