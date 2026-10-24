@@ -90,7 +90,7 @@ export async function verifyIdToken(idToken, env = process.env) {
     if (!res.ok) return null;
     const j = await res.json();
     const u = j && j.users && j.users[0];
-    return u && u.localId ? { uid: u.localId, name: u.displayName || null } : null;
+    return u && u.localId ? { uid: u.localId, name: u.displayName || null, email: u.email || null } : null;
   } catch (_) { return null; }
 }
 

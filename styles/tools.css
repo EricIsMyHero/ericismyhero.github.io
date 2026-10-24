@@ -827,6 +827,104 @@ body.in-quiz[data-route="tests"] #ai-button { opacity: 0; visibility: hidden; po
 .req-empty small { font-size: var(--fs-sm); color: var(--color-text-muted); }
 @media (min-width: 900px) { .req-empty { grid-column: 1 / -1; } }
 
+/* ── İstək yazışması: cavablar, fayl əlavələri, giriş / bildiriş şərti ─── */
+.req-form-note { margin: 0; font-size: var(--fs-xs); color: var(--color-text-muted); line-height: 1.45; }
+.req-gate-slot:empty { display: none; }
+.req-gate {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 12px 12px 14px;
+  border: 1px solid var(--color-border-strong); border-radius: var(--r-md);
+  background: var(--color-primary-soft);
+}
+.req-gate-ic { flex: 0 0 auto; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: var(--color-surface-inner); color: var(--accent2); }
+.req-gate-ic .ic { width: 18px; height: 18px; }
+.req-gate-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.req-gate-text b { font-size: var(--fs-sm); font-weight: 700; }
+.req-gate-text small { font-size: var(--fs-xs); color: var(--color-text-secondary); line-height: 1.4; }
+.req-gate .btn { flex: 0 0 auto; }
+@media (max-width: 479px) { .req-gate { flex-wrap: wrap; } .req-gate-text { flex-basis: calc(100% - 50px); } .req-gate .btn { width: 100%; } }
+
+.req-replies-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  min-height: 40px; padding: 0 14px;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent); border-radius: 12px;
+  background: color-mix(in srgb, var(--accent) 10%, transparent); color: var(--color-text-primary);
+  font-family: var(--font); font-size: var(--fs-sm); font-weight: 700; text-decoration: none;
+  transition: border-color var(--t-fast), background var(--t-fast);
+}
+.req-replies-btn .ic { width: 16px; height: 16px; }
+.req-replies-btn:hover { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 18%, transparent); }
+
+.req-thread { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+.req-thread-back {
+  align-self: flex-start; display: inline-flex; align-items: center; gap: 6px;
+  min-height: 40px; padding: 0 12px 0 8px; border-radius: 12px;
+  color: var(--color-text-secondary); font-size: var(--fs-sm); font-weight: 700; text-decoration: none;
+}
+.req-thread-back .ic { width: 18px; height: 18px; }
+.req-thread-back:hover { color: var(--color-text-primary); background: var(--color-surface-inner); }
+.req-gone-back { align-self: center; margin-top: 12px; }
+.req-thread-head .req-item { border-color: var(--color-border-strong); }
+.req-thread-title { display: flex; align-items: center; gap: 8px; margin: 6px 0 0; font-size: 1rem; }
+.req-thread-title .ic { width: 18px; height: 18px; color: var(--accent2); }
+
+.req-thread-msgs { display: flex; flex-direction: column; gap: 10px; }
+.req-msg { display: flex; align-items: flex-start; gap: 10px; }
+.req-msg .req-avatar { width: 32px; height: 32px; font-size: var(--fs-sm); }
+.req-msg-body {
+  flex: 1; min-width: 0; padding: 10px 12px;
+  border: 1px solid var(--border); border-radius: 4px var(--r-md) var(--r-md) var(--r-md);
+  background: var(--color-surface-elevated);
+}
+.req-msg--owner .req-msg-body { border-color: color-mix(in srgb, var(--accent) 40%, var(--border)); }
+.req-msg--mine .req-msg-body { background: color-mix(in srgb, var(--accent) 8%, var(--color-surface-elevated)); }
+.req-msg-head { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin-bottom: 4px; }
+.req-owner-badge {
+  padding: 1px 8px; border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent); border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--tone-text);
+  font-size: var(--fs-xs); font-weight: 800;
+}
+.req-msg-del {
+  display: grid; place-items: center; margin-left: auto; width: 32px; height: 32px;
+  border: 0; border-radius: 10px; background: transparent; color: var(--color-text-muted); cursor: pointer;
+}
+.req-msg-del .ic { width: 16px; height: 16px; }
+.req-msg-del:hover { color: var(--color-danger); background: color-mix(in srgb, var(--color-danger) 12%, transparent); }
+.req-msg-text { margin: 0; line-height: 1.5; overflow-wrap: anywhere; white-space: pre-wrap; }
+.req-atts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.req-att {
+  display: inline-flex; align-items: center; gap: 8px; max-width: 100%; min-height: 40px; padding: 6px 12px;
+  border: 1px solid var(--border); border-radius: 12px; background: var(--color-surface-inner);
+  color: var(--color-text-primary); font-size: var(--fs-sm); font-weight: 600; text-decoration: none;
+}
+.req-att .ic { flex: 0 0 auto; width: 18px; height: 18px; color: var(--accent2); }
+.req-att small { flex: 0 0 auto; color: var(--color-text-muted); font-size: var(--fs-xs); }
+.req-att:hover { border-color: var(--color-border-strong); }
+.req-att-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.req-att--img { padding: 0; overflow: hidden; }
+.req-att--img img { display: block; max-width: min(100%, 260px); max-height: 200px; object-fit: cover; }
+
+.req-composer { display: flex; flex-direction: column; gap: 10px; margin-top: 6px; padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--color-surface-elevated); }
+.req-composer-body { display: flex; flex-direction: column; gap: 10px; }
+.req-composer-body.is-gated .req-form-textarea { opacity: 0.7; }
+.req-files { display: flex; flex-wrap: wrap; gap: 8px; }
+.req-files:empty { display: none; }
+.req-file-chip {
+  display: inline-flex; align-items: center; gap: 8px; max-width: 100%; min-height: 36px; padding: 4px 4px 4px 10px;
+  border: 1px solid var(--border); border-radius: 10px; background: var(--color-surface-inner); font-size: var(--fs-sm); font-weight: 600;
+}
+.req-file-chip > .ic { flex: 0 0 auto; width: 16px; height: 16px; color: var(--accent2); }
+.req-file-chip small { flex: 0 0 auto; color: var(--color-text-muted); font-size: var(--fs-xs); }
+.req-file-chip button { display: grid; place-items: center; width: 28px; height: 28px; border: 0; border-radius: 8px; background: transparent; color: var(--color-text-muted); cursor: pointer; }
+.req-file-chip button .ic { width: 14px; height: 14px; }
+.req-file-chip button:hover { color: var(--color-danger); background: color-mix(in srgb, var(--color-danger) 12%, transparent); }
+.req-composer-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+.req-composer-row .btn .ic { width: 16px; height: 16px; margin-right: 6px; }
+.req-file-hint { order: 3; flex: 1 1 100%; min-width: 0; font-size: var(--fs-xs); color: var(--color-text-muted); line-height: 1.4; }
+.req-composer-row #req-send-btn { margin-left: auto; }
+.req-send-status { min-height: 1.2em; margin: 0; font-size: var(--fs-xs); color: var(--color-text-secondary); }
+.req-send-status.is-error { color: var(--color-danger); }
+
 /* ════════════════════════════════════════════════════════════════
    İXTİSAS PLANI
    ════════════════════════════════════════════════════════════════ */

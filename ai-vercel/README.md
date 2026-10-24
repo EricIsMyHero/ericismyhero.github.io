@@ -87,3 +87,26 @@ Mühit dəyişənləri: `FIREBASE_VAPID_KEY` (yeni), mövcud `FIREBASE_SERVICE_A
 Fayllar: `lib/push.js` (göndəriş məntiqi), `api/push.js`. İstəyə bağlı: `PUSH_DEADLINE_MS` (bir sorğuda göndərişə ayrılan vaxt, standart 8000).
 
 > ⚠️ Firestore-da `push_tokens` və `push_log` kolleksiyaları üçün brauzer girişi qadağan olunmalıdır (`allow read, write: if false`) — bax `PUSH-SETUP.md`, 4-cü bölmə.
+
+## Material istəkləri — yazışma və fayl əlavəsi
+
+İstəyin altında hamıya açıq yazışma: cavab yazmaq, fayl (PDF, Word, şəkil və s.) əlavə etmək, istək sahibinə bildiriş. **Tam quraşdırma (Cloudflare R2, Firestore qaydaları, yoxlama, problemlərin həlli): [`REQUESTS-SETUP.md`](REQUESTS-SETUP.md).**
+
+Hamısı mövcud **`/api/push`** funksiyasının içindədir (yeni fayl yoxdur — Hobby planında `api/` qovluğunda 12 funksiya limiti saxlanılır). Giriş tələb edən əməliyyatlar `idToken` (Firebase) ilə, admin əməliyyatları `X-Admin-Key` ilə qorunur.
+
+| Əməliyyat (`action`) | Kim | Nə edir |
+| --- | --- | --- |
+| `req-create` | giriş | `{ text, course?, subject? }` — yeni istək (bildiriş açıq olmalıdır*) |
+| `file-url` | giriş | `{ requestId, name, size }` — R2-yə birbaşa yükləmə üçün 10 dəq. etibarlı imzalı `PUT` linki |
+| `req-send` | giriş | `{ requestId, text?, attachments?: [{ key, name }] }` — cavab; fayllar R2-də yoxlanılır, istək sahibinə (və ya sahibi yazanda əvvəlki iştirakçılara) bildiriş gedir |
+| `req-delete`, `msg-delete` | giriş (öz məzmunu) | İstəyi / mesajı və fayllarını silir |
+| `admin-requests`, `admin-request` | admin | İstək siyahısı / yazışma + istifadəçi emailləri + hər mesajın bildiriş nəticələri |
+| `admin-req-delete`, `admin-msg-delete` | admin | İstənilən istəyi / mesajı silir |
+| `admin-push-log` | admin | Son göndərişlər (əl ilə + istək cavabları) |
+
+\* `REQUESTS_REQUIRE_PUSH=0` ilə bildiriş şərti söndürülür. `GET /api/push` cavabındakı `requests` sahəsi (`requirePush`, `files`, `maxFiles`, `maxBytes`, `types`, `textMax`) saytın hansı qaydaları göstərəcəyini bildirir.
+
+Mühit dəyişənləri: `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET` (fayl əlavəsi üçün), `R2_PUBLIC_BASE`, `R2_ENDPOINT`, `REQUESTS_REQUIRE_PUSH` (istəyə bağlı).
+Fayllar: `lib/threads.js` (yazışma məntiqi), `lib/r2.js` (Cloudflare R2 üçün AWS SigV4 imzası, kitabxanasız), `lib/firestore.js` (massiv/xəritə sahələri və atomik sayğac əlavə olunub).
+
+> ⚠️ Firestore-da `material_requests` və `material_requests/{id}/messages` üçün qaydalar yenilənməlidir (yazma yalnız serverdən) — bax `REQUESTS-SETUP.md`, 3-cü bölmə.

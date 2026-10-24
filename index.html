@@ -137,7 +137,7 @@
   <link rel="stylesheet" href="styles/tokens.css?v=20261018">
   <link rel="stylesheet" href="styles/shell.css?v=20261018">
   <link rel="stylesheet" href="styles/screens.css?v=20261018">
-  <link rel="stylesheet" href="styles/tools.css?v=20261021">
+  <link rel="stylesheet" href="styles/tools.css?v=20261023">
   <link rel="stylesheet" href="styles/support.css?v=20261018">
   <link rel="stylesheet" href="styles/legacy.css?v=20261018">
 
@@ -219,6 +219,7 @@
     <symbol id="i-shield-check" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
     <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
     <symbol id="i-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+    <symbol id="i-paperclip" viewBox="0 0 24 24"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></symbol>
     <symbol id="i-send" viewBox="0 0 24 24"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></symbol>
     <symbol id="i-zap" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></symbol>
     <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
@@ -1391,6 +1392,8 @@
             <h1 data-i18n="navRequests">Material İstəkləri</h1>
           </div>
 
+          <!-- Siyahı görünüşü -->
+          <div id="req-list-view">
           <section class="req-intro">
             <span class="req-intro-icon" aria-hidden="true"><svg class="ic"><use href="#i-folder-open"/></svg></span>
             <div class="req-intro-text">
@@ -1419,6 +1422,8 @@
                 <input class="req-form-input" id="req-subject-input" placeholder="Fənn adı (istəyə görə)" data-i18n-placeholder="reqSubjectPlaceholder" autocomplete="off">
               </div>
             </div>
+            <p class="req-form-note" data-i18n="rqFormNote">Cavab verən olduqda sənə bildiriş gələcək — cavablar hamıya açıq yazışmada görünür.</p>
+            <div id="req-form-gate" class="req-gate-slot"></div>
             <div class="req-form-actions">
               <button class="btn btn--secondary req-form-cancel" type="button" onclick="closeRequestForm()" data-i18n="btnCancel">Ləğv et</button>
               <button class="btn btn--primary req-form-submit" id="req-submit-btn" type="submit" data-i18n="btnSend">Göndər</button>
@@ -1433,6 +1438,31 @@
 
           <div id="req-list" class="req-list" aria-live="polite">
             <div class="req-loading skeleton skeleton-card" role="status" aria-label="Yüklənir..." data-i18n-aria="loadingText"></div>
+          </div>
+          </div><!-- /req-list-view -->
+
+          <!-- Yazışma görünüşü: #/requests/<id> -->
+          <div id="req-thread-view" class="req-thread hidden">
+            <a class="req-thread-back" href="#/requests"><svg class="ic" aria-hidden="true"><use href="#i-arrow-left"/></svg><span data-i18n="rqBackToList">Bütün istəklər</span></a>
+            <div id="req-thread-head" class="req-thread-head"></div>
+            <h2 class="req-thread-title"><svg class="ic" aria-hidden="true"><use href="#i-message"/></svg><span data-i18n="rqThreadTitle">Cavablar</span></h2>
+            <div id="req-thread-msgs" class="req-thread-msgs" aria-live="polite"></div>
+
+            <form id="req-composer" class="req-composer" onsubmit="sendThreadMessage(); return false;">
+              <div id="req-composer-gate" class="req-gate-slot"></div>
+              <div id="req-composer-body" class="req-composer-body">
+                <label class="req-form-label" for="req-msg-input" data-i18n="rqComposeLabel">Cavabın</label>
+                <textarea class="req-form-textarea" id="req-msg-input" rows="3" maxlength="1000" placeholder="Bu istəyə cavab yaz…" data-i18n-placeholder="rqComposePlaceholder"></textarea>
+                <div id="req-files" class="req-files"></div>
+                <input type="file" id="req-file-input" class="hidden" multiple accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.png,.jpg,.jpeg,.webp" onchange="pickThreadFiles(this)">
+                <div class="req-composer-row">
+                  <button type="button" class="btn btn--secondary btn--sm" id="req-attach-btn" onclick="document.getElementById('req-file-input').click()"><svg class="ic" aria-hidden="true"><use href="#i-paperclip"/></svg><span data-i18n="rqAttach">Fayl əlavə et</span></button>
+                  <span class="req-file-hint" id="req-file-hint"></span>
+                  <button type="submit" class="btn btn--primary" id="req-send-btn"><svg class="ic" aria-hidden="true"><use href="#i-send"/></svg><span data-i18n="btnSend">Göndər</span></button>
+                </div>
+                <p id="req-send-status" class="req-send-status" role="status" aria-live="polite"></p>
+              </div>
+            </form>
           </div>
 
         </div>
@@ -2214,7 +2244,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
 <script src="pdfs.js?v=20261018"></script>
 <script src="scripts/i18n.js?v=20261018"></script>
-<script src="scripts/i18n-app.js?v=20261021"></script>
+<script src="scripts/i18n-app.js?v=20261023"></script>
 <script src="scripts/data-utils.js?v=20261018"></script>
 <script src="scripts/ui.js?v=20261018"></script>
 <script src="scripts/features.js?v=20261018"></script>
@@ -2223,16 +2253,16 @@
 <script src="scripts/firebase.js?v=20261018"></script>
 <script src="scripts/chat.js?v=20261018"></script>
 <script src="scripts/ratings.js?v=20261018"></script>
-<script src="scripts/requests.js?v=20261018"></script>
+<script src="scripts/requests.js?v=20261023"></script>
 <script src="scripts/dashboard.js?v=20261018"></script>
 <script src="scripts/payments.js?v=20261018"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="scripts/curriculum.js?v=20261018"></script>
 <script src="scripts/badges.js?v=20261018"></script>
 <script src="scripts/timer.js?v=20261018"></script>
-<script src="scripts/app-core.js?v=20261018"></script>
+<script src="scripts/app-core.js?v=20261023"></script>
 <script src="scripts/app-materials.js?v=20261018"></script>
 <script src="scripts/app-screens.js?v=20261018"></script>
-<script src="scripts/push.js?v=20261021"></script>
+<script src="scripts/push.js?v=20261023"></script>
 </body>
 </html>

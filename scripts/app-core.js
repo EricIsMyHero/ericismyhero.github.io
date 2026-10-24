@@ -197,7 +197,7 @@
   //   #/courses/all  #/courses?q=&course=&fav=1 (düz materiallar siyahısı; filtrli linklər)
   //   #/courses (parametrsiz) → #/courses/subjects-ə yönləndirilir
   //   #/courses/subjects/<kurs>/<fənn>  #/m/<kurs>/<fənn>/<fayl>  #/x/<kurs>/<fayl>
-  //   #/tests #/gpa #/curriculum #/requests #/timer #/dashboard #/support #/more
+  //   #/tests #/gpa #/curriculum #/requests #/requests/<id> (istəyin yazışması) #/timer #/dashboard #/support #/more
   const TABS = ['home', 'courses', 'support', 'tests', 'gpa', 'dashboard', 'curriculum', 'requests', 'timer', 'more'];
   let route = null;
   let prevRoute = null;
@@ -229,6 +229,7 @@
       if (!segs[1] && !hasFilter) return Object.assign(base, { tab: 'courses', view: 'entry' });
       return Object.assign(base, { tab: 'courses', view: 'materials' });
     }
+    if (a === 'requests' && segs[1]) return Object.assign(base, { tab: 'requests', view: 'thread', id: segs[1] });   // #/requests/<istək-id> — açıq yazışma
     if (TABS.includes(a)) return Object.assign(base, { tab: a, view: null });
     return Object.assign(base, { tab: 'home', view: null, hash: '#/home' });
   }
@@ -239,6 +240,7 @@
     if (r.view === 'pdfs')      return '/courses/subjects/' + enc(r.course);
     if (r.view === 'subjects')  return '/courses/subjects';
     if (r.view === 'home')      return '/home';
+    if (r.view === 'thread')    return '/requests';
     if (r.tab === 'dashboard')  return '/more';
     return '/home';
   }

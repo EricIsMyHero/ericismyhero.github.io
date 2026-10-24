@@ -566,6 +566,38 @@
     .push-result.ok  { color: var(--green); }
     .push-result.err { color: var(--red); }
 
+
+    /* ── Material istəkləri: yazışma təfərrüatı + bildiriş jurnalı ─── */
+    .rq-top { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .rq-top .search-bar { flex: 1 1 240px; margin: 0; }
+    .rq-link { background: none; border: 0; padding: 0; font: inherit; font-weight: 700; color: var(--accent2); cursor: pointer; text-align: left; }
+    .rq-link:hover { text-decoration: underline; }
+    .rq-btn { display: inline-flex; align-items: center; gap: 4px; padding: 6px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface2); color: var(--text); font: inherit; font-size: .78rem; font-weight: 700; cursor: pointer; }
+    .rq-btn:hover { border-color: var(--accent); }
+    .rq-btn.danger { color: var(--red); border-color: rgba(239,68,68,.35); }
+    .rq-btn.danger:hover { background: rgba(239,68,68,.12); border-color: var(--red); }
+    .rq-btn:disabled { opacity: .5; cursor: not-allowed; }
+    .rq-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 18px 20px; margin-bottom: 14px; }
+    .rq-card-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin-bottom: 10px; }
+    .rq-card-head .grow { flex: 1 1 auto; }
+    .rq-who { font-weight: 800; }
+    .rq-who small { font-weight: 600; color: var(--muted); margin-left: 4px; }
+    .rq-text { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.55; }
+    .rq-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .rq-files { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .rq-file { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface2); color: var(--accent2); font-size: .78rem; font-weight: 700; text-decoration: none; }
+    .rq-file small { color: var(--muted); font-weight: 600; }
+    .rq-notifs { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border); display: flex; flex-direction: column; gap: 6px; }
+    .rq-card > .rq-notifs:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+    .rq-notifs-title { font-size: .66rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+    .rq-notif { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: .78rem; line-height: 1.5; }
+    .rq-notif .to { font-weight: 700; }
+    .rq-notif small { color: var(--muted); }
+    .rq-notif .why { flex-basis: 100%; color: var(--red); font-size: .74rem; }
+    .rq-empty-note { color: var(--muted); font-size: .78rem; }
+    .rq-h { font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 22px 0 10px; }
+    .push-log-wrap { margin-top: 28px; }
+
     /* ── Responsive ─── */
     @media (max-width: 768px) {
       .sidebar { width: 60px; padding: 16px 8px; }
@@ -652,7 +684,9 @@
 
     <!-- REQUESTS -->
     <div class="tab-panel" id="panel-requests">
-      <input class="search-bar" id="requests-search" placeholder="İstək axtar..." oninput="filterRequests()">
+      <div class="rq-top" id="requests-top">
+        <input class="search-bar" id="requests-search" placeholder="İstək, istifadəçi axtar..." oninput="filterRequests()">
+      </div>
       <div id="requests-content"><div class="loading"><div class="spinner"></div>Yüklənir...</div></div>
     </div>
 
@@ -707,6 +741,11 @@
           </button>
         </div>
         <div class="push-result" id="push-result"></div>
+      </div>
+
+      <div class="push-log-wrap">
+        <div class="section-title">Son göndərişlər (əl ilə + istək cavabları)</div>
+        <div id="push-log"><div class="loading"><div class="spinner"></div>Yüklənir...</div></div>
       </div>
     </div>
 
@@ -792,6 +831,7 @@ async function showTab(tab) {
 
 async function loadTab(tab) {
   if (tab === 'push') return loadPush();
+  if (tab === 'requests') return loadRequestsTab();
   const section = tab === 'overview' ? 'all' : tab;
   document.getElementById(tab + '-content').innerHTML =
     '<div class="loading"><div class="spinner"></div>Yüklənir...</div>';
@@ -815,7 +855,7 @@ function renderTab(tab, data) {
   if (tab === 'overview')  renderOverview(data);
   if (tab === 'users')     renderUsers(data.users);
   if (tab === 'chats')     renderChats(data.chats);
-  if (tab === 'requests')  renderRequests(data.requests);
+  if (tab === 'requests')  renderRequests(data);
   if (tab === 'pdfs')      renderPdfs(data);
   if (tab === 'premium')   renderPremium(data.premiumCodes);
 }
@@ -980,25 +1020,66 @@ function toggleChatGroup(gi) {
 }
 
 // ── REQUESTS ───────────────────────────────────────────────────
+// Siyahı və təfərrüat serverdən (push funksiyası) gəlir: cavab sayı, fayllar, bildiriş nəticələri
 let _allRequests = [];
+let _rqTotals = null;
+let _rqOpen = null;           // açıq istəyin id-si (null — siyahı)
 
-function renderRequests(requests) {
-  _allRequests = requests || [];
+async function loadRequestsTab() {
+  const el = document.getElementById('requests-content');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div>Yüklənir...</div>';
+  try {
+    const d = await pushApi({ action: 'admin-requests' });
+    cache.requests = d;
+    renderRequests(d);
+  } catch (e) {
+    el.innerHTML = `<div class="loading" style="color:var(--red)">Xəta: ${esc(e.message)}</div>`;
+  }
+}
+
+function renderRequests(data) {
+  _allRequests = (data && data.requests) || [];
+  _rqTotals = (data && data.totals) || null;
+  _rqOpen = null;
+  document.getElementById('requests-top').style.display = '';
   document.getElementById('requests-content').innerHTML = buildRequestsTable(_allRequests);
 }
 
 function filterRequests() {
+  if (_rqOpen) return;
   const q = document.getElementById('requests-search').value.toLowerCase();
-  const filtered = _allRequests.filter(r =>
-    (r.text + r.userName + r.userEmail).toLowerCase().includes(q));
-  document.getElementById('requests-content').innerHTML = buildRequestsTable(filtered);
+  const filtered = _allRequests.filter(r => (r.text + ' ' + r.name + ' ' + r.subject + ' ' + r.course).toLowerCase().includes(q));
+  document.getElementById('requests-content').innerHTML = buildRequestsTable(filtered, !!q);
 }
 
+function buildRequestsTable(requests, filtered) {
+  const totals = (!filtered && _rqTotals) ? `
+    <div class="summary-grid">
+      <div class="summary-card"><div class="summary-val accent">${_rqTotals.requests}</div><div class="summary-lbl">İstək</div></div>
+      <div class="summary-card"><div class="summary-val yellow">${_rqTotals.open}</div><div class="summary-lbl">Açıq</div></div>
+      <div class="summary-card"><div class="summary-val green">${_rqTotals.messages}</div><div class="summary-lbl">Cavab (mesaj)</div></div>
+    </div>` : '';
+  if (!requests.length) return totals + '<div class="loading">İstək tapılmadı.</div>';
+  return totals + `<div class="table-wrap"><table>
+    <thead><tr>
+      <th>İstək</th><th>İstifadəçi</th><th>Cavab</th><th>Upvote</th><th>Status</th><th>Son fəaliyyət</th><th></th>
+    </tr></thead>
+    <tbody>${requests.map(r => `
+      <tr>
+        <td class="td-bold"><button class="rq-link" onclick="openRequestDetail('${esc(r.id)}')">${esc(r.text.length > 90 ? r.text.slice(0, 90) + '…' : r.text)}</button>
+          ${(r.course || r.subject) ? `<br><small class="td-muted">${esc([r.course, r.subject].filter(Boolean).join(' · '))}</small>` : ''}</td>
+        <td class="td-muted">${esc(r.name)}</td>
+        <td><span class="badge ${r.msgCount ? 'badge-green' : 'badge-gray'}">${r.msgCount}</span></td>
+        <td><span class="badge badge-blue">▲ ${r.upvotes}</span></td>
+        <td><span class="badge ${r.status === 'fulfilled' ? 'badge-green' : 'badge-yellow'}">${r.status === 'fulfilled' ? 'Tapıldı' : 'Açıq'}</span></td>
+        <td class="td-muted">${fmtDateTime(r.lastMessageAt || r.createdAt)}</td>
+        <td><button class="rq-btn" onclick="openRequestDetail('${esc(r.id)}')"><span class="material-symbols-outlined msi">forum</span>Bax</button></td>
+      </tr>`).join('')}
+    </tbody></table></div>`;
+}
+
+// Ümumi baxışdakı qısa siyahı (admin-data cavabı: userName, userEmail, upvotes, found)
 function renderRequestsTable(requests) {
-  return buildRequestsTable(requests);
-}
-
-function buildRequestsTable(requests) {
   if (!requests.length) return '<div class="loading">İstək tapılmadı.</div>';
   return `<div class="table-wrap"><table>
     <thead><tr>
@@ -1013,6 +1094,107 @@ function buildRequestsTable(requests) {
         <td class="td-muted">${fmtDate(r.createdAt)}</td>
       </tr>`).join('')}
     </tbody></table></div>`;
+}
+
+function rqFilesHtml(atts) {
+  const list = (atts || []).filter(a => a && /^https:\/\//i.test(a.url || ''));
+  if (!list.length) return '';
+  return `<div class="rq-files">${list.map(a => `<a class="rq-file" href="${esc(a.url)}" target="_blank" rel="noopener noreferrer"><span class="material-symbols-outlined msi">attach_file</span>${esc(a.name || 'fayl')} <small>${esc(fmtSize(a.size))}</small></a>`).join('')}</div>`;
+}
+
+// Bir mesaj üçün kimlərə bildiriş getdi və nəticəsi nə oldu
+function rqNotifsHtml(list) {
+  if (!list.length) return `<div class="rq-notifs"><div class="rq-notifs-title">Bildirişlər</div><div class="rq-empty-note">Bu mesaj üçün bildiriş göndərilməyib (alıcı yoxdur və ya istək sahibi özü yazıb və cavab verən yoxdur).</div></div>`;
+  return `<div class="rq-notifs"><div class="rq-notifs-title">Bildirişlər (${list.length})</div>${list.map(n => {
+    const errs = Object.entries(n.errors || {}).map(([k, v]) => `${esc(k)}: ${esc(v)}`).join(', ');
+    let st;
+    if (!n.devices) st = '<span class="badge badge-gray">Aktiv cihaz yoxdur</span>';
+    else if (n.sent && !n.failed) st = `<span class="badge badge-green">Çatdı ${n.sent}/${n.devices}</span>`;
+    else if (n.sent) st = `<span class="badge badge-yellow">Qismən ${n.sent}/${n.devices}</span>`;
+    else st = `<span class="badge badge-red">Çatmadı 0/${n.devices}</span>`;
+    return `<div class="rq-notif">
+        <span class="material-symbols-outlined msi">notifications</span>
+        <span class="to">${esc(n.toName || '—')}</span><small>${esc(n.toEmail || '')}</small>
+        <span class="badge ${n.recipientRole === 'owner' ? 'badge-blue' : 'badge-gray'}">${n.recipientRole === 'owner' ? 'istək sahibi' : 'əvvəl yazan'}</span>
+        ${st}
+        ${n.removed ? `<span class="badge badge-gray">köhnə token silindi: ${n.removed}</span>` : ''}
+        <small>${fmtDateTime(n.createdAt)}</small>
+        ${errs ? `<div class="why">Xəta: ${errs}</div>` : ''}
+        ${n.title || n.body ? `<div class="td-muted" style="flex-basis:100%">“${esc(n.title)}” — ${esc(n.body)}</div>` : ''}
+      </div>`;
+  }).join('')}</div>`;
+}
+
+async function openRequestDetail(id) {
+  _rqOpen = id;
+  document.getElementById('requests-top').style.display = 'none';
+  const el = document.getElementById('requests-content');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div>Yüklənir...</div>';
+  try {
+    const d = await pushApi({ action: 'admin-request', requestId: id });
+    if (_rqOpen !== id) return;
+    const r = d.request;
+    const byMsg = {};
+    const orphan = [];
+    for (const n of d.notifications || []) {
+      if (n.messageId && d.messages.some(m => m.id === n.messageId)) (byMsg[n.messageId] = byMsg[n.messageId] || []).push(n);
+      else orphan.push(n);
+    }
+    el.innerHTML = `
+      <div class="rq-top"><button class="rq-btn" onclick="closeRequestDetail()"><span class="material-symbols-outlined msi">arrow_back</span>Siyahıya qayıt</button>
+        <button class="rq-btn" onclick="openRequestDetail('${esc(r.id)}')"><span class="material-symbols-outlined msi">refresh</span>Yenilə</button></div>
+      <div class="rq-card">
+        <div class="rq-card-head">
+          <span class="rq-who">${esc(r.name || '—')}<small>${esc(r.email)}</small></span>
+          <span class="badge badge-blue">istək sahibi</span>
+          <span class="badge ${r.status === 'fulfilled' ? 'badge-green' : 'badge-yellow'}">${r.status === 'fulfilled' ? 'Tapıldı' : 'Açıq'}</span>
+          <span class="grow"></span>
+          <span class="td-muted">${fmtDateTime(r.createdAt)}</span>
+          <button class="rq-btn danger" onclick="adminDeleteRequest('${esc(r.id)}')"><span class="material-symbols-outlined msi">delete</span>İstəyi sil</button>
+        </div>
+        <div class="rq-text">${esc(r.text)}</div>
+        <div class="rq-meta">
+          ${r.course ? `<span class="badge badge-gray">${esc(r.course)}</span>` : ''}${r.subject ? `<span class="badge badge-gray">${esc(r.subject)}</span>` : ''}
+          <span class="badge badge-blue">▲ ${r.upvotes}</span><span class="badge badge-gray">${d.messages.length} mesaj</span>
+        </div>
+      </div>
+      <div class="rq-h">Yazışma (${d.messages.length})</div>
+      ${d.messages.length ? d.messages.map(m => `
+        <div class="rq-card">
+          <div class="rq-card-head">
+            <span class="rq-who">${esc(m.name || '—')}<small>${esc(m.email)}</small></span>
+            <span class="badge ${m.role === 'owner' ? 'badge-blue' : 'badge-gray'}">${m.role === 'owner' ? 'istək sahibi' : 'cavab verən'}</span>
+            <span class="grow"></span>
+            <span class="td-muted">${fmtDateTime(m.createdAt)}</span>
+            <button class="rq-btn danger" onclick="adminDeleteMessage('${esc(r.id)}','${esc(m.id)}')"><span class="material-symbols-outlined msi">delete</span>Sil</button>
+          </div>
+          ${m.text ? `<div class="rq-text">${esc(m.text)}</div>` : ''}
+          ${rqFilesHtml(m.attachments)}
+          ${rqNotifsHtml(byMsg[m.id] || [])}
+        </div>`).join('') : '<div class="loading">Hələ cavab yoxdur.</div>'}
+      ${orphan.length ? `<div class="rq-h">Silinmiş mesajlar üçün göndərilənlər</div><div class="rq-card">${rqNotifsHtml(orphan)}</div>` : ''}`;
+  } catch (e) {
+    if (_rqOpen !== id) return;
+    el.innerHTML = `<div class="rq-top"><button class="rq-btn" onclick="closeRequestDetail()"><span class="material-symbols-outlined msi">arrow_back</span>Siyahıya qayıt</button></div>
+      <div class="loading" style="color:var(--red)">Xəta: ${esc(e.message)}</div>`;
+  }
+}
+
+function closeRequestDetail() {
+  _rqOpen = null;
+  if (cache.requests) renderRequests(cache.requests); else loadRequestsTab();
+}
+
+async function adminDeleteMessage(reqId, msgId) {
+  if (!confirm('Bu mesaj (və əlavə faylları) silinsin? Geri qaytarmaq mümkün deyil.')) return;
+  try { await pushApi({ action: 'admin-msg-delete', requestId: reqId, messageId: msgId }); delete cache.requests; await openRequestDetail(reqId); }
+  catch (e) { alert('Xəta: ' + e.message); }
+}
+
+async function adminDeleteRequest(reqId) {
+  if (!confirm('Bu istək, bütün cavablar və faylları silinsin? Geri qaytarmaq mümkün deyil.')) return;
+  try { await pushApi({ action: 'admin-req-delete', requestId: reqId }); delete cache.requests; _rqOpen = null; await loadRequestsTab(); }
+  catch (e) { alert('Xəta: ' + e.message); }
 }
 
 // ── PDFS ───────────────────────────────────────────────────────
@@ -1113,6 +1295,8 @@ const PUSH_ERRORS = {
   invalid_audience:        'Auditoriya yanlışdır.',
   invalid_cursor:          'Davam kursoru yanlışdır — göndərişi yenidən başlat.',
   user_not_found:          'Bu email ilə istifadəçi tapılmadı.',
+  request_not_found:       'İstək tapılmadı (silinmiş ola bilər).',
+  message_not_found:       'Mesaj tapılmadı (silinmiş ola bilər).',
 };
 let pushBusy = false;
 
@@ -1153,6 +1337,43 @@ async function loadPush() {
     el.innerHTML = `<div class="loading" style="color:var(--red)">${esc(e.message)}</div>`;
   }
   pushPreview();
+  loadPushLog();
+}
+
+// Son göndərişlər: əl ilə göndərilənlər + istək cavablarına görə avtomatik gedənlər
+async function loadPushLog() {
+  const el = document.getElementById('push-log');
+  try {
+    const d = await pushApi({ action: 'admin-push-log', limit: 60 });
+    const items = d.items || [];
+    if (!items.length) { el.innerHTML = '<div class="loading">Hələ göndəriş yoxdur.</div>'; return; }
+    el.innerHTML = `<div class="table-wrap"><table>
+      <thead><tr><th>Tarix</th><th>Növ</th><th>Bildiriş</th><th>Kimə</th><th>Nəticə</th></tr></thead>
+      <tbody>${items.map(i => {
+        const auto = i.kind === 'request-message';
+        const res = i.total
+          ? `<span class="badge ${i.sent && !i.failed ? 'badge-green' : (i.sent ? 'badge-yellow' : 'badge-red')}">${i.sent}/${i.total}</span>`
+          : '<span class="badge badge-gray">cihaz yox</span>';
+        const extra = [i.failed ? 'uğursuz ' + i.failed : '', i.removed ? 'silindi ' + i.removed : ''].filter(Boolean).join(', ');
+        const errs = Object.entries(i.errors || {}).map(([k, v]) => k + ': ' + v).join(', ');
+        return `<tr>
+          <td class="td-muted">${fmtDateTime(i.createdAt)}</td>
+          <td><span class="badge ${auto ? 'badge-blue' : 'badge-gray'}">${auto ? 'İstək cavabı' : 'Əl ilə'}</span></td>
+          <td><span class="td-bold">${esc(i.title)}</span><br><small class="td-muted">${esc(i.body)}</small></td>
+          <td class="td-muted">${auto
+            ? `${esc(i.fromName || '—')} → <b>${esc(i.toName || '—')}</b>${i.requestId ? `<br><button class="rq-link" onclick="openRequestFromLog('${esc(i.requestId)}')">İstəyə bax</button>` : ''}`
+            : esc({ all: 'Hamı', az: 'Azərbaycan dili', en: 'English', user: 'Konkret istifadəçi' }[i.audience] || i.audience || '—')}</td>
+          <td>${res}${extra ? `<br><small class="td-muted">${esc(extra)}</small>` : ''}${errs ? `<br><small style="color:var(--red)">${esc(errs)}</small>` : ''}</td>
+        </tr>`;
+      }).join('')}</tbody></table></div>`;
+  } catch (e) {
+    el.innerHTML = `<div class="loading" style="color:var(--red)">${esc(e.message)}</div>`;
+  }
+}
+
+async function openRequestFromLog(id) {
+  await showTab('requests');
+  openRequestDetail(id);
 }
 
 function pushPreview() {
@@ -1233,6 +1454,18 @@ async function pushSend(dryRun) {
 // ── Helpers ────────────────────────────────────────────────────
 function esc(str) {
   return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function fmtDateTime(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  if (isNaN(d)) return '—';
+  return d.toLocaleString('az-AZ', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+}
+
+function fmtSize(b) {
+  if (!(b > 0)) return '';
+  return b >= 1048576 ? (b / 1048576).toFixed(1).replace(/\.0$/, '') + ' MB' : Math.max(1, Math.round(b / 1024)) + ' KB';
 }
 
 function fmtDate(iso) {

@@ -191,14 +191,15 @@ async function getMaterialRequests(projectId, token) {
   const data = await firestoreList(projectId, 'material_requests', token, 200);
   return (data.documents || []).map(doc => {
     const f = extractFields(doc.fields);
+    // Sayt istəkləri {name, upvoterIds[], status:'open'|'fulfilled'} kimi yazır (köhnə adlar da dəstəklənir)
     return {
       id:        docId(doc),
       text:      f.text      || '',
-      userName:  f.userName  || '',
+      userName:  f.name      || f.userName  || '',
       userEmail: f.userEmail || '',
       uid:       f.uid       || '',
-      upvotes:   f.upvotes   || 0,
-      found:     f.found     || false,
+      upvotes:   Array.isArray(f.upvoterIds) ? f.upvoterIds.length : (f.upvotes || 0),
+      found:     f.status === 'fulfilled' || f.found === true,
       createdAt: f.createdAt || null,
     };
   });

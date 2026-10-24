@@ -14,6 +14,10 @@
 //        Bir sorğu ~8 saniyə işləyir (PUSH_DEADLINE_MS). Çox cihaz olarsa cavabda `cursor` qayıdır —
 //        admin paneli onu `after` kimi göndərib qalanlara davam edir (heç kimə təkrar getmir).
 //
+// Material istəkləri yazışması (lib/threads.js) də BU funksiyadadır — Vercel Hobby planında 12 funksiya limiti var, yeni fayl əlavə etmək olmaz:
+//   İctimai (idToken ilə): 'file-url' · 'req-create' · 'req-send' · 'req-delete' · 'msg-delete'
+//   Admin (X-Admin-Key):   'admin-requests' · 'admin-request' · 'admin-req-delete' · 'admin-msg-delete' · 'admin-push-log'
+//
 // Qeyd: üstdə yalnız daxili `node:crypto` import olunur. Layihə modulları handler daxilində yüklənir —
 // beləliklə fayl çatışmazlığı / yanlış export kimi deploy xətası olsa belə preflight (OPTIONS) uğurlu olur
 // və brauzer qaranlıq "CORS" səhvi əvəzinə real xəta mesajını görür.
@@ -41,6 +45,11 @@ async function loadModules() {
   return { ...payments, ...firestore, ...push };
 }
 
+// İstək yazışması modulu AYRICA yüklənir: bir fayl çatışmasa belə push abunəliyi və göndərişi işləməyə davam edir.
+const THREAD_PUBLIC = ['file-url', 'req-create', 'req-send', 'req-delete', 'msg-delete'];
+const THREAD_ADMIN = ['admin-requests', 'admin-request', 'admin-req-delete', 'admin-msg-delete', 'admin-push-log'];
+const loadThreads = () => import('../lib/threads.js');
+
 const failMsg = (e) => String((e && e.message) || e).slice(0, 300);
 
 export default async function handler(req, res) {
@@ -63,11 +72,35 @@ export default async function handler(req, res) {
   // ── GET: sayt üçün konfiqurasiya ──
   if (req.method === 'GET') {
     const enabled = pushEnabled();
-    return res.status(200).json({ enabled, vapidKey: enabled ? process.env.FIREBASE_VAPID_KEY : null });
+    let requests = null;
+    try { requests = (await loadThreads()).threadsConfig(); } catch (e) { console.error('[push] threads modulu yüklənmədi:', e); }
+    return res.status(200).json({ enabled, vapidKey: enabled ? process.env.FIREBASE_VAPID_KEY : null, requests });
   }
 
   try {
     const b = body(req);
+
+    // ── İstək yazışmaları: ictimai əməliyyatlar (idToken ilə) ──
+    if (THREAD_PUBLIC.includes(b.action)) {
+      let threads;
+      try { threads = await loadThreads(); } catch (e) {
+        console.error('[push] threads modulu yüklənmədi:', e);
+        return res.status(500).json({ error: 'module_load_failed', message: failMsg(e) });
+      }
+      const r = await threads.publicThreadAction(b.action, b);
+      return res.status(r.status).json(r.json);
+    }
+    // ── İstək yazışmaları: admin baxışı ──
+    if (THREAD_ADMIN.includes(b.action)) {
+      if (!isAdmin(req, b)) return res.status(401).json({ error: 'unauthorized' });
+      let threads;
+      try { threads = await loadThreads(); } catch (e) {
+        console.error('[push] threads modulu yüklənmədi:', e);
+        return res.status(500).json({ error: 'module_load_failed', message: failMsg(e) });
+      }
+      const r = await threads.adminThreadAction(b.action, b);
+      return res.status(r.status).json(r.json);
+    }
 
     // ── Admin əməliyyatları ──
     if (b.action === 'stats' || b.action === 'send') {

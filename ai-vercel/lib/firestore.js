@@ -37,29 +37,38 @@ export async function getAccessToken(env = process.env) {
 export function _resetTokenCache() { _tok = { value: null, exp: 0 }; }
 
 // ── Dəyər çevirmələri ─────────────────────────────────────────
+// Dəstəklənir: null, string, boolean, rəqəm, Date, massiv, sadə obyekt (map). Massiv və obyekt iç-içə ola bilər.
+export function toValue(v) {
+  if (v === null)                  return { nullValue: null };
+  if (v instanceof Date)           return { timestampValue: v.toISOString() };
+  if (typeof v === 'string')       return { stringValue: v };
+  if (typeof v === 'boolean')      return { booleanValue: v };
+  if (typeof v === 'number')       return Number.isInteger(v) ? { integerValue: String(v) } : { doubleValue: v };
+  if (Array.isArray(v))            return { arrayValue: v.length ? { values: v.map(toValue) } : {} };
+  if (v && typeof v === 'object')  return { mapValue: { fields: toFields(v) } };
+  throw new Error('Dəstəklənməyən sahə növü');
+}
 export function toFields(obj) {
   const out = {};
   for (const [k, v] of Object.entries(obj)) {
     if (v === undefined) continue;
-    if (v === null)                 out[k] = { nullValue: null };
-    else if (v instanceof Date)     out[k] = { timestampValue: v.toISOString() };
-    else if (typeof v === 'string') out[k] = { stringValue: v };
-    else if (typeof v === 'boolean') out[k] = { booleanValue: v };
-    else if (typeof v === 'number') out[k] = Number.isInteger(v) ? { integerValue: String(v) } : { doubleValue: v };
-    else throw new Error('Dəstəklənməyən sahə növü: ' + k);
+    try { out[k] = toValue(v); } catch (e) { throw new Error('Dəstəklənməyən sahə növü: ' + k); }
   }
   return out;
 }
+export function fromValue(f) {
+  if (f.stringValue !== undefined)         return f.stringValue;
+  if (f.integerValue !== undefined)        return parseInt(f.integerValue, 10);
+  if (f.doubleValue !== undefined)         return parseFloat(f.doubleValue);
+  if (f.booleanValue !== undefined)        return f.booleanValue;
+  if (f.timestampValue !== undefined)      return f.timestampValue;
+  if (f.arrayValue !== undefined)          return (f.arrayValue.values || []).map(fromValue);
+  if (f.mapValue !== undefined)            return fromFields(f.mapValue.fields);
+  return null;
+}
 export function fromFields(fields) {
   const out = {};
-  for (const [k, f] of Object.entries(fields || {})) {
-    if (f.stringValue !== undefined)         out[k] = f.stringValue;
-    else if (f.integerValue !== undefined)   out[k] = parseInt(f.integerValue, 10);
-    else if (f.doubleValue !== undefined)    out[k] = parseFloat(f.doubleValue);
-    else if (f.booleanValue !== undefined)   out[k] = f.booleanValue;
-    else if (f.timestampValue !== undefined) out[k] = f.timestampValue;
-    else                                     out[k] = null;
-  }
+  for (const [k, f] of Object.entries(fields || {})) out[k] = fromValue(f);
   return out;
 }
 
@@ -110,6 +119,32 @@ export async function patchDoc(path, data, { ifUpdateTime } = {}, env = process.
     throw new Error(`Firestore yeniləmə xətası: ${res.status}`);
   }
   return docResult(await res.json());
+}
+
+/**
+ * Atomik yeniləmə (documents:commit): `data` sahələri yazılır, `increments` ({sahə: n}) artırılır, `serverTimes` sahələri server vaxtına qoyulur.
+ * Sənəd yoxdursa xəta ('not_found'). `data` boş ola bilməz (boş updateMask bütün sənədi əvəz edə bilərdi).
+ */
+export async function commitUpdate(path, data, { increments = {}, serverTimes = [] } = {}, env = process.env) {
+  const keys = Object.keys(data).filter(k => data[k] !== undefined);
+  if (!keys.length) throw new Error('commitUpdate: ən azı bir sahə lazımdır');
+  const pid = serviceAccount(env).project_id;
+  const write = {
+    update: { name: `projects/${pid}/databases/(default)/documents/${path}`, fields: toFields(data) },
+    updateMask: { fieldPaths: keys },
+    currentDocument: { exists: true },
+    updateTransforms: [
+      ...Object.entries(increments).map(([fieldPath, n]) => ({ fieldPath, increment: { integerValue: String(n) } })),
+      ...serverTimes.map(fieldPath => ({ fieldPath, setToServerValue: 'REQUEST_TIME' })),
+    ],
+  };
+  const res = await fetch(`${base(env)}:commit`, await authed(env, { method: 'POST', body: JSON.stringify({ writes: [write] }) }));
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    if ((body && body.error && body.error.status) === 'NOT_FOUND' || res.status === 404) { const e = new Error('not_found'); e.code = 'not_found'; throw e; }
+    throw new Error(`Firestore commit xətası: ${res.status}`);
+  }
+  return true;
 }
 
 /** structuredQuery → [{ id, data }] */

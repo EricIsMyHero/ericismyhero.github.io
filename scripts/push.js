@@ -79,6 +79,8 @@
       box.dataset.state = s;
       box.innerHTML = `<span class="push-ic">${ic('bell')}</span><span class="push-text"><b>${esc(title)}</b><small>${esc(desc)}</small></span>${btn}`;
     });
+    // Başqa modullar (məs. material istəkləri) bildiriş vəziyyətinə görə öz ekranını yeniləyir
+    try { window.dispatchEvent(new CustomEvent('unec:pushchange', { detail: { state: s } })); } catch (e) { /* köhnə brauzer */ }
   }
 
   // ── Server ──────────────────────────────────────────────────
