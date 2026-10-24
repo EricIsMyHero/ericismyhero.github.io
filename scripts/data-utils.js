@@ -31,6 +31,7 @@ const thanksData = [
   { name: "Nərimanov Elnur",  initial: "E", role: "code" },
   { name: "Şükürova Güləyar", initial: "G", role: "pdf"  },
   { name: "Hacıyev Tofiq",    initial: "T", role: "pdf"  },
+  { name: "Səfail Zeynalov",  initial: "s", role: "pdf"  },
   { name: "İslamlı Həsən",    initial: "H", role: "pdf"  },
   { name: "Həsənli Əsmər",    initial: "Ə", role: "pdf"  },
 ];
@@ -79,16 +80,9 @@ function getPdfTypeBadgeHTML(pdfType) {
 // ── Tema sistemi ─────────────────────────────────────────────
 const themes = {
   unec:     { '--bg':'#030B19','--surface':'#0B2140','--surface2':'#102B50','--accent':'#087BFF','--accent2':'#4DA6FF','--accent3':'#0A4FB3','--text':'#F3F7FF','--muted':'#8CA3C4','--border':'#17365D','--glow':'rgba(8,123,255,0.10)' },
-
-  // 🌈 Göyqurşağı — çoxrəngli gradient aksent, tünd purpur fon
   rainbow:  { '--bg':'#0d0014','--surface':'#160020','--surface2':'#1e0030','--accent':'#c026d3','--accent2':'#f59e0b','--accent3':'#06b6d4','--text':'#f0e8ff','--muted':'#8866aa','--border':'rgba(192,38,211,0.2)','--glow':'rgba(192,38,211,0.1)' },
-
-  // 🌸 Çəhrayı / Sakura — soft pembe, açıq fon, warm tones
   sakura:   { '--bg':'#1a0010','--surface':'#2a0018','--surface2':'#3d0025','--accent':'#f472b6','--accent2':'#fb7185','--accent3':'#fda4af','--text':'#ffe4f0','--muted':'#c084a0','--border':'rgba(244,114,182,0.2)','--glow':'rgba(244,114,182,0.1)' },
-
-  // ⚡ Neon — elektrik yaşıl + mavi, qara fon, cyberpunk
   neon:     { '--bg':'#000000','--surface':'#080808','--surface2':'#0f0f0f','--accent':'#00ff88','--accent2':'#00d4ff','--accent3':'#ff00aa','--text':'#e0ffe8','--muted':'#3a7a5a','--border':'rgba(0,255,136,0.22)','--glow':'rgba(0,255,136,0.12)' },
-
   forest:   { '--bg':'#071a0d','--surface':'#0d2e1a','--surface2':'#124022','--accent':'#22c55e','--accent2':'#4ade80','--accent3':'#86efac','--text':'#e2e8f0','--muted':'#6b7280','--border':'rgba(34,197,94,0.15)','--glow':'rgba(34,197,94,0.08)' },
   midnight: { '--bg':'#0a0a0a','--surface':'#141414','--surface2':'#1f1f1f','--accent':'#ffffff','--accent2':'#a3a3a3','--accent3':'#737373','--text':'#e5e5e5','--muted':'#525252','--border':'rgba(255,255,255,0.1)','--glow':'rgba(255,255,255,0.04)' },
   candy:    { '--bg':'#fafafa','--surface':'#ffffff','--surface2':'#f3f4f6','--accent':'#a855f7','--accent2':'#ec4899','--accent3':'#8b5cf6','--text':'#1e1b4b','--muted':'#6b7280','--border':'rgba(168,85,247,0.15)','--glow':'rgba(168,85,247,0.06)' },
@@ -111,8 +105,6 @@ function applyTheme(name, btn) {
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta && vars['--bg']) meta.setAttribute('content', vars['--bg']);
 }
-
-// ── Dil sistemi köçürüldü → scripts/i18n.js ─────────────────
 
 // ── Statistika ───────────────────────────────────────────────
 function computeStats() {
