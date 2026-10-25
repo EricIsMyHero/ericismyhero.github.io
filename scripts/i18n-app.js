@@ -4,6 +4,7 @@
 // ============================================================
 Object.assign(I18N.az, {
   matShowMore: 'Daha çox göstər',
+  matViewDetails: 'Məlumata bax',
   mdSize: 'Ölçü',
   subjectInfo: 'Fənn haqqında',
   sidebarLessThemes: 'Daha az tema',
@@ -101,6 +102,11 @@ Object.assign(I18N.az, {
 
   mdShortInfo: 'Qısa məlumat',
   mdSimilar: 'Oxşar materiallar',
+  mdSameSubject: 'Fənnin digər materialları',
+  mdSameSemester: 'Eyni semestrdə digər fənlərin materialları',
+  mdNoRelated: 'Bu bölmədə başqa material yoxdur.',
+  mdSeeAll: 'Hamısını gör',
+  mdShowLess: 'Daha az göstər',
   mdCourse: 'Kurs',
   mdSemester: 'Semestr',
   mdFormat: 'Format',
@@ -180,6 +186,7 @@ Object.assign(I18N.az, {
 
 Object.assign(I18N.en, {
   matShowMore: 'Show more',
+  matViewDetails: 'View details',
   mdSize: 'Size',
   subjectInfo: 'About this subject',
   sidebarLessThemes: 'Fewer themes',
@@ -277,6 +284,11 @@ Object.assign(I18N.en, {
 
   mdShortInfo: 'Summary',
   mdSimilar: 'Similar materials',
+  mdSameSubject: 'More materials for this subject',
+  mdSameSemester: 'Other subjects in the same semester',
+  mdNoRelated: 'No other materials in this section.',
+  mdSeeAll: 'See all',
+  mdShowLess: 'Show less',
   mdCourse: 'Course',
   mdSemester: 'Semester',
   mdFormat: 'Format',

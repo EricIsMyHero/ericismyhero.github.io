@@ -11,6 +11,7 @@
   const { $, $$, esc, ic, enc, tr, normAz } = U;
 
   const PAGE = 30;
+  const RELATED_LIMIT = 3;
   const DEFAULT_COLOR = '#ef4444';
   const EXTRA_COLOR = '#f59e0b';
 
@@ -200,7 +201,7 @@
     const ratingWidget = m.kind === 'pdf'
       ? `<div class="pdf-rating" data-course="${esc(m.course)}" data-subject="${esc(m.subject)}" data-file="${esc(m.file)}"></div>` : '';
     return `
-    <article class="mat-card mat-card--rich" style="--tc:${typeColor(m)}">
+    <article class="mat-card mat-card--rich${subjectPreview ? ' mat-card--subject' : ''}" style="--tc:${typeColor(m)}">
       <div class="mat-main">
         <span class="mat-icon" aria-hidden="true">${ic('pdf')}<b>PDF</b></span>
         <div class="mat-body">
@@ -210,7 +211,9 @@
         </div>
       </div>
       ${ratingWidget}
-      ${subjectPreview ? '' : `<div class="mat-actions">${fileBtnsHTML(m)}${favBtnHTML(m)}</div>`}
+      ${subjectPreview
+        ? `<a class="btn btn--secondary mat-detail-link" href="${matHref(m)}" aria-label="${esc(t('matViewDetails') + ': ' + m.name)}"><span>${esc(t('matViewDetails'))}</span>${ic('chevron-right')}</a>`
+        : `<div class="mat-actions">${fileBtnsHTML(m)}${favBtnHTML(m)}</div>`}
     </article>`;
   }
 
@@ -441,17 +444,38 @@
   const fmtSize = b => b < 1048576 ? Math.max(1, Math.round(b / 1024)) + ' KB' : (b / 1048576).toFixed(1) + ' MB';
 
   let currentMaterial = null;
+  let currentRelated = { subject: [], semester: [] };
 
   function describe(m) {
     if (m.kind === 'extra') return tr('mdDescExtra', { course: m.course, desc: m.desc || '' }).trim();
     return tr('mdDescSubject', { subject: m.subject, course: m.course, semester: semesterLabel(m.semester).toLowerCase(), format: formatLabel(m.format) });
   }
 
-  function similarFor(m) {
-    const all = getIndex();
-    const same = all.filter(x => x.id !== m.id && x.course === m.course && x.subject === m.subject);
-    const rest = all.filter(x => x.id !== m.id && x.course === m.course && x.subject !== m.subject && x.kind === m.kind && x.pdfType === m.pdfType);
-    return same.concat(rest).slice(0, 4);
+  function relatedFor(m) {
+    if (m.kind === 'extra') {
+      return { subject: extraEntries(m.course).filter(x => x.file !== m.file), semester: [] };
+    }
+    const own = entriesForSubject(m.course, m.subject);
+    const ownFiles = new Set(own.map(x => x.file));
+    return {
+      subject: own.filter(x => x.file !== m.file),
+      semester: m.semester ? getIndex().filter(x => x.kind === 'pdf' && x.course === m.course
+        && x.subject !== m.subject && x.semester === m.semester && !ownFiles.has(x.file)) : []
+    };
+  }
+
+  function relatedSectionHTML(group, title, entries) {
+    const id = 'md-related-' + group;
+    return `
+      <section class="md-section md-related-group md-related--${group}" aria-labelledby="${id}-title">
+        <h3 id="${id}-title">${esc(title)}</h3>
+        ${entries.length
+          ? `<div class="md-similar">${entries.slice(0, RELATED_LIMIT).map(matCardHTML).join('')}</div>`
+          : `<p>${esc(t('mdNoRelated'))}</p>`}
+        ${entries.length > RELATED_LIMIT ? `
+          <div class="md-similar" id="${id}-more" hidden>${entries.slice(RELATED_LIMIT).map(matCardHTML).join('')}</div>
+          <button type="button" class="btn btn--secondary md-related-toggle" data-related-toggle="${group}" aria-controls="${id}-more" aria-expanded="false">${esc(t('mdSeeAll'))} (${entries.length})</button>` : ''}
+      </section>`;
   }
 
   function renderMaterialDetail(r) {
@@ -475,7 +499,7 @@
       m.code ? [t('mdCode'), m.code] : null,
       [t('mdFile'), m.file]
     ].filter(Boolean);
-    const sim = similarFor(m);
+    currentRelated = relatedFor(m);
     const subjectPath = m.kind === 'pdf' ? `#/courses/subjects/${enc(m.course)}/${enc(m.subject)}` : `#/courses/subjects/${enc(m.course)}`;
 
     box.innerHTML = `
@@ -505,11 +529,14 @@
             <button class="btn btn--ghost btn--sm" type="button" id="mdReportInline">${ic('flag')}<span>${esc(t('mdReport'))}</span></button>
           </div>
         </div>
-        ${sim.length ? `<aside><section class="md-section" style="margin-top:22px"><h3>${esc(t('mdSimilar'))}</h3><div class="md-similar">${sim.map(matCardHTML).join('')}</div></section></aside>` : ''}
+        <aside class="md-related">
+          ${relatedSectionHTML('subject', t(m.kind === 'pdf' ? 'mdSameSubject' : 'mdSimilar'), currentRelated.subject)}
+          ${m.kind === 'pdf' ? relatedSectionHTML('semester', t('mdSameSemester'), currentRelated.semester) : ''}
+        </aside>
       </div>`;
 
     if (typeof renderAllPdfRatings === 'function') renderAllPdfRatings();
-    fetchRatings(sim);
+    fetchRatings(currentRelated.subject.slice(0, RELATED_LIMIT).concat(currentRelated.semester.slice(0, RELATED_LIMIT)));
 
     // fayl ölçüsü — yalnız server qaytararsa
     fetchSize(m.url).then(b => {
@@ -521,6 +548,18 @@
 
   function bindDetail() {
     document.addEventListener('click', e => {
+      const more = e.target.closest('[data-related-toggle]');
+      if (more) {
+        const target = document.getElementById(more.getAttribute('aria-controls'));
+        const entries = currentRelated[more.dataset.relatedToggle];
+        if (!target || !entries) return;
+        const expanded = more.getAttribute('aria-expanded') === 'true';
+        target.hidden = expanded;
+        more.setAttribute('aria-expanded', String(!expanded));
+        more.textContent = expanded ? `${t('mdSeeAll')} (${entries.length})` : t('mdShowLess');
+        if (!expanded) fetchRatings(entries.slice(RELATED_LIMIT));
+        return;
+      }
       if (e.target.closest('#mdMoreBtn')) { U.openSheet('sheet-mdmore', e.target.closest('#mdMoreBtn')); return; }
       if (e.target.closest('#mdReportInline')) { reportCurrent(); return; }
     });
@@ -596,6 +635,7 @@
     if (!r || r.tab !== 'courses') return;
     if (r.view === 'materials') renderMaterials();
     else if (r.view === 'material') renderMaterialDetail(r);
+    else if (r.view === 'pdfs') showPdfs(r.course, r.subject);
   }
   window.addEventListener('unec:langchange', () => { refreshCurrent(); });
   window.addEventListener('unec:authchange', () => {

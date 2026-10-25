@@ -249,6 +249,10 @@
 .mat-card--rich .mat-icon .ic { width: 26px; height: 26px; }
 .mat-card--rich .mat-title { font-size: 1.0625rem; -webkit-line-clamp: 3; }
 .mat-card--rich .mat-side { display: none; }
+.mat-card--subject { cursor: pointer; }
+.mat-card--subject .pdf-rating { pointer-events: none; }
+.mat-card--subject .pdf-rating button { pointer-events: auto; }
+.mat-detail-link { position: relative; z-index: 2; min-height: 44px; gap: 8px; }
 .mat-desc { margin: 0; color: var(--color-text-secondary); font-size: var(--fs-sm); line-height: 1.55; }
 .mat-actions { display: flex; gap: 10px; align-items: stretch; margin-top: 2px; }
 .mat-actions .btn { flex: 1; min-height: 46px; min-width: 0; padding: 0 12px; }
@@ -359,9 +363,18 @@
   .md-actions { grid-template-columns: 1fr 1fr 52px; }
   .md-actions .btn--primary { grid-column: auto; }
   .md-facts { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .md-layout { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 32px; align-items: start; }
 }
 .md-similar { display: grid; gap: 12px; }
+.md-layout > * { min-width: 0; }
+.md-similar[hidden] { display: none; }
+.md-similar + .md-similar { margin-top: 12px; }
+.md-related-toggle { width: 100%; min-height: 44px; margin-top: 12px; }
+.md-related-group { min-width: 0; }
+.md-related--semester { display: none; }
+@media (min-width: 768px) {
+  .md-related { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: start; }
+  .md-related--semester { display: block; }
+}
 
 /* ═════════════════════════════════════════════════════════════
    KURSLAR (köhnə iyerarxiya: kurs → fənn → PDF)
