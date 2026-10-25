@@ -548,7 +548,7 @@ function showPdfs(courseName, subjectName) {
   document.querySelector('.pdf-section-header').appendChild(panel);
 
   const list = document.getElementById('pdf-items');
-  list.innerHTML = entries.map(UNEC.richCardHTML).join('');
+  list.innerHTML = entries.map(m => UNEC.richCardHTML(m, { subjectPreview: true })).join('');
 
   const reportBtn = document.createElement('button');
   reportBtn.type = 'button';

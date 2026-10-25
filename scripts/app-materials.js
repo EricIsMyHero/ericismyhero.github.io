@@ -194,8 +194,8 @@
     </article>`;
   }
 
-  // Zəngin kart (fənn səhifəsi, əlavələr, seçilmişlər): düymələr + reytinq kartın içində
-  function richCardHTML(m) {
+  // Fənn səhifəsində fayl əməliyyatları detal səhifəsindədir; reytinq kartda qalır.
+  function richCardHTML(m, { subjectPreview = false } = {}) {
     const meta = m.kind === 'extra' ? (m.desc || m.file) : m.file;
     const ratingWidget = m.kind === 'pdf'
       ? `<div class="pdf-rating" data-course="${esc(m.course)}" data-subject="${esc(m.subject)}" data-file="${esc(m.file)}"></div>` : '';
@@ -205,12 +205,12 @@
         <span class="mat-icon" aria-hidden="true">${ic('pdf')}<b>PDF</b></span>
         <div class="mat-body">
           <h3 class="mat-title"><a href="${matHref(m)}">${esc(m.name)}</a></h3>
-          <div class="mat-meta"><span class="fname">${esc(meta)}</span></div>
+          ${subjectPreview ? '' : `<div class="mat-meta"><span class="fname">${esc(meta)}</span></div>`}
           <div class="mat-badges">${badgesHTML(m, true)}</div>
         </div>
       </div>
       ${ratingWidget}
-      <div class="mat-actions">${fileBtnsHTML(m)}${favBtnHTML(m)}</div>
+      ${subjectPreview ? '' : `<div class="mat-actions">${fileBtnsHTML(m)}${favBtnHTML(m)}</div>`}
     </article>`;
   }
 
