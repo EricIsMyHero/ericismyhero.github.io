@@ -273,8 +273,6 @@
       const lb = e.target.closest('#settingsLang [data-set-lang]');
       if (lb) { setLang(lb.dataset.setLang); syncLangChips(); }
     });
-    const profile = $('#rowProfile');
-    if (profile) profile.addEventListener('click', () => U.go('/dashboard'));
     const newsRowBtn = $('#rowNews');
     if (newsRowBtn) newsRowBtn.addEventListener('click', () => openNews(newsRowBtn));
     const settings = $('#rowSettings');

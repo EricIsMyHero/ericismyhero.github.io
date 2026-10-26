@@ -136,7 +136,7 @@
   <link rel="stylesheet" href="styles/ratings.css?v=20261018">
   <link rel="stylesheet" href="styles/tokens.css?v=20261018">
   <link rel="stylesheet" href="styles/shell.css?v=20261018">
-  <link rel="stylesheet" href="styles/screens.css?v=20261025-2">
+  <link rel="stylesheet" href="styles/screens.css?v=20261026">
   <link rel="stylesheet" href="styles/tools.css?v=20261023">
   <link rel="stylesheet" href="styles/support.css?v=20261018">
   <link rel="stylesheet" href="styles/legacy.css?v=20261018">
@@ -221,6 +221,9 @@
     <symbol id="i-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
     <symbol id="i-paperclip" viewBox="0 0 24 24"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></symbol>
     <symbol id="i-send" viewBox="0 0 24 24"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></symbol>
+    <symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M21 11.5a9 9 0 0 1-13.4 7.9L3 21l1.6-4.6A9 9 0 1 1 21 11.5Z"/><path d="m8 7 2 3-1.2 1.2a9 9 0 0 0 4 4L14 14l3 2c-.4 1.5-1.5 2-3 1.5A12 12 0 0 1 6.5 10C6 8.5 6.5 7.4 8 7Z"/></symbol>
+    <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></symbol>
+    <symbol id="i-tiktok" viewBox="0 0 24 24"><path d="M15 3v12a4 4 0 1 1-4-4"/><path d="M15 3a6 6 0 0 0 6 6"/></symbol>
     <symbol id="i-zap" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></symbol>
     <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
     <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
@@ -1574,21 +1577,35 @@
 
           <div id="moreAccount"></div>
 
-          <div class="menu-group" id="moreGroupMain">
-            <button class="menu-row" type="button" id="rowProfile"><svg class="ic"><use href="#i-user"/></svg><span class="grow" data-i18n="moreProfile">Profilim</span><svg class="ic chev"><use href="#i-chevron-right"/></svg></button>
-            <button class="menu-row" type="button" id="rowNews"><svg class="ic"><use href="#i-bell"/></svg><span class="grow" data-i18n="moreNotifications">Yeniliklər</span><span class="dot" id="moreNewsDot" hidden></span><svg class="ic chev"><use href="#i-chevron-right"/></svg></button>
-            <a class="menu-row" href="#/courses?fav=1"><svg class="ic"><use href="#i-star"/></svg><span class="grow" data-i18n="moreFavorites">Seçilmişlər</span><small id="moreFavCount"></small><svg class="ic chev"><use href="#i-chevron-right"/></svg></a>
-            <button class="menu-row" type="button" id="rowSettings"><svg class="ic"><use href="#i-settings"/></svg><span class="grow" data-i18n="moreSettings">Görünüş və dil</span><svg class="ic chev"><use href="#i-chevron-right"/></svg></button>
-          </div>
+          <section class="more-section" aria-labelledby="moreGeneralTitle">
+            <h2 class="more-section-title" id="moreGeneralTitle" data-i18n="moreGeneralGroup">Ümumi</h2>
+            <div class="menu-group" id="moreGroupMain">
+              <button class="menu-row" type="button" onclick="openThanks()"><svg class="ic"><use href="#i-heart"/></svg><span class="grow" data-i18n="sidebarContributors">Töhfəçilər</span><svg class="ic chev"><use href="#i-chevron-right"/></svg></button>
+              <button class="menu-row" type="button" id="rowNews"><svg class="ic"><use href="#i-bell"/></svg><span class="grow" data-i18n="moreNotifications">Yeniliklər</span><span class="dot" id="moreNewsDot" hidden></span><svg class="ic chev"><use href="#i-chevron-right"/></svg></button>
+              <a class="menu-row" href="#/courses?fav=1"><svg class="ic"><use href="#i-star"/></svg><span class="grow" data-i18n="moreFavorites">Seçilmişlər</span><small id="moreFavCount"></small><svg class="ic chev"><use href="#i-chevron-right"/></svg></a>
+              <button class="menu-row" type="button" id="rowSettings"><svg class="ic"><use href="#i-settings"/></svg><span class="grow" data-i18n="moreSettings">Görünüş və dil</span><svg class="ic chev"><use href="#i-chevron-right"/></svg></button>
+            </div>
+          </section>
 
-          <div class="menu-group">
-            <a class="menu-row" href="mailto:unecstudentshub@gmail.com"><svg class="ic"><use href="#i-mail"/></svg><span class="grow" data-i18n="moreContact">Bizimlə əlaqə</span><svg class="ic chev"><use href="#i-chevron-right"/></svg></a>
-            <a class="menu-row" href="https://t.me/unecstudentshub" target="_blank" rel="noopener noreferrer"><svg class="ic"><use href="#i-send"/></svg><span class="grow" data-i18n="moreTelegram">Teleqram kanalı</span><svg class="ic chev"><use href="#i-external-link"/></svg></a>
-            <button class="menu-row" type="button" onclick="openThanks()"><svg class="ic"><use href="#i-heart"/></svg><span class="grow" data-i18n="sidebarContributors">Töhfəçilər</span><svg class="ic chev"><use href="#i-chevron-right"/></svg></button>
-            <button class="menu-row" type="button" onclick="openAboutModal()"><svg class="ic"><use href="#i-info"/></svg><span class="grow" data-i18n="moreAbout">Haqqımızda</span><svg class="ic chev"><use href="#i-chevron-right"/></svg></button>
-            <button class="menu-row" type="button" onclick="openTermsModal()"><svg class="ic"><use href="#i-file-text"/></svg><span class="grow" data-i18n="moreTerms">Şərt və qaydalar</span><svg class="ic chev"><use href="#i-chevron-right"/></svg></button>
-            <button class="menu-row" type="button" onclick="openPrivacyModal()"><svg class="ic"><use href="#i-shield-check"/></svg><span class="grow" data-i18n="morePrivacy">Məxfilik siyasəti</span><svg class="ic chev"><use href="#i-chevron-right"/></svg></button>
-          </div>
+          <section class="more-section" aria-labelledby="moreInfoTitle">
+            <h2 class="more-section-title" id="moreInfoTitle" data-i18n="moreInfoGroup">Məlumat və qaydalar</h2>
+            <div class="menu-group" id="moreGroupInfo">
+              <button class="menu-row" type="button" onclick="openAboutModal()"><svg class="ic"><use href="#i-info"/></svg><span class="grow" data-i18n="moreAbout">Haqqımızda</span><svg class="ic chev"><use href="#i-chevron-right"/></svg></button>
+              <button class="menu-row" type="button" onclick="openTermsModal()"><svg class="ic"><use href="#i-file-text"/></svg><span class="grow" data-i18n="moreTerms">Şərt və qaydalar</span><svg class="ic chev"><use href="#i-chevron-right"/></svg></button>
+              <button class="menu-row" type="button" onclick="openPrivacyModal()"><svg class="ic"><use href="#i-shield-check"/></svg><span class="grow" data-i18n="morePrivacy">Məxfilik siyasəti</span><svg class="ic chev"><use href="#i-chevron-right"/></svg></button>
+            </div>
+          </section>
+
+          <section class="more-section" aria-labelledby="moreSocialTitle">
+            <h2 class="more-section-title" id="moreSocialTitle" data-i18n="moreSocialGroup">Əlaqə və sosial şəbəkələr</h2>
+            <div class="menu-group" id="moreGroupSocial">
+              <a class="menu-row" href="mailto:unecstudentshub@gmail.com"><svg class="ic"><use href="#i-mail"/></svg><span class="grow" data-i18n="moreContact">Bizimlə əlaqə</span><svg class="ic chev"><use href="#i-chevron-right"/></svg></a>
+              <a class="menu-row" href="https://whatsapp.com/channel/0029VbDlVlqJJhzeqDcnzV0t" target="_blank" rel="noopener noreferrer"><svg class="ic" aria-hidden="true"><use href="#i-whatsapp"/></svg><span class="grow" data-i18n="moreWhatsApp">WhatsApp kanalı</span><svg class="ic chev" aria-hidden="true"><use href="#i-external-link"/></svg></a>
+              <a class="menu-row" href="https://www.instagram.com/unecstudentshub" target="_blank" rel="noopener noreferrer"><svg class="ic" aria-hidden="true"><use href="#i-instagram"/></svg><span class="grow">Instagram</span><svg class="ic chev" aria-hidden="true"><use href="#i-external-link"/></svg></a>
+              <a class="menu-row" href="https://www.tiktok.com/@unecstudentshub.com" target="_blank" rel="noopener noreferrer"><svg class="ic" aria-hidden="true"><use href="#i-tiktok"/></svg><span class="grow">TikTok</span><svg class="ic chev" aria-hidden="true"><use href="#i-external-link"/></svg></a>
+              <a class="menu-row" href="https://t.me/unecstudentshub" target="_blank" rel="noopener noreferrer"><svg class="ic" aria-hidden="true"><use href="#i-send"/></svg><span class="grow" data-i18n="moreTelegram">Teleqram kanalı</span><svg class="ic chev" aria-hidden="true"><use href="#i-external-link"/></svg></a>
+            </div>
+          </section>
 
           <div class="menu-group logout-row" id="moreLogoutGroup" hidden>
             <button class="menu-row menu-row--danger" type="button" id="rowLogout"><svg class="ic"><use href="#i-log-out"/></svg><span class="grow" data-i18n="dashSignOut">Çıxış</span></button>
@@ -2244,7 +2261,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
 <script src="pdfs.js?v=20261018"></script>
 <script src="scripts/i18n.js?v=20261018"></script>
-<script src="scripts/i18n-app.js?v=20261025-2"></script>
+<script src="scripts/i18n-app.js?v=20261026"></script>
 <script src="scripts/data-utils.js?v=20261018"></script>
 <script src="scripts/ui.js?v=20261025"></script>
 <script src="scripts/features.js?v=20261018"></script>
@@ -2262,7 +2279,7 @@
 <script src="scripts/timer.js?v=20261018"></script>
 <script src="scripts/app-core.js?v=20261023"></script>
 <script src="scripts/app-materials.js?v=20261025-2"></script>
-<script src="scripts/app-screens.js?v=20261018"></script>
+<script src="scripts/app-screens.js?v=20261026"></script>
 <script src="scripts/push.js?v=20261023"></script>
 </body>
 </html>

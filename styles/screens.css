@@ -626,6 +626,9 @@
 .account-card b { display: block; font-size: 1.0625rem; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .account-card small { display: block; color: var(--color-text-secondary); font-size: var(--fs-sm); }
 .account-card .chev { color: var(--color-text-muted); }
+.more-section { margin-top: 24px; }
+.more-section-title { margin: 0 4px 10px; color: var(--color-text-secondary); font-size: var(--fs-sm); font-weight: 700; }
+.more-section .menu-group { margin-top: 0; }
 .menu-group { margin-top: 14px; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--color-surface); overflow: hidden; }
 .menu-group + .menu-group { margin-top: 14px; }
 .menu-row {
