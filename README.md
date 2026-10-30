@@ -107,7 +107,7 @@ Exam materials (PDFs) are hosted on Cloudflare R2 and are not stored in this rep
 
 ## Features
 
-* 📚 Exam Materials Library — search, course chips, filters, favorites, clear links to each material's information page, and related PDFs grouped by subject and semester
+* 📚 Exam Materials Library — newest-first ordering, search, course chips, filters, favorites, clear links to each material's information page, and related PDFs grouped by subject and semester
 * 🎓 Major Filter — select one or several majors to see the exam materials of their subjects
 * 📝 Practice Tests — questions are read from the PDFs in the background (subjects appear as they load), 10–50 questions, timer, answer review with *All / Wrong / Skipped* filters
 * 📊 GPA Calculator
@@ -210,6 +210,26 @@ http://localhost:8080
 Screens are hash routes, for example `http://localhost:8080/#/courses/subjects` or `http://localhost:8080/#/gpa`.
 
 For AI functionality, the Telegram posts in the news panel, online payments and push notifications, deploy the `ai-vercel` directory using Vercel. If the backend is unreachable the site keeps working: the panel falls back to the last cached posts or to a link to the channel.
+
+---
+
+## Material Addition Dates and Ordering
+
+Materials use an `addedAt` timestamp in `pdfs.js`. All material lists, search results, favorites, extras and related-material groups show the newest additions first, before pagination or the three-card recommendation limit. Equal timestamps keep their existing catalog order; unknown dates are placed last. The source arrays and rating leaderboards keep their own order.
+
+Historical dates are backed by [`data/material-history.json`](data/material-history.json), which records the source commit and path for each asset. Original tracked PDF uploads are used where their identity can be verified, following renames and distinguishing reused filenames. Re-uploading `pdfs.js`, changing a title or moving an entry between courses does not make an old PDF new. When no upload can be verified, the first catalog reference for that exact `pdf/` or `pdf-extra/` path is used and marked as such. Git cannot establish the original upload time of files stored only in Cloudflare R2.
+
+For a new material, include its actual publication timestamp as `addedAt`, using ISO 8601 with a timezone (for example, `2026-10-30T15:00:00+04:00`). Keep that date when editing the material later. If the new entry is already committed, its first catalog commit can also supply the date. New uncommitted entries without a date are rejected by the sync tool rather than assigned today's date.
+
+From the repository root, use a checkout with full Git history to sync the catalog and its provenance, then validate:
+
+```sh
+python3 tools/sync-material-dates.py
+python3 tools/sync-material-dates.py --check
+node --test tests/material-order.test.cjs
+```
+
+Review and commit both `pdfs.js` and `data/material-history.json` after syncing. This is a maintenance command; the static site does not query GitHub or need a build step to sort materials.
 
 ---
 

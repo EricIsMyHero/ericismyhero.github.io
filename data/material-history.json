@@ -1,0 +1,1285 @@
+{
+  "assetCount": 119,
+  "dateBasis": "Git committer timestamps with timezone; historical upload lineage when verified, otherwise first catalog reference or an explicit maintainer timestamp.",
+  "materials": {
+    "pdf-extra/adiaktest1.pdf": {
+      "addedAt": "2026-04-22T11:25:29+04:00",
+      "catalogFirst": {
+        "commit": "8f405d44721b9c9d7bc07c46ef94c19f6f81a701",
+        "committedAt": "2026-04-22T11:15:19+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "172562eaf5ce5428a7298e7b168a5e78bfc2906f",
+      "sourcePath": "pdf-extra/adiaktest1.pdf"
+    },
+    "pdf-extra/beynelxalqbizneselave1.pdf": {
+      "addedAt": "2026-10-08T16:12:24+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "c138d7d0e7d7870eaa7df4a9f50433126f565507",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf-extra/enrskollektaplarla1.pdf": {
+      "addedAt": "2026-04-16T14:15:55+04:00",
+      "catalogFirst": {
+        "commit": "796b68b21b3d782ad37d927c1b94c222938db060",
+        "committedAt": "2026-04-16T14:20:17+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "bc70b047c31d57c3176993aaeca7d8da67131a5a",
+      "sourcePath": "pdf-extra/enrskollektaplarla1.pdf"
+    },
+    "pdf-extra/forrestgumpB1.pdf": {
+      "addedAt": "2026-10-20T15:10:58+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "35ec238865fc17d1f98a53532d0f62bfabfad09e",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf-extra/numune4.pdf": {
+      "addedAt": "2026-04-14T13:21:27+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "f31fb2a53720d302e02b0162d03d1b097489eb5d",
+      "sourcePath": "app.js"
+    },
+    "pdf-extra/robinsonazeA2.pdf": {
+      "addedAt": "2026-04-14T20:38:10+04:00",
+      "catalogFirst": {
+        "commit": "8b1145731d1dfa786d3305042e5435bba6d2185f",
+        "committedAt": "2026-04-14T20:52:48+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "ecbba342d6a98efc6e0eb828780eef68bd600b51",
+      "sourcePath": "pdf-extra/robinsonazeA2.pdf"
+    },
+    "pdf-extra/sosialiqtelave1.pdf": {
+      "addedAt": "2026-10-08T22:01:34+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "c53c6aa27cde6ca0cba93fc90873e83e8a68e66b",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf-extra/statistikaelave1.pdf": {
+      "addedAt": "2026-10-08T15:52:26+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "f237040e797ea5da775993e7abfd596d105eb8f3",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf-extra/umumikimya20ballar.pdf": {
+      "addedAt": "2026-04-23T12:18:15+04:00",
+      "catalogFirst": {
+        "commit": "0fd41b727b21a4914dd1cca6c3b5e9843bb0f2b8",
+        "committedAt": "2026-04-23T12:11:53+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "9dda241d273c37f11b7b6ff0e5eb59baa4187471",
+      "sourcePath": "pdf-extra/umumikimya20ballar.pdf"
+    },
+    "pdf/Manage.pdf": {
+      "addedAt": "2026-04-10T21:11:54+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "d7c690a35afb8ebd8171cdfd07b2f3a731c86578",
+      "sourcePath": "index.html"
+    },
+    "pdf/adiakQ26.pdf": {
+      "addedAt": "2026-04-10T22:58:41+04:00",
+      "catalogFirst": {
+        "commit": "d947f0d8ab71479458e8bcb1d4d0d0fd341bee8f",
+        "committedAt": "2026-04-10T21:55:54+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "7faaf3a6af5bb32c7bb877225cc5a89dab7f7f92",
+      "sourcePath": "pdf/adiakQ26.pdf"
+    },
+    "pdf/adiakY23.pdf": {
+      "addedAt": "2026-04-10T22:58:41+04:00",
+      "catalogFirst": {
+        "commit": "d947f0d8ab71479458e8bcb1d4d0d0fd341bee8f",
+        "committedAt": "2026-04-10T21:55:54+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "7faaf3a6af5bb32c7bb877225cc5a89dab7f7f92",
+      "sourcePath": "pdf/adiakY23.pdf"
+    },
+    "pdf/adiakY25.pdf": {
+      "addedAt": "2026-04-10T22:58:41+04:00",
+      "catalogFirst": {
+        "commit": "abe849d699e6dbf5eda4675fd15e685507d74288",
+        "committedAt": "2026-04-10T22:54:53+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "7faaf3a6af5bb32c7bb877225cc5a89dab7f7f92",
+      "sourcePath": "pdf/adiakY25.pdf"
+    },
+    "pdf/adiakY26.pdf": {
+      "addedAt": "2026-06-20T20:00:38+04:00",
+      "catalogFirst": {
+        "commit": "186f7a42514d8f664c186ed825c2a31babfebcec",
+        "committedAt": "2026-06-20T20:03:11+04:00",
+        "path": "pdfs.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "0604c5135359adb67037bb01eb01dc4e587f29eb",
+      "sourcePath": "pdf/adiakY26.pdf"
+    },
+    "pdf/akiakollek1.pdf": {
+      "addedAt": "2026-04-23T12:15:41+04:00",
+      "catalogFirst": {
+        "commit": "0fd41b727b21a4914dd1cca6c3b5e9843bb0f2b8",
+        "committedAt": "2026-04-23T12:11:53+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "104fa42d47d5e6549689b3577e226aad594deee6",
+      "sourcePath": "pdf/akiakollek1.pdf"
+    },
+    "pdf/arkonstitusiyaQ23.pdf": {
+      "addedAt": "2026-10-08T16:12:24+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "c138d7d0e7d7870eaa7df4a9f50433126f565507",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/arkonstitusiyaQ24.pdf": {
+      "addedAt": "2026-10-08T16:12:24+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "c138d7d0e7d7870eaa7df4a9f50433126f565507",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/aziqt1.pdf": {
+      "addedAt": "2026-04-11T22:58:37+04:00",
+      "catalogFirst": {
+        "commit": "df8b6f32491c5d9e3f15941793a88bd60f54d889",
+        "committedAt": "2026-04-11T22:59:42+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "0e66c845950029b2a0af20181cce3c78d083f337",
+      "sourcePath": "pdf/aziqt1.pdf"
+    },
+    "pdf/aziqt2.pdf": {
+      "addedAt": "2026-04-11T22:58:37+04:00",
+      "catalogFirst": {
+        "commit": "df8b6f32491c5d9e3f15941793a88bd60f54d889",
+        "committedAt": "2026-04-11T22:59:42+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "0e66c845950029b2a0af20181cce3c78d083f337",
+      "sourcePath": "pdf/aziqt2.pdf"
+    },
+    "pdf/aziqt3.pdf": {
+      "addedAt": "2026-04-11T22:58:37+04:00",
+      "catalogFirst": {
+        "commit": "df8b6f32491c5d9e3f15941793a88bd60f54d889",
+        "committedAt": "2026-04-11T22:59:42+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "0e66c845950029b2a0af20181cce3c78d083f337",
+      "sourcePath": "pdf/aziqt3.pdf"
+    },
+    "pdf/aztarihiQ25.pdf": {
+      "addedAt": "2026-04-11T22:48:09+04:00",
+      "catalogFirst": {
+        "commit": "a0b6f7a8c8492bc95a561b9a28d870de8dcacb50",
+        "committedAt": "2026-04-10T23:12:17+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "ed60e75eec01509b8f456f067750878052a2ded0",
+      "sourcePath": "pdf/aztarihiQ25.pdf"
+    },
+    "pdf/aztarixiQ26.pdf": {
+      "addedAt": "2026-04-10T22:09:52+04:00",
+      "catalogFirst": {
+        "commit": "367b83a28c1da28956b181d44e5c97ad4e46d50a",
+        "committedAt": "2026-04-10T22:03:49+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "03553a524a315b11f72218397be3d918265b37a6",
+      "sourcePath": "pdf/aztarixiQ26.pdf"
+    },
+    "pdf/beynelxalqbiznes1.pdf": {
+      "addedAt": "2026-10-08T21:54:53+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "3cad3e94f6b187cbcb95015575b64e203efcb690",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/beynelxalqbiznes2.pdf": {
+      "addedAt": "2026-10-08T21:54:53+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "3cad3e94f6b187cbcb95015575b64e203efcb690",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/beynelxalqbizneskollek1.pdf": {
+      "addedAt": "2026-10-08T16:12:24+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "c138d7d0e7d7870eaa7df4a9f50433126f565507",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/beynelxalqbizneskollek2.pdf": {
+      "addedAt": "2026-10-08T21:54:53+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "3cad3e94f6b187cbcb95015575b64e203efcb690",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/beynelxalqiqt1.pdf": {
+      "addedAt": "2026-10-08T21:54:53+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "3cad3e94f6b187cbcb95015575b64e203efcb690",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/beynelxalqiqt2.pdf": {
+      "addedAt": "2026-10-08T21:54:53+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "3cad3e94f6b187cbcb95015575b64e203efcb690",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/beynelxalqiqt3.pdf": {
+      "addedAt": "2026-10-08T21:54:53+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "3cad3e94f6b187cbcb95015575b64e203efcb690",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/beynelxalqiqtkollek1.pdf": {
+      "addedAt": "2026-10-08T21:54:53+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "3cad3e94f6b187cbcb95015575b64e203efcb690",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/bit1.pdf": {
+      "addedAt": "2026-04-10T23:17:50+04:00",
+      "catalogFirst": {
+        "commit": "145e585e62177a218f015092e70a9ad008516fda",
+        "committedAt": "2026-04-10T23:09:45+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "f7aecda6974d787726801b6795ac2d1280b22946",
+      "sourcePath": "pdf/bit1.pdf"
+    },
+    "pdf/ekonometrika1.pdf": {
+      "addedAt": "2026-10-08T15:58:46+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "885377bbe1940cd0d25edcb6f70fe8d2e1e27bac",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/ekonometrikakollek1.pdf": {
+      "addedAt": "2026-10-08T15:58:46+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "885377bbe1940cd0d25edcb6f70fe8d2e1e27bac",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/ekonometrikamesele1.pdf": {
+      "addedAt": "2026-10-08T15:58:46+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "885377bbe1940cd0d25edcb6f70fe8d2e1e27bac",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/emek1.pdf": {
+      "addedAt": "2026-04-11T23:06:15+04:00",
+      "catalogFirst": {
+        "commit": "ce2fba39022e80673b04b0e128c03a1cc2156816",
+        "committedAt": "2026-04-11T23:04:48+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "a953ba6ad88b7d43ceb2aaa143877523caef0b1f",
+      "sourcePath": "pdf/emek1.pdf"
+    },
+    "pdf/emek2.pdf": {
+      "addedAt": "2026-10-08T15:48:45+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "f20f930852feb8c07a71d475224917a8a2f53cd3",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/emekkollek1.pdf": {
+      "addedAt": "2026-04-11T23:06:15+04:00",
+      "catalogFirst": {
+        "commit": "ce2fba39022e80673b04b0e128c03a1cc2156816",
+        "committedAt": "2026-04-11T23:04:48+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "a953ba6ad88b7d43ceb2aaa143877523caef0b1f",
+      "sourcePath": "pdf/emekkollek1.pdf"
+    },
+    "pdf/emi1.pdf": {
+      "addedAt": "2026-04-11T13:34:34+04:00",
+      "catalogFirst": {
+        "commit": "38f405b6a3fa5c3719c754b23944e3c948e8b26e",
+        "committedAt": "2026-04-11T13:34:07+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "4fe2abed2c6484de422b0346459110c0734ee6ad",
+      "sourcePath": "pdf/emi1.pdf"
+    },
+    "pdf/emi2.pdf": {
+      "addedAt": "2026-04-11T13:34:34+04:00",
+      "catalogFirst": {
+        "commit": "38f405b6a3fa5c3719c754b23944e3c948e8b26e",
+        "committedAt": "2026-04-11T13:34:07+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "4fe2abed2c6484de422b0346459110c0734ee6ad",
+      "sourcePath": "pdf/emi2.pdf"
+    },
+    "pdf/emi3.pdf": {
+      "addedAt": "2026-10-08T15:48:45+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "f20f930852feb8c07a71d475224917a8a2f53cd3",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/emikollek1.pdf": {
+      "addedAt": "2026-04-11T13:34:34+04:00",
+      "catalogFirst": {
+        "commit": "38f405b6a3fa5c3719c754b23944e3c948e8b26e",
+        "committedAt": "2026-04-11T13:34:07+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "4fe2abed2c6484de422b0346459110c0734ee6ad",
+      "sourcePath": "pdf/emikollek1.pdf"
+    },
+    "pdf/emikollek2.pdf": {
+      "addedAt": "2026-04-11T13:34:34+04:00",
+      "catalogFirst": {
+        "commit": "38f405b6a3fa5c3719c754b23944e3c948e8b26e",
+        "committedAt": "2026-04-11T13:34:07+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "4fe2abed2c6484de422b0346459110c0734ee6ad",
+      "sourcePath": "pdf/emikollek2.pdf"
+    },
+    "pdf/enrsY23.pdf": {
+      "addedAt": "2026-04-10T22:26:33+04:00",
+      "catalogFirst": {
+        "commit": "ce4047185b6f6409e1361bb3a7094976577c0eac",
+        "committedAt": "2026-04-10T22:25:08+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "a1419806fa80284c494a4430811361d983c51ff2",
+      "sourcePath": "pdf/enrsY23.pdf"
+    },
+    "pdf/enrsY25.pdf": {
+      "addedAt": "2026-04-10T22:26:33+04:00",
+      "catalogFirst": {
+        "commit": "d947f0d8ab71479458e8bcb1d4d0d0fd341bee8f",
+        "committedAt": "2026-04-10T21:55:54+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "a1419806fa80284c494a4430811361d983c51ff2",
+      "sourcePath": "pdf/enrsY25.pdf"
+    },
+    "pdf/enrsY26.pdf": {
+      "addedAt": "2026-06-20T20:00:38+04:00",
+      "catalogFirst": {
+        "commit": "186f7a42514d8f664c186ed825c2a31babfebcec",
+        "committedAt": "2026-06-20T20:03:11+04:00",
+        "path": "pdfs.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "0604c5135359adb67037bb01eb01dc4e587f29eb",
+      "sourcePath": "pdf/enrsY26.pdf"
+    },
+    "pdf/firmaiqtQ26.pdf": {
+      "addedAt": "2026-10-08T22:20:41+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "23085c84bfa09c5f93d4e5f7a4b0748068fcc99b",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/fizikaninesaslarikollek1.pdf": {
+      "addedAt": "2026-04-23T12:15:41+04:00",
+      "catalogFirst": {
+        "commit": "0fd41b727b21a4914dd1cca6c3b5e9843bb0f2b8",
+        "committedAt": "2026-04-23T12:11:53+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "104fa42d47d5e6549689b3577e226aad594deee6",
+      "sourcePath": "pdf/fizikaninesaslarikollek1.pdf"
+    },
+    "pdf/forrestgumpB1.pdf": {
+      "addedAt": "2026-04-22T22:45:57+04:00",
+      "catalogFirst": {
+        "commit": "ee98a8e408d829839c7b8619ea4cf40a834a5d58",
+        "committedAt": "2026-04-22T22:44:11+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "babdb7f78f68338bea8f028f20675b36854a05fa",
+      "sourcePath": "pdf/forrestgumpB1.pdf"
+    },
+    "pdf/hidrologiya1.pdf": {
+      "addedAt": "2026-04-23T12:15:41+04:00",
+      "catalogFirst": {
+        "commit": "0fd41b727b21a4914dd1cca6c3b5e9843bb0f2b8",
+        "committedAt": "2026-04-23T12:11:53+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "104fa42d47d5e6549689b3577e226aad594deee6",
+      "sourcePath": "pdf/hidrologiya1.pdf"
+    },
+    "pdf/iktQ25.pdf": {
+      "addedAt": "2026-04-22T11:24:59+04:00",
+      "catalogFirst": {
+        "commit": "8f405d44721b9c9d7bc07c46ef94c19f6f81a701",
+        "committedAt": "2026-04-22T11:15:19+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "589820edba935f549b03304a3521c9d2e019c1ea",
+      "sourcePath": "pdf/iktQ25.pdf"
+    },
+    "pdf/iktQ26.pdf": {
+      "addedAt": "2026-04-10T22:09:52+04:00",
+      "catalogFirst": {
+        "commit": "367b83a28c1da28956b181d44e5c97ad4e46d50a",
+        "committedAt": "2026-04-10T22:03:49+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "03553a524a315b11f72218397be3d918265b37a6",
+      "sourcePath": "pdf/iktQ26.pdf"
+    },
+    "pdf/iqtfkrtrx1.pdf": {
+      "addedAt": "2026-06-20T20:00:38+04:00",
+      "catalogFirst": {
+        "commit": "8b1145731d1dfa786d3305042e5435bba6d2185f",
+        "committedAt": "2026-04-14T20:52:48+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "0604c5135359adb67037bb01eb01dc4e587f29eb",
+      "sourcePath": "pdf/iqtfkrtrx1.pdf"
+    },
+    "pdf/iqtfkrtrx2.pdf": {
+      "addedAt": "2026-04-14T20:38:42+04:00",
+      "catalogFirst": {
+        "commit": "8b1145731d1dfa786d3305042e5435bba6d2185f",
+        "committedAt": "2026-04-14T20:52:48+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "a8e2e5dfc16f6167fdbb22c10b376f868808f21f",
+      "sourcePath": "pdf/iqtfkrtrx2.pdf"
+    },
+    "pdf/iqtfkrtrx3.pdf": {
+      "addedAt": "2026-04-14T20:38:42+04:00",
+      "catalogFirst": {
+        "commit": "8b1145731d1dfa786d3305042e5435bba6d2185f",
+        "committedAt": "2026-04-14T20:52:48+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "a8e2e5dfc16f6167fdbb22c10b376f868808f21f",
+      "sourcePath": "pdf/iqtfkrtrx3.pdf"
+    },
+    "pdf/iqtfkrtrx4.pdf": {
+      "addedAt": "2026-04-14T20:38:42+04:00",
+      "catalogFirst": {
+        "commit": "186f7a42514d8f664c186ed825c2a31babfebcec",
+        "committedAt": "2026-06-20T20:03:11+04:00",
+        "path": "pdfs.js"
+      },
+      "renames": [
+        {
+          "commit": "164e4fb1cac0fc5e211ffc17726954375af8d87e",
+          "from": "pdf/iqtfkrtrx1.pdf",
+          "to": "pdf/iqtfkrtrx5.pdf"
+        },
+        {
+          "commit": "f77ee48d93e1a6d093d60640a652c1dce3fd5d58",
+          "from": "pdf/iqtfkrtrx5.pdf",
+          "to": "pdf/iqtfkrtrx4.pdf"
+        }
+      ],
+      "source": "git-upload",
+      "sourceCommit": "a8e2e5dfc16f6167fdbb22c10b376f868808f21f",
+      "sourcePath": "pdf/iqtfkrtrx1.pdf"
+    },
+    "pdf/iqtisadiyyat1.pdf": {
+      "addedAt": "2026-04-10T22:43:40+04:00",
+      "catalogFirst": {
+        "commit": "d947f0d8ab71479458e8bcb1d4d0d0fd341bee8f",
+        "committedAt": "2026-04-10T21:55:54+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "1031c08de43f12baf154c0b445f0ef812439a870",
+      "sourcePath": "pdf/iqtisadiyyat1.pdf"
+    },
+    "pdf/iqtisadiyyat2.pdf": {
+      "addedAt": "2026-05-24T17:26:22+04:00",
+      "catalogFirst": {
+        "commit": "ac234b3d80ccc0747ab82fd2d62c27f40f2672ed",
+        "committedAt": "2026-05-24T17:25:54+04:00",
+        "path": "pdfs.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "48648cea2767ce4acd13f303a43537eaebb93664",
+      "sourcePath": "pdf/iqtisadiyyat2.pdf"
+    },
+    "pdf/karyeraQ25.pdf": {
+      "addedAt": "2026-04-22T11:24:59+04:00",
+      "catalogFirst": {
+        "commit": "8f405d44721b9c9d7bc07c46ef94c19f6f81a701",
+        "committedAt": "2026-04-22T11:15:19+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "589820edba935f549b03304a3521c9d2e019c1ea",
+      "sourcePath": "pdf/karyeraQ25.pdf"
+    },
+    "pdf/karyeraQ26.pdf": {
+      "addedAt": "2026-04-10T22:09:52+04:00",
+      "catalogFirst": {
+        "commit": "367b83a28c1da28956b181d44e5c97ad4e46d50a",
+        "committedAt": "2026-04-10T22:03:49+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "03553a524a315b11f72218397be3d918265b37a6",
+      "sourcePath": "pdf/karyeraQ26.pdf"
+    },
+    "pdf/korporativmaliyye1.pdf": {
+      "addedAt": "2026-06-30T16:53:31+04:00",
+      "catalogFirst": {
+        "commit": "73efecc0ef97607a00e423be82a571139ceb644d",
+        "committedAt": "2026-06-30T15:00:55+04:00",
+        "path": "pdfs.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "6c55128187cacd868aee8dbb09d2ba3430dc06a0",
+      "sourcePath": "pdf/korporativmaliyye1.pdf"
+    },
+    "pdf/lcmaQ23.pdf": {
+      "addedAt": "2026-04-10T23:14:15+04:00",
+      "catalogFirst": {
+        "commit": "a0b6f7a8c8492bc95a561b9a28d870de8dcacb50",
+        "committedAt": "2026-04-10T23:12:17+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "387c36663e38adacd818832d2b1f9e1e0ae51599",
+      "sourcePath": "pdf/lcmaQ23.pdf"
+    },
+    "pdf/lcmaQ26.pdf": {
+      "addedAt": "2026-04-10T22:43:40+04:00",
+      "catalogFirst": {
+        "commit": "b0a2f028985ea74094add1d417ecea8a7464134d",
+        "committedAt": "2026-04-10T22:32:46+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "1031c08de43f12baf154c0b445f0ef812439a870",
+      "sourcePath": "pdf/lcmaQ26.pdf"
+    },
+    "pdf/makroiqt1.pdf": {
+      "addedAt": "2026-06-20T20:06:54+04:00",
+      "catalogFirst": {
+        "commit": "92590a2c98ee8d0c2062bca56caab09e70e55858",
+        "committedAt": "2026-04-11T12:55:05+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "9b5c737255510bf5a099469cf8217fb4dc45f27b",
+      "sourcePath": "pdf/makroiqt1.pdf"
+    },
+    "pdf/makroiqtkollek1.pdf": {
+      "addedAt": "2026-04-11T13:02:58+04:00",
+      "catalogFirst": {
+        "commit": "e207fedb1d6e44e324c61302f635a4ec056a5536",
+        "committedAt": "2026-06-20T20:05:56+04:00",
+        "path": "pdfs.js"
+      },
+      "renames": [
+        {
+          "commit": "62fba6f6f70e5857479b5ff43f8064e0a22028fa",
+          "from": "pdf/makroiqt1.pdf",
+          "to": "pdf/makroiqtkollek1.pdf"
+        }
+      ],
+      "source": "git-upload",
+      "sourceCommit": "e7645a9e72e143e646b960af6239f03a7dc0f340",
+      "sourcePath": "pdf/makroiqt1.pdf"
+    },
+    "pdf/makroiqtmesele1.pdf": {
+      "addedAt": "2026-04-11T13:02:58+04:00",
+      "catalogFirst": {
+        "commit": "92590a2c98ee8d0c2062bca56caab09e70e55858",
+        "committedAt": "2026-04-11T12:55:05+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "e7645a9e72e143e646b960af6239f03a7dc0f340",
+      "sourcePath": "pdf/makroiqtmesele1.pdf"
+    },
+    "pdf/maliyyeQ26.pdf": {
+      "addedAt": "2026-04-11T13:34:34+04:00",
+      "catalogFirst": {
+        "commit": "38f405b6a3fa5c3719c754b23944e3c948e8b26e",
+        "committedAt": "2026-04-11T13:34:07+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "4fe2abed2c6484de422b0346459110c0734ee6ad",
+      "sourcePath": "pdf/maliyyeQ26.pdf"
+    },
+    "pdf/maliyyeY26.pdf": {
+      "addedAt": "2026-06-27T18:54:40+04:00",
+      "catalogFirst": {
+        "commit": "44d2dbd2eaf84c67d6b250b17f9fff799b8d91ca",
+        "committedAt": "2026-06-27T18:54:07+04:00",
+        "path": "pdfs.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "c104134dfab65c9634904bf2edb1aeeea3cb9c4c",
+      "sourcePath": "pdf/maliyyeY26.pdf"
+    },
+    "pdf/maliyyekollek1.pdf": {
+      "addedAt": "2026-04-30T13:52:44+04:00",
+      "catalogFirst": {
+        "commit": "b1adf6f6f226dce15c69c7bb0cf8a7ba8bfdc236",
+        "committedAt": "2026-04-24T22:26:17+04:00",
+        "path": "pdfs.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "48b2741efedabc3a703049edaa0c2b548083712c",
+      "sourcePath": "pdf/maliyyekollek1.pdf"
+    },
+    "pdf/marketingY26.pdf": {
+      "addedAt": "2026-06-29T22:05:53+04:00",
+      "catalogFirst": {
+        "commit": "688d16a2724443a8f53bf8d44500394d3fa6afc5",
+        "committedAt": "2026-06-29T22:00:56+04:00",
+        "path": "pdfs.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "078a620e8716fb3df0bfced3d4cd30c203307361",
+      "sourcePath": "pdf/marketingY26.pdf"
+    },
+    "pdf/menecment1.pdf": {
+      "addedAt": "2026-10-08T15:58:46+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "885377bbe1940cd0d25edcb6f70fe8d2e1e27bac",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/menecment2.pdf": {
+      "addedAt": "2026-10-08T21:54:53+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "3cad3e94f6b187cbcb95015575b64e203efcb690",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/menecment3.pdf": {
+      "addedAt": "2026-10-08T21:54:53+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "3cad3e94f6b187cbcb95015575b64e203efcb690",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/menecment4.pdf": {
+      "addedAt": "2026-10-08T21:54:53+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "3cad3e94f6b187cbcb95015575b64e203efcb690",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/menecmentkollek1.pdf": {
+      "addedAt": "2026-10-08T21:54:53+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "3cad3e94f6b187cbcb95015575b64e203efcb690",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/mikroiqt1.pdf": {
+      "addedAt": "2026-04-11T13:20:30+04:00",
+      "catalogFirst": {
+        "commit": "7ef5cdf17dc6dc1fecaf33ae976d44eafc362e74",
+        "committedAt": "2026-04-11T13:18:48+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "eb39703a82a1df23da39e0f14c093f4cac172091",
+      "sourcePath": "pdf/mikroiqt1.pdf"
+    },
+    "pdf/mikroiqt2.pdf": {
+      "addedAt": "2026-04-11T13:20:30+04:00",
+      "catalogFirst": {
+        "commit": "7ef5cdf17dc6dc1fecaf33ae976d44eafc362e74",
+        "committedAt": "2026-04-11T13:18:48+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "eb39703a82a1df23da39e0f14c093f4cac172091",
+      "sourcePath": "pdf/mikroiqt2.pdf"
+    },
+    "pdf/mikroiqt3.pdf": {
+      "addedAt": "2026-04-11T13:20:30+04:00",
+      "catalogFirst": {
+        "commit": "7ef5cdf17dc6dc1fecaf33ae976d44eafc362e74",
+        "committedAt": "2026-04-11T13:18:48+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "eb39703a82a1df23da39e0f14c093f4cac172091",
+      "sourcePath": "pdf/mikroiqt3.pdf"
+    },
+    "pdf/mikroiqtmesele1.pdf": {
+      "addedAt": "2026-04-11T13:20:30+04:00",
+      "catalogFirst": {
+        "commit": "7ef5cdf17dc6dc1fecaf33ae976d44eafc362e74",
+        "committedAt": "2026-04-11T13:18:48+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "eb39703a82a1df23da39e0f14c093f4cac172091",
+      "sourcePath": "pdf/mikroiqtmesele1.pdf"
+    },
+    "pdf/mikroiqtmesele2.pdf": {
+      "addedAt": "2026-04-11T13:20:30+04:00",
+      "catalogFirst": {
+        "commit": "7ef5cdf17dc6dc1fecaf33ae976d44eafc362e74",
+        "committedAt": "2026-04-11T13:18:48+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "eb39703a82a1df23da39e0f14c093f4cac172091",
+      "sourcePath": "pdf/mikroiqtmesele2.pdf"
+    },
+    "pdf/mrie1.pdf": {
+      "addedAt": "2026-06-30T16:53:31+04:00",
+      "catalogFirst": {
+        "commit": "73efecc0ef97607a00e423be82a571139ceb644d",
+        "committedAt": "2026-06-30T15:00:55+04:00",
+        "path": "pdfs.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "6c55128187cacd868aee8dbb09d2ba3430dc06a0",
+      "sourcePath": "pdf/mrie1.pdf"
+    },
+    "pdf/muhendisqrafikasi1.pdf": {
+      "addedAt": "2026-04-23T12:15:41+04:00",
+      "catalogFirst": {
+        "commit": "0fd41b727b21a4914dd1cca6c3b5e9843bb0f2b8",
+        "committedAt": "2026-04-23T12:11:53+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "104fa42d47d5e6549689b3577e226aad594deee6",
+      "sourcePath": "pdf/muhendisqrafikasi1.pdf"
+    },
+    "pdf/mulkimudafieQ23.pdf": {
+      "addedAt": "2026-04-22T23:06:04+04:00",
+      "catalogFirst": {
+        "commit": "c5e313bc55c6c73e4e211a5f8b04bd72e4a90edb",
+        "committedAt": "2026-04-22T22:52:42+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "2b06cddb21a164dd7ad13c571d87725b4589a064",
+      "sourcePath": "pdf/mulkimudafieQ23.pdf"
+    },
+    "pdf/mulkimudafieQ26.pdf": {
+      "addedAt": "2026-04-22T11:24:59+04:00",
+      "catalogFirst": {
+        "commit": "8f405d44721b9c9d7bc07c46ef94c19f6f81a701",
+        "committedAt": "2026-04-22T11:15:19+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "589820edba935f549b03304a3521c9d2e019c1ea",
+      "sourcePath": "pdf/mulkimudafieQ26.pdf"
+    },
+    "pdf/mulkimudafieY24.pdf": {
+      "addedAt": "2026-04-22T11:24:59+04:00",
+      "catalogFirst": {
+        "commit": "8f405d44721b9c9d7bc07c46ef94c19f6f81a701",
+        "committedAt": "2026-04-22T11:15:19+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "589820edba935f549b03304a3521c9d2e019c1ea",
+      "sourcePath": "pdf/mulkimudafieY24.pdf"
+    },
+    "pdf/mulkimudafieY25.pdf": {
+      "addedAt": "2026-10-08T15:52:26+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "f237040e797ea5da775993e7abfd596d105eb8f3",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/otmiY26.pdf": {
+      "addedAt": "2026-04-22T11:24:59+04:00",
+      "catalogFirst": {
+        "commit": "8f405d44721b9c9d7bc07c46ef94c19f6f81a701",
+        "committedAt": "2026-04-22T11:15:19+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "589820edba935f549b03304a3521c9d2e019c1ea",
+      "sourcePath": "pdf/otmiY26.pdf"
+    },
+    "pdf/psixologiyaY23.pdf": {
+      "addedAt": "2026-04-24T17:54:10+04:00",
+      "catalogFirst": {
+        "commit": "c8ba88f7ee14727e135e4c95f2dd0bc16ea3d623",
+        "committedAt": "2026-04-24T17:52:09+04:00",
+        "path": "pdfs.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "30966d5946f10b65f4f89466090a2e64aa34c3b9",
+      "sourcePath": "pdf/psixologiyaY23.pdf"
+    },
+    "pdf/psixologiyakollek1.pdf": {
+      "addedAt": "2026-04-24T17:54:10+04:00",
+      "catalogFirst": {
+        "commit": "c8ba88f7ee14727e135e4c95f2dd0bc16ea3d623",
+        "committedAt": "2026-04-24T17:52:09+04:00",
+        "path": "pdfs.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "30966d5946f10b65f4f89466090a2e64aa34c3b9",
+      "sourcePath": "pdf/psixologiyakollek1.pdf"
+    },
+    "pdf/qiymet1.pdf": {
+      "addedAt": "2026-04-11T23:04:48+04:00",
+      "note": "The historical upload path was renamed to pdf/qiymetkollek1.pdf in e1159a7edc8343414215fb3ba16991f39c3ddc4c; the current asset under the old name cannot be verified. Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "ce2fba39022e80673b04b0e128c03a1cc2156816",
+      "sourcePath": "app.js"
+    },
+    "pdf/qiymetkollek1.pdf": {
+      "addedAt": "2026-04-11T23:06:15+04:00",
+      "catalogFirst": {
+        "commit": "9382e75762718dc8405bd5f763f29aa6aa84ac46",
+        "committedAt": "2026-04-30T13:50:02+04:00",
+        "path": "pdfs.js"
+      },
+      "renames": [
+        {
+          "commit": "e1159a7edc8343414215fb3ba16991f39c3ddc4c",
+          "from": "pdf/qiymet1.pdf",
+          "to": "pdf/qiymetkollek1.pdf"
+        }
+      ],
+      "source": "git-upload",
+      "sourceCommit": "a953ba6ad88b7d43ceb2aaa143877523caef0b1f",
+      "sourcePath": "pdf/qiymet1.pdf"
+    },
+    "pdf/reqemsaliqt1.pdf": {
+      "addedAt": "2026-10-08T21:54:53+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "3cad3e94f6b187cbcb95015575b64e203efcb690",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/riyaziyyat1Q24.pdf": {
+      "addedAt": "2026-04-23T12:16:36+04:00",
+      "catalogFirst": {
+        "commit": "0fd41b727b21a4914dd1cca6c3b5e9843bb0f2b8",
+        "committedAt": "2026-04-23T12:11:53+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "beda3dfa51478d893f54e2dba8853dacae84e4a8",
+      "sourcePath": "pdf/riyaziyyat1Q24.pdf"
+    },
+    "pdf/riyaziyyat2Y25.pdf": {
+      "addedAt": "2026-04-23T12:16:36+04:00",
+      "catalogFirst": {
+        "commit": "0fd41b727b21a4914dd1cca6c3b5e9843bb0f2b8",
+        "committedAt": "2026-04-23T12:11:53+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "beda3dfa51478d893f54e2dba8853dacae84e4a8",
+      "sourcePath": "pdf/riyaziyyat2Y25.pdf"
+    },
+    "pdf/robinsoncrusoeA2.pdf": {
+      "addedAt": "2026-04-14T20:38:42+04:00",
+      "catalogFirst": {
+        "commit": "8b1145731d1dfa786d3305042e5435bba6d2185f",
+        "committedAt": "2026-04-14T20:52:48+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "a8e2e5dfc16f6167fdbb22c10b376f868808f21f",
+      "sourcePath": "pdf/robinsoncrusoeA2.pdf"
+    },
+    "pdf/sherlockholmesB1+.pdf": {
+      "addedAt": "2026-04-22T22:45:57+04:00",
+      "catalogFirst": {
+        "commit": "ee98a8e408d829839c7b8619ea4cf40a834a5d58",
+        "committedAt": "2026-04-22T22:44:11+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "babdb7f78f68338bea8f028f20675b36854a05fa",
+      "sourcePath": "pdf/sherlockholmesB1+.pdf"
+    },
+    "pdf/sint1.pdf": {
+      "addedAt": "2026-04-24T17:54:10+04:00",
+      "catalogFirst": {
+        "commit": "c8ba88f7ee14727e135e4c95f2dd0bc16ea3d623",
+        "committedAt": "2026-04-24T17:52:09+04:00",
+        "path": "pdfs.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "30966d5946f10b65f4f89466090a2e64aa34c3b9",
+      "sourcePath": "pdf/sint1.pdf"
+    },
+    "pdf/sintkollek1.pdf": {
+      "addedAt": "2026-04-24T17:54:10+04:00",
+      "catalogFirst": {
+        "commit": "c8ba88f7ee14727e135e4c95f2dd0bc16ea3d623",
+        "committedAt": "2026-04-24T17:52:09+04:00",
+        "path": "pdfs.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "30966d5946f10b65f4f89466090a2e64aa34c3b9",
+      "sourcePath": "pdf/sintkollek1.pdf"
+    },
+    "pdf/sirmkollek1.pdf": {
+      "addedAt": "2026-04-24T17:55:19+04:00",
+      "catalogFirst": {
+        "commit": "c8ba88f7ee14727e135e4c95f2dd0bc16ea3d623",
+        "committedAt": "2026-04-24T17:52:09+04:00",
+        "path": "pdfs.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "2164486032ab6194be84bfd831f4b50e59267d98",
+      "sourcePath": "pdf/sirmkollek1.pdf"
+    },
+    "pdf/sitep1.pdf": {
+      "addedAt": "2026-06-04T21:43:14+04:00",
+      "catalogFirst": {
+        "commit": "e51a6bb2f90760ecb396edc53f88339e40545d9d",
+        "committedAt": "2026-06-04T21:44:01+04:00",
+        "path": "pdfs.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "63fa8e8745614a417f94426f9c15002e96cd6e1b",
+      "sourcePath": "pdf/sitep1.pdf"
+    },
+    "pdf/sitepkollek1.pdf": {
+      "addedAt": "2026-04-24T17:55:19+04:00",
+      "catalogFirst": {
+        "commit": "c8ba88f7ee14727e135e4c95f2dd0bc16ea3d623",
+        "committedAt": "2026-04-24T17:52:09+04:00",
+        "path": "pdfs.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "2164486032ab6194be84bfd831f4b50e59267d98",
+      "sourcePath": "pdf/sitepkollek1.pdf"
+    },
+    "pdf/sitepkollek2.pdf": {
+      "addedAt": "2026-04-24T17:55:19+04:00",
+      "catalogFirst": {
+        "commit": "c8ba88f7ee14727e135e4c95f2dd0bc16ea3d623",
+        "committedAt": "2026-04-24T17:52:09+04:00",
+        "path": "pdfs.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "2164486032ab6194be84bfd831f4b50e59267d98",
+      "sourcePath": "pdf/sitepkollek2.pdf"
+    },
+    "pdf/softskillsY25.pdf": {
+      "addedAt": "2026-04-10T22:26:33+04:00",
+      "catalogFirst": {
+        "commit": "d947f0d8ab71479458e8bcb1d4d0d0fd341bee8f",
+        "committedAt": "2026-04-10T21:55:54+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "a1419806fa80284c494a4430811361d983c51ff2",
+      "sourcePath": "pdf/softskillsY25.pdf"
+    },
+    "pdf/softskillsY26.pdf": {
+      "addedAt": "2026-06-20T20:00:38+04:00",
+      "catalogFirst": {
+        "commit": "186f7a42514d8f664c186ed825c2a31babfebcec",
+        "committedAt": "2026-06-20T20:03:11+04:00",
+        "path": "pdfs.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "0604c5135359adb67037bb01eb01dc4e587f29eb",
+      "sourcePath": "pdf/softskillsY26.pdf"
+    },
+    "pdf/sosialiqt1.pdf": {
+      "addedAt": "2026-10-08T15:58:46+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "885377bbe1940cd0d25edcb6f70fe8d2e1e27bac",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/sosialiqt2.pdf": {
+      "addedAt": "2026-10-08T15:58:46+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "885377bbe1940cd0d25edcb6f70fe8d2e1e27bac",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/sosialiqt3.pdf": {
+      "addedAt": "2026-10-08T15:58:46+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "885377bbe1940cd0d25edcb6f70fe8d2e1e27bac",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/sosialiqtkollek1.pdf": {
+      "addedAt": "2026-10-08T21:54:53+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "3cad3e94f6b187cbcb95015575b64e203efcb690",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/sosialisdeidareetmekollek1.pdf": {
+      "addedAt": "2026-04-24T17:55:19+04:00",
+      "catalogFirst": {
+        "commit": "c8ba88f7ee14727e135e4c95f2dd0bc16ea3d623",
+        "committedAt": "2026-04-24T17:52:09+04:00",
+        "path": "pdfs.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "2164486032ab6194be84bfd831f4b50e59267d98",
+      "sourcePath": "pdf/sosialisdeidareetmekollek1.pdf"
+    },
+    "pdf/sosialsahibkarlıgQ26.pdf": {
+      "addedAt": "2026-06-30T16:53:31+04:00",
+      "catalogFirst": {
+        "commit": "73efecc0ef97607a00e423be82a571139ceb644d",
+        "committedAt": "2026-06-30T15:00:55+04:00",
+        "path": "pdfs.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "6c55128187cacd868aee8dbb09d2ba3430dc06a0",
+      "sourcePath": "pdf/sosialsahibkarlıgQ26.pdf"
+    },
+    "pdf/statistika1.pdf": {
+      "addedAt": "2026-10-08T15:52:26+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "f237040e797ea5da775993e7abfd596d105eb8f3",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/statistikamesele1.pdf": {
+      "addedAt": "2026-10-08T15:52:26+04:00",
+      "note": "Date is the first catalog reference, not a verified remote upload time.",
+      "source": "git-catalog",
+      "sourceCommit": "f237040e797ea5da775993e7abfd596d105eb8f3",
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/umumiekologiya1.pdf": {
+      "addedAt": "2026-04-23T12:16:36+04:00",
+      "catalogFirst": {
+        "commit": "0fd41b727b21a4914dd1cca6c3b5e9843bb0f2b8",
+        "committedAt": "2026-04-23T12:11:53+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "beda3dfa51478d893f54e2dba8853dacae84e4a8",
+      "sourcePath": "pdf/umumiekologiya1.pdf"
+    },
+    "pdf/umumikimya36-75.pdf": {
+      "addedAt": "2026-04-23T12:17:49+04:00",
+      "catalogFirst": {
+        "commit": "0fd41b727b21a4914dd1cca6c3b5e9843bb0f2b8",
+        "committedAt": "2026-04-23T12:11:53+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "bb263cff72ad320fd0074d891fd26ecb756dcb1a",
+      "sourcePath": "pdf/umumikimya36-75.pdf"
+    },
+    "pdf/umumikimyakollek1.pdf": {
+      "addedAt": "2026-04-23T12:17:49+04:00",
+      "catalogFirst": {
+        "commit": "0fd41b727b21a4914dd1cca6c3b5e9843bb0f2b8",
+        "committedAt": "2026-04-23T12:11:53+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "bb263cff72ad320fd0074d891fd26ecb756dcb1a",
+      "sourcePath": "pdf/umumikimyakollek1.pdf"
+    },
+    "pdf/vergitutma1.pdf": {
+      "addedAt": "2026-06-30T16:53:31+04:00",
+      "catalogFirst": {
+        "commit": "73efecc0ef97607a00e423be82a571139ceb644d",
+        "committedAt": "2026-06-30T15:00:55+04:00",
+        "path": "pdfs.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "6c55128187cacd868aee8dbb09d2ba3430dc06a0",
+      "sourcePath": "pdf/vergitutma1.pdf"
+    },
+    "pdf/whitedeathA1.pdf": {
+      "addedAt": "2026-04-16T14:12:05+04:00",
+      "catalogFirst": {
+        "commit": "8b1145731d1dfa786d3305042e5435bba6d2185f",
+        "committedAt": "2026-04-14T20:52:48+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "fcf511898adec39ccd59c589626759b737f2d5d3",
+      "sourcePath": "pdf/whitedeathA1.pdf"
+    },
+    "pdf/xcraQ26.pdf": {
+      "addedAt": "2026-04-10T22:09:52+04:00",
+      "catalogFirst": {
+        "commit": "367b83a28c1da28956b181d44e5c97ad4e46d50a",
+        "committedAt": "2026-04-10T22:03:49+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "03553a524a315b11f72218397be3d918265b37a6",
+      "sourcePath": "pdf/xcraQ26.pdf"
+    },
+    "pdf/xerclerY24.pdf": {
+      "addedAt": "2026-04-22T11:24:59+04:00",
+      "catalogFirst": {
+        "commit": "73efecc0ef97607a00e423be82a571139ceb644d",
+        "committedAt": "2026-06-30T15:00:55+04:00",
+        "path": "pdfs.js"
+      },
+      "renames": [
+        {
+          "commit": "ad9813bf8d292626fdd6be8a88409b7456958879",
+          "from": "pdf/xerclerY25.pdf",
+          "to": "pdf/xerclerY24.pdf"
+        }
+      ],
+      "source": "git-upload",
+      "sourceCommit": "589820edba935f549b03304a3521c9d2e019c1ea",
+      "sourcePath": "pdf/xerclerY25.pdf"
+    },
+    "pdf/yonetimorganizasyonQ25.pdf": {
+      "addedAt": "2026-04-10T23:17:50+04:00",
+      "catalogFirst": {
+        "commit": "145e585e62177a218f015092e70a9ad008516fda",
+        "committedAt": "2026-04-10T23:09:45+04:00",
+        "path": "app.js"
+      },
+      "renames": [],
+      "source": "git-upload",
+      "sourceCommit": "f7aecda6974d787726801b6795ac2d1280b22946",
+      "sourcePath": "pdf/yonetimorganizasyonQ25.pdf"
+    }
+  },
+  "recordCount": 123,
+  "schemaVersion": 1
+}

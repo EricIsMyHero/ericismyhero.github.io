@@ -15,6 +15,10 @@
   const DEFAULT_COLOR = '#ef4444';
   const EXTRA_COLOR = '#f59e0b';
 
+  // Eyni tarixli materiallar kataloq sırasını saxlayır; tarixsizlər sonda qalır.
+  const newestFirst = entries => entries.slice().sort((a, b) =>
+    (Date.parse(b.addedAt) || 0) - (Date.parse(a.addedAt) || 0));
+
   // ── Entry (material) ────────────────────────────────────────
   function makeEntry(course, subject, subj, p) {
     return {
@@ -23,6 +27,7 @@
       course, subject,
       name: p.name,
       file: p.file,
+      addedAt: p.addedAt || null,
       url: BASE + 'pdf/' + p.file,
       favKey: 'pdf/' + p.file,
       format: subj.type,
@@ -40,6 +45,7 @@
       course, subject: null,
       name: p.name,
       file: p.file,
+      addedAt: p.addedAt || null,
       url: EXTRAS_BASE + p.file,
       favKey: 'pdf-extra/' + p.file,
       pdfType: p.pdfType,
@@ -71,7 +77,7 @@
     Object.entries(extrasData || {}).forEach(([course, items]) => {
       items.forEach(p => list.push(withSearch(makeExtra(course, p))));
     });
-    return (index = list);
+    return (index = newestFirst(list));
   }
 
   function resolveEntry(r) {
@@ -96,9 +102,11 @@
 
   function entriesForSubject(course, subject) {
     const subj = data[course].subjects[subject];
-    return subj.pdfs.map(p => makeEntry(course, subject, subj, p));
+    return newestFirst(subj.pdfs.map(p => makeEntry(course, subject, subj, p)));
   }
-  function extraEntries(course) { return ((extrasData || {})[course] || []).map(p => makeExtra(course, p)); }
+  function extraEntries(course) {
+    return newestFirst(((extrasData || {})[course] || []).map(p => makeExtra(course, p)));
+  }
   function favoriteEntries(course) {
     const favs = new Set(getFavorites());
     const out = [];
@@ -106,7 +114,7 @@
       subj.pdfs.forEach(p => { if (favs.has('pdf/' + p.file)) out.push(makeEntry(course, subject, subj, p)); });
     });
     extraEntries(course).forEach(m => { if (favs.has(m.favKey)) out.push(m); });
-    return out;
+    return newestFirst(out);
   }
 
   const matHref = m => m.kind === 'extra'
@@ -272,8 +280,6 @@
     if (q) {
       const toks = q.split(' ');
       res = res.filter(m => toks.every(tk => m.search.includes(tk)));
-      const rank = m => { const n = normAz(m.name); return n.startsWith(q) ? 0 : (n.includes(q) ? 1 : 2); };
-      res = res.map((m, i) => ({ m, i, r: rank(m) })).sort((a, b) => a.r - b.r || a.i - b.i).map(x => x.m);
     }
     return res;
   }
