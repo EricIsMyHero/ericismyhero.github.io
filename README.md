@@ -4,7 +4,7 @@ An open-source student platform built for the UNEC community.
 
 UNEC Students Hub is a modern web platform designed to centralize academic resources, productivity tools, and student services in one place. The project aims to enhance the daily university experience by providing fast, accessible, and community-driven solutions.
 
-**Live site:** [unecstudentshub.com](https://unecstudentshub.com) · **Latest release:** [v1.1.19](https://github.com/EricIsMyHero/ericismyhero.github.io/releases/latest)
+**Live site:** [unecstudentshub.com](https://unecstudentshub.com) · **Latest release:** [v.1.1.2](https://github.com/EricIsMyHero/ericismyhero.github.io/releases/latest)
 
 This platform is independently developed and is not affiliated with UNEC or any official institution.
 
@@ -148,6 +148,7 @@ The interface is a single-page app without a framework. All screens live in `ind
 
 * **Mobile (below 1024px):** top bar, 4-item bottom navigation (Home, Courses, Support, More), a slide-in menu and bottom sheets.
 * **Desktop (1024px and above):** a persistent sidebar and the same content in a wider grid.
+* **More screen:** the account card remains at the top without a duplicate profile row. Three labeled groups contain **General** (Contributors, Updates, Favorites, Appearance & language), **Information & policies** (About, Terms of use, Privacy policy), and **Contact & social media** (email, WhatsApp, Instagram, TikTok and Telegram). Channel links open in a new tab, and the new labels support both AZ and EN.
 * **Design tokens** are defined once in `styles/tokens.css`. The older theme variables (`--bg`, `--surface`, `--accent` …) are bridged to them, so every color theme keeps working.
 * **Subject material cards:** the display title, PDF icon, badges and rating stay on the card; the raw filename and direct open, download and favorite controls are removed from this view. A labeled **View details** link with an arrow opens the existing material information page, where the filename and file actions remain available. The card background also links to that page, while rating buttons keep their separate behavior. The new labels support both AZ and EN and update when the language changes.
 * **Related materials:** the material information page shows other PDFs from the **same subject**, excluding the open file. On phones (below 768px), this is the only recommendation group. Tablets and desktops (768px and above) show a second column with materials from **other subjects in the same course and semester**, excluding files already listed for the current subject. Each group initially shows at most **3 cards**; **See all** expands any remaining cards in place, and **Show less** collapses the group again. Empty groups show a message instead of falling back to unrelated materials.
