@@ -4,7 +4,7 @@ An open-source student platform built for the UNEC community.
 
 UNEC Students Hub is a modern web platform designed to centralize academic resources, productivity tools, and student services in one place. The project aims to enhance the daily university experience by providing fast, accessible, and community-driven solutions.
 
-**Live site:** [unecstudentshub.com](https://unecstudentshub.com) · **Latest release:** [v.1.1.2](https://github.com/EricIsMyHero/ericismyhero.github.io/releases/latest)
+**Live site:** [unecstudentshub.com](https://unecstudentshub.com) · **Latest release:** [v1.1.2](https://github.com/EricIsMyHero/ericismyhero.github.io/releases/latest)
 
 This platform is independently developed and is not affiliated with UNEC or any official institution.
 
