@@ -313,7 +313,7 @@ const data = {
       },
       "Rəqəmsal iqtisadiyyat (Sahə iqtisadiyyatı)": {
         type: "yazili", semester: 1, code: "00736", pdfs: [
-          { name: "Rəqəmsal İqtisadiyyat", file: "reqemsaliqt1.pdf", pdfType: "semester", addedAt: "2026-10-08T21:54:53+04:00"}
+          { name: "Rəqəmsal İqtisadiyyat", file: "reqemsaliqt1.pdf", pdfType: "semester", addedAt: "2026-10-08T21:54:53+04:00"},
           { name: "Rəqəmsal İqtisadiyyat", file: "reqemsaliqtkollek1.pdf", pdfType: "midterm", addedAt: "2026-10-31T14:48:53+04:00"},
           { name: "Rəqəmsal İqtisadiyyat", file: "reqemsaliqtkollek2.pdf", pdfType: "midterm", addedAt: "2026-10-31T14:48:52+04:00"},
           { name: "Rəqəmsal İqtisadiyyat", file: "reqemsaliqtkollek3.pdf", pdfType: "midterm", addedAt: "2026-10-31T14:48:51+04:00"}
@@ -339,7 +339,7 @@ const data = {
           { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqt2.pdf", pdfType: "semester", addedAt: "2026-10-08T21:54:53+04:00"},
           { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqt3.pdf", pdfType: "semester", addedAt: "2026-10-08T21:54:53+04:00"},
           { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqtkollek1.pdf", pdfType: "midterm", addedAt: "2026-10-08T21:54:53+04:00"},
-          { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqtkollek2.pdf", pdfType: "midterm", addedAt: "2026-10-31T14:48:50+04:00"},
+          { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqtkollek2.pdf", pdfType: "midterm", addedAt: "2026-10-31T14:48:50+04:00"}
         ]
       },
       "Sosial sahələrin iqtisadiyyatı": {
