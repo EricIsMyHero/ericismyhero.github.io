@@ -314,6 +314,9 @@ const data = {
       "Rəqəmsal iqtisadiyyat (Sahə iqtisadiyyatı)": {
         type: "yazili", semester: 1, code: "00736", pdfs: [
           { name: "Rəqəmsal İqtisadiyyat", file: "reqemsaliqt1.pdf", pdfType: "semester", addedAt: "2026-10-08T21:54:53+04:00"}
+          { name: "Rəqəmsal İqtisadiyyat", file: "reqemsaliqtkollek1.pdf", pdfType: "midterm", addedAt: "2026-10-31T14:48:53+04:00"},
+          { name: "Rəqəmsal İqtisadiyyat", file: "reqemsaliqtkollek2.pdf", pdfType: "midterm", addedAt: "2026-10-31T14:48:52+04:00"},
+          { name: "Rəqəmsal İqtisadiyyat", file: "reqemsaliqtkollek3.pdf", pdfType: "midterm", addedAt: "2026-10-31T14:48:51+04:00"}
         ]
       },
       "Firmanın iqtisadiyyatı": {
@@ -336,6 +339,7 @@ const data = {
           { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqt2.pdf", pdfType: "semester", addedAt: "2026-10-08T21:54:53+04:00"},
           { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqt3.pdf", pdfType: "semester", addedAt: "2026-10-08T21:54:53+04:00"},
           { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqtkollek1.pdf", pdfType: "midterm", addedAt: "2026-10-08T21:54:53+04:00"},
+          { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqtkollek2.pdf", pdfType: "midterm", addedAt: "2026-10-31T14:48:50+04:00"},
         ]
       },
       "Sosial sahələrin iqtisadiyyatı": {
@@ -372,9 +376,14 @@ const data = {
   "4-cü kurs": {
     icon: "menu_book",
     subjects: {
-      "Menecment": {
-        type: "test", semester: 1, code: "00031", pdfs: [
-          { name: "Management material", file: "Manage.pdf", pdfType: "optional", addedAt: "2026-04-10T21:11:54+04:00"}
+      "İnkişaf iqtisadiyyatı": {
+        type: "yazili", semester: 1, code: "00411", pdfs: [
+          { name: "İnkişaf İqtisadiyyatı", file: "inkisafiqtkollek1.pdf", pdfType: "midterm", addedAt: "2026-10-31T14:53:52+04:00"}
+        ]
+      },
+      "İnkişaf mikroiqtisadiyyatı": {
+        type: "yazili", semester: 1, code: "00412", pdfs: [
+          { name: "İnkişaf Mikroiqtisadiyyatı", file: "inkisafmikroiqtkollek1.pdf", pdfType: "midterm", addedAt: "2026-10-31T14:53:52+04:00"}
         ]
       }
     }
