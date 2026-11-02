@@ -211,7 +211,8 @@ const data = {
         type: "yazili", semester: 1, code: "00307", pdfs: [
           { name: "Əməyin İqtisadiyyatı", file: "emek1.pdf", pdfType: "semester", addedAt: "2026-04-11T23:06:15+04:00"},
           { name: "Əməyin İqtisadiyyatı", file: "emek2.pdf", pdfType: "semester", addedAt: "2026-10-08T15:48:45+04:00"},
-          { name: "Əməyin İqtisadiyyatı", file: "emekkollek1.pdf", pdfType: "midterm", addedAt: "2026-04-11T23:06:15+04:00"}
+          { name: "Əməyin İqtisadiyyatı", file: "emekkollek1.pdf", pdfType: "midterm", addedAt: "2026-04-11T23:06:15+04:00"},
+          { name: "Əməyin İqtisadiyyatı", file: "emekkollek2.pdf", pdfType: "midterm", addedAt: "2026-11-02T20:25:10+04:00"}
         ]
       },
       "Xarici dildə işgüzar və akademik kommunikasiya B1": {
