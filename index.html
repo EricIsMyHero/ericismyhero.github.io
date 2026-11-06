@@ -137,7 +137,7 @@
   <link rel="stylesheet" href="styles/tokens.css?v=20261106-3">
   <link rel="stylesheet" href="styles/shell.css?v=20261106-3">
   <link rel="stylesheet" href="styles/screens.css?v=20261106-3">
-  <link rel="stylesheet" href="styles/tools.css?v=20261106-3">
+  <link rel="stylesheet" href="styles/tools.css?v=20261106-4">
   <link rel="stylesheet" href="styles/support.css?v=20261106-3">
   <link rel="stylesheet" href="styles/legacy.css?v=20261106-3">
 
@@ -1200,28 +1200,34 @@
               <button class="btn btn--secondary btn--sm curr-change-btn" type="button" onclick="clearSpecialty()"><svg class="ic" aria-hidden="true"><use href="#i-arrow-left"/></svg><span data-i18n="currChangeLabel">İxtisası dəyiş</span></button>
             </div>
 
+            <div id="currCompletionSummary" class="curr-completion-summary" role="status"></div>
+            <nav class="curr-sem-nav" id="currSemNav" aria-label="Kurs seç" data-i18n-aria="currYearNavAria"></nav>
             <div class="curr-plan-controls">
-              <div id="currCompletionSummary" class="curr-completion-summary" role="status"></div>
               <label class="curr-search-label" for="currSubjectSearch" data-i18n="currSearchLabel">Fənn axtar</label>
               <div class="curr-search-row">
                 <input type="search" id="currSubjectSearch" data-i18n-placeholder="currSearchPlaceholder" placeholder="Fənn adı və ya şifri..." oninput="searchCurriculum(this.value)" aria-controls="currPlanPanel" autocomplete="off">
-                <button type="button" class="btn btn--secondary btn--sm" onclick="clearCurriculumSearch()" data-i18n="appClear">Təmizlə</button>
+                <button type="button" class="icon-btn" onclick="clearCurriculumSearch()" aria-label="Təmizlə" data-i18n-aria="appClear"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button>
               </div>
-              <p class="curr-search-hint" data-i18n="currSearchHint">Axtarış seçilmiş kursda işləyir. Hamısında axtarmaq üçün Bütün semestrlər seç.</p>
-              <div class="curr-export-row">
-                <label for="currExportScope" data-i18n="currExportScopeLabel">PDF üçün:</label>
-                <select id="currExportScope"></select>
-                <button type="button" class="btn btn--secondary btn--sm" onclick="printCurriculum()" data-i18n="currExportButton">PDF kimi saxla</button>
+              <div class="curr-search-feedback">
+                <p id="currSearchStatus" class="curr-search-status" role="status" aria-live="polite" hidden></p>
+                <button id="currSearchAll" class="curr-search-all" type="button" onclick="filterCurriculumYear(0)" data-i18n="currSearchAll" hidden>Bütün semestrlərdə axtar</button>
               </div>
-              <p class="curr-search-hint" data-i18n="currExportHint">Çap pəncərəsində PDF kimi saxla seç. PDF axtarış filtrindən asılı olmayaraq seçilmiş hissənin bütün fənlərini əhatə edir.</p>
-              <p id="currSearchStatus" class="curr-search-status" role="status" aria-live="polite" hidden></p>
+              <details class="curr-options">
+                <summary data-i18n="currOptionsLabel">PDF və ətraflı məlumat</summary>
+                <div class="curr-options-body">
+                  <label class="curr-detail-toggle"><input type="checkbox" id="currShowDetails" onchange="toggleCurriculumDetails(this.checked)"><span data-i18n="currShowDetails">Fənn şifri, saat və qayıb limitini göstər</span></label>
+                  <div class="curr-export-row">
+                    <label for="currExportScope" data-i18n="currExportScopeLabel">PDF üçün:</label>
+                    <select id="currExportScope"></select>
+                    <button type="button" class="btn btn--secondary btn--sm" onclick="printCurriculum()" data-i18n="currExportButton">PDF kimi saxla</button>
+                  </div>
+                  <p class="curr-search-hint" data-i18n="currExportHint">Çap pəncərəsində PDF kimi saxla seç. PDF axtarış filtrindən asılı olmayaraq seçilmiş hissənin bütün fənlərini əhatə edir.</p>
+                  <p class="curr-search-hint" data-i18n="currLocalProgressHint">Əllə dəyişdiyin işarələr bu cihazda və bu hesab üçün saxlanılır.</p>
+                </div>
+              </details>
             </div>
-
-            <nav class="curr-sem-nav" id="currSemNav" aria-label="Semestr" data-i18n-aria="currSemNavAria"></nav>
             <div id="currSearchEmpty" class="state-box" hidden>
               <p data-i18n="currSearchNoResults">Axtarışa uyğun fənn tapılmadı.</p>
-              <button class="btn btn--secondary btn--sm" type="button" onclick="filterCurriculumYear(0, false)" data-i18n="currSearchAll">Bütün semestrlərdə axtar</button>
-              <button class="btn btn--ghost btn--sm" type="button" onclick="clearCurriculumSearch()" data-i18n="appClear">Təmizlə</button>
             </div>
 
             <section class="curr-semester-block" id="curr-semester-block-s1" aria-labelledby="curr-sem-title-s1">
@@ -1400,10 +1406,10 @@
               </div>
             </section>
 
-            <aside class="curr-gpa-tip">
-              <span class="curr-gpa-tip-icon" aria-hidden="true"><svg class="ic"><use href="#i-lightbulb"/></svg></span>
+            <details class="curr-plan-source">
+              <summary data-i18n="currPlanSource">Plan haqqında</summary>
               <p class="curr-gpa-tip-text" data-i18n="currGpaTip">Bu məlumatlar bir-başa UNEC-in rəsmi saytından alınmışdır, məlumatlar 2026-ci ilə aiddir. Seçmə fənnlərin qarşısında mötərizə ilə fərqləndirilmiş fənlər keçirilməsi ehtimal olunan fənlərdir.</p>
-            </aside>
+            </details>
           </div>
 
         </div>
@@ -2294,29 +2300,30 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
 <script src="pdfs.js?v=20261106-3"></script>
 <script src="scripts/i18n.js?v=20261106-3"></script>
-<script src="scripts/i18n-app.js?v=20261106-3"></script>
+<script src="scripts/i18n-app.js?v=20261106-4"></script>
 <script src="scripts/data-utils.js?v=20261106-3"></script>
 <script src="scripts/ui.js?v=20261106-3"></script>
 <script src="scripts/features.js?v=20261106-3"></script>
 <script src="scripts/pdf-loader.js?v=20261106-3"></script>
 <script src="scripts/gpa.js?v=20261106-3"></script>
-<script src="scripts/firebase.js?v=20261106-3"></script>
+<script src="scripts/firebase.js?v=20261106-4"></script>
 <script src="scripts/chat.js?v=20261106-3"></script>
 <script src="scripts/ratings.js?v=20261106-3"></script>
 <script src="scripts/requests.js?v=20261106-3"></script>
 <script src="scripts/dashboard.js?v=20261106-3"></script>
 <script src="scripts/payments.js?v=20261106-3"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<script src="scripts/curriculum.js?v=20261106-3"></script>
+<script src="scripts/curriculum-progress.js?v=20261106-4"></script>
+<script src="scripts/curriculum.js?v=20261106-4"></script>
 <script src="scripts/badges.js?v=20261106-3"></script>
 <script src="scripts/timer.js?v=20261106-3"></script>
 <script src="scripts/app-core.js?v=20261106-3"></script>
 <script src="scripts/app-materials.js?v=20261106-3"></script>
 <script src="scripts/app-screens.js?v=20261106-3"></script>
 <script src="scripts/push.js?v=20261106-3"></script>
-<script src="scripts/site-enhancements.js?v=20261106-3"></script>
+<script src="scripts/site-enhancements.js?v=20261106-4"></script>
 <script src="scripts/policies.js?v=20261106-3"></script>
-<script src="scripts/account.js?v=20261106-3"></script>
+<script src="scripts/account.js?v=20261106-4"></script>
 <section class="sheet" id="sheet-account-delete" role="dialog" aria-modal="true" aria-labelledby="accountDeleteTitle" inert>
   <div class="sheet-head"><h2 id="accountDeleteTitle">Hesabımı sil</h2><button class="icon-btn" type="button" data-sheet-close aria-label="Bağla" data-i18n-aria="btnClose">✕</button></div>
   <div class="sheet-body" id="accountDeleteBody"></div>

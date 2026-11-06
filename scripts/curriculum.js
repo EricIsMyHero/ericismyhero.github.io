@@ -3098,8 +3098,8 @@ const CURR_SPEC_KEYS = {
   publicAdministration: 'currSpecPublicAdmin', businessManagement: 'currSpecBusinessMgmt',
   tourism: 'currSpecTourism', socialWork: 'currSpecSocialWork'
 };
-const CURR_ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
-let currSelectedYear = 0; // 0 — bütün semestrlər
+let currSelectedYear = 1; // 0 shows the full plan; otherwise only the selected year.
+let currProfileContext = null;
 let currSearchQuery = '';
 let currPrintCleanup = null;
 
@@ -3117,76 +3117,95 @@ function _currIcon(materialName) {
   return (window.UNEC && UNEC.mi) ? UNEC.mi(materialName) : '';
 }
 
+function curriculumProgressState() {
+  const user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
+  const uid = user?.uid || 'guest';
+  const profile = user && typeof getProfile === 'function' ? getProfile() : null;
+  let saved = [], edits = {};
+  try { saved = JSON.parse(localStorage.getItem('unec_completed_' + uid) || '[]'); } catch (_) {}
+  try { edits = JSON.parse(localStorage.getItem('unec_curriculum_overrides_' + uid) || '{}'); } catch (_) {}
+  return { uid, year: CurriculumProgress.profileYear(profile?.year),
+    saved: new Set(Array.isArray(saved) ? saved : []),
+    edits: edits && typeof edits === 'object' && !Array.isArray(edits) ? edits : {} };
+}
+
+function renderCurriculumProgress(state = curriculumProgressState()) {
+  const spec = getSavedSpecialty(), plan = CURRICULUM_DATA[spec];
+  const box = document.getElementById('currCompletionSummary');
+  if (!plan || !box) return;
+  const { total, completed } = CurriculumProgress.totals(plan, spec, state.year, state.saved, state.edits);
+  const note = state.year
+    ? t('currAutoProgressHint').replace('{year}', t('currYear' + state.year))
+    : t('currManualProgressHint');
+  const html = `<div class="curr-progress-heading"><b>${_currEsc(t('currCompletedCredits'))}</b><span>${completed} <small>/ ${total}</small></span></div><progress value="${completed}" max="${total || 1}" aria-label="${_currEsc(t('currCompletedCredits'))}"></progress><p>${_currEsc(note)}</p>`;
+  if (box.innerHTML !== html) box.innerHTML = html;
+}
+
+function toggleCurriculumCompleted(semester, index, checked) {
+  const spec = getSavedSpecialty(), subject = CURRICULUM_DATA[spec]?.['semester' + semester]?.[index];
+  if (!subject) return;
+  const state = curriculumProgressState();
+  state.edits[CurriculumProgress.key(spec, semester, subject)] = !!checked;
+  try { localStorage.setItem('unec_curriculum_overrides_' + state.uid, JSON.stringify(state.edits)); }
+  catch (_) {
+    window.UNEC.toast(t('currProgressSaveError'), 'error');
+    filterCurriculumYear(currSelectedYear, false); return;
+  }
+  const row = document.querySelector(`#curr-tbody-s${semester} [data-curr-index="${index}"]`);
+  if (row) {
+    row.classList.toggle('is-complete', !!checked);
+    row.querySelector('.curr-complete-state').hidden = !checked;
+    row.querySelector('input[type="checkbox"]').checked = !!checked;
+  }
+  renderCurriculumProgress(state);
+}
+
+function toggleCurriculumDetails(show) {
+  document.getElementById('currPlanPanel').classList.toggle('curr-show-details', !!show);
+}
+
 function selectSpecialty(spec, opts) {
-  const data = CURRICULUM_DATA[spec];
-  if (!data) return;
-  if (getSavedSpecialty() !== spec) { currSelectedYear = 0; currSearchQuery = ''; }
+  const plan = CURRICULUM_DATA[spec];
+  if (!plan) return;
+  const state = curriculumProgressState(), context = `${state.uid}|${state.year}`;
+  const resetView = getSavedSpecialty() !== spec || context !== currProfileContext;
+  if (resetView) {
+    currSelectedYear = state.year || 1;
+    currSearchQuery = '';
+  }
+  currProfileContext = context;
   saveSpecialty(spec);
 
-  document.querySelectorAll('.curr-specialty-btn').forEach(b => {
-    const on = b.dataset.spec === spec;
-    b.classList.toggle('active', on);
-    b.setAttribute('aria-pressed', String(on));
+  document.querySelectorAll('.curr-specialty-btn').forEach(button => {
+    const selected = button.dataset.spec === spec;
+    button.classList.toggle('active', selected);
+    button.setAttribute('aria-pressed', String(selected));
   });
-
   document.getElementById('currSpecBadge').innerHTML =
-    `<span class="curr-spec-badge-icon">${_currIcon(data.icon)}</span><span>${_currEsc(_currSpecName(spec, data))}</span>`;
+    `<span class="curr-spec-badge-icon">${_currIcon(plan.icon)}</span><span>${_currEsc(_currSpecName(spec, plan))}</span>`;
 
-  // Render all 8 semesters; skip if data missing (some specs may lack s5-s8)
-  const navItems = [];
-  for (let i = 1; i <= 8; i++) {
-    const key = `semester${i}`;
-    if (data[key] && data[key].length) {
-      navItems.push(i);
-    }
-  }
-
-  // Semestrə tez keçid çipləri
+  const years = [1, 2, 3, 4].filter(year => [year * 2 - 1, year * 2].some(i => plan['semester' + i]?.length));
   const nav = document.getElementById('currSemNav');
-  if (nav) {
-    const scrollLeft = opts && opts.keepScroll ? (document.getElementById('currYearTrack')?.scrollLeft || 0) : 0;
-    const years = [1, 2, 3, 4].filter(year => navItems.some(i => Math.ceil(i / 2) === year));
-    nav.innerHTML = `
-      <div class="curr-sem-tools">
-        <button type="button" class="chip" data-curr-year="0" onclick="filterCurriculumYear(0)">${_currEsc(t('currAllSemesters'))}</button>
-        <div class="curr-year-arrows">
-          <button type="button" class="icon-btn" aria-label="${_currEsc(t('currYearsPrev'))}" aria-controls="currYearTrack" onclick="scrollCurriculumYears(-1)" ${years.length <= 2 ? 'disabled' : ''}><svg class="ic curr-prev-icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></button>
-          <button type="button" class="icon-btn" aria-label="${_currEsc(t('currYearsNext'))}" aria-controls="currYearTrack" onclick="scrollCurriculumYears(1)" ${years.length <= 2 ? 'disabled' : ''}><svg class="ic" aria-hidden="true"><use href="#i-chevron-right"/></svg></button>
-        </div>
-      </div>
-      <div class="curr-year-track" id="currYearTrack" role="group" aria-label="${_currEsc(t('currYearNavAria'))}" tabindex="0">
-        ${years.map(year => {
-          const semesters = navItems.filter(i => Math.ceil(i / 2) === year);
-          return `<div class="curr-year-group" role="group" aria-labelledby="curr-year-${year}">
-            <button type="button" class="chip curr-year-btn" id="curr-year-${year}" data-curr-year="${year}" aria-controls="${semesters.map(i => `curr-semester-block-s${i}`).join(' ')}" onclick="filterCurriculumYear(${year})">${_currEsc(t('currYear' + year))}</button>
-            <div class="curr-year-semesters">${semesters.map(i =>
-              `<button type="button" class="chip" data-sem="${i}" aria-label="${_currEsc(t('currSem' + i))}" aria-controls="curr-semester-block-s${i}" onclick="scrollToSemester(${i})">${_currEsc(t('currSemesterLabel'))} ${CURR_ROMAN[i - 1]}</button>`
-            ).join('')}</div>
-          </div>`;
-        }).join('')}
-      </div>`;
-    nav.hidden = !navItems.length;
-    document.getElementById('currYearTrack').scrollLeft = scrollLeft;
-  }
+  nav.innerHTML = years.concat(0).map(year => {
+    const semesters = year ? [year * 2 - 1, year * 2] : [1, 2, 3, 4, 5, 6, 7, 8];
+    const controls = semesters.map(i => 'curr-semester-block-s' + i).join(' ');
+    return `<button type="button" class="chip" data-curr-year="${year}" aria-label="${_currEsc(t(year ? 'currYear' + year : 'currAllSemesters'))}" aria-controls="${controls}" onclick="filterCurriculumYear(${year}, true)">${_currEsc(t(year ? 'currYear' + year : 'currAllShort'))}</button>`;
+  }).join('');
+
   const search = document.getElementById('currSubjectSearch');
   if (search) search.value = currSearchQuery;
   const scope = document.getElementById('currExportScope');
   if (scope) {
     const previous = scope.value;
-    const years = [1, 2, 3, 4].filter(year => navItems.some(i => Math.ceil(i / 2) === year));
-    scope.innerHTML = `<option value="0">${_currEsc(t('currExportAll'))}</option>` + years.map(year => `<option value="${year}">${_currEsc(t('currYear' + year))}</option>`).join('');
-    scope.value = opts && opts.keepScroll && [...scope.options].some(o => o.value === previous) ? previous : String(currSelectedYear);
+    scope.innerHTML = years.map(year => `<option value="${year}">${_currEsc(t('currYear' + year))}</option>`).join('') + `<option value="0">${_currEsc(t('currExportAll'))}</option>`;
+    scope.value = opts?.keepScroll && !resetView && [...scope.options].some(option => option.value === previous) ? previous : String(currSelectedYear);
   }
   filterCurriculumYear(currSelectedYear, false);
-
-  // Seçim bitdi: siyahı gizlənir, plan görünür ("İxtisası dəyiş" ilə geri qayıdılır)
-  const wrap  = document.getElementById('currSelectorWrap');
+  document.getElementById('currSelectorWrap').style.display = 'none';
   const panel = document.getElementById('currPlanPanel');
-  if (wrap) wrap.style.display = 'none';
   panel.style.display = '';
-  panel.classList.remove('curr-panel-in');
-  requestAnimationFrame(() => requestAnimationFrame(() => panel.classList.add('curr-panel-in')));
-  if (!(opts && opts.keepScroll)) window.scrollTo({ top: 0, behavior: 'auto' });
+  panel.classList.add('curr-panel-in');
+  if (!opts?.keepScroll) window.scrollTo({ top: 0, behavior: 'auto' });
 }
 
 function scrollToSemester(i) {
@@ -3198,7 +3217,7 @@ function scrollToSemester(i) {
   el.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
 }
 
-function filterCurriculumYear(year, scroll = true) {
+function filterCurriculumYear(year, scroll = false) {
   const data = CURRICULUM_DATA[getSavedSpecialty()];
   if (!data || !Number.isInteger(year) || year < 0 || year > 4) return;
   if (year && ![year * 2 - 1, year * 2].some(i => data[`semester${i}`]?.length)) year = 0;
@@ -3215,25 +3234,22 @@ function filterCurriculumYear(year, scroll = true) {
     const inYear = !year || Math.ceil(i / 2) === year;
     if (block) block.hidden = !matches || !inYear;
     if (inYear) count += matches;
-    const jump = document.querySelector(`#currSemNav [data-sem="${i}"]`);
-    if (jump) jump.disabled = !matches;
   }
   const status = document.getElementById('currSearchStatus');
   if (status) { status.hidden = !currSearchQuery.trim(); status.textContent = t('currSearchCount').replace('{n}', count); }
+  const all = document.getElementById('currSearchAll');
+  if (all) all.hidden = !currSearchQuery.trim() || !year;
   const empty = document.getElementById('currSearchEmpty');
   if (empty) empty.hidden = count > 0 || !currSearchQuery.trim();
   document.querySelectorAll('#currSemNav [data-curr-year]').forEach(button => {
     button.setAttribute('aria-pressed', String(Number(button.dataset.currYear) === year));
   });
+  renderCurriculumProgress();
   if (scroll) {
     const first = document.querySelector('#currPlanPanel .curr-semester-block:not([hidden])');
-    if (first) first.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    const navBottom = document.getElementById('currSemNav').getBoundingClientRect().bottom;
+    if (first && first.getBoundingClientRect().top < navBottom) first.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
   }
-}
-
-function scrollCurriculumYears(direction) {
-  const track = document.getElementById('currYearTrack');
-  if (track) track.scrollBy({ left: direction * (track.clientWidth + 12), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
 }
 
 function renderSemesterTable(semKey, subjects) {
@@ -3242,15 +3258,15 @@ function renderSemesterTable(semKey, subjects) {
   if (!tbody) return 0;
   const matches = subjects.map((s, index) => ({ s, index })).filter(({ s }) => curriculumSubjectMatches(s, currSearchQuery));
   const shown = matches.map(({ s }) => s);
+  const state = curriculumProgressState(), spec = getSavedSpecialty(), semester = Number(semKey.slice(1));
 
   const totalCredits = shown.reduce((a, s) => a + s.credit, 0);
   const totalHours   = shown.reduce((a, s) => a + s.hours,  0);
   const totalWeekly  = shown.reduce((a, s) => a + s.weekly, 0);
 
   if (statsEl) statsEl.innerHTML =
-    `<span class="curr-stat-pill">${totalCredits} ${_currEsc(t('currUnitCredit'))}</span>` +
-    `<span class="curr-stat-pill">${totalHours} ${_currEsc(t('currUnitHours'))}</span>` +
-    (totalWeekly ? `<span class="curr-stat-pill">${totalWeekly} ${_currEsc(t('currUnitWeekly'))}</span>` : '');
+    `<span>${shown.length} ${_currEsc(t(shown.length === 1 ? 'currUnitSubjectOne' : 'currUnitSubject'))} · ${totalCredits} ${_currEsc(t('currUnitCredit'))}</span>` +
+    `<span class="curr-detail-stat"> · ${totalHours} ${_currEsc(t('currUnitHours'))}${totalWeekly ? ' · ' + totalWeekly + ' ' + _currEsc(t('currUnitWeekly')) : ''}</span>`;
 
   // Fənn şifri: adi fənn → 1 şifr; seçmə fənn → qrupun bütün şifrləri
   const codesHTML = s => {
@@ -3262,14 +3278,19 @@ function renderSemesterTable(semKey, subjects) {
 
   // Mobil görünüşdə sətirlər kartlara çevrilir: data-label hər xananın başlığını daşıyır
   const lbl = { credit: t('currTableCredit'), hours: t('currTableHours'), absence: t('currTableAbsence'), weekly: t('currTableWeekly') };
-  tbody.innerHTML = matches.map(({ s, index }, i) => `
-    <tr data-curr-index="${index}" role="row" style="animation-delay:${Math.min(i, 12) * 35}ms" class="curr-row-in">
-      <td role="cell" class="curr-td-name">${_currEsc(s.name)}${codesHTML(s)}${curriculumMaterialsHTML(s, Number(semKey.slice(1)), index)}</td>
+  tbody.innerHTML = matches.map(({ s, index }) => {
+    const completed = CurriculumProgress.isComplete(CurriculumProgress.key(spec, semester, s), semester, state.year, state.saved, state.edits);
+    return `<tr data-curr-index="${index}" role="row" class="${completed ? 'is-complete' : ''}">
+      <td role="cell" class="curr-td-name"><div class="curr-subject-main">
+        <label class="curr-complete-control"><input type="checkbox" ${completed ? 'checked' : ''} aria-label="${_currEsc(t('currMarkCompleted') + ': ' + s.name)}" onchange="toggleCurriculumCompleted(${semester},${index},this.checked)"></label>
+        <div class="curr-subject-body"><span class="curr-subject-name">${_currEsc(s.name)}</span><small class="curr-complete-state" ${completed ? '' : 'hidden'}>${_currEsc(t('currCompleted'))}</small>${codesHTML(s)}${curriculumMaterialsHTML(s, semester, index)}</div>
+      </div></td>
       <td role="cell" data-label="${_currEsc(lbl.credit)}"><span class="curr-badge curr-badge--credit">${s.credit}</span></td>
-      <td role="cell" data-label="${_currEsc(lbl.hours)}"><span class="curr-badge curr-badge--hours">${s.hours || '—'}</span></td>
+      <td role="cell" data-label="${_currEsc(lbl.hours)}"><span class="curr-badge">${s.hours || '—'}</span></td>
       <td role="cell" data-label="${_currEsc(lbl.absence)}"><span class="curr-badge curr-badge--absence${s.absenceLimit <= 1 && s.absenceLimit > 0 ? ' warn' : ''}">${s.absenceLimit || '—'}</span></td>
-      <td role="cell" data-label="${_currEsc(lbl.weekly)}"><span class="curr-badge curr-badge--weekly">${s.weekly || '—'}</span></td>
-    </tr>`).join('');
+      <td role="cell" data-label="${_currEsc(lbl.weekly)}"><span class="curr-badge">${s.weekly || '—'}</span></td>
+    </tr>`;
+  }).join('');
   return matches.length;
 }
 
@@ -3380,3 +3401,9 @@ window.addEventListener('unec:langchange', () => {
 });
 
 // (router app-core.js — #/curriculum açılanda initCurriculum() özü çağırılır)
+
+// Recompute inferred completion immediately when the saved profile course changes.
+for (const event of ['unec:authchange', 'unec:profilechange']) window.addEventListener(event, () => {
+  const panel = document.getElementById('currPlanPanel');
+  if (panel && panel.style.display !== 'none' && getSavedSpecialty()) selectSpecialty(getSavedSpecialty(), { keepScroll: true });
+});

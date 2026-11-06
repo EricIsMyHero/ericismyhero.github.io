@@ -1,46 +1,12 @@
-// Shared dialogs, local curriculum progress and offline status.
+// Shared dialogs and offline status.
 (function () {
   'use strict';
   const U = window.UNEC;
   const labels = {
-    az: { done: 'Tamamladım', progress: 'Tamamlanan kreditlər', local: 'İrəliləyiş bu cihazda saxlanılır.', offline: 'İnternet yoxdur. Saxlanılmış plan və əsas alətlərdən istifadə edə bilərsən; PDF-lər və hesab xidmətləri internet tələb edir.' },
-    en: { done: 'Completed', progress: 'Completed credits', local: 'Progress is stored on this device.', offline: 'You are offline. Saved plans and core tools remain available; PDFs and account services require an internet connection.' }
+    az: { offline: 'İnternet yoxdur. Saxlanılmış plan və əsas alətlərdən istifadə edə bilərsən; PDF-lər və hesab xidmətləri internet tələb edir.' },
+    en: { offline: 'You are offline. Saved plans and core tools remain available; PDFs and account services require an internet connection.' }
   };
   const txt = () => labels[lang] || labels.az;
-  const userKey = () => typeof getCurrentUser === 'function' && getCurrentUser() ? getCurrentUser().uid : 'guest';
-  const key = () => 'unec_completed_' + userKey();
-  function completions() { try { const a = JSON.parse(localStorage.getItem(key()) || '[]'); return new Set(Array.isArray(a) ? a : []); } catch (_) { return new Set(); } }
-  const itemKey = (sem, subject) => `${getSavedSpecialty()}|${sem}|${subject.code || subject.name}`;
-  window.renderCurriculumProgress = function () {
-    const plan = CURRICULUM_DATA[getSavedSpecialty()];
-    const box = document.getElementById('currCompletionSummary');
-    if (!plan || !box) return;
-    const done = completions(); let total = 0, credits = 0;
-    for (let sem = 1; sem <= 8; sem++) for (const subject of plan['semester' + sem] || []) {
-      total += subject.credit; if (done.has(itemKey(sem, subject))) credits += subject.credit;
-    }
-    box.innerHTML = `<b>${U.esc(txt().progress)}: ${credits} / ${total}</b><progress value="${credits}" max="${total || 1}" aria-label="${U.esc(txt().progress)}"></progress><small>${U.esc(txt().local)}</small>`;
-  };
-  window.toggleCurriculumCompleted = function (sem, index, checked) {
-    const subject = CURRICULUM_DATA[getSavedSpecialty()]?.['semester' + sem]?.[index];
-    if (!subject) return;
-    const done = completions(), id = itemKey(sem, subject);
-    checked ? done.add(id) : done.delete(id);
-    try { localStorage.setItem(key(), JSON.stringify([...done])); }
-    catch (_) { U.toast(lang === 'en' ? 'Could not save progress.' : 'İrəliləyiş saxlanıla bilmədi.', 'error'); }
-    renderCurriculumProgress();
-  };
-  const render = window.renderSemesterTable;
-  window.renderSemesterTable = function (semKey, subjects) {
-    const count = render(semKey, subjects), done = completions(), sem = Number(semKey.slice(1));
-    document.querySelectorAll(`#curr-tbody-${semKey} tr[data-curr-index]`).forEach(row => {
-      const index = Number(row.dataset.currIndex), subject = subjects[index];
-      if (!subject) return;
-      row.querySelector('.curr-td-name').insertAdjacentHTML('beforeend', `<label class="curr-complete-label"><input type="checkbox" ${done.has(itemKey(sem, subject)) ? 'checked' : ''} onchange="toggleCurriculumCompleted(${sem},${index},this.checked)"> ${U.esc(txt().done)}</label>`);
-    });
-    renderCurriculumProgress(); return count;
-  };
-
   // Adapt legacy overlays to the same focus trap and focus restoration as sheets.
   let current = null;
   function open(id) {
@@ -86,7 +52,6 @@
   window.addEventListener('online', refresh); window.addEventListener('offline', refresh);
   window.addEventListener('unec:langchange', refresh);
   window.addEventListener('unec:authchange', () => {
-    if (U.route?.tab === 'curriculum' && getSavedSpecialty()) selectSpecialty(getSavedSpecialty(), { keepScroll: true });
     refresh();
   });
   document.addEventListener('DOMContentLoaded', () => {

@@ -449,6 +449,7 @@ async function updateUserProfile(updates) {
   await _db.collection('users').doc(currentUser.uid).update(updates);
   currentProfile = await _getUserProfile(currentUser.uid);
   if (typeof renderDashboard === 'function') renderDashboard();
+  window.dispatchEvent(new CustomEvent('unec:profilechange'));
 }
 
 // ── Public getters ────────────────────────────────────────────
