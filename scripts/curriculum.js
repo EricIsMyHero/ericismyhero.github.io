@@ -3100,6 +3100,8 @@ const CURR_SPEC_KEYS = {
 };
 const CURR_ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
 let currSelectedYear = 0; // 0 — bütün semestrlər
+let currSearchQuery = '';
+let currPrintCleanup = null;
 
 function _currEsc(str) {
   return String(str == null ? '' : str).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -3118,7 +3120,7 @@ function _currIcon(materialName) {
 function selectSpecialty(spec, opts) {
   const data = CURRICULUM_DATA[spec];
   if (!data) return;
-  if (getSavedSpecialty() !== spec) currSelectedYear = 0;
+  if (getSavedSpecialty() !== spec) { currSelectedYear = 0; currSearchQuery = ''; }
   saveSpecialty(spec);
 
   document.querySelectorAll('.curr-specialty-btn').forEach(b => {
@@ -3135,7 +3137,6 @@ function selectSpecialty(spec, opts) {
   for (let i = 1; i <= 8; i++) {
     const key = `semester${i}`;
     if (data[key] && data[key].length) {
-      renderSemesterTable(`s${i}`, data[key]);
       navItems.push(i);
     }
   }
@@ -3167,6 +3168,15 @@ function selectSpecialty(spec, opts) {
     nav.hidden = !navItems.length;
     document.getElementById('currYearTrack').scrollLeft = scrollLeft;
   }
+  const search = document.getElementById('currSubjectSearch');
+  if (search) search.value = currSearchQuery;
+  const scope = document.getElementById('currExportScope');
+  if (scope) {
+    const previous = scope.value;
+    const years = [1, 2, 3, 4].filter(year => navItems.some(i => Math.ceil(i / 2) === year));
+    scope.innerHTML = `<option value="0">${_currEsc(t('currExportAll'))}</option>` + years.map(year => `<option value="${year}">${_currEsc(t('currYear' + year))}</option>`).join('');
+    scope.value = opts && opts.keepScroll && [...scope.options].some(o => o.value === previous) ? previous : String(currSelectedYear);
+  }
   filterCurriculumYear(currSelectedYear, false);
 
   // Seçim bitdi: siyahı gizlənir, plan görünür ("İxtisası dəyiş" ilə geri qayıdılır)
@@ -3184,6 +3194,7 @@ function scrollToSemester(i) {
   const data = CURRICULUM_DATA[getSavedSpecialty()];
   if (!el || !data?.[`semester${i}`]?.length) return;
   if (currSelectedYear && currSelectedYear !== Math.ceil(i / 2)) filterCurriculumYear(Math.ceil(i / 2), false);
+  if (el.hidden) return;
   el.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
 }
 
@@ -3191,11 +3202,26 @@ function filterCurriculumYear(year, scroll = true) {
   const data = CURRICULUM_DATA[getSavedSpecialty()];
   if (!data || !Number.isInteger(year) || year < 0 || year > 4) return;
   if (year && ![year * 2 - 1, year * 2].some(i => data[`semester${i}`]?.length)) year = 0;
+  const changedYear = currSelectedYear !== year;
   currSelectedYear = year;
+  if (changedYear) {
+    const scope = document.getElementById('currExportScope');
+    if (scope) scope.value = String(year);
+  }
+  let count = 0;
   for (let i = 1; i <= 8; i++) {
     const block = document.getElementById(`curr-semester-block-s${i}`);
-    if (block) block.hidden = !data[`semester${i}`]?.length || !!(year && Math.ceil(i / 2) !== year);
+    const matches = renderSemesterTable(`s${i}`, data[`semester${i}`] || []);
+    const inYear = !year || Math.ceil(i / 2) === year;
+    if (block) block.hidden = !matches || !inYear;
+    if (inYear) count += matches;
+    const jump = document.querySelector(`#currSemNav [data-sem="${i}"]`);
+    if (jump) jump.disabled = !matches;
   }
+  const status = document.getElementById('currSearchStatus');
+  if (status) { status.hidden = !currSearchQuery.trim(); status.textContent = t('currSearchCount').replace('{n}', count); }
+  const empty = document.getElementById('currSearchEmpty');
+  if (empty) empty.hidden = count > 0 || !currSearchQuery.trim();
   document.querySelectorAll('#currSemNav [data-curr-year]').forEach(button => {
     button.setAttribute('aria-pressed', String(Number(button.dataset.currYear) === year));
   });
@@ -3213,11 +3239,13 @@ function scrollCurriculumYears(direction) {
 function renderSemesterTable(semKey, subjects) {
   const tbody   = document.getElementById(`curr-tbody-${semKey}`);
   const statsEl = document.getElementById(`curr-s${semKey.replace('s','')}-stats`);
-  if (!tbody) return;
+  if (!tbody) return 0;
+  const matches = subjects.map((s, index) => ({ s, index })).filter(({ s }) => curriculumSubjectMatches(s, currSearchQuery));
+  const shown = matches.map(({ s }) => s);
 
-  const totalCredits = subjects.reduce((a, s) => a + s.credit, 0);
-  const totalHours   = subjects.reduce((a, s) => a + s.hours,  0);
-  const totalWeekly  = subjects.reduce((a, s) => a + s.weekly, 0);
+  const totalCredits = shown.reduce((a, s) => a + s.credit, 0);
+  const totalHours   = shown.reduce((a, s) => a + s.hours,  0);
+  const totalWeekly  = shown.reduce((a, s) => a + s.weekly, 0);
 
   if (statsEl) statsEl.innerHTML =
     `<span class="curr-stat-pill">${totalCredits} ${_currEsc(t('currUnitCredit'))}</span>` +
@@ -3234,18 +3262,103 @@ function renderSemesterTable(semKey, subjects) {
 
   // Mobil görünüşdə sətirlər kartlara çevrilir: data-label hər xananın başlığını daşıyır
   const lbl = { credit: t('currTableCredit'), hours: t('currTableHours'), absence: t('currTableAbsence'), weekly: t('currTableWeekly') };
-  tbody.innerHTML = subjects.map((s, i) => `
+  tbody.innerHTML = matches.map(({ s, index }, i) => `
     <tr role="row" style="animation-delay:${Math.min(i, 12) * 35}ms" class="curr-row-in">
-      <td role="cell" class="curr-td-name">${_currEsc(s.name)}${codesHTML(s)}</td>
+      <td role="cell" class="curr-td-name">${_currEsc(s.name)}${codesHTML(s)}${curriculumMaterialsHTML(s, Number(semKey.slice(1)), index)}</td>
       <td role="cell" data-label="${_currEsc(lbl.credit)}"><span class="curr-badge curr-badge--credit">${s.credit}</span></td>
       <td role="cell" data-label="${_currEsc(lbl.hours)}"><span class="curr-badge curr-badge--hours">${s.hours || '—'}</span></td>
       <td role="cell" data-label="${_currEsc(lbl.absence)}"><span class="curr-badge curr-badge--absence${s.absenceLimit <= 1 && s.absenceLimit > 0 ? ' warn' : ''}">${s.absenceLimit || '—'}</span></td>
       <td role="cell" data-label="${_currEsc(lbl.weekly)}"><span class="curr-badge curr-badge--weekly">${s.weekly || '—'}</span></td>
     </tr>`).join('');
+  return matches.length;
+}
+
+function curriculumSubjectMatches(subject, query) {
+  const normalize = s => window.UNEC.normAz(String(s));
+  const hay = normalize([subject.name, subject.code, ...(subject.codes || [])].filter(Boolean).join(' '));
+  return normalize(query).split(' ').filter(Boolean).every(token => hay.includes(token));
+}
+
+function curriculumMaterialsFor(subject) {
+  const U = window.UNEC;
+  if (!U?.getIndex) return [];
+  const codes = new Set([subject.code, ...(subject.codes || [])].filter(Boolean).map(c => String(c).trim()));
+  const name = canonSubjectName(subject.name);
+  const seen = new Set();
+  return U.getIndex().filter(m => {
+    if (m.kind !== 'pdf' || isTudifakSubject(m.subject, m.subjObj)) return false;
+    if (!(codes.has(String(m.code).trim()) || canonSubjectName(m.subject) === name) || seen.has(m.favKey)) return false;
+    seen.add(m.favKey);
+    return true;
+  });
+}
+
+function curriculumMaterialsHTML(subject, semester, index) {
+  const entries = curriculumMaterialsFor(subject);
+  if (!entries.length) return `<span class="curr-no-materials">${_currEsc(t('currNoMaterials'))}</span>`;
+  const label = `${t('currMaterials')} (${entries.length})`;
+  const groups = new Set(entries.map(m => `${m.course}|${m.subject}`));
+  if (groups.size === 1) {
+    const m = entries[0];
+    return `<a class="curr-material-link" href="#/courses/subjects/${encodeURIComponent(m.course)}/${encodeURIComponent(m.subject)}" aria-label="${_currEsc(t('currMaterials') + ': ' + subject.name)}">${_currEsc(label)} →</a>`;
+  }
+  return `<button type="button" class="curr-material-link" onclick="openCurriculumMaterials(${semester}, ${index}, this)" aria-haspopup="dialog" aria-label="${_currEsc(t('currMaterials') + ': ' + subject.name)}">${_currEsc(label)} →</button>`;
+}
+
+function openCurriculumMaterials(semester, index, opener) {
+  const subject = CURRICULUM_DATA[getSavedSpecialty()]?.[`semester${semester}`]?.[index];
+  if (!subject) return;
+  const entries = curriculumMaterialsFor(subject);
+  document.getElementById('currMaterialsTitle').textContent = subject.name;
+  document.getElementById('currMaterialsList').innerHTML = entries.map(window.UNEC.matCardHTML).join('');
+  window.UNEC.openSheet('sheet-curr-materials', opener);
+  window.UNEC.fetchRatings(entries);
+}
+
+function searchCurriculum(query) {
+  currSearchQuery = String(query || '');
+  filterCurriculumYear(currSelectedYear, false);
+}
+
+function clearCurriculumSearch() {
+  currSearchQuery = '';
+  const input = document.getElementById('currSubjectSearch');
+  if (input) { input.value = ''; input.focus(); }
+  filterCurriculumYear(currSelectedYear, false);
+}
+
+function printCurriculum() {
+  const spec = getSavedSpecialty();
+  const data = CURRICULUM_DATA[spec];
+  const year = Number(document.getElementById('currExportScope')?.value || 0);
+  if (!data || !Number.isInteger(year) || year < 0 || year > 4) return;
+  if (currPrintCleanup) currPrintCleanup();
+  const root = document.createElement('div');
+  root.id = 'currPrintRoot'; root.className = 'curr-print-root';
+  const headers = ['currTableSubject', 'currCodeTitle', 'currTableCredit', 'currTableHours', 'currTableAbsence', 'currTableWeekly'];
+  root.innerHTML = `<header><p>UNEC Students Hub</p><h1>${_currEsc(_currSpecName(spec, data))}</h1><p>${_currEsc(t(year ? 'currYear' + year : 'currExportAll'))}</p></header>` +
+    Array.from({ length: 8 }, (_, i) => i + 1).filter(i => (!year || Math.ceil(i / 2) === year) && data[`semester${i}`]?.length).map(i => `
+      <section><h2>${_currEsc(t('currSem' + i))}</h2><table class="curr-print-table"><thead><tr>${headers.map(key => `<th scope="col">${_currEsc(t(key))}</th>`).join('')}</tr></thead><tbody>
+      ${data[`semester${i}`].map(s => `<tr><td>${_currEsc(s.name)}</td><td>${_currEsc((s.codes || (s.code ? [s.code] : [])).join(', '))}</td>${[s.credit, s.hours, s.absenceLimit, s.weekly].map(n => `<td>${_currEsc(n || '—')}</td>`).join('')}</tr>`).join('')}
+      </tbody></table></section>`).join('');
+  document.body.appendChild(root);
+  document.body.classList.add('curr-printing');
+  const previousTitle = document.title;
+  const printTitle = `${_currSpecName(spec, data)} — ${t(year ? 'currYear' + year : 'currExportAll')}`;
+  document.title = printTitle;
+  currPrintCleanup = () => {
+    root.remove(); document.body.classList.remove('curr-printing');
+    if (document.title === printTitle) document.title = previousTitle;
+    window.removeEventListener('afterprint', currPrintCleanup);
+    currPrintCleanup = null;
+  };
+  window.addEventListener('afterprint', currPrintCleanup);
+  try { window.print(); } catch (error) { currPrintCleanup(); window.UNEC.toast(t('currPrintError'), 'error'); }
 }
 
 function clearSpecialty() {
   currSelectedYear = 0;
+  currSearchQuery = '';
   clearSavedSpecialty();
   document.querySelectorAll('.curr-specialty-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
   document.getElementById('currPlanPanel').style.display  = 'none';
