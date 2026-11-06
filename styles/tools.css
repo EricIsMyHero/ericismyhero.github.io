@@ -974,11 +974,22 @@ body.in-quiz[data-route="tests"] #ai-button { opacity: 0; visibility: hidden; po
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
 }
-.curr-sem-nav .chip { min-width: 46px; justify-content: center; padding: 0 12px; }
+.curr-sem-nav .chip { justify-content: center; }
+.curr-sem-tools { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.curr-year-arrows { display: flex; gap: 4px; }
+.curr-year-arrows .icon-btn { width: 44px; min-height: 44px; }
+.curr-year-arrows .icon-btn:disabled { opacity: .4; cursor: default; }
+.curr-prev-icon { transform: rotate(180deg); }
+.curr-year-track { display: flex; gap: 12px; overflow-x: auto; padding: 3px 3px 8px; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: var(--accent) transparent; }
+.curr-year-group { flex: 0 0 calc((100% - 12px) / 2); min-width: 0; scroll-snap-align: start; }
+.curr-year-btn { width: 100%; min-height: 44px; margin-bottom: 6px; }
+.curr-year-semesters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.curr-year-semesters .chip { width: 100%; min-height: 44px; padding: 0 4px; font-size: var(--fs-xs); white-space: normal; line-height: 1.2; }
 @media (min-width: 1024px) { .curr-sem-nav { top: 92px; padding-inline: 0; } }
 
-.curr-semester-block { margin-top: 18px; scroll-margin-top: calc(var(--header-h) + var(--safe-top) + 64px); }
-@media (min-width: 1024px) { .curr-semester-block { scroll-margin-top: 150px; } }
+.curr-semester-block { margin-top: 18px; scroll-margin-top: calc(var(--header-h) + var(--safe-top) + 180px); }
+.curr-semester-block[hidden] { display: none; }
+@media (min-width: 1024px) { .curr-semester-block { scroll-margin-top: 270px; } }
 .curr-semester-title { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
 .curr-sem-num { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 10px; background: var(--accent); color: #fff; font-weight: 800; }
 .curr-semester-title h3 { flex: 1; min-width: 0; margin: 0; font-size: 1rem; font-weight: 800; }

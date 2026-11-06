@@ -3099,6 +3099,7 @@ const CURR_SPEC_KEYS = {
   tourism: 'currSpecTourism', socialWork: 'currSpecSocialWork'
 };
 const CURR_ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
+let currSelectedYear = 0; // 0 — bütün semestrlər
 
 function _currEsc(str) {
   return String(str == null ? '' : str).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -3117,6 +3118,7 @@ function _currIcon(materialName) {
 function selectSpecialty(spec, opts) {
   const data = CURRICULUM_DATA[spec];
   if (!data) return;
+  if (getSavedSpecialty() !== spec) currSelectedYear = 0;
   saveSpecialty(spec);
 
   document.querySelectorAll('.curr-specialty-btn').forEach(b => {
@@ -3132,24 +3134,40 @@ function selectSpecialty(spec, opts) {
   const navItems = [];
   for (let i = 1; i <= 8; i++) {
     const key = `semester${i}`;
-    const block = document.getElementById(`curr-semester-block-s${i}`);
     if (data[key] && data[key].length) {
       renderSemesterTable(`s${i}`, data[key]);
-      if (block) block.style.display = '';
       navItems.push(i);
-    } else {
-      if (block) block.style.display = 'none';
     }
   }
 
   // Semestrə tez keçid çipləri
   const nav = document.getElementById('currSemNav');
   if (nav) {
-    nav.innerHTML = navItems.map(i =>
-      `<button type="button" class="chip" data-sem="${i}" aria-label="${_currEsc(t('currSem' + i))}" onclick="scrollToSemester(${i})">${CURR_ROMAN[i - 1]}</button>`
-    ).join('');
-    nav.hidden = navItems.length < 2;
+    const scrollLeft = opts && opts.keepScroll ? (document.getElementById('currYearTrack')?.scrollLeft || 0) : 0;
+    const years = [1, 2, 3, 4].filter(year => navItems.some(i => Math.ceil(i / 2) === year));
+    nav.innerHTML = `
+      <div class="curr-sem-tools">
+        <button type="button" class="chip" data-curr-year="0" onclick="filterCurriculumYear(0)">${_currEsc(t('currAllSemesters'))}</button>
+        <div class="curr-year-arrows">
+          <button type="button" class="icon-btn" aria-label="${_currEsc(t('currYearsPrev'))}" aria-controls="currYearTrack" onclick="scrollCurriculumYears(-1)" ${years.length <= 2 ? 'disabled' : ''}><svg class="ic curr-prev-icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></button>
+          <button type="button" class="icon-btn" aria-label="${_currEsc(t('currYearsNext'))}" aria-controls="currYearTrack" onclick="scrollCurriculumYears(1)" ${years.length <= 2 ? 'disabled' : ''}><svg class="ic" aria-hidden="true"><use href="#i-chevron-right"/></svg></button>
+        </div>
+      </div>
+      <div class="curr-year-track" id="currYearTrack" role="group" aria-label="${_currEsc(t('currYearNavAria'))}" tabindex="0">
+        ${years.map(year => {
+          const semesters = navItems.filter(i => Math.ceil(i / 2) === year);
+          return `<div class="curr-year-group" role="group" aria-labelledby="curr-year-${year}">
+            <button type="button" class="chip curr-year-btn" id="curr-year-${year}" data-curr-year="${year}" aria-controls="${semesters.map(i => `curr-semester-block-s${i}`).join(' ')}" onclick="filterCurriculumYear(${year})">${_currEsc(t('currYear' + year))}</button>
+            <div class="curr-year-semesters">${semesters.map(i =>
+              `<button type="button" class="chip" data-sem="${i}" aria-label="${_currEsc(t('currSem' + i))}" aria-controls="curr-semester-block-s${i}" onclick="scrollToSemester(${i})">${_currEsc(t('currSemesterLabel'))} ${CURR_ROMAN[i - 1]}</button>`
+            ).join('')}</div>
+          </div>`;
+        }).join('')}
+      </div>`;
+    nav.hidden = !navItems.length;
+    document.getElementById('currYearTrack').scrollLeft = scrollLeft;
   }
+  filterCurriculumYear(currSelectedYear, false);
 
   // Seçim bitdi: siyahı gizlənir, plan görünür ("İxtisası dəyiş" ilə geri qayıdılır)
   const wrap  = document.getElementById('currSelectorWrap');
@@ -3163,7 +3181,33 @@ function selectSpecialty(spec, opts) {
 
 function scrollToSemester(i) {
   const el = document.getElementById(`curr-semester-block-s${i}`);
-  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const data = CURRICULUM_DATA[getSavedSpecialty()];
+  if (!el || !data?.[`semester${i}`]?.length) return;
+  if (currSelectedYear && currSelectedYear !== Math.ceil(i / 2)) filterCurriculumYear(Math.ceil(i / 2), false);
+  el.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+}
+
+function filterCurriculumYear(year, scroll = true) {
+  const data = CURRICULUM_DATA[getSavedSpecialty()];
+  if (!data || !Number.isInteger(year) || year < 0 || year > 4) return;
+  if (year && ![year * 2 - 1, year * 2].some(i => data[`semester${i}`]?.length)) year = 0;
+  currSelectedYear = year;
+  for (let i = 1; i <= 8; i++) {
+    const block = document.getElementById(`curr-semester-block-s${i}`);
+    if (block) block.hidden = !data[`semester${i}`]?.length || !!(year && Math.ceil(i / 2) !== year);
+  }
+  document.querySelectorAll('#currSemNav [data-curr-year]').forEach(button => {
+    button.setAttribute('aria-pressed', String(Number(button.dataset.currYear) === year));
+  });
+  if (scroll) {
+    const first = document.querySelector('#currPlanPanel .curr-semester-block:not([hidden])');
+    if (first) first.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+  }
+}
+
+function scrollCurriculumYears(direction) {
+  const track = document.getElementById('currYearTrack');
+  if (track) track.scrollBy({ left: direction * (track.clientWidth + 12), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
 }
 
 function renderSemesterTable(semKey, subjects) {
@@ -3201,6 +3245,7 @@ function renderSemesterTable(semKey, subjects) {
 }
 
 function clearSpecialty() {
+  currSelectedYear = 0;
   clearSavedSpecialty();
   document.querySelectorAll('.curr-specialty-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
   document.getElementById('currPlanPanel').style.display  = 'none';
