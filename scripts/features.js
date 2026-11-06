@@ -91,44 +91,13 @@ function _aiIsPremiumActive(d) {
 }
 
 async function _aiGetUsage() {
-  const free = { count: 0, remaining: AI_FREE_DAILY, dailyLimit: AI_FREE_DAILY, charLimit: AI_FREE_CHARS, isPremium: false };
   const user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
-  const db   = typeof getDb === 'function' ? getDb() : null;
-  if (!user || !db) return free;
+  if (!user) return { count: 0, remaining: 0, dailyLimit: 5, charLimit: 250, isPremium: false };
   try {
-    const ref  = db.collection('users').doc(user.uid).collection('progress').doc('main');
-    const snap = await ref.get();
-    const d    = snap.data() || {};
-
-    const isPremium  = _aiIsPremiumActive(d);
-    const dailyLimit = isPremium ? AI_PREM_DAILY : AI_FREE_DAILY;
-    const charLimit  = isPremium ? AI_PREM_CHARS : AI_FREE_CHARS;
-    const count = (d.aiAskDate === _aiTodayStr()) ? (d.aiAskCount || 0) : 0;
-
-    return { count, remaining: Math.max(0, dailyLimit - count), dailyLimit, charLimit, isPremium, premiumPlan: d.premiumPlan };
-  } catch (e) {
-    console.warn('[AI] limit oxunmadı:', e);
-    return free;
-  }
-}
-
-async function _aiIncrementUsage() {
-  const user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
-  const db   = typeof getDb === 'function' ? getDb() : null;
-  if (!user || !db) return;
-  try {
-    const ref   = db.collection('users').doc(user.uid).collection('progress').doc('main');
-    const today = _aiTodayStr();
-    const snap  = await ref.get();
-    const d     = snap.data() || {};
-    if (d.aiAskDate === today) {
-      await ref.update({ aiAskCount: firebase.firestore.FieldValue.increment(1) });
-    } else {
-      await ref.update({ aiAskDate: today, aiAskCount: 1 });
-    }
-  } catch (e) {
-    console.warn('[AI] limit yazılmadı:', e);
-  }
+    const res = await fetch(`${BACKEND_URL}/api/ask`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'usage', idToken: await user.getIdToken() }) });
+    if (!res.ok) throw new Error('usage_unavailable');
+    return await res.json();
+  } catch (_) { return { unavailable: true, count: 0, remaining: 0, dailyLimit: 5, charLimit: 250, isPremium: false }; }
 }
 
 // ── Giriş / limit vəziyyətinə görə input sahəsi ─────────────
@@ -145,7 +114,11 @@ async function refreshAiAuthState() {
     return;
   }
 
-  const { remaining, dailyLimit, charLimit, isPremium } = await _aiGetUsage();
+  const { remaining, dailyLimit, charLimit, isPremium, unavailable } = await _aiGetUsage();
+  if (unavailable) {
+    area.innerHTML = `<p role="status">${t('aiConnError')}</p><button type="button" class="btn btn--secondary" onclick="refreshAiAuthState()">${lang === 'en' ? 'Try again' : 'Yenidən yoxla'}</button>`;
+    return;
+  }
 
   area.innerHTML = `
     <div id="ai-input-meta">
@@ -216,27 +189,27 @@ async function redeemPremiumCode() {
   if (!user) { if (typeof openAuthModal === 'function') openAuthModal('login'); return; }
 
   msg.style.color  = 'var(--muted)';
-  msg.textContent  = 'Yoxlanılır...';
+  msg.textContent  = lang === 'en' ? 'Checking…' : 'Yoxlanılır…';
 
   try {
     const res = await fetch(`${BACKEND_URL}/api/redeem-code`, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ code, uid: user.uid })
+      body:    JSON.stringify({ code, idToken: await user.getIdToken() })
     });
     const d = await res.json();
     if (!res.ok) {
       msg.style.color = 'var(--red)';
-      msg.textContent = d.error || 'Kod düzgün deyil.';
+      msg.textContent = lang === 'en' ? 'The code could not be activated. Check the code and try again.' : (d.error || 'Kod düzgün deyil.');
       return;
     }
     msg.style.color = 'var(--green)';
-    msg.textContent = 'Uğurlu! Premium aktivləşdi.';
+    msg.textContent = lang === 'en' ? 'Success! Premium is active.' : 'Uğurlu! Premium aktivləşdi.';
     input.value = '';
     setTimeout(() => { closePremiumModal(); refreshAiAuthState(); }, 1200);
   } catch (e) {
     msg.style.color = 'var(--red)';
-    msg.textContent = 'Bağlantı xətası.';
+    msg.textContent = lang === 'en' ? 'Connection error.' : 'Bağlantı xətası.';
   }
 }
 
@@ -348,6 +321,7 @@ async function sendMessage() {
   if (!input) return;
 
   const usage = await _aiGetUsage();
+  if (usage.unavailable) { addBotMsg(t('aiConnError')); return; }
   const text  = input.value.trim().slice(0, usage.charLimit);
   if (!text) return;
 
@@ -363,11 +337,10 @@ async function sendMessage() {
   showTyping();
 
   try {
-    await _aiIncrementUsage();
     const res = await fetch(`${BACKEND_URL}/api/ask`, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ question: text, context: await buildContext(text), lang: (typeof lang !== 'undefined' ? lang : 'az') })
+      body:    JSON.stringify({ idToken: await getCurrentUser().getIdToken(), question: text, context: (await buildContext(text)).slice(0, 24000), lang: (typeof lang !== 'undefined' ? lang : 'az') })
     });
     removeTyping();
     if (!res.ok) { addBotMsg(t('aiServerError') + ' (' + res.status + ').'); }
@@ -400,31 +373,25 @@ function dismissBanner() {
 
 window.addEventListener("appinstalled", dismissBanner);
 
-// ── Support Toast ─────────────────────────────────────────────
+// ── Support toast: once per session, only on the home screen.
 (function () {
-  const SHOW_DELAY   = 8000;
-  const INTERVAL     = 30000;
-  const VISIBLE_TIME = 5000;
-  let toastTimer;
-
-  function showToast() {
-    const toast = document.getElementById('supportToast');
-    if (!toast) return;
-    toast.classList.remove('st-visible');
-    void toast.offsetWidth;
-    toast.classList.add('st-visible');
-    toastTimer = setTimeout(() => toast.classList.remove('st-visible'), VISIBLE_TIME);
-  }
-
-  function dismissToast() {
-    const toast = document.getElementById('supportToast');
-    if (toast) toast.classList.remove('st-visible');
-    clearTimeout(toastTimer);
-  }
-
-  setTimeout(showToast, SHOW_DELAY);
-  setInterval(showToast, INTERVAL);
-  window.dismissToast = dismissToast;
+  const key = 'unec_support_toast_seen';
+  function seen() { try { return sessionStorage.getItem(key) === '1'; } catch (_) { return true; } }
+  window.dismissToast = function () {
+    document.getElementById('supportToast')?.classList.remove('st-visible');
+    try { sessionStorage.setItem(key, '1'); } catch (_) {}
+  };
+  setTimeout(() => {
+    if (seen() || document.hidden || !window.UNEC || UNEC.route?.tab !== 'home' || document.body.classList.contains('has-layer')) return;
+    try { sessionStorage.setItem(key, '1'); } catch (_) {}
+    document.getElementById('supportToast')?.classList.add('st-visible');
+    setTimeout(window.dismissToast, 5000);
+  }, 15000);
+  const hideOnNavigation = () => {
+    if (document.getElementById('supportToast')?.classList.contains('st-visible')) window.dismissToast();
+  };
+  window.addEventListener('hashchange', hideOnNavigation);
+  window.addEventListener('unec:routechange', hideOnNavigation);
 })();
 
 // ================================================================

@@ -1,5 +1,5 @@
 {
-  "assetCount": 119,
+  "assetCount": 123,
   "dateBasis": "Git committer timestamps with timezone; historical upload lineage when verified, otherwise first catalog reference or an explicit maintainer timestamp.",
   "materials": {
     "pdf-extra/adiaktest1.pdf": {
@@ -40,13 +40,6 @@
       "sourceCommit": "35ec238865fc17d1f98a53532d0f62bfabfad09e",
       "sourcePath": "pdfs.js"
     },
-    "pdf-extra/numune4.pdf": {
-      "addedAt": "2026-04-14T13:21:27+04:00",
-      "note": "Date is the first catalog reference, not a verified remote upload time.",
-      "source": "git-catalog",
-      "sourceCommit": "f31fb2a53720d302e02b0162d03d1b097489eb5d",
-      "sourcePath": "app.js"
-    },
     "pdf-extra/robinsonazeA2.pdf": {
       "addedAt": "2026-04-14T20:38:10+04:00",
       "catalogFirst": {
@@ -84,13 +77,6 @@
       "source": "git-upload",
       "sourceCommit": "9dda241d273c37f11b7b6ff0e5eb59baa4187471",
       "sourcePath": "pdf-extra/umumikimya20ballar.pdf"
-    },
-    "pdf/Manage.pdf": {
-      "addedAt": "2026-04-10T21:11:54+04:00",
-      "note": "Date is the first catalog reference, not a verified remote upload time.",
-      "source": "git-catalog",
-      "sourceCommit": "d7c690a35afb8ebd8171cdfd07b2f3a731c86578",
-      "sourcePath": "index.html"
     },
     "pdf/adiakQ26.pdf": {
       "addedAt": "2026-04-10T22:58:41+04:00",
@@ -282,6 +268,13 @@
       "sourceCommit": "3cad3e94f6b187cbcb95015575b64e203efcb690",
       "sourcePath": "pdfs.js"
     },
+    "pdf/beynelxalqiqtkollek2.pdf": {
+      "addedAt": "2026-10-31T14:48:50+04:00",
+      "note": "Maintainer-supplied timestamp; not inferred from a Git upload.",
+      "source": "explicit",
+      "sourceCommit": null,
+      "sourcePath": "pdfs.js"
+    },
     "pdf/bit1.pdf": {
       "addedAt": "2026-04-10T23:17:50+04:00",
       "catalogFirst": {
@@ -302,13 +295,6 @@
       "sourcePath": "pdfs.js"
     },
     "pdf/ekonometrikakollek1.pdf": {
-      "addedAt": "2026-10-08T15:58:46+04:00",
-      "note": "Date is the first catalog reference, not a verified remote upload time.",
-      "source": "git-catalog",
-      "sourceCommit": "885377bbe1940cd0d25edcb6f70fe8d2e1e27bac",
-      "sourcePath": "pdfs.js"
-    },
-    "pdf/ekonometrikamesele1.pdf": {
       "addedAt": "2026-10-08T15:58:46+04:00",
       "note": "Date is the first catalog reference, not a verified remote upload time.",
       "source": "git-catalog",
@@ -345,6 +331,13 @@
       "source": "git-upload",
       "sourceCommit": "a953ba6ad88b7d43ceb2aaa143877523caef0b1f",
       "sourcePath": "pdf/emekkollek1.pdf"
+    },
+    "pdf/emekkollek2.pdf": {
+      "addedAt": "2026-11-02T20:25:10+04:00",
+      "note": "Maintainer-supplied timestamp; not inferred from a Git upload.",
+      "source": "explicit",
+      "sourceCommit": null,
+      "sourcePath": "pdfs.js"
     },
     "pdf/emi1.pdf": {
       "addedAt": "2026-04-11T13:34:34+04:00",
@@ -503,6 +496,20 @@
       "source": "git-upload",
       "sourceCommit": "03553a524a315b11f72218397be3d918265b37a6",
       "sourcePath": "pdf/iktQ26.pdf"
+    },
+    "pdf/inkisafiqtkollek1.pdf": {
+      "addedAt": "2026-10-31T14:53:52+04:00",
+      "note": "Maintainer-supplied timestamp; not inferred from a Git upload.",
+      "source": "explicit",
+      "sourceCommit": null,
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/inkisafmikroiqtkollek1.pdf": {
+      "addedAt": "2026-10-31T14:53:52+04:00",
+      "note": "Maintainer-supplied timestamp; not inferred from a Git upload.",
+      "source": "explicit",
+      "sourceCommit": null,
+      "sourcePath": "pdfs.js"
     },
     "pdf/iqtfkrtrx1.pdf": {
       "addedAt": "2026-06-20T20:00:38+04:00",
@@ -967,6 +974,27 @@
       "sourceCommit": "3cad3e94f6b187cbcb95015575b64e203efcb690",
       "sourcePath": "pdfs.js"
     },
+    "pdf/reqemsaliqtkollek1.pdf": {
+      "addedAt": "2026-10-31T14:48:53+04:00",
+      "note": "Maintainer-supplied timestamp; not inferred from a Git upload.",
+      "source": "explicit",
+      "sourceCommit": null,
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/reqemsaliqtkollek2.pdf": {
+      "addedAt": "2026-10-31T14:48:52+04:00",
+      "note": "Maintainer-supplied timestamp; not inferred from a Git upload.",
+      "source": "explicit",
+      "sourceCommit": null,
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/reqemsaliqtkollek3.pdf": {
+      "addedAt": "2026-10-31T14:48:51+04:00",
+      "note": "Maintainer-supplied timestamp; not inferred from a Git upload.",
+      "source": "explicit",
+      "sourceCommit": null,
+      "sourcePath": "pdfs.js"
+    },
     "pdf/riyaziyyat1Q24.pdf": {
       "addedAt": "2026-04-23T12:16:36+04:00",
       "catalogFirst": {
@@ -1280,6 +1308,6 @@
       "sourcePath": "pdf/yonetimorganizasyonQ25.pdf"
     }
   },
-  "recordCount": 123,
+  "recordCount": 127,
   "schemaVersion": 1
 }

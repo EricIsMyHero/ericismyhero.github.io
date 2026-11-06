@@ -18,7 +18,7 @@ ericismyhero.github.io/
 ├── index.html                  ← Main application
 ├── pdfs.js                     ← Exam materials index
 ├── manifest.json               ← Progressive Web App configuration
-├── sw.js                       ← Service worker (shows push notifications; caches nothing)
+├── sw.js                       ← Service worker (public offline shell and push notifications)
 ├── CNAME                       ← Custom domain
 ├── robots.txt
 ├── sitemap.xml
@@ -41,7 +41,7 @@ ericismyhero.github.io/
 │   ├── dashboard.js
 │   ├── badges.js
 │   ├── timer.js
-│   ├── requests.js             ← Material requests: list, public reply thread (`#/requests/<id>`), file attachments, login + notifications gate
+│   ├── requests.js             ← Material requests: list, public reply thread (`#/requests/<id>`), file attachments and login; notifications are optional
 │   ├── payments.js             ← Support screen: online payment flow, supporters list, "My contributions"
 │   ├── push.js                 ← Push notifications: opt-in card, device token (FCM), sync with the server
 │   ├── splash.js               ← Launch splash controller (state machine: readiness, slow/failed states, cleanup)
@@ -158,7 +158,7 @@ The interface is a single-page app without a framework. All screens live in `ind
 * **Launch splash:** `index.html` + `styles/splash.css` + `scripts/splash.js` show a short branded animation on the first visit (≈3.65 s: awakening → logo → network → brand reveal → dissolve) and a shorter one (≈1.6 s) for returning visitors. It is never shown on a refresh within the same session, within 30 minutes of the previous one, to search-engine crawlers, or without JavaScript. Force it with `?splash=full`, `?splash=short` or hide it with `?splash=off`. It leaves only when the animation, the DOM/first route, web fonts and the first Firebase auth state are all ready (each wait is capped); after 5 s it shows a “still loading” status, after 15 s (or if a core script fails to load) an error screen with *Try again* / *Continue anyway*. `prefers-reduced-motion` gets a static logo that fades out. The logo layers (`images/splash-*.webp`) are cut from the original `images/icon-1024.png` (transparent background, the tagline recolored white for the dark background); the logo is never redrawn in CSS. `manifest.json` uses `#00152E` for `background_color`/`theme_color` and dedicated icons (`icon-any-*` transparent, `icon-maskable-*` on the same navy) so the native launch screen of an installed PWA matches the splash; after changing the manifest an installed PWA may need to be reinstalled to pick up the new icons. Note: `tokens.css` zeroes animation/transition durations under reduced motion, so the splash overrides that for its own timing.
 * **Support & payments:** `scripts/payments.js` talks to the `payment-*`, `supporters` and `my-donations` functions in `ai-vercel/`. Amounts are stored in qəpik (integers); the result shown after returning from the gateway is read from the server-side order (`?order=` is only an id); the gateway callback is signature-checked and idempotent; test-mode payments never reach the public list. If `GET /api/payment-config` reports `enabled: false` (or the server is unreachable) the screen shows the old Birbank / m10 / QR block. Setup, environment variables and the Firestore rules snippet: [`ai-vercel/PAYMENTS-SETUP.md`](ai-vercel/PAYMENTS-SETUP.md).
 * **Push notifications:** `scripts/push.js` draws an opt-in card (`[data-push-box]`) in the news and settings sheets. The browser's permission prompt appears only after the visitor taps *Enable*; the script then registers `sw.js`, asks Firebase Cloud Messaging for a device token and sends it to `POST /api/push` (`ai-vercel/api/push.js`), which checks it with FCM (`validate_only`) and stores it in Firestore (`push_tokens`; signed-in users are linked by uid, the interface language is saved too). In **Admin panel → Bildirişlər** an admin writes a title, a text and an optional link and sends it to everyone, to one language, or to one user by email. Large audiences are sent in chunks (the server returns a `cursor` and the panel continues from it, so nobody gets a message twice), dead tokens are removed automatically and every send is logged in `push_log`. `sw.js` shows each push (data-only messages: `title`, `body`, `url`) and focuses or opens the site on click. iPhone / iPad (iOS 16.4+) receive push only from the site added to the Home Screen. The backend is a **single** serverless function: Vercel's Hobby plan allows at most 12 functions per deployment and `ai-vercel/api/` now has exactly 12, so a new endpoint has to be merged into an existing function. Needs the `FIREBASE_VAPID_KEY` environment variable (plus the existing `FIREBASE_SERVICE_ACCOUNT` and `ADMIN_SECRET_KEY`); without it push stays off. Setup, Firestore rules and troubleshooting: [`ai-vercel/PUSH-SETUP.md`](ai-vercel/PUSH-SETUP.md).
-* **Material request threads:** `scripts/requests.js` lists requests from Firestore (`material_requests`) and opens a request at `#/requests/<id>`, where replies (`material_requests/<id>/messages`) update live. The browser only **reads**; every write goes through `POST /api/push` (`req-create`, `req-send`, `file-url`, `req-delete`, `msg-delete`), which verifies the Firebase `idToken`, requires at least one notification device linked to the account (switch off with `REQUESTS_REQUIRE_PUSH=0`), rate-limits, and sends the notifications. Files are uploaded by the browser straight to Cloudflare R2 through a short-lived presigned `PUT` link (the server signs it with AWS SigV4 in `ai-vercel/lib/r2.js`, no SDK); before a message is saved the server checks every file's size, type and real content (magic bytes) and deletes anything that does not match. Allowed types: `pdf doc docx ppt pptx xls xlsx txt png jpg jpeg webp`. The admin panel shows each thread with sender emails, files and, under every message, who was notified and whether it arrived. Needs the `R2_*` environment variables for attachments; setup, CORS, Firestore rules and troubleshooting: [`ai-vercel/REQUESTS-SETUP.md`](ai-vercel/REQUESTS-SETUP.md). The thread logic lives in `lib/threads.js`, which `api/push.js` loads lazily, so push keeps working even if that file is missing.
+* **Material request threads:** `scripts/requests.js` lists requests from Firestore (`material_requests`) and opens a request at `#/requests/<id>`, where replies (`material_requests/<id>/messages`) update live. The browser only **reads**; every write goes through `POST /api/push` (`req-create`, `req-send`, `file-url`, `req-delete`, `msg-delete`), which verifies the Firebase `idToken`, makes notifications optional by default (`REQUESTS_REQUIRE_PUSH=1` explicitly enables a device requirement), rate-limits, and sends the notifications. Files are uploaded by the browser straight to Cloudflare R2 through a short-lived presigned `PUT` link (the server signs it with AWS SigV4 in `ai-vercel/lib/r2.js`, no SDK); before a message is saved the server checks every file's size, type and real content (magic bytes) and deletes anything that does not match. Allowed types: `pdf doc docx ppt pptx xls xlsx txt png jpg jpeg webp`. The admin panel shows each thread with sender emails, files and, under every message, who was notified and whether it arrived. Needs the `R2_*` environment variables for attachments; setup, CORS, Firestore rules and troubleshooting: [`ai-vercel/REQUESTS-SETUP.md`](ai-vercel/REQUESTS-SETUP.md). The thread logic lives in `lib/threads.js`, which `api/push.js` loads lazily, so push keeps working even if that file is missing.
 * **Material data** still comes from `pdfs.js`. PDFs are served from Cloudflare R2 and are opened or downloaded through `openFileUrl` / `downloadFileUrl` in `scripts/ui.js`. Direct downloads need CORS enabled on the R2 bucket; otherwise the file opens in a new tab.
 
 ---
@@ -297,3 +297,19 @@ All educational materials belong to their respective authors. Copyrighted conten
 ## License
 
 This project is released under the MIT License unless otherwise specified.
+
+## Site maintenance and verification
+
+The curriculum includes subject search, direct material links, printable PDF export and device-local completion tracking. After one successful online visit, the public app shell supports offline curriculum, GPA and timer tools. Remote PDFs and account services require internet access.
+
+Public material pages under `materials/` provide share previews, canonical URLs and structured metadata. Generate these pages, the sitemap and the offline asset version after changing the catalog or application assets:
+
+```sh
+python3 tools/sync-material-dates.py
+node tools/build-site.mjs
+node --test tests/*.test.cjs tests/*.test.mjs
+python3 tools/sync-material-dates.py --check
+node tools/build-site.mjs --check
+```
+
+GitHub Actions runs these checks on pushes and pull requests. A weekly or manually triggered workflow checks the live PDF links. See [service setup](ai-vercel/SERVICE-SETUP.md) for authenticated AI quotas, account export/deletion and private Firestore collections.

@@ -82,7 +82,7 @@ async function authed(env, init = {}) {
 }
 function docResult(json) {
   const id = json.name.split('/').pop();
-  return { id, data: fromFields(json.fields), updateTime: json.updateTime };
+  return { id, path: json.name.split('/documents/')[1], data: fromFields(json.fields), updateTime: json.updateTime };
 }
 
 /** Sənədi oxu → { id, data, updateTime } | null */
@@ -170,11 +170,35 @@ export async function deleteDoc(path, env = process.env) {
 }
 
 /** Kolleksiyanı səhifə-səhifə oxu → { docs: [{ id, data }], nextPageToken } */
-export async function listDocs(collection, { pageSize = 300, pageToken } = {}, env = process.env) {
+export async function listDocs(collection, { pageSize = 300, pageToken, showMissing = false } = {}, env = process.env) {
   const q = new URLSearchParams({ pageSize: String(pageSize) });
   if (pageToken) q.set('pageToken', pageToken);
+  if (showMissing) q.set('showMissing', 'true');
   const res = await fetch(`${base(env)}/${collection}?${q}`, await authed(env));
   if (!res.ok) throw new Error(`Firestore siyahı xətası: ${res.status}`);
   const json = await res.json();
   return { docs: (json.documents || []).map(docResult), nextPageToken: json.nextPageToken || null };
+}
+
+export async function listCollections(path, env = process.env) {
+  const ids = []; let pageToken;
+  do {
+    const res = await fetch(`${base(env)}/${path}:listCollectionIds`, await authed(env, {
+      method: 'POST', body: JSON.stringify({ pageSize: 100, ...(pageToken ? { pageToken } : {}) }),
+    }));
+    if (!res.ok) throw new Error(`Firestore collections: ${res.status}`);
+    const json = await res.json(); ids.push(...(json.collectionIds || [])); pageToken = json.nextPageToken;
+  } while (pageToken);
+  return ids;
+}
+
+// Preserve an anonymous rating and its aggregate, atomically removing the UID-keyed vote.
+export async function anonymizeVote(doc, env = process.env) {
+  const prefix = `projects/${serviceAccount(env).project_id}/databases/(default)/documents/`;
+  const target = doc.path.replace(/[^/]+$/, 'deleted-' + crypto.randomUUID());
+  const res = await fetch(`${base(env)}:commit`, await authed(env, { method: 'POST', body: JSON.stringify({ writes: [
+    { update: { name: prefix + target, fields: toFields({ stars: doc.data.stars || 0 }) }, currentDocument: { exists: false } },
+    { delete: prefix + doc.path, currentDocument: { updateTime: doc.updateTime } },
+  ] }) }));
+  if (!res.ok) throw new Error(`Firestore anonymous rating: ${res.status}`);
 }

@@ -355,7 +355,6 @@ const data = {
         type: "yazili", semester: 2, code: "00282", pdfs: [
           { name: "Ekonometrika", file: "ekonometrika1.pdf", pdfType: "semester", addedAt: "2026-10-08T15:58:46+04:00"},
           { name: "Ekonometrika", file: "ekonometrikakollek1.pdf", pdfType: "midterm", addedAt: "2026-10-08T15:58:46+04:00"},
-          { name: "Ekonometrika", file: "ekonometrikamesele1.pdf", pdfType: "task", addedAt: "2026-10-08T15:58:46+04:00"}
         ]
       },
       "Beynəlxalq biznes iqtisadiyyatı": {
@@ -407,6 +406,5 @@ const extrasData = {
     { name: "Statistika", file: "statistikaelave1.pdf", desc: "Bəzi bir çox sualın cavabı var", pdfType: "optional", addedAt: "2026-10-08T15:52:26+04:00"}
   ],
   "4-cü kurs": [
-    { name: "Nümunə Material", file: "numune4.pdf", desc: "Əlavə qeydlər" , addedAt: "2026-04-14T13:21:27+04:00"}
   ]
 };

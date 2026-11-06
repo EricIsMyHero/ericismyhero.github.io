@@ -60,7 +60,7 @@ const reEsc = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const tsMs = (v) => { const t = Date.parse(v); return Number.isFinite(t) ? t : 0; };
 
 /** Konfiqurasiya (ictimai): sayt bunu GET /api/push cavabından oxuyur. */
-export function requirePush(env = process.env) { return pushEnabled(env) && env.REQUESTS_REQUIRE_PUSH !== '0'; }
+export function requirePush(env = process.env) { return pushEnabled(env) && env.REQUESTS_REQUIRE_PUSH === '1'; }
 export function threadsConfig(env = process.env) {
   return {
     requirePush: requirePush(env),
@@ -130,6 +130,7 @@ async function fileUrl(b, env) {
   if (!r2Enabled(env)) return fail(503, 'files_disabled');
   const request = await loadRequest(b.requestId, env);
   if (!request) return fail(404, 'request_not_found');
+  if (request.status === 'closed') return fail(409, 'request_closed');
   if (!(await hasPushDevice(u.uid, env))) return fail(403, 'push_required');
 
   const name = cleanFileName(b.name);
@@ -250,6 +251,7 @@ async function reqSend(b, env) {
   if (!u) return fail(401, 'login_required');
   const request = await loadRequest(b.requestId, env);
   if (!request) return fail(404, 'request_not_found');
+  if (request.status === 'closed') return fail(409, 'request_closed');
   if (!(await hasPushDevice(u.uid, env))) return fail(403, 'push_required');
 
   const text = cleanText(b.text, LIMITS.text, true);
@@ -337,7 +339,7 @@ async function adminRequests(env) {
   const docs = await listAll(REQUESTS, 500, env);
   const rows = docs.map(d => ({
     id: d.id, uid: d.data.uid || '', name: d.data.name || '', text: d.data.text || '', course: d.data.course || '', subject: d.data.subject || '',
-    status: d.data.status === 'fulfilled' ? 'fulfilled' : 'open', upvotes: Array.isArray(d.data.upvoterIds) ? d.data.upvoterIds.length : 0,
+    status: ['fulfilled', 'closed'].includes(d.data.status) ? d.data.status : 'open', upvotes: Array.isArray(d.data.upvoterIds) ? d.data.upvoterIds.length : 0,
     msgCount: Number.isInteger(d.data.msgCount) ? d.data.msgCount : 0, createdAt: d.data.createdAt || null,
     lastMessageAt: d.data.lastMessageAt || null, lastMessageBy: d.data.lastMessageBy || '',
   }));
@@ -379,7 +381,7 @@ async function adminRequest(b, env) {
     ok: true,
     request: {
       id: request.id, uid: request.uid || '', name: request.name || '', email: owner.email, text: request.text || '', course: request.course || '', subject: request.subject || '',
-      status: request.status === 'fulfilled' ? 'fulfilled' : 'open', upvotes: Array.isArray(request.upvoterIds) ? request.upvoterIds.length : 0, createdAt: request.createdAt || null,
+      status: ['fulfilled', 'closed'].includes(request.status) ? request.status : 'open', upvotes: Array.isArray(request.upvoterIds) ? request.upvoterIds.length : 0, createdAt: request.createdAt || null,
       fulfilledAt: request.fulfilledAt || null,
     },
     messages, notifications,

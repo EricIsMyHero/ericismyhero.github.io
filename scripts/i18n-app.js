@@ -3,6 +3,7 @@
 // i18n.js-dən sonra yüklənir və I18N obyektinə əlavə edir.
 // ============================================================
 Object.assign(I18N.az, {
+  reqStatusClosed: 'Bağlanıb',
   matShowMore: 'Daha çox göstər',
   matViewDetails: 'Məlumata bax',
   mdSize: 'Ölçü',
@@ -187,6 +188,7 @@ Object.assign(I18N.az, {
 });
 
 Object.assign(I18N.en, {
+  reqStatusClosed: 'Closed',
   matShowMore: 'Show more',
   matViewDetails: 'View details',
   mdSize: 'Size',

@@ -1071,7 +1071,7 @@ function buildRequestsTable(requests, filtered) {
         <td class="td-muted">${esc(r.name)}</td>
         <td><span class="badge ${r.msgCount ? 'badge-green' : 'badge-gray'}">${r.msgCount}</span></td>
         <td><span class="badge badge-blue">▲ ${r.upvotes}</span></td>
-        <td><span class="badge ${r.status === 'fulfilled' ? 'badge-green' : 'badge-yellow'}">${r.status === 'fulfilled' ? 'Tapıldı' : 'Açıq'}</span></td>
+        <td><span class="badge ${r.status === 'fulfilled' ? 'badge-green' : 'badge-yellow'}">${r.status === 'closed' ? 'Bağlanıb' : r.status === 'fulfilled' ? 'Tapıldı' : 'Açıq'}</span></td>
         <td class="td-muted">${fmtDateTime(r.lastMessageAt || r.createdAt)}</td>
         <td><button class="rq-btn" onclick="openRequestDetail('${esc(r.id)}')"><span class="material-symbols-outlined msi">forum</span>Bax</button></td>
       </tr>`).join('')}
@@ -1147,7 +1147,7 @@ async function openRequestDetail(id) {
         <div class="rq-card-head">
           <span class="rq-who">${esc(r.name || '—')}<small>${esc(r.email)}</small></span>
           <span class="badge badge-blue">istək sahibi</span>
-          <span class="badge ${r.status === 'fulfilled' ? 'badge-green' : 'badge-yellow'}">${r.status === 'fulfilled' ? 'Tapıldı' : 'Açıq'}</span>
+          <span class="badge ${r.status === 'fulfilled' ? 'badge-green' : 'badge-yellow'}">${r.status === 'closed' ? 'Bağlanıb' : r.status === 'fulfilled' ? 'Tapıldı' : 'Açıq'}</span>
           <span class="grow"></span>
           <span class="td-muted">${fmtDateTime(r.createdAt)}</span>
           <button class="rq-btn danger" onclick="adminDeleteRequest('${esc(r.id)}')"><span class="material-symbols-outlined msi">delete</span>İstəyi sil</button>

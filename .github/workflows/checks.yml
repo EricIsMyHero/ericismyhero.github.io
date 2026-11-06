@@ -1,0 +1,28 @@
+name: Site checks
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: node --test tests/*.test.cjs tests/*.test.mjs
+      - run: python3 tools/sync-material-dates.py --check
+      - run: node tools/build-site.mjs --check
+      - name: JavaScript syntax
+        run: |
+          find scripts ai-vercel tools -name '*.js' -o -name '*.mjs' | xargs -n1 node --check
+          node --check sw.js
+          node --check offline-assets.js

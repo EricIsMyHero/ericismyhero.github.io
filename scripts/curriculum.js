@@ -3263,7 +3263,7 @@ function renderSemesterTable(semKey, subjects) {
   // Mobil görünüşdə sətirlər kartlara çevrilir: data-label hər xananın başlığını daşıyır
   const lbl = { credit: t('currTableCredit'), hours: t('currTableHours'), absence: t('currTableAbsence'), weekly: t('currTableWeekly') };
   tbody.innerHTML = matches.map(({ s, index }, i) => `
-    <tr role="row" style="animation-delay:${Math.min(i, 12) * 35}ms" class="curr-row-in">
+    <tr data-curr-index="${index}" role="row" style="animation-delay:${Math.min(i, 12) * 35}ms" class="curr-row-in">
       <td role="cell" class="curr-td-name">${_currEsc(s.name)}${codesHTML(s)}${curriculumMaterialsHTML(s, Number(semKey.slice(1)), index)}</td>
       <td role="cell" data-label="${_currEsc(lbl.credit)}"><span class="curr-badge curr-badge--credit">${s.credit}</span></td>
       <td role="cell" data-label="${_currEsc(lbl.hours)}"><span class="curr-badge curr-badge--hours">${s.hours || '—'}</span></td>

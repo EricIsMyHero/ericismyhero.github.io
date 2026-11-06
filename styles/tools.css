@@ -1072,3 +1072,17 @@ body.in-quiz[data-route="tests"] #ai-button { opacity: 0; visibility: hidden; po
   .curr-print-table th:nth-child(2) { width: 29%; }
   .curr-print-table th:nth-child(n+3) { width: 9%; white-space: nowrap; }
 }
+
+.curr-completion-summary { display: grid; gap: 6px; margin: 10px 0 16px; font-size: var(--fs-sm); }
+.curr-completion-summary progress { width: 100%; height: 12px; accent-color: var(--accent); }
+.curr-completion-summary small { color: var(--color-text-muted); }
+.curr-complete-label { display: flex; align-items: center; gap: 8px; min-height: 44px; margin-top: 6px; font-size: var(--fs-xs); cursor: pointer; }
+.curr-complete-label input { width: 18px; height: 18px; accent-color: var(--accent); }
+.offline-status { padding: 10px 16px; font-size: .8rem; line-height: 1.5; background: #ffe3a6; color: #352600; }
+.offline-status[hidden] { display: none; }
+.account-tools { padding: 16px; }
+.account-tools h2 { font-size: 1.1rem; }
+.account-tools p { color: var(--color-text-muted); padding: 8px 0; }
+#accountDeleteForm { display: grid; gap: 16px; }
+#accountPassword { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--text); }
+@media print { .offline-status { display: none !important; } }

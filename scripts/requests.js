@@ -27,7 +27,7 @@ let _thrRetryTimer = null;
 
 const _REQ_API = ((typeof BACKEND_URL !== 'undefined' && BACKEND_URL) || 'https://ericismyhero-github-io.vercel.app') + '/api/push';
 const _REQ_DEFAULT_CFG = {
-  requirePush: true, files: true, maxFiles: 3, maxBytes: 10 * 1024 * 1024, textMax: 1000,
+  requirePush: false, files: false, maxFiles: 3, maxBytes: 10 * 1024 * 1024, textMax: 1000,
   types: ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'txt', 'png', 'jpg', 'jpeg', 'webp'],
 };
 const _REQ_IMG_EXT = ['png', 'jpg', 'jpeg', 'webp'];
@@ -276,6 +276,7 @@ function _reqCardHtml(d, thread) {
   const uid = _reqMe() ? _reqMe().uid : null;
   const isMine      = !!(uid && d.uid === uid);
   const isFulfilled = d.status === 'fulfilled';
+  const isClosed = d.status === 'closed';
   const upvoters    = d.upvoterIds || [];
   const hasUpvoted  = !!(uid && upvoters.includes(uid));
   const initial     = (d.name || '?').charAt(0).toUpperCase();
@@ -299,7 +300,7 @@ function _reqCardHtml(d, thread) {
             <span class="req-time">${_reqEscape(time)}</span>
           </div>
           <span class="req-status ${isFulfilled ? 'req-status-fulfilled' : 'req-status-open'}">
-            ${isFulfilled ? _reqIc('circle-check') + _reqEscape(t('reqStatusFound')) : _reqIc('dot') + _reqEscape(t('reqStatusOpen'))}
+            ${isClosed ? _reqEscape(t('reqStatusClosed')) : isFulfilled ? _reqIc('circle-check') + _reqEscape(t('reqStatusFound')) : _reqIc('dot') + _reqEscape(t('reqStatusOpen'))}
           </span>
         </div>
         <p class="req-text">${_reqEscape(d.text || '')}</p>
@@ -319,7 +320,7 @@ function _renderRequestsList() {
   if (!list) return;
 
   let docs = _reqDocs;
-  if (_reqFilter === 'open')      docs = docs.filter(d => d.status !== 'fulfilled');
+  if (_reqFilter === 'open')      docs = docs.filter(d => d.status !== 'fulfilled' && d.status !== 'closed');
   if (_reqFilter === 'fulfilled') docs = docs.filter(d => d.status === 'fulfilled');
 
   if (docs.length === 0) {
@@ -474,7 +475,7 @@ function _thrRenderHead() {
     document.getElementById('req-composer')?.classList.add('hidden');
     return;
   }
-  document.getElementById('req-composer')?.classList.remove('hidden');
+  document.getElementById('req-composer')?.classList.toggle('hidden', _thrReq.status === 'closed');
   box.innerHTML = _reqCardHtml(_thrReq, true);
 }
 

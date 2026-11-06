@@ -273,6 +273,7 @@
     prevRoute = route;
     route = parseHash();
     U.route = route;
+    window.dispatchEvent(new CustomEvent('unec:routechange', { detail: route }));
     U.prevRoute = prevRoute;
     renderRoute(isPop);
   }

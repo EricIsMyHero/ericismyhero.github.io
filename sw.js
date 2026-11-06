@@ -1,8 +1,28 @@
-// Service Worker — keş sistemi yoxdur (PDF-lər birbaşa GitHub/CDN-dən açılır).
-// Yeganə vəzifəsi: push bildirişlərini göstərmək və kliklənəndə saytı açmaq.
-// Bu fayl yalnız istifadəçi bildirişləri aktiv edəndə qeydiyyatdan keçir (scripts/push.js).
-self.addEventListener('install', () => self.skipWaiting());
-self.addEventListener('activate', () => self.clients.claim());
+// Public application shell only. Never cache APIs, credentials or remote PDFs.
+importScripts('/offline-assets.js');
+const CACHE = 'unec-static-' + self.UNEC_OFFLINE.version;
+const PUBLIC_PATHS = new Set(self.UNEC_OFFLINE.assets.map(url => new URL(url, self.location.origin).pathname));
+self.addEventListener('install', event => event.waitUntil((async () => {
+  const cache = await caches.open(CACHE);
+  await cache.addAll(self.UNEC_OFFLINE.assets.map(url => new Request(url, { cache: 'reload' })));
+  await self.skipWaiting();
+})()));
+self.addEventListener('activate', event => event.waitUntil((async () => {
+  for (const name of await caches.keys()) if (name.startsWith('unec-static-') && name !== CACHE) await caches.delete(name);
+  await self.clients.claim();
+})()));
+self.addEventListener('fetch', event => {
+  const url = new URL(event.request.url);
+  if (event.request.method !== 'GET' || url.origin !== self.location.origin || url.pathname.startsWith('/api/')) return;
+  if (!PUBLIC_PATHS.has(url.pathname)) return;
+  event.respondWith((async () => {
+    const cache = await caches.open(CACHE);
+    // Navigations use the shell belonging to this worker's asset version. A new
+    // version becomes visible only after all its files have been downloaded.
+    const hit = await cache.match(event.request, { ignoreSearch: true });
+    return hit || fetch(event.request);
+  })());
+});
 
 const DEFAULT_TITLE = 'UNEC Students Hub';
 const ICON = '/images/icon-192.png';

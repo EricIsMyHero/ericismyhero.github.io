@@ -80,6 +80,12 @@ export default async function handler(req, res) {
   try {
     const b = body(req);
 
+    if (['account-export', 'account-delete'].includes(b.action)) {
+      const { accountAction } = await import('../lib/account.js');
+      const r = await accountAction(b.action, b);
+      return res.status(r.status).json(r.json);
+    }
+
     // ── İstək yazışmaları: ictimai əməliyyatlar (idToken ilə) ──
     if (THREAD_PUBLIC.includes(b.action)) {
       let threads;

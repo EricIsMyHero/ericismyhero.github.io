@@ -9,8 +9,8 @@ Bu sənəd yalnız **bir dəfəlik quraşdırma** üçündür (Cloudflare R2, Ve
 ```
 İstifadəçi (sayt)                            Server (Vercel, api/push.js)                 Cloudflare R2 / FCM
 ─────────────────                            ────────────────────────────                 ───────────────────
-1. Giriş edir + bildirişləri açır (şərt)
-2. İstək yazır ──────────▶ req-create ──────▶ idToken + cihaz yoxlanır, Firestore-a yazır
+1. Giriş edir (bildirişlər könüllüdür)
+2. İstək yazır ──────────▶ req-create ──────▶ idToken yoxlanır, Firestore-a yazır
 3. Başqası cavab yazır:
    fayl seçir ───────────▶ file-url ────────▶ növ/ölçü yoxlanır, 10 dəq. etibarlı
                                               imzalı yükləmə linki verir
@@ -23,7 +23,7 @@ Bu sənəd yalnız **bir dəfəlik quraşdırma** üçündür (Cloudflare R2, Ve
 
 Əsas qaydalar:
 
-- **Giriş + bildiriş şərti.** İstək yazmaq və cavab vermək üçün hesaba daxil olmaq **və bu cihazda bildirişləri açmaq** lazımdır. Şərt **serverdə** yoxlanılır (brauzeri dəyişməklə keçilmir): hesabına bağlı ən azı bir bildiriş cihazı olmalıdır. Bunu söndürmək üçün — 2-ci bölmədə `REQUESTS_REQUIRE_PUSH=0`.
+- **Giriş şərti, könüllü bildirişlər.** Yazmaq üçün hesaba daxil olmaq lazımdır. Bildirişlər standart halda könüllüdür. Yalnız `REQUESTS_REQUIRE_PUSH=1` açıq şəkildə təyin edilərsə server hesabına bağlı bildiriş cihazı tələb edir. Köhnə dəyər `1`-dirsə, könüllü rejim üçün `0` et.
 - **Yazışma hamıya açıqdır.** İstəyi və cavabları qonaqlar da oxuya bilər; yazmaq üçün giriş lazımdır.
 - **Kimə bildiriş gedir?**
   - Başqası cavab yazanda → **istək sahibinə**.
@@ -86,7 +86,7 @@ Vercel → layihə (`ericismyhero-github-io`) → **Settings → Environment Var
 | `R2_BUCKET` | **Yeni.** Bucket adı (məs. `unec-request-files`) | Məcburi |
 | `R2_PUBLIC_BASE` | **Yeni.** İctimai oxuma ünvanı (məs. `https://pub-xxxx.r2.dev`) | Verilməsə **mövcud material bucket-inin** ünvanı götürülür — ayrı bucket istifadə edirsənsə mütləq yaz |
 | `R2_ENDPOINT` | İstəyə bağlı | Yalnız AB/US jurisdiksiyalı bucket üçün (məs. `<ACCOUNT_ID>.eu.r2.cloudflarestorage.com`) |
-| `REQUESTS_REQUIRE_PUSH` | İstəyə bağlı | `0` yazsan, istək/cavab üçün **bildiriş açıq olmalıdır** şərti götürülür (giriş yenə lazımdır). Standart: şərt aktivdir |
+| `REQUESTS_REQUIRE_PUSH` | İstəyə bağlı | `0` yazsan, istək/cavab üçün **bildiriş açıq olmalıdır** şərti götürülür (giriş yenə lazımdır). Standart: bildirişlər könüllüdür; `1` şərti aktivləşdirir |
 | `FIREBASE_SERVICE_ACCOUNT`, `FIREBASE_API_KEY`, `FIREBASE_VAPID_KEY`, `ADMIN_SECRET_KEY`, `SITE_URL` | Mövcud | Push quraşdırmasından (bax `PUSH-SETUP.md`, 3-cü bölmə) |
 
 Dəyişənləri əlavə etdikdən sonra **Redeploy** et. Dörd `R2_*` dəyişəndən biri çatmasa, sayt **yalnız mətn** göndərməyə icazə verir və "Fayl əlavə et" düyməsi gizlənir (xəta vermir).
@@ -100,7 +100,7 @@ match /databases/{database}/documents {
 
   match /material_requests/{id} {
     allow read: if true;
-    // İstək yaratmaq və silmək yalnız serverdən (giriş + bildiriş şərti orada yoxlanılır)
+    // İstək yaratmaq və silmək yalnız serverdən (giriş və əlavə server yoxlamaları orada aparılır)
     allow create, delete: if false;
 
     allow update: if request.auth != null && (
@@ -137,7 +137,7 @@ match /databases/{database}/documents {
 Qeydlər:
 
 - `messages` üçün **`read: true`** olmasa yazışma səhifəsi "Cavablar yüklənə bilmədi" göstərir.
-- `create, delete: if false` **vacibdir**: əks halda bilən istifadəçi Firestore-a birbaşa yazıb bildiriş şərtini və fayl yoxlamasını keçə bilər. Köhnə qaydan `create`-ə icazə verirdisə, **yeni saytı deploy etdikdən sonra** bunu dəyiş (köhnə sayt açıq qalan tab-lar "icazə yoxdur" alacaq — səhifəni yeniləmək kifayətdir).
+- `create, delete: if false` **vacibdir**: əks halda bilən istifadəçi Firestore-a birbaşa yazıb giriş məhdudiyyətlərini və fayl yoxlamasını keçə bilər. Köhnə qaydan `create`-ə icazə verirdisə, **yeni saytı deploy etdikdən sonra** bunu dəyiş (köhnə sayt açıq qalan tab-lar "icazə yoxdur" alacaq — səhifəni yeniləmək kifayətdir).
 - Əgər mövcud qaydalarında geniş `match /{document=**}` bloku varsa, bu `match`-lər **ondan əvvəl** olmalıdır. Rules Playground ilə yoxla.
 - `push_tokens` və `push_log` qaydaları dəyişmir (`read, write: if false`).
 

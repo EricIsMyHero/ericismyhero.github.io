@@ -120,6 +120,7 @@
   const matHref = m => m.kind === 'extra'
     ? `#/x/${enc(m.course)}/${enc(m.file)}`
     : `#/m/${enc(m.course)}/${enc(m.subject)}/${enc(m.file)}`;
+  const publicMatHref = m => '/materials/' + enc((m.kind === 'extra' ? 'extra-' : '') + m.file.replace(/\.pdf$/i, '')) + '/';
   const typeColor = m => (PDF_TYPES[m.pdfType] || {}).color || (m.kind === 'extra' ? EXTRA_COLOR : DEFAULT_COLOR);
   const formatLabel = f => f === 'test' ? t('formatTest') : (f === 'yazili' ? t('formatWritten') : '');
   const semesterLabel = s => s === 1 ? t('semFall') : (s === 2 ? t('semSpring') : '');
@@ -257,7 +258,7 @@
   }
 
   Object.assign(U, { makeEntry, makeExtra, getIndex, resolveEntry, entriesForSubject, extraEntries, favoriteEntries,
-    matHref, matCardHTML, richCardHTML, subjectHeroHTML, afterSubjectRender, fetchRatings, avgRatingFor, favBtnHTML, formatLabel, semesterLabel });
+    matHref, publicMatHref, matCardHTML, richCardHTML, subjectHeroHTML, afterSubjectRender, fetchRatings, avgRatingFor, favBtnHTML, formatLabel, semesterLabel });
 
   // ═════════════════════════════════════════════════════════════
   // KURSLAR — "Bütün materiallar" siyahısı
@@ -578,7 +579,7 @@
     if (sh) sh.addEventListener('click', async () => {
       const m = currentMaterial; U.closeSheet();
       if (!m) return;
-      const url = location.href;
+      const url = new URL(publicMatHref(m), location.origin).href;
       try {
         if (navigator.share) { await navigator.share({ title: m.name, url }); return; }
         await navigator.clipboard.writeText(url);

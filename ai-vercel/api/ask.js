@@ -1,3 +1,6 @@
+import { verifyIdToken, body } from '../lib/payments.js';
+import { getDoc } from '../lib/firestore.js';
+import { getAiPolicy, usagePath, usageView, reserveAiUsage, refundAiUsage } from '../lib/ai.js';
 // api/ask.js — Vercel Serverless Function (Groq, pulsuz tier)
 export default async function handler(req, res) {
 
@@ -8,6 +11,7 @@ export default async function handler(req, res) {
     'https://ericismyhero-github-io.vercel.app'
   ];
   const origin = req.headers.origin;
+  res.setHeader('Vary', 'Origin');
   if (allowedOrigins.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
   }
@@ -17,12 +21,28 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { question, context, lang } = req.body;
-  if (!question) return res.status(400).json({ error: 'Missing question' });
-  if (typeof question !== 'string' || question.length > 400) {
-    return res.status(400).json({ error: 'Sual maksimum 400 simvol ola bilər' });
+  res.setHeader('Cache-Control', 'no-store');
+  const b = body(req);
+  const user = await verifyIdToken(b.idToken);
+  if (!user) return res.status(401).json({ error: 'login_required' });
+  let policy;
+  try { policy = await getAiPolicy(user.uid); }
+  catch (_) { return res.status(503).json({ error: 'usage_unavailable' }); }
+  if (b.action === 'usage') {
+    try { const d = await getDoc(usagePath(user.uid)); return res.status(200).json(usageView(d?.data, policy)); }
+    catch (_) { return res.status(503).json({ error: 'usage_unavailable' }); }
+  }
+  const { question, context = '', lang } = b;
+  if (!question || (typeof question === 'string' && !question.trim())) return res.status(400).json({ error: 'missing_question' });
+  if (typeof question !== 'string' || question.length > policy.charLimit) {
+    return res.status(400).json({ error: 'question_too_long', charLimit: policy.charLimit });
   }
 
+  if (typeof context !== 'string' || context.length > 24000) return res.status(400).json({ error: 'invalid_context' });
+  let reservation;
+  try { reservation = await reserveAiUsage(user.uid, policy); }
+  catch (_) { return res.status(503).json({ error: 'usage_unavailable' }); }
+  if (reservation.error) return res.status(reservation.status).json(reservation);
   const replyLang = lang === 'en' ? 'en' : 'az';
 
   try {
@@ -49,7 +69,7 @@ ${context}`;
     const groqRes = await fetch(
       'https://api.groq.com/openai/v1/chat/completions',
       {
-        method: 'POST',
+        method: 'POST', signal: AbortSignal.timeout(15000),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
@@ -60,23 +80,18 @@ ${context}`;
             { role: 'system', content: systemPrompt },
             { role: 'user',   content: question }
           ],
-          temperature: 0.2
+          temperature: 0.2, max_completion_tokens: 700
         })
       }
     );
 
     const groqData = await groqRes.json();
-    console.log('GROQ RAW:', JSON.stringify(groqData));
-
-    const fallback = replyLang === 'en'
-      ? 'Due to some minor funding constraints, the AI is temporarily unavailable.'
-      : 'Bəzi cuzi maddi sıxıntılar səbəbindən hələlik AI aktiv deyildir.';
-    const reply = groqData?.choices?.[0]?.message?.content ?? fallback;
-
-    return res.status(200).json({ reply });
+    const reply = groqData?.choices?.[0]?.message?.content;
+    if (!groqRes.ok || typeof reply !== 'string' || !reply) throw new Error('provider_unavailable');
+    return res.status(200).json({ reply, usage: reservation.usage });
 
   } catch (err) {
-    console.error('Groq error:', err);
-    return res.status(500).json({ error: 'Server xətası' });
+    await refundAiUsage(user.uid, reservation.day).catch(() => {});
+    return res.status(502).json({ error: 'provider_unavailable' });
   }
 }
