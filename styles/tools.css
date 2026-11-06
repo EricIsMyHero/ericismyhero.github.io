@@ -1024,9 +1024,7 @@ body.in-quiz[data-route="tests"] #ai-button { opacity: 0; visibility: hidden; po
 .curr-no-materials { display: block; margin-top: 8px; color: var(--color-text-muted); font-size: var(--fs-xs); font-weight: 400; }
 .curr-materials-list { display: grid; gap: 12px; }
 .curr-codes { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
-.curr-plan-panel:not(.curr-show-details) .curr-table :is(th, td):nth-child(n + 3),
-.curr-plan-panel:not(.curr-show-details) .curr-codes,
-.curr-plan-panel:not(.curr-show-details) .curr-detail-stat { display: none; }
+.curr-plan-panel:not(.curr-show-details) .curr-codes { display: none; }
 .curr-plan-source { margin: 20px 0 0; padding: 0 4px; color: var(--color-text-secondary); }
 .curr-gpa-tip-text { margin: 0 0 12px; font-size: var(--fs-xs); line-height: 1.6; }
 .curr-print-root { display: none; }
@@ -1037,13 +1035,11 @@ body.in-quiz[data-route="tests"] #ai-button { opacity: 0; visibility: hidden; po
   .curr-change-btn { padding-inline: 10px; font-size: var(--fs-xs); }
   .curr-table, .curr-table tbody { display: block; }
   .curr-table thead { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  .curr-table tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px 6px; padding: 14px 12px; border-bottom: 1px solid var(--border); }
+  .curr-table tr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 6px; padding: 14px 12px; border-bottom: 1px solid var(--border); }
   .curr-table tbody tr:last-child { border-bottom: 0; }
   .curr-table td { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 0; border: 0; }
-  .curr-table td.curr-td-name { display: block; }
+  .curr-table td.curr-td-name { display: block; grid-column: 1 / -1; }
   .curr-table td[data-label]::before { content: attr(data-label); font-size: .625rem; color: var(--color-text-muted); }
-  .curr-show-details .curr-table tr { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .curr-show-details .curr-td-name { grid-column: 1 / -1; }
   .curr-sem-stats { width: 100%; }
 }
 
@@ -1061,9 +1057,9 @@ body.in-quiz[data-route="tests"] #ai-button { opacity: 0; visibility: hidden; po
   .curr-print-table th { background: #eee; font-weight: 700; font-size: 9pt; }
   .curr-print-table thead { display: table-header-group; }
   .curr-print-table tr { break-inside: avoid; }
-  .curr-print-table th:first-child { width: 35%; }
-  .curr-print-table th:nth-child(2) { width: 29%; }
-  .curr-print-table th:nth-child(n+3) { width: 9%; white-space: nowrap; }
+  .curr-print-table th:first-child { width: 42%; }
+  .curr-print-table th:nth-child(2) { width: 30%; }
+  .curr-print-table th:nth-child(n+3) { width: 14%; white-space: nowrap; }
 }
 
 .offline-status { padding: 10px 16px; font-size: .8rem; line-height: 1.5; background: #ffe3a6; color: #352600; }

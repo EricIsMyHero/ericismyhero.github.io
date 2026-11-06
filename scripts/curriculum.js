@@ -3252,21 +3252,20 @@ function filterCurriculumYear(year, scroll = false) {
   }
 }
 
+function curriculumSemesterSummary(subjects) {
+  const credits = subjects.reduce((sum, subject) => sum + subject.credit, 0);
+  const hours = subjects.reduce((sum, subject) => sum + subject.hours, 0);
+  const weekly = subjects.reduce((sum, subject) => sum + subject.weekly, 0);
+  return `${subjects.length} ${t(subjects.length === 1 ? 'currUnitSubjectOne' : 'currUnitSubject')} · ${credits} ${t('currUnitCredit')} · ${hours} ${t('currUnitHours')} · ${weekly} ${t('currUnitWeekly')}`;
+}
+
 function renderSemesterTable(semKey, subjects) {
   const tbody   = document.getElementById(`curr-tbody-${semKey}`);
   const statsEl = document.getElementById(`curr-s${semKey.replace('s','')}-stats`);
   if (!tbody) return 0;
   const matches = subjects.map((s, index) => ({ s, index })).filter(({ s }) => curriculumSubjectMatches(s, currSearchQuery));
-  const shown = matches.map(({ s }) => s);
   const state = curriculumProgressState(), spec = getSavedSpecialty(), semester = Number(semKey.slice(1));
-
-  const totalCredits = shown.reduce((a, s) => a + s.credit, 0);
-  const totalHours   = shown.reduce((a, s) => a + s.hours,  0);
-  const totalWeekly  = shown.reduce((a, s) => a + s.weekly, 0);
-
-  if (statsEl) statsEl.innerHTML =
-    `<span>${shown.length} ${_currEsc(t(shown.length === 1 ? 'currUnitSubjectOne' : 'currUnitSubject'))} · ${totalCredits} ${_currEsc(t('currUnitCredit'))}</span>` +
-    `<span class="curr-detail-stat"> · ${totalHours} ${_currEsc(t('currUnitHours'))}${totalWeekly ? ' · ' + totalWeekly + ' ' + _currEsc(t('currUnitWeekly')) : ''}</span>`;
+  if (statsEl) statsEl.textContent = curriculumSemesterSummary(subjects);
 
   // Fənn şifri: adi fənn → 1 şifr; seçmə fənn → qrupun bütün şifrləri
   const codesHTML = s => {
@@ -3277,7 +3276,7 @@ function renderSemesterTable(semKey, subjects) {
   };
 
   // Mobil görünüşdə sətirlər kartlara çevrilir: data-label hər xananın başlığını daşıyır
-  const lbl = { credit: t('currTableCredit'), hours: t('currTableHours'), absence: t('currTableAbsence'), weekly: t('currTableWeekly') };
+  const lbl = { credit: t('currTableCredit'), absence: t('currTableAbsence') };
   tbody.innerHTML = matches.map(({ s, index }) => {
     const completed = CurriculumProgress.isComplete(CurriculumProgress.key(spec, semester, s), semester, state.year, state.saved, state.edits);
     return `<tr data-curr-index="${index}" role="row" class="${completed ? 'is-complete' : ''}">
@@ -3286,9 +3285,7 @@ function renderSemesterTable(semKey, subjects) {
         <div class="curr-subject-body"><span class="curr-subject-name">${_currEsc(s.name)}</span><small class="curr-complete-state" ${completed ? '' : 'hidden'}>${_currEsc(t('currCompleted'))}</small>${codesHTML(s)}${curriculumMaterialsHTML(s, semester, index)}</div>
       </div></td>
       <td role="cell" data-label="${_currEsc(lbl.credit)}"><span class="curr-badge curr-badge--credit">${s.credit}</span></td>
-      <td role="cell" data-label="${_currEsc(lbl.hours)}"><span class="curr-badge">${s.hours || '—'}</span></td>
       <td role="cell" data-label="${_currEsc(lbl.absence)}"><span class="curr-badge curr-badge--absence${s.absenceLimit <= 1 && s.absenceLimit > 0 ? ' warn' : ''}">${s.absenceLimit || '—'}</span></td>
-      <td role="cell" data-label="${_currEsc(lbl.weekly)}"><span class="curr-badge">${s.weekly || '—'}</span></td>
     </tr>`;
   }).join('');
   return matches.length;
@@ -3356,11 +3353,11 @@ function printCurriculum() {
   if (currPrintCleanup) currPrintCleanup();
   const root = document.createElement('div');
   root.id = 'currPrintRoot'; root.className = 'curr-print-root';
-  const headers = ['currTableSubject', 'currCodeTitle', 'currTableCredit', 'currTableHours', 'currTableAbsence', 'currTableWeekly'];
+  const headers = ['currTableSubject', 'currCodeTitle', 'currTableCredit', 'currTableAbsence'];
   root.innerHTML = `<header><p>UNEC Students Hub</p><h1>${_currEsc(_currSpecName(spec, data))}</h1><p>${_currEsc(t(year ? 'currYear' + year : 'currExportAll'))}</p></header>` +
     Array.from({ length: 8 }, (_, i) => i + 1).filter(i => (!year || Math.ceil(i / 2) === year) && data[`semester${i}`]?.length).map(i => `
-      <section><h2>${_currEsc(t('currSem' + i))}</h2><table class="curr-print-table"><thead><tr>${headers.map(key => `<th scope="col">${_currEsc(t(key))}</th>`).join('')}</tr></thead><tbody>
-      ${data[`semester${i}`].map(s => `<tr><td>${_currEsc(s.name)}</td><td>${_currEsc((s.codes || (s.code ? [s.code] : [])).join(', '))}</td>${[s.credit, s.hours, s.absenceLimit, s.weekly].map(n => `<td>${_currEsc(n || '—')}</td>`).join('')}</tr>`).join('')}
+      <section><h2>${_currEsc(t('currSem' + i))}</h2><p>${_currEsc(curriculumSemesterSummary(data[`semester${i}`]))}</p><table class="curr-print-table"><thead><tr>${headers.map(key => `<th scope="col">${_currEsc(t(key))}</th>`).join('')}</tr></thead><tbody>
+      ${data[`semester${i}`].map(s => `<tr><td>${_currEsc(s.name)}</td><td>${_currEsc((s.codes || (s.code ? [s.code] : [])).join(', '))}</td>${[s.credit, s.absenceLimit].map(n => `<td>${_currEsc(n || '—')}</td>`).join('')}</tr>`).join('')}
       </tbody></table></section>`).join('');
   document.body.appendChild(root);
   document.body.classList.add('curr-printing');

@@ -137,7 +137,7 @@
   <link rel="stylesheet" href="styles/tokens.css?v=20261106-3">
   <link rel="stylesheet" href="styles/shell.css?v=20261106-3">
   <link rel="stylesheet" href="styles/screens.css?v=20261106-3">
-  <link rel="stylesheet" href="styles/tools.css?v=20261106-4">
+  <link rel="stylesheet" href="styles/tools.css?v=20261106-5">
   <link rel="stylesheet" href="styles/support.css?v=20261106-3">
   <link rel="stylesheet" href="styles/legacy.css?v=20261106-3">
 
@@ -1215,7 +1215,7 @@
               <details class="curr-options">
                 <summary data-i18n="currOptionsLabel">PDF və ətraflı məlumat</summary>
                 <div class="curr-options-body">
-                  <label class="curr-detail-toggle"><input type="checkbox" id="currShowDetails" onchange="toggleCurriculumDetails(this.checked)"><span data-i18n="currShowDetails">Fənn şifri, saat və qayıb limitini göstər</span></label>
+                  <label class="curr-detail-toggle"><input type="checkbox" id="currShowDetails" onchange="toggleCurriculumDetails(this.checked)"><span data-i18n="currShowDetails">Fənn şifrlərini göstər</span></label>
                   <div class="curr-export-row">
                     <label for="currExportScope" data-i18n="currExportScopeLabel">PDF üçün:</label>
                     <select id="currExportScope"></select>
@@ -1242,9 +1242,7 @@
                     <tr role="row">
                       <th scope="col" role="columnheader" data-i18n="currTableSubject">Fənn</th>
                       <th scope="col" role="columnheader" data-i18n="currTableCredit">Kredit</th>
-                      <th scope="col" role="columnheader" data-i18n="currTableHours">Saat</th>
-                      <th scope="col" role="columnheader" data-i18n="currTableAbsence">Qayıb</th>
-                      <th scope="col" role="columnheader" data-i18n="currTableWeekly">Həftəlik</th>
+                      <th scope="col" role="columnheader" data-i18n="currTableAbsence">Qayıb limiti</th>
                     </tr>
                   </thead>
                   <tbody id="curr-tbody-s1" role="rowgroup"></tbody>
@@ -1264,9 +1262,7 @@
                     <tr role="row">
                       <th scope="col" role="columnheader" data-i18n="currTableSubject">Fənn</th>
                       <th scope="col" role="columnheader" data-i18n="currTableCredit">Kredit</th>
-                      <th scope="col" role="columnheader" data-i18n="currTableHours">Saat</th>
-                      <th scope="col" role="columnheader" data-i18n="currTableAbsence">Qayıb</th>
-                      <th scope="col" role="columnheader" data-i18n="currTableWeekly">Həftəlik</th>
+                      <th scope="col" role="columnheader" data-i18n="currTableAbsence">Qayıb limiti</th>
                     </tr>
                   </thead>
                   <tbody id="curr-tbody-s2" role="rowgroup"></tbody>
@@ -1286,9 +1282,7 @@
                     <tr role="row">
                       <th scope="col" role="columnheader" data-i18n="currTableSubject">Fənn</th>
                       <th scope="col" role="columnheader" data-i18n="currTableCredit">Kredit</th>
-                      <th scope="col" role="columnheader" data-i18n="currTableHours">Saat</th>
-                      <th scope="col" role="columnheader" data-i18n="currTableAbsence">Qayıb</th>
-                      <th scope="col" role="columnheader" data-i18n="currTableWeekly">Həftəlik</th>
+                      <th scope="col" role="columnheader" data-i18n="currTableAbsence">Qayıb limiti</th>
                     </tr>
                   </thead>
                   <tbody id="curr-tbody-s3" role="rowgroup"></tbody>
@@ -1308,9 +1302,7 @@
                     <tr role="row">
                       <th scope="col" role="columnheader" data-i18n="currTableSubject">Fənn</th>
                       <th scope="col" role="columnheader" data-i18n="currTableCredit">Kredit</th>
-                      <th scope="col" role="columnheader" data-i18n="currTableHours">Saat</th>
-                      <th scope="col" role="columnheader" data-i18n="currTableAbsence">Qayıb</th>
-                      <th scope="col" role="columnheader" data-i18n="currTableWeekly">Həftəlik</th>
+                      <th scope="col" role="columnheader" data-i18n="currTableAbsence">Qayıb limiti</th>
                     </tr>
                   </thead>
                   <tbody id="curr-tbody-s4" role="rowgroup"></tbody>
@@ -1330,9 +1322,7 @@
                     <tr role="row">
                       <th scope="col" role="columnheader" data-i18n="currTableSubject">Fənn</th>
                       <th scope="col" role="columnheader" data-i18n="currTableCredit">Kredit</th>
-                      <th scope="col" role="columnheader" data-i18n="currTableHours">Saat</th>
-                      <th scope="col" role="columnheader" data-i18n="currTableAbsence">Qayıb</th>
-                      <th scope="col" role="columnheader" data-i18n="currTableWeekly">Həftəlik</th>
+                      <th scope="col" role="columnheader" data-i18n="currTableAbsence">Qayıb limiti</th>
                     </tr>
                   </thead>
                   <tbody id="curr-tbody-s5" role="rowgroup"></tbody>
@@ -1352,9 +1342,7 @@
                     <tr role="row">
                       <th scope="col" role="columnheader" data-i18n="currTableSubject">Fənn</th>
                       <th scope="col" role="columnheader" data-i18n="currTableCredit">Kredit</th>
-                      <th scope="col" role="columnheader" data-i18n="currTableHours">Saat</th>
-                      <th scope="col" role="columnheader" data-i18n="currTableAbsence">Qayıb</th>
-                      <th scope="col" role="columnheader" data-i18n="currTableWeekly">Həftəlik</th>
+                      <th scope="col" role="columnheader" data-i18n="currTableAbsence">Qayıb limiti</th>
                     </tr>
                   </thead>
                   <tbody id="curr-tbody-s6" role="rowgroup"></tbody>
@@ -1374,9 +1362,7 @@
                     <tr role="row">
                       <th scope="col" role="columnheader" data-i18n="currTableSubject">Fənn</th>
                       <th scope="col" role="columnheader" data-i18n="currTableCredit">Kredit</th>
-                      <th scope="col" role="columnheader" data-i18n="currTableHours">Saat</th>
-                      <th scope="col" role="columnheader" data-i18n="currTableAbsence">Qayıb</th>
-                      <th scope="col" role="columnheader" data-i18n="currTableWeekly">Həftəlik</th>
+                      <th scope="col" role="columnheader" data-i18n="currTableAbsence">Qayıb limiti</th>
                     </tr>
                   </thead>
                   <tbody id="curr-tbody-s7" role="rowgroup"></tbody>
@@ -1396,9 +1382,7 @@
                     <tr role="row">
                       <th scope="col" role="columnheader" data-i18n="currTableSubject">Fənn</th>
                       <th scope="col" role="columnheader" data-i18n="currTableCredit">Kredit</th>
-                      <th scope="col" role="columnheader" data-i18n="currTableHours">Saat</th>
-                      <th scope="col" role="columnheader" data-i18n="currTableAbsence">Qayıb</th>
-                      <th scope="col" role="columnheader" data-i18n="currTableWeekly">Həftəlik</th>
+                      <th scope="col" role="columnheader" data-i18n="currTableAbsence">Qayıb limiti</th>
                     </tr>
                   </thead>
                   <tbody id="curr-tbody-s8" role="rowgroup"></tbody>
@@ -2299,8 +2283,8 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
 <script src="pdfs.js?v=20261106-3"></script>
-<script src="scripts/i18n.js?v=20261106-3"></script>
-<script src="scripts/i18n-app.js?v=20261106-4"></script>
+<script src="scripts/i18n.js?v=20261106-5"></script>
+<script src="scripts/i18n-app.js?v=20261106-5"></script>
 <script src="scripts/data-utils.js?v=20261106-3"></script>
 <script src="scripts/ui.js?v=20261106-3"></script>
 <script src="scripts/features.js?v=20261106-3"></script>
@@ -2314,7 +2298,7 @@
 <script src="scripts/payments.js?v=20261106-3"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="scripts/curriculum-progress.js?v=20261106-4"></script>
-<script src="scripts/curriculum.js?v=20261106-4"></script>
+<script src="scripts/curriculum.js?v=20261106-5"></script>
 <script src="scripts/badges.js?v=20261106-3"></script>
 <script src="scripts/timer.js?v=20261106-3"></script>
 <script src="scripts/app-core.js?v=20261106-3"></script>
