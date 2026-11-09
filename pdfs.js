@@ -207,7 +207,7 @@ const data = {
           { name: "Mikroiqtisadiyyat", file: "mikroiqt1.pdf", pdfType: "old", addedAt: "2026-04-11T13:20:30+04:00"},
           { name: "Mikroiqtisadiyyat ", file: "mikroiqt2.pdf", pdfType: "old", addedAt: "2026-04-11T13:20:30+04:00"},
           { name: "Mikroiqtisadiyyat", file: "mikroiqt3.pdf", pdfType: "old", addedAt: "2026-04-11T13:20:30+04:00"},
-          { name: "Mikroiqtisadiyyat", file: "mikroiqt4.pdf", pdfType: "midterm", addedAt: "2026-11-9T17:47:30+04:00"},
+          { name: "Mikroiqtisadiyyat", file: "mikroiqt4.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:30+04:00"},
           { name: "Mikroiqtisadiyyat", file: "mikroiqtmesele1.pdf", pdfType: "task", addedAt: "2026-04-11T13:20:30+04:00"},
           { name: "Mikroiqtisadiyyat", file: "mikroiqtmesele2.pdf", pdfType: "task", addedAt: "2026-04-11T13:20:30+04:00"}
         ]
