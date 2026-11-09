@@ -38,6 +38,7 @@ ericismyhero.github.io/
 │   ├── pdf-loader.js
 │   ├── curriculum.js           ← Curriculum data, navigation and completion UI
 │   ├── curriculum-progress.js  ← Profile-year inference and explicit completion overrides
+│   ├── compass.js              ← Student/applicant guidance, filters, reading and local bookmarks
 │   ├── gpa.js
 │   ├── dashboard.js
 │   ├── badges.js
@@ -129,7 +130,7 @@ Exam materials (PDFs) are hosted on Cloudflare R2 and are not stored in this rep
 * 🌙 Responsive Interface
 * ⚡ Fast Performance
 
-Currently: **56 subjects**, **114 exam materials**, and **15 majors** in the curriculum planner.
+Currently: **60 subject groups**, **142 catalog material entries** (**132 distinct files**), **15 majors** in the curriculum planner, and **11 Student Compass articles**.
 
 ---
 
@@ -146,13 +147,15 @@ The interface is a single-page app without a framework. All screens live in `ind
 | `#/tests` · `#/gpa` · `#/curriculum` · `#/requests` · `#/timer` · `#/dashboard` | Tools |
 | `#/requests/<id>` | A material request and its public reply thread (the link a push notification opens) |
 | `#/support` · `#/more` | Support, account and settings |
+| `#/compass` · `#/compass/<article-id>` | Student Compass library and guidance articles |
 
 * **Mobile (below 1024px):** top bar, 4-item bottom navigation (Home, Courses, Support, More), a slide-in menu and bottom sheets.
 * **Desktop (1024px and above):** a persistent sidebar and the same content in a wider grid.
-* **More screen:** the account card remains at the top without a duplicate profile row. Three labeled groups contain **General** (Contributors, Updates, Favorites, Appearance & language), **Information & policies** (About, Terms of use, Privacy policy), and **Contact & social media** (email, WhatsApp, Instagram, TikTok and Telegram). Channel links open in a new tab, and the new labels support both AZ and EN.
+* **More screen:** the account card remains at the top without a duplicate profile row. Three labeled groups contain **General** (Student Compass, Contributors, Updates, Favorites, Appearance & language), **Information & policies** (About, Terms of use, Privacy policy), and **Contact & social media** (email, WhatsApp, Instagram, TikTok and Telegram). Channel links open in a new tab, and the new labels support both AZ and EN.
 * **Curriculum navigation:** a compact year selector shows the selected year's two semesters, with an **All** option for the complete plan. The initial view follows the course saved in the signed-in user's profile; guests and profiles without a course start at Year 1. The main table shows subject names, completion checkboxes, credits, absence limits and material links. Total hours and weekly workload are always shown in each semester heading. **PDF and study details** expands export controls and an optional subject-code display. Navigation, search and manual edits work in AZ and EN.
 * **Curriculum completion:** previous years are automatically shown as completed from the profile course (for example, Year 3 checks semesters I–IV). The current and future years require manual completion. Any checkbox can override the inferred state, including an unchecked subject from a previous year. Profile changes recompute the automatic state immediately without writing inferred flags to storage. Existing manual checkmarks remain compatible; explicit overrides are scoped to account and major on the current device and are included in account export/deletion.
 * **Curriculum tools:** search the selected year by subject name or code and use **Search all semesters** to broaden the search. Material links match exact subject codes and normalized names; subjects without matches show **No materials yet**. Expand **PDF and study details**, choose a year or the entire plan, then **Save as PDF**. The print view includes every subject in that scope, independent of search, with codes, credits and absence limits; total hours and weekly workload appear above each semester table.
+* **Student Compass:** a public AZ/EN article library for students and university applicants, with audience/category filters, text search, local saved articles, reading time, update dates, practical next steps and official sources. A dedicated Home entry preserves the existing six-tool grid; the sidebar, mobile menu, More page and Home search also link to the library. Article filters survive navigation and reloads. The app’s cached public data makes articles readable offline after an online visit; external sources require a connection. Canonical `/compass/<id>/` pages provide full article text and sharing metadata.
 * **Design tokens** are defined once in `styles/tokens.css`. The older theme variables (`--bg`, `--surface`, `--accent` …) are bridged to them, so every color theme keeps working.
 * **Subject material cards:** the display title, PDF icon, badges and rating stay on the card; the raw filename and direct open, download and favorite controls are removed from this view. A labeled **View details** link with an arrow opens the existing material information page, where the filename and file actions remain available. The card background also links to that page, while rating buttons keep their separate behavior. The new labels support both AZ and EN and update when the language changes.
 * **Related materials:** the material information page shows other PDFs from the **same subject**, excluding the open file. On phones (below 768px), this is the only recommendation group. Tablets and desktops (768px and above) show a second column with materials from **other subjects in the same course and semester**, excluding files already listed for the current subject. Each group initially shows at most **3 cards**; **See all** expands any remaining cards in place, and **Show less** collapses the group again. Empty groups show a message instead of falling back to unrelated materials.
@@ -315,3 +318,9 @@ node tools/build-site.mjs --check
 ```
 
 GitHub Actions runs these checks on pushes and pull requests. A weekly or manually triggered workflow checks the live PDF links. See [service setup](ai-vercel/SERVICE-SETUP.md) for authenticated AI quotas, account export/deletion and private Firestore collections.
+
+## Maintaining Student Compass
+
+Edit `data/compass-applicants.json` and `data/compass-students.json`. Each article has a stable ID, an audience, a category, AZ/EN text, an editorial update date, practical action steps and official HTTPS sources. Review the source text before changing legal, admission, financial or procedural claims. Historical announcements do not establish current deadlines or accommodation availability. Update the article date when its content is reviewed.
+
+Run `node tools/build-site.mjs` to regenerate `data/compass-catalog.js`, the public `compass/` pages, `sitemap.xml` and the offline asset version. Commit generated files with the source edits. `--check` validates generated outputs and article metadata, including both languages, unique IDs and approved source domains. The feature needs no new backend service, login, AI key or runtime dependency. Saved article IDs use `unec_compass_saved` in this browser and are included in the account tools’ selected local-data export and cleanup.

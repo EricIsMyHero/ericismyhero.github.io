@@ -3,6 +3,9 @@
 // i18n.js-dən sonra yüklənir və I18N obyektinə əlavə edir.
 // ============================================================
 Object.assign(I18N.az, {
+  navCompass: 'Tələbə Kompası',
+  featCompassDesc: 'Tələbələr və abituriyentlər üçün praktik məlumatlar.',
+  searchGroupCompass: 'Tələbə Kompası məqalələri',
   reqStatusClosed: 'Bağlanıb',
   matShowMore: 'Daha çox göstər',
   matViewDetails: 'Məlumata bax',
@@ -188,6 +191,9 @@ Object.assign(I18N.az, {
 });
 
 Object.assign(I18N.en, {
+  navCompass: 'Student Compass',
+  featCompassDesc: 'Practical answers for students and university applicants.',
+  searchGroupCompass: 'Student Compass articles',
   reqStatusClosed: 'Closed',
   matShowMore: 'Show more',
   matViewDetails: 'View details',

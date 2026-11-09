@@ -13,7 +13,7 @@
       busy: 'Deleting… Keep this window open.', error: 'The operation could not finish. Check your connection and login details, then try again. Any deletion already started will resume on your next attempt.', done: 'Account deleted.', download: 'Preparing your data…' }
   };
   const text = () => copy[lang] || copy.az;
-  const localKeys = uid => ['favorites', 'unec_gpa_subjects', 'unec_gpa_history', 'unec_selected_specialty', 'exam_countdowns', 'unec_completed_' + uid, 'unec_curriculum_overrides_' + uid];
+  const localKeys = uid => ['favorites', 'unec_compass_saved', 'unec_gpa_subjects', 'unec_gpa_history', 'unec_selected_specialty', 'exam_countdowns', 'unec_completed_' + uid, 'unec_curriculum_overrides_' + uid];
   let busy = false;
   async function call(action, user, extra = {}) {
     const res = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action, idToken: await user.getIdToken(), ...extra }) });

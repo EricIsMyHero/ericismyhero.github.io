@@ -1,0 +1,400 @@
+[
+  {
+    "id": "qebul-ve-ixtisas-secimi",
+    "category": "admissions",
+    "audience": [
+      "applicant"
+    ],
+    "icon": "graduation-cap",
+    "readMinutes": 2,
+    "updatedAt": "2026-11-09",
+    "featured": true,
+    "title": {
+      "az": "İxtisas seçiminə haradan başlamalı?",
+      "en": "Where should you start with choosing a degree?"
+    },
+    "summary": {
+      "az": "Bal, maraq, tədris dili və xərc: seçim siyahını hazırlamaq üçün sadə yol xəritəsi.",
+      "en": "Scores, interests, teaching language and costs: a practical route to your shortlist."
+    },
+    "sections": [
+      {
+        "heading": {
+          "az": "Əvvəl məlumatı topla",
+          "en": "Gather the facts first"
+        },
+        "paragraphs": [
+          {
+            "az": "DİM-in şəxsi kabineti imtahan və qəbul xidmətləri üçün şəxsi giriş nöqtəndir. Öz hesabından istifadə et, telefon və bərpa məlumatlarını aktual saxla. Universitetin reklamı və ötən ilin keçid balı cari qəbul qaydasını əvəz etmir.",
+            "en": "Your DİM personal account is your own entry point for examination and admission services. Keep its contact and recovery details current. University advertising and last year’s entry scores do not replace the current admission rules."
+          }
+        ]
+      },
+      {
+        "heading": {
+          "az": "Siyahını müqayisə et",
+          "en": "Compare your shortlist"
+        },
+        "paragraphs": [
+          {
+            "az": "Hər seçim üçün ixtisasın məzmununu, tədris dilini, yerləşdiyi korpus və şəhəri, təhsil haqqını və mümkün maliyyələşməni ayrıca yaz. Yalnız adın cəlbedici olmasına görə qərar vermə: dərs planını aç, ilk iki ilin fənlərinə bax və maraqlarınla müqayisə et.",
+            "en": "For each choice, record the course content, teaching language, campus and city, tuition fees and possible funding. Look beyond an attractive degree name: read the curriculum and compare the first two years’ subjects with your interests."
+          },
+          {
+            "az": "Müraciətin mərhələləri və tarixləri hər qəbul dövrünün rəsmi elanından götürülməlidir. Seçim sırasının necə nəzərə alındığını cari DİM təlimatından oxu; göndərməzdən əvvəl kodları, təhsil formasını və dilini yenidən yoxla.",
+            "en": "Use the official announcement for the relevant admission cycle to check stages and dates. Read how preferences are processed in the current DİM instructions, then recheck codes, study mode and language before submitting."
+          }
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "az": "Şəxsi kabinetinə daxil ol və cari qəbul elanını tap.",
+        "en": "Open your personal account and find the current admission announcement."
+      },
+      {
+        "az": "İxtisasları məzmun, dil, şəhər və ümumi xərc üzrə müqayisə et.",
+        "en": "Compare degrees by content, language, location and total cost."
+      },
+      {
+        "az": "Seçim kodlarını yoxla, göndərilmiş müraciətin təsdiqini saxla.",
+        "en": "Check your preference codes and keep the submission confirmation."
+      }
+    ],
+    "sources": [
+      {
+        "title": {
+          "az": "DİM — şəxsi kabinet və xidmətlər",
+          "en": "DİM — personal account and services"
+        },
+        "url": "https://ekabinet.dim.gov.az/"
+      },
+      {
+        "title": {
+          "az": "UNEC — rəsmi qəbul elanları",
+          "en": "UNEC — official admission announcements"
+        },
+        "url": "https://news.unec.edu.az/elan/138-gebul"
+      }
+    ]
+  },
+  {
+    "id": "universitete-qeydiyyat",
+    "category": "admissions",
+    "audience": [
+      "applicant",
+      "student"
+    ],
+    "icon": "file-text",
+    "readMinutes": 2,
+    "updatedAt": "2026-11-09",
+    "featured": true,
+    "title": {
+      "az": "Qəbuldan sonra universitet qeydiyyatı",
+      "en": "University registration after admission"
+    },
+    "summary": {
+      "az": "Qəbul nəticəsindən tələbə qeydiyyatına: portal, sənədlər və müraciət statusu.",
+      "en": "From an admission result to enrolment: the portal, documents and application status."
+    },
+    "sections": [
+      {
+        "heading": {
+          "az": "İki mərhələni ayır",
+          "en": "Keep the two stages separate"
+        },
+        "paragraphs": [
+          {
+            "az": "Qəbul nəticəsini görmək və universitetdə qeydiyyatı tamamlamaq ayrı mərhələlərdir. Qəbul olduğun təhsil səviyyəsi üçün qeydiyyat tarixini universitetin rəsmi elanından öyrən. Köhnə paylaşımın tarixini cari dövr üçün tətbiq etmə.",
+            "en": "Receiving an admission result and completing university enrolment are separate stages. Check the institution’s current announcement for the registration period for your level of study. Do not reuse dates from an old post."
+          }
+        ]
+      },
+      {
+        "heading": {
+          "az": "Müraciəti izləməyi unutma",
+          "en": "Keep track of your application"
+        },
+        "paragraphs": [
+          {
+            "az": "portal.edu.az-da uyğun qeydiyyat xidmətini seç və sistemin göstərdiyi sahələri doldur. Ad, ixtisas, tədris dili və əlaqə məlumatlarını sənədlərlə tutuşdur. Tələb olunan faylları oxunaqlı yüklə; sənəd siyahısı və ödəniş tələbi təhsil səviyyəsinə və şəxsi vəziyyətinə görə dəyişə bilər.",
+            "en": "Select the relevant enrolment service on portal.edu.az and complete the fields it requests. Compare your name, degree, teaching language and contact details against your documents. Upload readable files; required documents and payment conditions can depend on the study level and your circumstances."
+          },
+          {
+            "az": "Müraciəti göndərdikdən sonra statusu və geri qaytarılma səbəbini yoxla. Düzəliş istənərsə, vaxtında tamamla. Ödəniş edirsənsə, rekvizitləri rəsmi kanaldan təsdiqlə və qəbzi saxla; şəxsi karta pul göndərmək qeydiyyatı təsdiqləmir.",
+            "en": "After submitting, check the status and any request for corrections. Respond within the announced period. If payment is required, verify the details through an official channel and keep the receipt; sending money to a personal card does not confirm enrolment."
+          }
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "az": "Cari qeydiyyat elanını və sənəd siyahısını aç.",
+        "en": "Read the current enrolment announcement and document list."
+      },
+      {
+        "az": "Uyğun portal xidmətində məlumatları yoxlayıb müraciəti göndər.",
+        "en": "Check your information and submit through the appropriate portal service."
+      },
+      {
+        "az": "Müraciət nömrəsini, statusu və varsa ödəniş qəbzini saxla.",
+        "en": "Keep the application number, status and any payment receipt."
+      }
+    ],
+    "sources": [
+      {
+        "title": {
+          "az": "Elm və Təhsil Nazirliyi — şəxsi kabinet portalı",
+          "en": "Ministry of Science and Education — service portal"
+        },
+        "url": "https://portal.edu.az/"
+      },
+      {
+        "title": {
+          "az": "UNEC — qəbul elanları",
+          "en": "UNEC — admission announcements"
+        },
+        "url": "https://news.unec.edu.az/elan/138-gebul"
+      }
+    ]
+  },
+  {
+    "id": "tehsil-xercleri-ve-kredit",
+    "category": "finance",
+    "audience": [
+      "applicant",
+      "student"
+    ],
+    "icon": "wallet",
+    "readMinutes": 2,
+    "updatedAt": "2026-11-09",
+    "featured": true,
+    "title": {
+      "az": "Təhsil haqqı, təqaüd və tələbə krediti",
+      "en": "Tuition, scholarships and student loans"
+    },
+    "summary": {
+      "az": "Maliyyələşmə yollarını fərqləndir, büdcəni hazırla və rəsmi müraciət addımlarını yoxla.",
+      "en": "Understand the funding options, prepare a budget and check the official application steps."
+    },
+    "sections": [
+      {
+        "heading": {
+          "az": "Hər dəstək eyni deyil",
+          "en": "Funding options are different"
+        },
+        "paragraphs": [
+          {
+            "az": "Dövlət sifarişli təhsil, təqaüd, təhsil haqqına güzəşt və təhsil tələbə krediti ayrı mexanizmlərdir. Kredit geri ödənilən borcdur; onu təqaüdlə qarışdırma. Universitetə qəbul olmaq kreditin avtomatik təsdiqi demək deyil.",
+            "en": "State-funded tuition, a stipend, a fee concession and an education student loan are different mechanisms. A loan is repayable debt, not a scholarship. Admission to a university does not automatically approve a loan."
+          }
+        ]
+      },
+      {
+        "heading": {
+          "az": "TTKF müraciətini planlaşdır",
+          "en": "Plan a TTKF application"
+        },
+        "paragraphs": [
+          {
+            "az": "Təhsil Tələbə Krediti Fondunun FAQ bölməsindən sosial və standart kreditin uyğunluq şərtlərini, sənədləri və geriödəmə qaydasını oxu. Faiz, güzəşt və müraciət dövrü üçün həmin vaxt qüvvədə olan məlumatı əsas götür.",
+            "en": "Use the Education Student Loan Fund’s FAQ to check eligibility for social and standard loans, documents and repayment rules. Base decisions about rates, concessions and application periods on the conditions currently in force."
+          },
+          {
+            "az": "Elektron müraciət üçün e-ttkf.edu.az-dakı təlimatı izlə. Notariat razılığı, identifikasiya, universitetin məlumatları təsdiqləməsi və bank mərhələsi barədə tələbləri ayrıca yoxla. Təhsil haqqından əlavə nəqliyyat, yaşayış və gündəlik xərclər üçün də büdcə saxla.",
+            "en": "Follow the instructions on e-ttkf.edu.az. Check the requirements for notarised consent, identification, university verification and the bank stage separately. Budget for transport, housing and daily expenses as well as tuition."
+          }
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "az": "Təhsil haqqını və illik yaşayış xərclərini yaz.",
+        "en": "List tuition and yearly living costs."
+      },
+      {
+        "az": "TTKF-nin cari uyğunluq və geriödəmə şərtlərini oxu.",
+        "en": "Read the Fund’s current eligibility and repayment conditions."
+      },
+      {
+        "az": "Rəsmi portalda müraciət et və statusu izləyərək çatışmayan sənədləri tamamla.",
+        "en": "Apply through the official portal and track any missing documents."
+      }
+    ],
+    "sources": [
+      {
+        "title": {
+          "az": "TTKF — tez-tez verilən suallar",
+          "en": "TTKF — frequently asked questions"
+        },
+        "url": "https://ttkf.edu.az/az/faq"
+      },
+      {
+        "title": {
+          "az": "TTKF — elektron müraciət",
+          "en": "TTKF — online application"
+        },
+        "url": "https://e-ttkf.edu.az/"
+      }
+    ]
+  },
+  {
+    "id": "yataqxana-ve-yasayis",
+    "category": "campus",
+    "audience": [
+      "applicant",
+      "student"
+    ],
+    "icon": "landmark",
+    "readMinutes": 2,
+    "updatedAt": "2026-11-09",
+    "featured": false,
+    "title": {
+      "az": "Yataqxana və kirayə: əvvəl nəyi yoxlamalı?",
+      "en": "Dormitories and renting: what should you check first?"
+    },
+    "summary": {
+      "az": "Yer, müraciət, sənəd və büdcə məsələlərini universitetə gəlməzdən əvvəl dəqiqləşdir.",
+      "en": "Clarify accommodation, applications, documents and costs before arriving at university."
+    },
+    "sections": [
+      {
+        "heading": {
+          "az": "Cari yeri və şərtləri təsdiqlə",
+          "en": "Confirm current availability"
+        },
+        "paragraphs": [
+          {
+            "az": "Yataqxananın mövcudluğu bütün tələbələr üçün boş yer və ya avtomatik yerləşmə demək deyil. Universitetdən məhz oxuyacağın şəhər və filial üçün cari vəziyyəti soruş. Əvvəlki açılış xəbəri cari yerləşdirmə elanı sayılmır.",
+            "en": "The existence of a dormitory does not mean there are vacancies or automatic accommodation for every student. Ask about the current position for your own city and branch. A past opening announcement is not a current accommodation call."
+          },
+          {
+            "az": "Müraciətin harada qəbul edildiyini, son tarixi, seçim meyarlarını, tələb olunan sənədləri və ödənişi rəsmi kanaldan dəqiqləşdir. Güzəşt tələb edirsənsə, hansı sənədlə təsdiqlənməli olduğunu əvvəlcədən soruş.",
+            "en": "Confirm the application channel, deadline, selection criteria, required documents and payment through an official channel. If requesting a concession, ask in advance what evidence is needed."
+          }
+        ]
+      },
+      {
+        "heading": {
+          "az": "Ümumi yaşayış xərcini hesabla",
+          "en": "Calculate the full living cost"
+        },
+        "paragraphs": [
+          {
+            "az": "Kirayə və ya yataqxana seçəndə təkcə aylıq məbləği deyil, depoziti, kommunal ödənişləri və korpusa gediş-gəlişi də hesabla. Otağı və razılaşma şərtlərini görmədən, qarşı tərəfi yoxlamadan əvvəlcədən pul göndərmə. Ödəniş və təhvil-təslim sənədlərini saxla.",
+            "en": "When comparing a room or dormitory, include deposits, utilities and travel to campus, not just the monthly price. Inspect the accommodation and agreement, and verify the other party before sending an advance payment. Keep payment and handover records."
+          }
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "az": "Universitetdən şəhər və filial üzrə cari yerləşmə məlumatını soruş.",
+        "en": "Ask the university for current accommodation information for your city and branch."
+      },
+      {
+        "az": "Sənədləri və ümumi aylıq xərci siyahıya al.",
+        "en": "List the required documents and full monthly cost."
+      },
+      {
+        "az": "Yazılı şərtləri və ödəniş sənədlərini saxla.",
+        "en": "Keep written terms and payment records."
+      }
+    ],
+    "sources": [
+      {
+        "title": {
+          "az": "UNEC — rəsmi xəbər və elanlar",
+          "en": "UNEC — official news and announcements"
+        },
+        "url": "https://news.unec.edu.az/"
+      },
+      {
+        "title": {
+          "az": "UNEC — Bir pəncərə müraciət sistemi",
+          "en": "UNEC — One Window enquiry service"
+        },
+        "url": "https://birpencere.unec.edu.az/index.php/az/"
+      }
+    ]
+  },
+  {
+    "id": "mubadile-ve-xaricde-tehsil",
+    "category": "exchange",
+    "audience": [
+      "student"
+    ],
+    "icon": "globe",
+    "readMinutes": 2,
+    "updatedAt": "2026-11-09",
+    "featured": false,
+    "title": {
+      "az": "Mübadilə proqramına necə hazırlaşmalı?",
+      "en": "How should you prepare for an exchange?"
+    },
+    "summary": {
+      "az": "Erasmus+ və digər çağırışlarda sənədlər, kreditlərin tanınması və xərcləri birlikdə planlaşdır.",
+      "en": "Plan documents, credit recognition and costs together for Erasmus+ and other calls."
+    },
+    "sections": [
+      {
+        "heading": {
+          "az": "Əvvəl cari çağırışı oxu",
+          "en": "Start with a current call"
+        },
+        "paragraphs": [
+          {
+            "az": "Mübadilə proqramı, ikili diplom və xaricdə tam təhsil ayrı imkanlardır. UNEC-in rəsmi mübadilə elanlarında uyğun ixtisası, təhsil səviyyəsini, dili və müraciət tarixini yoxla. Bir proqramın qaydasını digərinə tətbiq etmə.",
+            "en": "An exchange, a double degree and a full degree abroad are different opportunities. Check the eligible field, level, language and deadline in UNEC’s official exchange announcements. Do not assume one programme’s conditions apply to another."
+          }
+        ]
+      },
+      {
+        "heading": {
+          "az": "Dərs və büdcəni əvvəlcədən razılaşdır",
+          "en": "Agree on studies and budget in advance"
+        },
+        "paragraphs": [
+          {
+            "az": "Transkript, dil sübutu, motivasiya məktubu və digər sənədləri elandakı siyahıya uyğun hazırla. Xaricdə seçəcəyin fənlərin və kreditlərin tanınmasını getməzdən əvvəl universitetin məsul bölməsi ilə dəqiqləşdir; razılaşmanın surətini saxla.",
+            "en": "Prepare transcripts, language evidence, a motivation letter and other documents according to the call. Confirm how proposed courses and credits will be recognised with the responsible university office before travelling, and keep the agreement."
+          },
+          {
+            "az": "Maliyyə dəstəyi bütün xərcləri ödəməyə bilər. Yol, viza, sığorta, yaşayış və ilkin depoziti ayrıca hesabla. Seçim nəticəsi, qəbul sənədi və maliyyələşmə təsdiqi gəlmədən geri qaytarılmayan xərclərə tələsmə.",
+            "en": "Financial support may not cover every cost. Budget separately for travel, visas, insurance, housing and deposits. Avoid rushing into non-refundable expenses before the selection result, admission document and funding confirmation arrive."
+          }
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "az": "Cari elandan uyğunluq şərtlərini və son tarixi qeyd et.",
+        "en": "Record the eligibility criteria and deadline from the current call."
+      },
+      {
+        "az": "Fənn və kreditlərin tanınması barədə məsul bölmədən təsdiq al.",
+        "en": "Get confirmation on course and credit recognition."
+      },
+      {
+        "az": "Sənədləri təqdim et, qəbul və maliyyə təsdiqlərini ayrıca saxla.",
+        "en": "Submit your documents and keep admission and funding confirmations separately."
+      }
+    ],
+    "sources": [
+      {
+        "title": {
+          "az": "UNEC — mübadilə proqramları üzrə elanlar",
+          "en": "UNEC — exchange programme announcements"
+        },
+        "url": "https://news.unec.edu.az/elan/14-mubadilae-prozhram"
+      },
+      {
+        "title": {
+          "az": "Milli Erasmus+ Ofisi — kredit mobilliyi",
+          "en": "National Erasmus+ Office — credit mobility"
+        },
+        "url": "https://erasmusplus.org.az/page/kreditlerin-mobilliyi-27"
+      }
+    ]
+  }
+]

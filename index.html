@@ -140,6 +140,7 @@
   <link rel="stylesheet" href="styles/tools.css?v=20261106-5">
   <link rel="stylesheet" href="styles/support.css?v=20261106-3">
   <link rel="stylesheet" href="styles/legacy.css?v=20261106-3">
+  <link rel="stylesheet" href="styles/compass.css?v=20261109">
 
   <!-- ═══ Analytics & Ads ═══════════════════════════════════════ -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4095192858738222" crossorigin="anonymous"></script>
@@ -374,6 +375,7 @@
           <div class="search-results" id="homeSearchResults" aria-live="polite" hidden></div>
 
           <div id="homeBody">
+            <a class="compass-home-entry" href="#/compass"><span class="compass-home-icon"><svg class="ic" aria-hidden="true"><use href="#i-compass"/></svg></span><span class="grow"><b data-i18n="navCompass">Tələbə Kompası</b><small data-i18n="featCompassDesc">Tələbələr və abituriyentlər üçün praktik məlumatlar.</small></span><svg class="ic" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
             <div class="feature-grid" id="featureGrid"></div>
 
             <div class="stat-row" aria-label="Statistika">
@@ -1583,6 +1585,10 @@
       </div>
 
 
+      <div id="main-compass" class="main-tab is-hidden" data-route="compass">
+        <div class="container screen"><div id="compassRoot"></div></div>
+      </div>
+
       <!-- ── DAHA ÇOX ───────────────────────────────────────────── -->
       <div id="main-more" class="main-tab is-hidden" data-route="more">
         <div class="container screen">
@@ -1593,6 +1599,7 @@
           <section class="more-section" aria-labelledby="moreGeneralTitle">
             <h2 class="more-section-title" id="moreGeneralTitle" data-i18n="moreGeneralGroup">Ümumi</h2>
             <div class="menu-group" id="moreGroupMain">
+              <a class="menu-row" href="#/compass"><svg class="ic" aria-hidden="true"><use href="#i-compass"/></svg><span class="grow" data-i18n="navCompass">Tələbə Kompası</span><svg class="ic chev" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
               <button class="menu-row" type="button" onclick="openThanks()"><svg class="ic"><use href="#i-heart"/></svg><span class="grow" data-i18n="sidebarContributors">Töhfəçilər</span><svg class="ic chev"><use href="#i-chevron-right"/></svg></button>
               <button class="menu-row" type="button" id="rowNews"><svg class="ic"><use href="#i-bell"/></svg><span class="grow" data-i18n="moreNotifications">Yeniliklər</span><span class="dot" id="moreNewsDot" hidden></span><svg class="ic chev"><use href="#i-chevron-right"/></svg></button>
               <a class="menu-row" href="#/courses?fav=1"><svg class="ic"><use href="#i-star"/></svg><span class="grow" data-i18n="moreFavorites">Seçilmişlər</span><small id="moreFavCount"></small><svg class="ic chev"><use href="#i-chevron-right"/></svg></a>
@@ -2282,9 +2289,9 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
-<script src="pdfs.js?v=20261106-3"></script>
+<script src="pdfs.js?v=20261109"></script>
 <script src="scripts/i18n.js?v=20261106-5"></script>
-<script src="scripts/i18n-app.js?v=20261106-5"></script>
+<script src="scripts/i18n-app.js?v=20261109"></script>
 <script src="scripts/data-utils.js?v=20261106-3"></script>
 <script src="scripts/ui.js?v=20261106-3"></script>
 <script src="scripts/features.js?v=20261106-3"></script>
@@ -2301,13 +2308,15 @@
 <script src="scripts/curriculum.js?v=20261106-5"></script>
 <script src="scripts/badges.js?v=20261106-3"></script>
 <script src="scripts/timer.js?v=20261106-3"></script>
-<script src="scripts/app-core.js?v=20261106-3"></script>
+<script src="scripts/app-core.js?v=20261109"></script>
 <script src="scripts/app-materials.js?v=20261106-3"></script>
-<script src="scripts/app-screens.js?v=20261106-3"></script>
+<script src="data/compass-catalog.js?v=20261109"></script>
+<script src="scripts/compass.js?v=20261109"></script>
+<script src="scripts/app-screens.js?v=20261109"></script>
 <script src="scripts/push.js?v=20261106-3"></script>
 <script src="scripts/site-enhancements.js?v=20261106-4"></script>
 <script src="scripts/policies.js?v=20261106-3"></script>
-<script src="scripts/account.js?v=20261106-4"></script>
+<script src="scripts/account.js?v=20261109"></script>
 <section class="sheet" id="sheet-account-delete" role="dialog" aria-modal="true" aria-labelledby="accountDeleteTitle" inert>
   <div class="sheet-head"><h2 id="accountDeleteTitle">Hesabımı sil</h2><button class="icon-btn" type="button" data-sheet-close aria-label="Bağla" data-i18n-aria="btnClose">✕</button></div>
   <div class="sheet-body" id="accountDeleteBody"></div>

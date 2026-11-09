@@ -51,11 +51,16 @@
     });
     const mats = U.getIndex().filter(m => toks.every(tk => m.search.includes(tk)));
     const top = mats.slice(0, 6);
+    const guidance = U.searchCompass ? U.searchCompass(q).slice(0, 4) : [];
 
     let html = '';
     if (feats.length) {
       html += `<div class="sr-group">${esc(t('searchGroupFeatures'))}</div>` +
         feats.map(n => srItem('#' + n.route, n.icon, t(n.key), n.desc ? t(n.desc) : '')).join('');
+    }
+    if (guidance.length) {
+      html += `<div class="sr-group">${esc(t('searchGroupCompass'))}</div>` +
+        guidance.map(article => srItem('#/compass/' + enc(article.id), 'compass', U.compassLabel(article.title), U.compassLabel(article.summary))).join('');
     }
     if (top.length) {
       html += `<div class="sr-group">${esc(t('searchGroupMaterials'))} · ${mats.length}</div>` +

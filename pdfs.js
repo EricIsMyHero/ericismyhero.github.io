@@ -277,8 +277,8 @@ const data = {
       "Xarici dildə işgüzar və akademik kommunikasiya B1+": {
         type: "test", semester: 2, code: "00934", pdfs: [
           { name: "Sherlock Holmes B1+", file: "sherlockholmesB1+.pdf", pdfType: "midterm", addedAt: "2026-04-22T22:45:57+04:00"},
-          { name: "Xdiak Complain Letter", file: "xdiakcomplainletter.pdf", pdfType: "midterm", addedAt: "2026-11-9T17:47:57+04:00"},
-          { name: "Xdiak Request Letter", file: "xdiakrequestletter.pdf", pdfType: "midterm", addedAt: "2026-11-29T17:47:57+04:00"}
+          { name: "Xdiak Complain Letter", file: "xdiakcomplainletter.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:57+04:00"},
+          { name: "Xdiak Request Letter", file: "xdiakrequestletter.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:57+04:00"}
         ]
       },
       "İqtisadi fikir tarixi": {
@@ -325,7 +325,7 @@ const data = {
       "Statistika": {
         type: "yazili", semester: 1, code: "00837", pdfs: [
           { name: "Statistika", file: "statistika1.pdf", pdfType: "semester", addedAt: "2026-10-08T15:52:26+04:00"},
-          { name: "Statistika", file: "statistikakollek1.pdf", pdfType: "semester", addedAt: "2026-11-09T18:10:41+04:00"}
+          { name: "Statistika", file: "statistikakollek1.pdf", pdfType: "semester", addedAt: "2026-11-09T18:10:41+04:00"},
           { name: "Statistika", file: "statistikamesele1.pdf", pdfType: "task", addedAt: "2026-10-08T15:52:26+04:00"}
         ]
       },

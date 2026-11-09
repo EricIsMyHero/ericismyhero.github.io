@@ -62,6 +62,7 @@
     { id: 'tests',      icon: 'clipboard-check', key: 'navTests',    route: '/tests',      fc: 'tests',    desc: 'featTestsDesc' },
     { id: 'gpa',        icon: 'calculator',      key: 'navGpa',      route: '/gpa',        fc: 'gpa',      desc: 'featGpaDesc' },
     { id: 'curriculum', icon: 'calendar-days',   key: 'navPlan',     route: '/curriculum', fc: 'plan',     desc: 'featPlanDesc' },
+    { id: 'compass',    icon: 'compass',         key: 'navCompass',  route: '/compass',    fc: 'compass',  desc: 'featCompassDesc' },
     { id: 'requests',   icon: 'folder-open',     key: 'navRequests', route: '/requests',   fc: 'requests', desc: 'featRequestsDesc' },
     { id: 'timer',      icon: 'timer',           key: 'navTimer',    route: '/timer',      fc: 'timer',    desc: 'featTimerDesc' },
     { id: 'dashboard',  icon: 'chart',           key: 'navDashboard',route: '/dashboard',  fc: 'dash',     desc: 'featDashDesc' },
@@ -74,7 +75,7 @@
 
   // Hansı bölmə hansı aşağı-naviqasiya elementini işıqlandırır
   const TAB_PARENT = {
-    home: 'home', tests: 'home', gpa: 'home', curriculum: 'home', requests: 'home', timer: 'home',
+    home: 'home', tests: 'home', gpa: 'home', curriculum: 'home', compass: 'home', requests: 'home', timer: 'home',
     courses: 'courses', support: 'support', more: 'more', dashboard: 'more'
   };
   const TAB_NAV_ID = { home: 'home', courses: 'courses', tests: 'tests', gpa: 'gpa', curriculum: 'curriculum',
@@ -198,7 +199,7 @@
   //   #/courses (parametrsiz) → #/courses/subjects-ə yönləndirilir
   //   #/courses/subjects/<kurs>/<fənn>  #/m/<kurs>/<fənn>/<fayl>  #/x/<kurs>/<fayl>
   //   #/tests #/gpa #/curriculum #/requests #/requests/<id> (istəyin yazışması) #/timer #/dashboard #/support #/more
-  const TABS = ['home', 'courses', 'support', 'tests', 'gpa', 'dashboard', 'curriculum', 'requests', 'timer', 'more'];
+  const TABS = ['home', 'courses', 'support', 'tests', 'gpa', 'dashboard', 'curriculum', 'compass', 'requests', 'timer', 'more'];
   let route = null;
   let prevRoute = null;
   let depth = (history.state && history.state.i) || 0;
@@ -229,6 +230,7 @@
       if (!segs[1] && !hasFilter) return Object.assign(base, { tab: 'courses', view: 'entry' });
       return Object.assign(base, { tab: 'courses', view: 'materials' });
     }
+    if (a === 'compass' && segs[1]) return Object.assign(base, { tab: 'compass', view: 'article', id: segs.slice(1).join('/') });
     if (a === 'requests' && segs[1]) return Object.assign(base, { tab: 'requests', view: 'thread', id: segs[1] });   // #/requests/<istək-id> — açıq yazışma
     if (TABS.includes(a)) return Object.assign(base, { tab: a, view: null });
     return Object.assign(base, { tab: 'home', view: null, hash: '#/home' });
@@ -236,6 +238,10 @@
 
   function parentPath(r) {
     if (!r) return '/home';
+    if (r.tab === 'compass' && r.view === 'article') {
+      const query = new URLSearchParams(r.query).toString();
+      return '/compass' + (query ? '?' + query : '');
+    }
     if (r.view === 'material')  return '/courses/subjects';
     if (r.view === 'pdfs')      return '/courses/subjects/' + enc(r.course);
     if (r.view === 'subjects')  return '/courses/subjects';
@@ -306,6 +312,7 @@
         break;
       case 'tests':      if (typeof initTestSystem === 'function') initTestSystem(); break;
       case 'gpa':        if (typeof initGPA === 'function') initGPA(); if (U.syncGpaStepper) U.syncGpaStepper(); break;
+      case 'compass': if (U.renderCompass) U.renderCompass(r); break;
       case 'curriculum': if (typeof initCurriculum === 'function') initCurriculum(); break;
       case 'requests':   if (typeof initMaterialRequests === 'function') initMaterialRequests(); break;
       case 'timer':      if (typeof initTimer === 'function') initTimer(); break;
@@ -325,6 +332,7 @@
 
     let title = labelFor(r);
     if (r.tab === 'courses' && r.view === 'material' && U.currentMaterialTitle) title = U.currentMaterialTitle;
+    if (r.tab === 'compass' && U.currentCompassTitle) title = U.currentCompassTitle;
     document.title = (r.tab === 'home' ? 'UNEC Students Hub - Tələbə Platforması' : title + ' · UNEC Students Hub');
 
     syncNavState();
