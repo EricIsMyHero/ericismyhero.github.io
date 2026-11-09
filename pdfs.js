@@ -49,8 +49,8 @@ const data = {
       "Xarici dildə işgüzar və akademik kommunikasiya A1": {
         type: "test", semester: 1, code: "01222", pdfs: [
           { name: "White Death A1", file: "whitedeathA1.pdf", pdfType: "midterm", addedAt: "2026-04-16T14:12:05+04:00"},
-          { name: "Xdiak Complain Letter", file: "xdiakcomplainletter.pdf", pdfType: "midterm", addedAt: "2026-11-9T17:47:57+04:00"},
-          { name: "Xdiak Request Letter", file: "xdiakrequestletter.pdf", pdfType: "midterm", addedAt: "2026-11-29T17:47:57+04:00"}
+          { name: "Xdiak Complain Letter", file: "xdiakcomplainletter.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:57+04:00"},
+          { name: "Xdiak Request Letter", file: "xdiakrequestletter.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:57+04:00"}
         ]
       },
       "Riyaziyyat-1": {
@@ -84,8 +84,8 @@ const data = {
       "Xarici dildə işgüzar və akademik kommunikasiya A2": {
         type: "test", semester: 2, code: "00122", pdfs: [
           { name: "Robinson Crusoe A2", file: "robinsoncrusoeA2.pdf", pdfType: "midterm", addedAt: "2026-04-14T20:38:42+04:00"},
-          { name: "Xdiak Complain Letter", file: "xdiakcomplainletter.pdf", pdfType: "midterm", addedAt: "2026-11-9T17:47:57+04:00"},
-          { name: "Xdiak Request Letter", file: "xdiakrequestletter.pdf", pdfType: "midterm", addedAt: "2026-11-29T17:47:57+04:00"}
+          { name: "Xdiak Complain Letter", file: "xdiakcomplainletter.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:57+04:00"},
+          { name: "Xdiak Request Letter", file: "xdiakrequestletter.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:57+04:00"}
         ]
       },
       "Azərbaycan dilində işgüzar və akademik kommunikasiya": {
@@ -196,6 +196,12 @@ const data = {
   "2-ci kurs": {
     icon: "menu_book",
     subjects: {
+      "Biznes hüququ": {
+        type: "yazili", semester: 1, code: "00195", pdfs: [
+          { name: "Biznes Hüququ", file: "bizneshuququ1.pdf", pdfType: "semester", addedAt: "2026-11-09T18:10:41+04:00"},
+          { name: "Biznes Hüququ", file: "bizneshuququkollek1.pdf", pdfType: "midterm", addedAt: "2026-11-09T18:10:41+04:00"}
+        ]
+      },
       "Mikroiqtisadiyyat": {
         type: "yazili", semester: 1, code: "00591", pdfs: [
           { name: "Mikroiqtisadiyyat", file: "mikroiqt1.pdf", pdfType: "old", addedAt: "2026-04-11T13:20:30+04:00"},
@@ -224,8 +230,8 @@ const data = {
       "Xarici dildə işgüzar və akademik kommunikasiya B1": {
         type: "test", semester: 1, code: "00760", pdfs: [
           { name: "Forrest Gump B1", file: "forrestgumpB1.pdf", pdfType: "midterm", addedAt: "2026-04-22T22:45:57+04:00"},
-          { name: "Xdiak Complain Letter", file: "xdiakcomplainletter.pdf", pdfType: "midterm", addedAt: "2026-11-9T17:47:57+04:00"},
-          { name: "Xdiak Request Letter", file: "xdiakrequestletter.pdf", pdfType: "midterm", addedAt: "2026-11-29T17:47:57+04:00"}
+          { name: "Xdiak Complain Letter", file: "xdiakcomplainletter.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:57+04:00"},
+          { name: "Xdiak Request Letter", file: "xdiakrequestletter.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:57+04:00"}
         ]
       },
       "Ətraf mühitin iqtisadiyyatı": {
@@ -319,6 +325,7 @@ const data = {
       "Statistika": {
         type: "yazili", semester: 1, code: "00837", pdfs: [
           { name: "Statistika", file: "statistika1.pdf", pdfType: "semester", addedAt: "2026-10-08T15:52:26+04:00"},
+          { name: "Statistika", file: "statistikakollek1.pdf", pdfType: "semester", addedAt: "2026-11-09T18:10:41+04:00"}
           { name: "Statistika", file: "statistikamesele1.pdf", pdfType: "task", addedAt: "2026-10-08T15:52:26+04:00"}
         ]
       },
@@ -403,7 +410,7 @@ const data = {
       },
       "İdarəetmə uçotu": {
         type: "yazili", semester: 1, code: "00741", pdfs: [
-          { name: "İdarəetmə Uçotu", file: "idareetme1.pdf", pdfType: "semester", addedAt: "2026-11-9T18:10:52+04:00"}
+          { name: "İdarəetmə Uçotu", file: "idareetme1.pdf", pdfType: "semester", addedAt: "2026-11-09T18:10:52+04:00"}
         ]
       }
     }
