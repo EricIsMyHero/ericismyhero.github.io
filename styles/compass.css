@@ -7,11 +7,11 @@ body[data-route="compass"] #ai-button { visibility:hidden;pointer-events:none; }
 .compass-hero { display: flex; align-items: flex-start; gap: 16px; padding: 10px 0 24px; }
 .compass-hero-icon { display: grid; place-items: center; flex: 0 0 56px; width: 56px; height: 56px; border: 1px solid var(--color-border-strong); border-radius: 18px; background: var(--color-primary-soft); color: var(--accent2); }
 .compass-hero-icon .ic { width: 30px; height: 30px; }
-.compass-hero h1 { margin: 0 0 8px; font-size: clamp(1.5rem, 4vw, 2rem); line-height: 1.2; letter-spacing: -.025em; }
+.compass-hero h1 { margin: 0 0 8px; font-size: clamp(1.5rem, 4vw, 2rem); line-height: 1.3; letter-spacing: -.015em; }
 .compass-hero p { max-width: 60ch; margin: 0; color: var(--color-text-secondary); font-size: var(--fs-sm); line-height: 1.65; }
-.compass-controls { padding: 16px; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--color-surface-elevated); }
-.compass-audience { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
-.compass-audience .chip { min-height: 42px; padding-inline: 14px; font-size: var(--fs-sm); }
+.compass-controls { padding: 20px; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--color-surface-elevated); }
+.compass-audience { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; max-width: 480px; margin-bottom: 20px; }
+.compass-audience .chip { display: flex; align-items: center; justify-content: center; min-width: 0; min-height: 44px; padding: 8px; font-size: var(--fs-sm); line-height: 1.4; letter-spacing: normal; white-space: normal; text-align: center; }
 .compass-search-label { display: block; margin-bottom: 7px; font-size: var(--fs-sm); font-weight: 650; }
 .compass-search-row { display: flex; }
 .compass-search-field { display: flex; align-items: center; flex: 1; min-width: 0; gap: 8px; padding-left: 12px; border: 1px solid var(--border); border-radius: var(--r-md); background: var(--color-surface); }
@@ -21,25 +21,25 @@ body[data-route="compass"] #ai-button { visibility:hidden;pointer-events:none; }
 .compass-search-field input::-webkit-search-cancel-button { display: none; }
 .compass-search-field .icon-btn { flex-shrink: 0; }
 .compass-filter-row { display: flex; align-items: flex-end; flex-wrap: wrap; gap: 12px; margin-top: 14px; }
-.compass-category-select { display: flex; align-items: center; flex: 1; gap: 10px; min-width: 180px; font-size: var(--fs-sm); }
-.compass-category-select > span { color: var(--color-text-secondary); }
-.compass-category-select select { flex: 1; min-width: 0; min-height: 44px; padding: 9px 28px 9px 10px; border: 1px solid var(--border); border-radius: var(--r-md); background: var(--color-surface); color: var(--text); font: inherit; }
+.compass-category-select { display: flex; flex-direction: column; align-items: stretch; flex: 1; gap: 7px; min-width: 0; font-size: var(--fs-sm); }
+.compass-category-select > span { color: var(--color-text-primary); font-weight: 650; }
+.compass-category-select select { width: 100%; min-width: 0; min-height: 44px; padding: 9px 28px 9px 12px; border: 1px solid var(--border); border-radius: var(--r-md); background: var(--color-surface); color: var(--text); font: inherit; text-overflow: ellipsis; }
 .compass-saved-filter, .compass-save, .compass-share { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--r-md); background: transparent; color: var(--color-text-secondary); font: inherit; font-size: var(--fs-sm); cursor: pointer; }
 .compass-saved-filter .ic, .compass-save .ic, .compass-share .ic { flex-shrink: 0; width: 18px; height: 18px; }
 .compass-saved-filter[aria-pressed="true"], .compass-save[aria-pressed="true"] { color: var(--accent2); border-color: var(--color-border-strong); background: var(--color-primary-soft); }
 .compass-save[aria-pressed="true"] .ic { fill: currentColor; }
 .compass-result-count { min-height: 20px; margin: 16px 0 6px; color: var(--color-text-muted); font-size: var(--fs-xs); }
 .compass-topic { margin: 22px 0 28px; }
-.compass-topic > h2 { display: flex; align-items: center; gap: 9px; margin: 0 0 12px; font-size: 1rem; font-weight: 750; }
-.compass-topic > h2 .ic { width: 20px; height: 20px; color: var(--accent2); }
+.compass-topic > h2 { display: flex; align-items: flex-start; gap: 9px; margin: 0 0 12px; font-size: 1rem; font-weight: 750; line-height: 1.5; }
+.compass-topic > h2 .ic { flex: 0 0 20px; width: 20px; height: 20px; margin-top: 2px; color: var(--accent2); }
 .compass-card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .compass-card { display: flex; flex-direction: column; min-width: 0; overflow: hidden; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--color-surface-elevated); transition: border-color var(--t-fast), transform var(--t-fast); }
 .compass-card:hover { border-color: var(--color-border-strong); }
-.compass-card-link { display: flex; align-items: center; flex: 1; gap: 12px; padding: 18px 18px 8px; color: var(--text); text-decoration: none; }
+.compass-card-link { display: grid; grid-template-columns: minmax(0, 1fr) 20px; align-items: start; flex: 1; gap: 12px; padding: 18px 18px 12px; color: var(--text); text-decoration: none; }
 .compass-card-copy { flex: 1; min-width: 0; }
-.compass-card-link > .ic { flex: 0 0 19px; width: 19px; height: 19px; color: var(--color-text-muted); }
-.compass-card h3 { display: -webkit-box; margin: 0 0 8px; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 3; font-size: var(--fs-base); font-weight: 700; line-height: 1.4; overflow-wrap: anywhere; }
-.compass-card p { display: -webkit-box; margin: 0; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; color: var(--color-text-secondary); font-size: var(--fs-xs); line-height: 1.6; }
+.compass-card-link > .ic { width: 20px; height: 20px; margin-top: 2px; color: var(--color-text-muted); }
+.compass-card h3 { margin: 0 0 8px; font-size: var(--fs-base); font-weight: 700; line-height: 1.5; overflow-wrap: break-word; text-align: left; }
+.compass-card p { margin: 0; color: var(--color-text-secondary); font-size: var(--fs-sm); line-height: 1.65; overflow-wrap: break-word; text-align: left; }
 .compass-card-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 10px 8px 18px; }
 .compass-card-footer > small { color: var(--color-text-muted); font-size: var(--fs-xs); }
 .compass-save--compact { width: 44px; padding: 8px; border-color: transparent; }
@@ -55,10 +55,10 @@ body[data-route="compass"] #ai-button { visibility:hidden;pointer-events:none; }
 .compass-reading { max-width: 900px; margin-inline: auto; }
 .compass-back { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin-bottom: 18px; color: var(--color-text-secondary); text-decoration: none; font-size: var(--fs-sm); }
 .compass-back .ic { width: 19px; height: 19px; }
-.compass-category-label { display: flex; align-items: center; gap: 8px; margin: 0 0 14px; color: var(--accent2); font-size: var(--fs-sm); font-weight: 650; }
+.compass-category-label { display: flex; align-items: flex-start; gap: 8px; margin: 0 0 14px; color: var(--accent2); font-size: var(--fs-sm); font-weight: 650; line-height: 1.5; }
 .compass-category-label .ic { flex-shrink: 0; width: 19px; height: 19px; }
 .compass-article-header { margin-bottom: 22px; }
-.compass-article-header h1 { max-width: 25ch; margin: 0 0 18px; font-size: clamp(1.8rem, 4.2vw, 2.75rem); line-height: 1.2; letter-spacing: -.035em; overflow-wrap: anywhere; }
+.compass-article-header h1 { max-width: 30ch; margin: 0 0 18px; font-size: clamp(1.8rem, 4.2vw, 2.5rem); line-height: 1.3; letter-spacing: -.02em; overflow-wrap: break-word; }
 .compass-lead { max-width: 68ch; margin: 0; font-size: 1.0625rem; line-height: 1.8; color: var(--color-text-secondary); }
 .compass-article-meta { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 18px; color: var(--color-text-muted); font-size: var(--fs-xs); line-height: 1.6; }
 .compass-article-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
@@ -76,9 +76,15 @@ body[data-route="compass"] #ai-button { visibility:hidden;pointer-events:none; }
 .compass-article-body p { margin: 0 0 14px; }
 .compass-article-body ul { margin: 0; padding-left: 22px; }
 .compass-article-body li + li { margin-top: 7px; }
+.compass-table-wrap { margin: 18px 0; overflow-x: auto; border: 1px solid var(--border); border-radius: var(--r-md); }
+.compass-table-wrap table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); line-height: 1.6; text-align: left; }
+.compass-table-wrap th, .compass-table-wrap td { padding: 12px; vertical-align: top; overflow-wrap: break-word; }
+.compass-table-wrap th { color: var(--color-text-primary); background: var(--color-primary-soft); font-weight: 650; }
+.compass-table-wrap td { color: var(--color-text-secondary); font-variant-numeric: tabular-nums; }
+.compass-table-wrap tbody tr + tr { border-top: 1px solid var(--border); }
 .compass-steps { margin: 30px 0; padding: 22px; border: 1px solid var(--color-border-strong); border-radius: var(--r-lg); background: var(--color-primary-soft); }
 .compass-steps h2 { display: flex; align-items: center; gap: 9px; margin: 0 0 14px; font-size: 1.125rem; }
-.compass-steps h2 .ic { width: 21px; height: 21px; color: var(--accent2); }
+.compass-steps h2 .ic { flex: 0 0 21px; width: 21px; height: 21px; color: var(--accent2); }
 .compass-steps ol { margin: 0; padding-left: 22px; }
 .compass-steps li { padding-left: 5px; font-size: var(--fs-sm); line-height: 1.9; color: var(--color-text-primary); }
 .compass-steps li + li { margin-top: 9px; }
@@ -86,8 +92,9 @@ body[data-route="compass"] #ai-button { visibility:hidden;pointer-events:none; }
 .compass-sources { padding: 22px 0 0; border-top: 1px solid var(--border); }
 .compass-sources h2 { margin: 0 0 12px; font-size: 1.125rem; }
 .compass-sources ul { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
-.compass-sources a { display: inline-flex; align-items: flex-start; gap: 8px; min-height: 36px; color: var(--accent2); font-size: var(--fs-sm); line-height: 1.6; text-decoration: underline; text-underline-offset: 3px; }
+.compass-sources a { display: inline-flex; align-items: flex-start; gap: 8px; max-width: 100%; min-height: 36px; color: var(--accent2); font-size: var(--fs-sm); line-height: 1.6; overflow-wrap: anywhere; text-decoration: underline; text-underline-offset: 3px; }
 .compass-sources a .ic { flex-shrink: 0; width: 16px; height: 16px; margin-top: 3px; }
+.compass-sources a > span:first-child { min-width: 0; }
 .compass-sources > p { max-width: 70ch; margin: 14px 0 0; color: var(--color-text-muted); font-size: var(--fs-xs); line-height: 1.8; }
 .compass-related { margin: 36px 0 0; padding-top: 26px; border-top: 1px solid var(--border); }
 .compass-related > h2 { margin: 0 0 14px; font-size: 1.125rem; }
@@ -98,18 +105,20 @@ body[data-route="compass"] #ai-button { visibility:hidden;pointer-events:none; }
   .compass-hero-icon .ic { width: 25px; height: 25px; }
   .compass-hero h1 { font-size: 1.5rem; }
   .compass-controls { padding: 12px; }
-  .compass-audience { gap: 5px; }
-  .compass-audience .chip { flex: 1; padding: 7px 8px; font-size: var(--fs-xs); white-space: normal; line-height: 1.35; text-align: center; }
-  .compass-filter-row { gap: 10px; }
+  .compass-audience { gap: 5px; margin-bottom: 16px; }
+  .compass-audience .chip { font-size: var(--fs-xs); }
+  .compass-filter-row { gap: 12px; }
   .compass-category-select { flex-basis: 100%; }
-  .compass-saved-filter { min-height: 40px; font-size: var(--fs-xs); }
+  .compass-saved-filter { min-height: 44px; }
   .compass-card-grid { grid-template-columns: minmax(0, 1fr); }
-  .compass-card-link { padding: 16px 14px 6px; }
+  .compass-card-link { padding: 16px 14px 12px; }
   .compass-card-footer { padding-left: 14px; }
   .compass-topic { margin-top: 24px; }
-  .compass-article-header h1 { font-size: clamp(1.75rem, 7.5vw, 2.25rem); }
+  .compass-article-header h1 { font-size: clamp(1.625rem, 6.5vw, 2rem); }
   .compass-lead { font-size: 1rem; line-height: 1.8; }
-  .compass-article-actions .compass-save { flex: 1; }
+  .compass-article-actions { display: grid; grid-template-columns: minmax(0, 1fr) auto; }
+  .compass-article-actions .compass-save { min-width: 0; }
+  .compass-article-actions span { overflow-wrap: break-word; }
   .compass-article-body h2 { font-size: 1.125rem; }
   .compass-steps { padding: 18px 16px; }
 }

@@ -8,7 +8,7 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const articles = loadCompass(root);
 
 test('Compass publishes bilingual student and applicant guidance with official sources and concrete next steps', () => {
-  assert.equal(new Set(articles.map(a => a.category)).size, 9);
+  assert.equal(new Set(articles.map(a => a.category)).size, 11);
   assert.ok(articles.some(a => a.audience.includes('applicant')));
   assert.ok(articles.some(a => a.audience.includes('student')));
   assert.ok(articles.every(a => a.steps.length >= 3 && a.sources.length));
@@ -44,8 +44,30 @@ test('Compass search supports AZ spelling, English and multi-word queries across
   assert.ok(U.searchCompass('herbi mohlet').some(a => a.id === 'tehsil-ve-herbi-mohlet'));
   assert.ok(U.searchCompass('military deferment').some(a => a.id === 'tehsil-ve-herbi-mohlet'));
   assert.ok(U.searchCompass('transkript').some(a => a.id === 'arayis-transkript-ve-muraciet'));
+  assert.ok(U.searchCompass('yay mektebi').some(a => a.id === 'yay-mektebi-ve-odenis'));
+  assert.ok(U.searchCompass('altqrup').some(a => a.id === 'altqrup-ve-odenis'));
+  assert.ok(U.searchCompass('Semaşko').some(a => a.id === 'unec-4-korpus'));
+  assert.ok(U.searchCompass('160 AZN').some(a => a.id === 'teqaud-meblegleri'));
   assert.equal(U.searchCompass('zzzz-no-topic').length, 0);
   assert.equal(U.searchCompass('   ').length, articles.length);
+});
+
+test('Financial tables require translated, rectangular data and render safely in both article views', () => {
+  const stipend = structuredClone(articles.find(a => a.id === 'teqaud-meblegleri'));
+  const table = stipend.sections[0].table;
+  table.rows[0][0] = { az: '<img src=x onerror=alert(1)>', en: '<script>test</script>' };
+  const { U, rootElement } = fixture([stipend]);
+  U.renderCompass({ tab: 'compass', view: 'article', id: stipend.id, query: {} });
+  assert.ok(rootElement.innerHTML.includes('<th scope="col">'));
+  assert.ok(rootElement.innerHTML.includes('&lt;img'));
+  assert.ok(!rootElement.innerHTML.includes('<img'));
+  const publicPage = compassOutputs(root).outputs.get('compass/teqaud-meblegleri/index.html');
+  assert.ok(publicPage.includes('<th scope="col">'));
+  assert.ok(publicPage.includes('200 AZN'));
+  const ragged = structuredClone(stipend); ragged.sections[0].table.rows[0].pop();
+  assert.throws(() => validateCompass([ragged]), /bilingual table/);
+  const missing = structuredClone(stipend); missing.sections[0].table.headers[0].en = '';
+  assert.throws(() => validateCompass([missing]), /bilingual table/);
 });
 
 test('Article rendering escapes content and ignores non-HTTPS source links', () => {

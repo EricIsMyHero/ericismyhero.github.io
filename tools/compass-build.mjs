@@ -2,12 +2,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const categories = {
-  admissions: 'Qəbul və qeydiyyat', 'first-year': 'Universitetə ilk addım', documents: 'Sənədlər və müraciətlər',
+  admissions: 'Qəbul və qeydiyyat', 'first-year': 'Universitetə ilk addım', academic: 'Tədris qaydaları', documents: 'Sənədlər və müraciətlər', campuses: 'UNEC korpusları',
   finance: 'Pul və təhsil xərcləri', work: 'Təhsil və iş', campus: 'Kampus həyatı', exchange: 'Xaricdə təhsil',
   rights: 'Tələbə hüquqları', military: 'Hərbi xidmətdən möhlət'
 };
 const officialDomains = ['unec.edu.az', 'dim.gov.az', 'edu.gov.az', 'portal.edu.az', 'eatda.edu.az', 'ttkf.edu.az', 'e-ttkf.edu.az',
-  'e-qanun.az', 'cbar.az', 'demx.gov.az', 'sosial.gov.az', 'erasmusplus.org.az'];
+  'e-qanun.az', 'president.az', 'cbar.az', 'demx.gov.az', 'sosial.gov.az', 'erasmusplus.org.az'];
 const pair = value => value && ['az', 'en'].every(lang => typeof value[lang] === 'string' && value[lang].trim());
 export function validateCompass(articles) {
   if (!Array.isArray(articles) || !articles.length) throw new Error('Compass articles are missing.');
@@ -22,6 +22,11 @@ export function validateCompass(articles) {
     if (!/^[a-z0-9-]+$/.test(a.icon) || !Number.isInteger(a.readMinutes) || a.readMinutes < 1) fail('invalid metadata');
     if (!/^\d{4}-\d{2}-\d{2}$/.test(a.updatedAt) || !Number.isFinite(Date.parse(a.updatedAt)) || new Date(a.updatedAt).toISOString().slice(0, 10) !== a.updatedAt) fail('invalid update date');
     if (!Array.isArray(a.sections) || a.sections.length < 2 || a.sections.some(s => !pair(s.heading) || !Array.isArray(s.paragraphs) || !s.paragraphs.length || s.paragraphs.some(p => !pair(p)) || (s.bullets && (!Array.isArray(s.bullets) || s.bullets.some(p => !pair(p)))))) fail('incomplete bilingual sections');
+    for (const section of a.sections) {
+      const table = section.table;
+      if (table && (!Array.isArray(table.headers) || table.headers.length < 2 || table.headers.length > 4 || table.headers.some(h => !pair(h)) ||
+        !Array.isArray(table.rows) || !table.rows.length || table.rows.some(row => !Array.isArray(row) || row.length !== table.headers.length || row.some(cell => !pair(cell))))) fail('invalid bilingual table');
+    }
     if (!Array.isArray(a.steps) || a.steps.length < 3 || a.steps.some(s => !pair(s))) fail('action steps are required');
     if (!Array.isArray(a.sources) || !a.sources.length) fail('official sources are required');
     for (const source of a.sources) {
@@ -33,7 +38,7 @@ export function validateCompass(articles) {
   return articles;
 }
 export function loadCompass(root) {
-  return validateCompass(['data/compass-applicants.json', 'data/compass-students.json'].flatMap(file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'))));
+  return validateCompass(['data/compass-unec.json', 'data/compass-applicants.json', 'data/compass-students.json'].flatMap(file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'))));
 }
 
 export function compassOutputs(root) {
@@ -41,14 +46,14 @@ export function compassOutputs(root) {
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   function page(title, summary, url, body, schema) {
     return `<!doctype html>
-<html lang="az"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} | Tələbə Kompası</title><meta name="description" content="${esc(summary)}"><link rel="canonical" href="${origin}${url}"><meta property="og:type" content="${schema ? 'article' : 'website'}"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(summary)}"><meta property="og:url" content="${origin}${url}"><meta property="og:image" content="${origin}/images/og-image.png"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/images/favicon.svg"><link rel="stylesheet" href="/styles/material-pages.css"><link rel="stylesheet" href="/styles/compass-public.css">${schema ? `<script type="application/ld+json">${JSON.stringify(schema).replace(/</g, '\\u003c')}</script>` : ''}</head>
+<html lang="az"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} | Tələbə Kompası</title><meta name="description" content="${esc(summary)}"><link rel="canonical" href="${origin}${url}"><meta property="og:type" content="${schema ? 'article' : 'website'}"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(summary)}"><meta property="og:url" content="${origin}${url}"><meta property="og:image" content="${origin}/images/og-image.png"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/images/favicon.svg"><link rel="stylesheet" href="/styles/material-pages.css"><link rel="stylesheet" href="/styles/compass-public.css?v=20261109-2">${schema ? `<script type="application/ld+json">${JSON.stringify(schema).replace(/</g, '\\u003c')}</script>` : ''}</head>
 <body><header><a href="/">UNEC Students Hub</a><a href="/compass/">Tələbə Kompası</a></header><main>${body}</main><footer>Müstəqil tələbə platforması. Qaydaları və tarixləri müraciətdən əvvəl rəsmi mənbədən yoxla. <a href="mailto:unecstudentshub@gmail.com">Əlaqə</a></footer></body></html>
 `;
   }
   for (const a of articles) {
     const href = '/compass/' + a.id + '/';
     const related = articles.filter(other => other.id !== a.id && other.category === a.category).slice(0, 3);
-    const sections = a.sections.map(s => `<section><h2>${esc(s.heading.az)}</h2>${s.paragraphs.map(p => `<p>${esc(p.az)}</p>`).join('')}${s.bullets?.length ? '<ul>' + s.bullets.map(p => `<li>${esc(p.az)}</li>`).join('') + '</ul>' : ''}</section>`).join('');
+    const sections = a.sections.map(s => `<section><h2>${esc(s.heading.az)}</h2>${s.paragraphs.map(p => `<p>${esc(p.az)}</p>`).join('')}${s.bullets?.length ? '<ul>' + s.bullets.map(p => `<li>${esc(p.az)}</li>`).join('') + '</ul>' : ''}${s.table ? '<div class="compass-public-table"><table><thead><tr>' + s.table.headers.map(h => '<th scope="col">' + esc(h.az) + '</th>').join('') + '</tr></thead><tbody>' + s.table.rows.map(row => '<tr>' + row.map(cell => '<td>' + esc(cell.az) + '</td>').join('') + '</tr>').join('') + '</tbody></table></div>' : ''}</section>`).join('');
     outputs.set('compass/' + a.id + '/index.html', page(a.title.az, a.summary.az, href,
       `<nav aria-label="Səhifə yolu"><a href="/compass/">Tələbə Kompası</a> / ${esc(categories[a.category])}</nav><h1>${esc(a.title.az)}</h1><p class="compass-public-lead">${esc(a.summary.az)}</p><p class="compass-public-meta">${a.readMinutes} dəqiqəlik oxu · Yenilənib: <time datetime="${a.updatedAt}">${a.updatedAt}</time></p><div class="actions"><a class="primary" href="/#/compass/${a.id}">Saytda oxu / Read in app</a></div>${sections}<section class="compass-public-steps"><h2>Növbəti addımlar</h2><ol>${a.steps.map(s => `<li>${esc(s.az)}</li>`).join('')}</ol></section><section><h2>Rəsmi mənbələr</h2><ul>${a.sources.map(source => `<li><a href="${esc(source.url)}" target="_blank" rel="noopener noreferrer">${esc(source.title.az)}</a></li>`).join('')}</ul><p>Tarix və şərtlər dəyişə bilər. Müraciətdən əvvəl rəsmi elanı və sənəd siyahısını yoxla.</p></section>${related.length ? '<section><h2>Əlaqəli məqalələr</h2><ul>' + related.map(other => `<li><a href="/compass/${other.id}/">${esc(other.title.az)}</a></li>`).join('') + '</ul></section>' : ''}`,
       { '@context': 'https://schema.org', '@type': 'Article', headline: a.title.az, description: a.summary.az, dateModified: a.updatedAt,

@@ -5,7 +5,6 @@
 Object.assign(I18N.az, {
   navCompass: 'Tələbə Kompası',
   featCompassDesc: 'Tələbələr və abituriyentlər üçün praktik məlumatlar.',
-  searchGroupCompass: 'Tələbə Kompası məqalələri',
   reqStatusClosed: 'Bağlanıb',
   matShowMore: 'Daha çox göstər',
   matViewDetails: 'Məlumata bax',
@@ -53,7 +52,6 @@ Object.assign(I18N.az, {
 
   homeWhyTitle: 'Niyə <span>UNEC Students Hub</span>?',
   homeWhySub: 'Tələbə həyatını asanlaşdıran bütün resurslar bir yerdə.',
-  homeSearchPlaceholder: 'İstədiyin funksiyanı axtar...',
   featTestsDesc: 'Öz biliklərini yoxla, imtahanlara hazırlaş.',
   featGpaDesc: 'Orta göstəricini asanlıqla hesabla.',
   featRequestsDesc: 'Lazım olan materialları bizə göndər.',
@@ -70,10 +68,6 @@ Object.assign(I18N.az, {
   newsGroupTelegram: 'Teleqram kanalından',
   newsGroupRequests: 'Yerinə yetirilən istəklər',
   newsFromTelegramShort: 'Teleqram',
-  searchNoResults: 'Axtarışa uyğun nəticə tapılmadı.',
-  searchNoResultsHint: 'Başqa açar söz sına və ya material istəyi göndər.',
-  searchGroupFeatures: 'Funksiyalar',
-  searchGroupMaterials: 'Materiallar',
 
   coursesTitle: 'Kurslar',
   courseModeAll: 'Bütün materiallar',
@@ -193,7 +187,6 @@ Object.assign(I18N.az, {
 Object.assign(I18N.en, {
   navCompass: 'Student Compass',
   featCompassDesc: 'Practical answers for students and university applicants.',
-  searchGroupCompass: 'Student Compass articles',
   reqStatusClosed: 'Closed',
   matShowMore: 'Show more',
   matViewDetails: 'View details',
@@ -241,7 +234,6 @@ Object.assign(I18N.en, {
 
   homeWhyTitle: 'Why <span>UNEC Students Hub</span>?',
   homeWhySub: 'Everything that makes student life easier, in one place.',
-  homeSearchPlaceholder: 'Search for a feature...',
   featTestsDesc: 'Test your knowledge and prepare for exams.',
   featGpaDesc: 'Calculate your average with ease.',
   featRequestsDesc: 'Send us the materials you need.',
@@ -258,10 +250,6 @@ Object.assign(I18N.en, {
   newsGroupTelegram: 'From our Telegram channel',
   newsGroupRequests: 'Fulfilled requests',
   newsFromTelegramShort: 'Telegram',
-  searchNoResults: 'No results match your search.',
-  searchNoResultsHint: 'Try another keyword or send a material request.',
-  searchGroupFeatures: 'Features',
-  searchGroupMaterials: 'Materials',
 
   coursesTitle: 'Courses',
   courseModeAll: 'All materials',

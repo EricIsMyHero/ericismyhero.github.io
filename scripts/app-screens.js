@@ -1,5 +1,5 @@
 // ============================================================
-// APP-SCREENS.JS — Ana səhifə (funksiya kartları, axtarış, yeniliklər),
+// APP-SCREENS.JS — Ana səhifə (funksiya kartları, yeniliklər),
 // "Daha çox" səhifəsi, tənzimləmələr, GPA addımlayıcı, başlanğıc.
 // app-core.js və app-materials.js-dən sonra yüklənir.
 // ============================================================
@@ -7,7 +7,7 @@
   'use strict';
 
   const U = window.UNEC;
-  const { $, $$, esc, ic, enc, tr, LS, normAz, NAV, FEATURE_IDS } = U;
+  const { $, $$, esc, ic, tr, LS, NAV, FEATURE_IDS } = U;
   const TELEGRAM = 'https://t.me/unecstudentshub';
   const TG_CHANNEL = TELEGRAM.split('/').pop();   // keş və "oxundu" açarları kanala görə ayrılır (kanal dəyişsə köhnə post nömrələri qarışmasın)
 
@@ -26,70 +26,6 @@
         <span class="feature-text"><b>${esc(t(n.key))}</b><small>${esc(t(n.desc))}</small></span>
       </a>`;
     }).join('');
-  }
-
-  // Ana səhifə axtarışı: funksiyalar + real materiallar
-  function srItem(href, icon, title, sub, external) {
-    return `<a class="sr-item" href="${href}"${external ? ' target="_blank" rel="noopener noreferrer"' : ''}>
-      <span class="sr-ic">${ic(icon)}</span>
-      <span class="grow"><b>${esc(title)}</b>${sub ? `<small>${esc(sub)}</small>` : ''}</span>
-      ${ic('chevron-right', 'chev')}</a>`;
-  }
-
-  function runHomeSearch(raw) {
-    const res = $('#homeSearchResults'), body = $('#homeBody');
-    if (!res || !body) return;
-    const q = normAz(raw);
-    if (!q) { res.hidden = true; res.innerHTML = ''; body.hidden = false; return; }
-    const toks = q.split(' ');
-    body.hidden = true;
-    res.hidden = false;
-
-    const feats = NAV.filter(n => n.id !== 'home' && n.id !== 'courses').filter(n => {
-      const hay = normAz(t(n.key) + ' ' + (n.desc ? t(n.desc) : ''));
-      return toks.every(tk => hay.includes(tk));
-    });
-    const mats = U.getIndex().filter(m => toks.every(tk => m.search.includes(tk)));
-    const top = mats.slice(0, 6);
-    const guidance = U.searchCompass ? U.searchCompass(q).slice(0, 4) : [];
-
-    let html = '';
-    if (feats.length) {
-      html += `<div class="sr-group">${esc(t('searchGroupFeatures'))}</div>` +
-        feats.map(n => srItem('#' + n.route, n.icon, t(n.key), n.desc ? t(n.desc) : '')).join('');
-    }
-    if (guidance.length) {
-      html += `<div class="sr-group">${esc(t('searchGroupCompass'))}</div>` +
-        guidance.map(article => srItem('#/compass/' + enc(article.id), 'compass', U.compassLabel(article.title), U.compassLabel(article.summary))).join('');
-    }
-    if (top.length) {
-      html += `<div class="sr-group">${esc(t('searchGroupMaterials'))} · ${mats.length}</div>` +
-        top.map(m => srItem(U.matHref(m), 'pdf', m.name, (m.kind === 'extra' ? t('extraMaterial') : m.subject) + ' · ' + m.course)).join('');
-      if (mats.length > top.length) {
-        html += srItem('#/courses?q=' + enc(raw.trim()), 'search', t('matFilterAll') + ' · ' + tr('matCount', { n: mats.length }), '');
-      }
-    }
-    if (!html) {
-      html = `<div class="state-box">${ic('search')}<h3>${esc(t('searchNoResults'))}</h3><p>${esc(t('searchNoResultsHint'))}</p>
-        <a class="btn btn--secondary btn--sm" href="#/requests">${esc(t('navRequests'))}</a></div>`;
-    }
-    res.innerHTML = html;
-  }
-
-  function bindHomeSearch() {
-    const input = $('#homeSearch'), box = $('#homeSearchBox'), clear = $('#homeSearchClear');
-    if (!input) return;
-    let timer = null;
-    input.addEventListener('input', () => {
-      if (box) box.classList.toggle('has-value', !!input.value);
-      clearTimeout(timer);
-      timer = setTimeout(() => runHomeSearch(input.value), 100);
-    });
-    input.addEventListener('keydown', e => {
-      if (e.key === 'Enter') { e.preventDefault(); const first = $('#homeSearchResults .sr-item'); if (first) first.click(); }
-      if (e.key === 'Escape') { input.value = ''; input.dispatchEvent(new Event('input')); }
-    });
-    if (clear) clear.addEventListener('click', () => { input.value = ''; if (box) box.classList.remove('has-value'); runHomeSearch(''); input.focus(); });
   }
 
   // ── Yeniliklər: Teleqram kanalının son 3 postu + real, yerinə yetirilmiş material istəkləri ──
@@ -218,8 +154,6 @@
     renderNews();
     loadNews();
     loadTelegram();
-    const input = $('#homeSearch');
-    if (input && input.value) runHomeSearch(input.value);
   };
 
   // ═════════════════════════════════════════════════════════════
@@ -347,7 +281,6 @@
   document.addEventListener('DOMContentLoaded', function () {
     document.documentElement.lang = lang;
     U.initMaterials();
-    bindHomeSearch();
     bindMore();
     bindGpa();
     readTgCache();  // son keşdən dərhal göstərmək üçün

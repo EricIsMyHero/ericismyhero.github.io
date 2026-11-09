@@ -3,10 +3,12 @@
   'use strict';
   const U = window.UNEC;
   const KEY = 'unec_compass_saved';
-  const categoryOrder = ['admissions', 'first-year', 'documents', 'finance', 'work', 'campus', 'exchange', 'rights', 'military'];
+  const categoryOrder = ['admissions', 'first-year', 'academic', 'finance', 'campuses', 'documents', 'work', 'campus', 'exchange', 'rights', 'military'];
   const categories = {
     admissions: { az: 'Qəbul və qeydiyyat', en: 'Admission and registration', icon: 'graduation-cap' },
     'first-year': { az: 'Universitetə ilk addım', en: 'Starting university', icon: 'book-open' },
+    academic: { az: 'Tədris qaydaları', en: 'Academic rules', icon: 'book-open' },
+    campuses: { az: 'UNEC korpusları', en: 'UNEC campuses', icon: 'landmark' },
     documents: { az: 'Sənədlər və müraciətlər', en: 'Documents and applications', icon: 'file-text' },
     finance: { az: 'Pul və təhsil xərcləri', en: 'Money and study costs', icon: 'wallet' },
     work: { az: 'Təhsil və iş', en: 'Study and work', icon: 'briefcase' },
@@ -18,8 +20,8 @@
   const labels = {
     az: {
       title: 'Tələbə Kompası', intro: 'Qəbuldan tələbə həyatına: lazım olan addımları bir yerdə tap.',
-      all: 'Hamısı', students: 'Tələbələr üçün', applicants: 'Abituriyentlər üçün', saved: 'Saxlanılanlar',
-      search: 'Mövzu axtar', placeholder: 'Məsələn: təqaüd, qeydiyyat, yataqxana…', category: 'Mövzu', allCategories: 'Bütün mövzular',
+      all: 'Hamısı', students: 'Tələbə', applicants: 'Abituriyent', saved: 'Saxlanılanlar',
+      search: 'Mövzu axtar', placeholder: 'Təqaüd, yay məktəbi…', category: 'Mövzu', allCategories: 'Bütün mövzular',
       count: '{n} məqalə', empty: 'Uyğun məqalə tapılmadı', emptySub: 'Başqa sözlə axtar və ya filtrləri dəyiş.',
       emptySaved: 'Hələ məqalə saxlamamısan', emptySavedSub: 'Məqalənin yanındakı ulduza basaraq onu sonra oxumaq üçün saxla.',
       clear: 'Filtrləri təmizlə', clearSearch: 'Axtarışı təmizlə', save: 'Məqaləni saxla', unsave: 'Saxlanılanlardan çıxar',
@@ -34,8 +36,8 @@
     },
     en: {
       title: 'Student Compass', intro: 'From admission to student life: find your next steps in one place.',
-      all: 'All', students: 'For students', applicants: 'For applicants', saved: 'Saved',
-      search: 'Search topics', placeholder: 'For example: scholarships, registration, housing…', category: 'Topic', allCategories: 'All topics',
+      all: 'All', students: 'Students', applicants: 'Applicants', saved: 'Saved',
+      search: 'Search topics', placeholder: 'Stipends, summer school…', category: 'Topic', allCategories: 'All topics',
       count: '{n} articles', empty: 'No matching articles', emptySub: 'Try another search or change the filters.',
       emptySaved: 'No saved articles yet', emptySavedSub: 'Use the star beside an article to keep it for later.',
       clear: 'Clear filters', clearSearch: 'Clear search', save: 'Save article', unsave: 'Remove saved article',
@@ -101,6 +103,7 @@
     for (const section of article.sections || []) {
       values.push(section.heading?.az, section.heading?.en);
       for (const paragraph of [...(section.paragraphs || []), ...(section.bullets || [])]) values.push(paragraph?.az, paragraph?.en);
+      for (const cell of [...(section.table?.headers || []), ...(section.table?.rows || []).flat()]) values.push(cell?.az, cell?.en);
     }
     for (const step of article.steps || []) values.push(step?.az, step?.en);
     return U.normAz(values.filter(Boolean).join(' '));
@@ -160,8 +163,12 @@
     try {
       const url = new URL(source.url);
       if (url.protocol !== 'https:' || url.username || url.password) return '';
-      return `<li><a href="${e(url.href)}" target="_blank" rel="noopener noreferrer">${e(text(source.title))}${icon('external-link')}<span class="compass-sr-only"> (${e(l('external'))})</span></a></li>`;
+      return `<li><a href="${e(url.href)}" target="_blank" rel="noopener noreferrer"><span>${e(text(source.title))}</span>${icon('external-link')}<span class="compass-sr-only"> (${e(l('external'))})</span></a></li>`;
     } catch (_) { return ''; }
+  }
+  function sectionTable(table) {
+    if (!table) return '';
+    return `<div class="compass-table-wrap"><table><thead><tr>${table.headers.map(h => `<th scope="col">${e(text(h))}</th>`).join('')}</tr></thead><tbody>${table.rows.map(row => `<tr>${row.map(cell => `<td>${e(text(cell))}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
   }
   function articleView(root, route) {
     state = normalizeState(route.query); lastList = '/compass' + queryFor(state);
@@ -178,7 +185,7 @@
       <article class="compass-article"><header class="compass-article-header"><p class="compass-category-label">${icon(category(article.category).icon)}${e(text(category(article.category)))}</p><h1 id="compassHeading" tabindex="-1">${e(text(article.title))}</h1><p class="compass-lead">${e(text(article.summary))}</p><div class="compass-article-meta"><span>${e(l('minutes').replace('{n}', article.readMinutes))}</span><span>${e(l('updated'))}: <time datetime="${e(article.updatedAt)}">${e(date(article.updatedAt))}</time></span></div>
       <div class="compass-article-actions">${saveButton(article, false)}<button class="compass-share" type="button" data-compass-share="${e(article.id)}">${icon('external-link')}<span>${e(l('share'))}</span></button></div></header>
       ${article.sections?.length > 1 ? `<details class="compass-toc"><summary>${e(l('toc'))}${icon('chevron-down')}</summary><ol>${article.sections.map((section, index) => `<li><button type="button" data-compass-section="${index}">${e(text(section.heading))}</button></li>`).join('')}</ol></details>` : ''}
-      <div class="compass-article-body">${(article.sections || []).map((section, index) => `<section aria-labelledby="compass-section-${index}"><h2 id="compass-section-${index}" tabindex="-1">${e(text(section.heading))}</h2>${(section.paragraphs || []).map(value => `<p>${e(text(value))}</p>`).join('')}${section.bullets?.length ? `<ul>${section.bullets.map(value => `<li>${e(text(value))}</li>`).join('')}</ul>` : ''}</section>`).join('')}</div>
+      <div class="compass-article-body">${(article.sections || []).map((section, index) => `<section aria-labelledby="compass-section-${index}"><h2 id="compass-section-${index}" tabindex="-1">${e(text(section.heading))}</h2>${(section.paragraphs || []).map(value => `<p>${e(text(value))}</p>`).join('')}${section.bullets?.length ? `<ul>${section.bullets.map(value => `<li>${e(text(value))}</li>`).join('')}</ul>` : ''}${sectionTable(section.table)}</section>`).join('')}</div>
       ${article.steps?.length ? `<section class="compass-steps" aria-labelledby="compassStepsTitle"><h2 id="compassStepsTitle">${icon('clipboard-check')}${e(l('steps'))}</h2><ol>${article.steps.map(value => `<li>${e(text(value))}</li>`).join('')}</ol></section>` : ''}
       <section class="compass-sources" aria-labelledby="compassSourcesTitle"><h2 id="compassSourcesTitle">${e(l('sources'))}</h2><ul>${(article.sources || []).map(sourceLink).join('')}</ul><p>${e(l('note'))}</p></section></article>
       ${related.length ? `<section class="compass-related" aria-labelledby="compassRelatedTitle"><h2 id="compassRelatedTitle">${e(l('related'))}</h2><div class="compass-card-grid">${related.map(card).join('')}</div></section>` : ''}</div>`;
