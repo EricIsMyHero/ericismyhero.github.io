@@ -325,7 +325,7 @@ const data = {
       "Statistika": {
         type: "yazili", semester: 1, code: "00837", pdfs: [
           { name: "Statistika", file: "statistika1.pdf", pdfType: "semester", addedAt: "2026-10-08T15:52:26+04:00"},
-          { name: "Statistika", file: "statistikakollek1.pdf", pdfType: "semester", addedAt: "2026-11-09T18:10:41+04:00"},
+          { name: "Statistika", file: "statistikakollek1.pdf", pdfType: "midterm", addedAt: "2026-11-09T18:10:41+04:00"},
           { name: "Statistika", file: "statistikamesele1.pdf", pdfType: "task", addedAt: "2026-10-08T15:52:26+04:00"}
         ]
       },
