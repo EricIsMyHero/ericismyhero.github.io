@@ -48,7 +48,9 @@ const data = {
       },
       "Xarici dildə işgüzar və akademik kommunikasiya A1": {
         type: "test", semester: 1, code: "01222", pdfs: [
-          { name: "White Death A1", file: "whitedeathA1.pdf", pdfType: "midterm", addedAt: "2026-04-16T14:12:05+04:00"}
+          { name: "White Death A1", file: "whitedeathA1.pdf", pdfType: "midterm", addedAt: "2026-04-16T14:12:05+04:00"},
+          { name: "Xdiak Complain Letter", file: "xdiakcomplainletter.pdf", pdfType: "midterm", addedAt: "2026-11-9T17:47:57+04:00"},
+          { name: "Xdiak Request Letter", file: "xdiakrequestletter.pdf", pdfType: "midterm", addedAt: "2026-11-29T17:47:57+04:00"}
         ]
       },
       "Riyaziyyat-1": {
@@ -81,7 +83,9 @@ const data = {
       },
       "Xarici dildə işgüzar və akademik kommunikasiya A2": {
         type: "test", semester: 2, code: "00122", pdfs: [
-          { name: "Robinson Crusoe A2", file: "robinsoncrusoeA2.pdf", pdfType: "midterm", addedAt: "2026-04-14T20:38:42+04:00"}
+          { name: "Robinson Crusoe A2", file: "robinsoncrusoeA2.pdf", pdfType: "midterm", addedAt: "2026-04-14T20:38:42+04:00"},
+          { name: "Xdiak Complain Letter", file: "xdiakcomplainletter.pdf", pdfType: "midterm", addedAt: "2026-11-9T17:47:57+04:00"},
+          { name: "Xdiak Request Letter", file: "xdiakrequestletter.pdf", pdfType: "midterm", addedAt: "2026-11-29T17:47:57+04:00"}
         ]
       },
       "Azərbaycan dilində işgüzar və akademik kommunikasiya": {
@@ -194,9 +198,10 @@ const data = {
     subjects: {
       "Mikroiqtisadiyyat": {
         type: "yazili", semester: 1, code: "00591", pdfs: [
-          { name: "Mikroiqtisadiyyat", file: "mikroiqt1.pdf", pdfType: "semester", addedAt: "2026-04-11T13:20:30+04:00"},
-          { name: "Mikroiqtisadiyyat ", file: "mikroiqt2.pdf", pdfType: "semester", addedAt: "2026-04-11T13:20:30+04:00"},
-          { name: "Mikroiqtisadiyyat", file: "mikroiqt3.pdf", pdfType: "semester", addedAt: "2026-04-11T13:20:30+04:00"},
+          { name: "Mikroiqtisadiyyat", file: "mikroiqt1.pdf", pdfType: "old", addedAt: "2026-04-11T13:20:30+04:00"},
+          { name: "Mikroiqtisadiyyat ", file: "mikroiqt2.pdf", pdfType: "old", addedAt: "2026-04-11T13:20:30+04:00"},
+          { name: "Mikroiqtisadiyyat", file: "mikroiqt3.pdf", pdfType: "old", addedAt: "2026-04-11T13:20:30+04:00"},
+          { name: "Mikroiqtisadiyyat", file: "mikroiqt4.pdf", pdfType: "midterm", addedAt: "2026-11-9T17:47:30+04:00"},
           { name: "Mikroiqtisadiyyat", file: "mikroiqtmesele1.pdf", pdfType: "task", addedAt: "2026-04-11T13:20:30+04:00"},
           { name: "Mikroiqtisadiyyat", file: "mikroiqtmesele2.pdf", pdfType: "task", addedAt: "2026-04-11T13:20:30+04:00"}
         ]
@@ -212,12 +217,15 @@ const data = {
           { name: "Əməyin İqtisadiyyatı", file: "emek1.pdf", pdfType: "semester", addedAt: "2026-04-11T23:06:15+04:00"},
           { name: "Əməyin İqtisadiyyatı", file: "emek2.pdf", pdfType: "semester", addedAt: "2026-10-08T15:48:45+04:00"},
           { name: "Əməyin İqtisadiyyatı", file: "emekkollek1.pdf", pdfType: "midterm", addedAt: "2026-04-11T23:06:15+04:00"},
-          { name: "Əməyin İqtisadiyyatı", file: "emekkollek2.pdf", pdfType: "midterm", addedAt: "2026-11-02T20:25:10+04:00"}
+          { name: "Əməyin İqtisadiyyatı", file: "emekkollek2.pdf", pdfType: "midterm", addedAt: "2026-11-02T20:25:10+04:00"},
+          { name: "Əməyin İqtisadiyyatı", file: "emekkollek3.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:10+04:00"}
         ]
       },
       "Xarici dildə işgüzar və akademik kommunikasiya B1": {
         type: "test", semester: 1, code: "00760", pdfs: [
-          { name: "Forrest Gump B1", file: "forrestgumpB1.pdf", pdfType: "midterm", addedAt: "2026-04-22T22:45:57+04:00"}
+          { name: "Forrest Gump B1", file: "forrestgumpB1.pdf", pdfType: "midterm", addedAt: "2026-04-22T22:45:57+04:00"},
+          { name: "Xdiak Complain Letter", file: "xdiakcomplainletter.pdf", pdfType: "midterm", addedAt: "2026-11-9T17:47:57+04:00"},
+          { name: "Xdiak Request Letter", file: "xdiakrequestletter.pdf", pdfType: "midterm", addedAt: "2026-11-29T17:47:57+04:00"}
         ]
       },
       "Ətraf mühitin iqtisadiyyatı": {
@@ -262,7 +270,9 @@ const data = {
       },
       "Xarici dildə işgüzar və akademik kommunikasiya B1+": {
         type: "test", semester: 2, code: "00934", pdfs: [
-          { name: "Sherlock Holmes B1+", file: "sherlockholmesB1+.pdf", pdfType: "midterm", addedAt: "2026-04-22T22:45:57+04:00"}
+          { name: "Sherlock Holmes B1+", file: "sherlockholmesB1+.pdf", pdfType: "midterm", addedAt: "2026-04-22T22:45:57+04:00"},
+          { name: "Xdiak Complain Letter", file: "xdiakcomplainletter.pdf", pdfType: "midterm", addedAt: "2026-11-9T17:47:57+04:00"},
+          { name: "Xdiak Request Letter", file: "xdiakrequestletter.pdf", pdfType: "midterm", addedAt: "2026-11-29T17:47:57+04:00"}
         ]
       },
       "İqtisadi fikir tarixi": {
@@ -325,6 +335,11 @@ const data = {
           { name: "Firmanın iqtisadiyyatı", file: "firmaiqtQ26.pdf", pdfType: "semester", addedAt: "2026-10-08T22:20:41+04:00"}
         ]
       },
+      "Audit": {
+        type: "yazili", semester: 1, code: "00152", pdfs: [
+          { name: "Audit", file: "audit1.pdf", pdfType: "midterm", addedAt: "2026-11-09T18:10:41+04:00"}
+        ]
+      },
       "Menecment": {
         type: "test", semester: 1, code: "00031", pdfs: [
           { name: "Menecment", file: "menecment1.pdf", pdfType: "old", addedAt: "2026-10-08T15:58:46+04:00"},
@@ -384,6 +399,11 @@ const data = {
       "İnkişaf mikroiqtisadiyyatı": {
         type: "yazili", semester: 1, code: "00412", pdfs: [
           { name: "İnkişaf Mikroiqtisadiyyatı", file: "inkisafmikroiqtkollek1.pdf", pdfType: "midterm", addedAt: "2026-10-31T14:53:52+04:00"}
+        ]
+      },
+      "İdarəetmə uçotu": {
+        type: "yazili", semester: 1, code: "00741", pdfs: [
+          { name: "İdarəetmə Uçotu", file: "idareetme1.pdf", pdfType: "semester", addedAt: "2026-11-9T18:10:52+04:00"}
         ]
       }
     }
