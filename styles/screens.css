@@ -336,8 +336,6 @@
 .md-actions .btn--primary { grid-column: 1 / -1; min-height: 54px; font-size: 1.0625rem; }
 .md-actions .btn--secondary { min-height: 52px; }
 .md-actions .fav-btn { width: 52px; min-height: 52px; flex: none; }
-.md-links { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 14px; }
-.md-links .btn { min-height: 40px; }
 @media (min-width: 768px) {
   .md-actions { grid-template-columns: 1fr 1fr 52px; }
   .md-actions .btn--primary { grid-column: auto; }

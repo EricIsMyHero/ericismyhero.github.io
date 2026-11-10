@@ -453,11 +453,6 @@
   let currentMaterial = null;
   let currentRelated = { subject: [], semester: [] };
 
-  function describe(m) {
-    if (m.kind === 'extra') return tr('mdDescExtra', { course: m.course, desc: m.desc || '' }).trim();
-    return tr('mdDescSubject', { subject: m.subject, course: m.course, semester: semesterLabel(m.semester).toLowerCase(), format: formatLabel(m.format) });
-  }
-
   function relatedFor(m) {
     if (m.kind === 'extra') {
       return { subject: extraEntries(m.course).filter(x => x.file !== m.file), semester: [] };
@@ -507,8 +502,6 @@
       [t('mdFile'), m.file]
     ].filter(Boolean);
     currentRelated = relatedFor(m);
-    const subjectPath = m.kind === 'pdf' ? `#/courses/subjects/${enc(m.course)}/${enc(m.subject)}` : `#/courses/subjects/${enc(m.course)}`;
-
     box.innerHTML = `
       <div class="page-head">
         <button class="icon-btn" type="button" data-back aria-label="${esc(t('appBack'))}">${ic('arrow-left')}</button>
@@ -526,15 +519,13 @@
             </div>
           </div>
           ${m.kind === 'pdf' ? `<div class="pdf-rating" style="margin-top:14px" data-course="${esc(m.course)}" data-subject="${esc(m.subject)}" data-file="${esc(m.file)}"></div>` : ''}
-          <section class="md-section"><h3>${esc(t('mdShortInfo'))}</h3><p>${esc(describe(m))}</p></section>
-          <dl class="md-facts" id="mdFacts">
-            ${facts.map(([k, v]) => `<div class="md-fact"><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}
-          </dl>
+          <section class="md-section">
+            <h3>${esc(t('mdShortInfo'))}</h3>
+            <dl class="md-facts" id="mdFacts">
+              ${facts.map(([k, v]) => `<div class="md-fact"><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}
+            </dl>
+          </section>
           <div class="md-actions">${fileBtnsHTML(m).replace('btn btn--primary', 'btn btn--primary').trim()}${favBtnHTML(m)}</div>
-          <div class="md-links">
-            <a class="btn btn--ghost btn--sm" href="${subjectPath}">${ic('book-open')}<span>${esc(t('mdSubjectPage'))}</span></a>
-            <button class="btn btn--ghost btn--sm" type="button" id="mdReportInline">${ic('flag')}<span>${esc(t('mdReport'))}</span></button>
-          </div>
         </div>
         <aside class="md-related">
           ${relatedSectionHTML('subject', t(m.kind === 'pdf' ? 'mdSameSubject' : 'mdSimilar'), currentRelated.subject)}
@@ -568,7 +559,6 @@
         return;
       }
       if (e.target.closest('#mdMoreBtn')) { U.openSheet('sheet-mdmore', e.target.closest('#mdMoreBtn')); return; }
-      if (e.target.closest('#mdReportInline')) { reportCurrent(); return; }
     });
     const sb = $('#mdSubjectBtn'), rb = $('#mdReportBtn'), sh = $('#mdShareBtn');
     if (sb) sb.addEventListener('click', () => {
