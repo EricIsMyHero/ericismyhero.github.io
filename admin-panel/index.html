@@ -1,1478 +1,385 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="az">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UNEC Admin Panel</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    /* Ana səhifə ilə eyni dizayn kodu (bax: styles/base.css :root) */
-    :root {
-      --bg:       #020a18;
-      --surface:  #061428;
-      --surface2: #0a1e3a;
-      --border:   rgba(0,102,204,0.18);
-      --accent:   #0066CC;
-      --accent2:  #4DA6FF;
-      --text:     #e8eef8;
-      --muted:    #5a7a9e;
-      --green:    #22c55e;
-      --red:      #ef4444;
-      --yellow:   #f59e0b;
-    }
-
-    .material-symbols-outlined {
-      font-family: 'Material Symbols Outlined';
-      font-weight: normal; font-style: normal;
-      font-size: inherit; line-height: 1;
-      letter-spacing: normal; text-transform: none;
-      display: inline-block; white-space: nowrap; word-wrap: normal;
-      direction: ltr; -webkit-font-feature-settings: 'liga';
-      -webkit-font-smoothing: antialiased;
-      font-variation-settings: 'FILL' 0, 'wght' 450, 'GRAD' 0, 'opsz' 24;
-      vertical-align: middle;
-    }
-    .msi { font-size: 1.05em; vertical-align: -0.22em; margin-right: 0.2em; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Arial Nova', 'Nunito', 'Arial', sans-serif;
-      min-height: 100vh;
-    }
-
-    /* ── Login screen ─── */
-    #login-screen {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-    .login-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 40px 36px;
-      width: 100%;
-      max-width: 380px;
-      text-align: center;
-    }
-    .login-logo {
-      font-size: 2.5rem;
-      margin-bottom: 8px;
-    }
-    .login-title {
-      font-size: 1.3rem;
-      font-weight: 800;
-      margin-bottom: 4px;
-    }
-    .login-sub {
-      color: var(--muted);
-      font-size: .82rem;
-      margin-bottom: 28px;
-    }
-    .login-input {
-      width: 100%;
-      padding: 13px 16px;
-      background: var(--surface2);
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      color: var(--text);
-      font-size: .95rem;
-      outline: none;
-      margin-bottom: 12px;
-      transition: border-color .18s;
-      text-align: center;
-      letter-spacing: .1em;
-    }
-    .login-input:focus { border-color: var(--accent); }
-    .login-btn {
-      width: 100%;
-      padding: 13px;
-      background: var(--accent);
-      border: none;
-      border-radius: 12px;
-      color: #fff;
-      font-size: .95rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: opacity .18s;
-    }
-    .login-btn:hover { opacity: .88; }
-    .login-error {
-      color: var(--red);
-      font-size: .8rem;
-      margin-top: 10px;
-      min-height: 18px;
-    }
-
-    /* ── App layout ─── */
-    #app { display: none; }
-
-    .sidebar {
-      position: fixed;
-      left: 0; top: 0; bottom: 0;
-      width: 220px;
-      background: var(--surface);
-      border-right: 1px solid var(--border);
-      padding: 24px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      z-index: 100;
-    }
-    .sidebar-logo {
-      font-size: 1rem;
-      font-weight: 800;
-      color: var(--text);
-      padding: 0 8px 20px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 8px;
-    }
-    .sidebar-logo span { color: var(--accent); }
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: .85rem;
-      font-weight: 600;
-      color: var(--muted);
-      transition: all .18s;
-      border: none;
-      background: transparent;
-      width: 100%;
-      text-align: left;
-    }
-    .nav-item:hover { background: var(--surface2); color: var(--text); }
-    .nav-item.active { background: rgba(99,102,241,.15); color: var(--accent); }
-    .nav-item .ni { font-size: 1.1rem; }
-    .sidebar-bottom {
-      margin-top: auto;
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
-    }
-    .logout-btn {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: .82rem;
-      font-weight: 600;
-      color: var(--red);
-      border: none;
-      background: transparent;
-      width: 100%;
-    }
-    .logout-btn:hover { background: rgba(239,68,68,.08); }
-
-    .main-content {
-      margin-left: 220px;
-      padding: 28px;
-      min-height: 100vh;
-    }
-
-    /* ── Topbar ─── */
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 28px;
-    }
-    .page-title {
-      font-size: 1.4rem;
-      font-weight: 800;
-    }
-    .refresh-btn {
-      padding: 8px 16px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      color: var(--muted);
-      font-size: .8rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all .18s;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .refresh-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-    /* ── Tab panels ─── */
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
-
-    /* ── Summary cards ─── */
-    .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 16px;
-      margin-bottom: 28px;
-    }
-    .summary-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-    }
-    .summary-val {
-      font-size: 2rem;
-      font-weight: 900;
-      color: var(--text);
-    }
-    .summary-lbl {
-      font-size: .72rem;
-      color: var(--muted);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: .07em;
-      margin-top: 4px;
-    }
-    .summary-card .accent { color: var(--accent); }
-    .summary-card .green  { color: var(--green); }
-    .summary-card .yellow { color: var(--yellow); }
-    .summary-card .red    { color: var(--red); }
-
-    /* ── Section ─── */
-    .section { margin-bottom: 32px; }
-    .section-title {
-      font-size: .7rem;
-      font-weight: 700;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 12px;
-    }
-
-    /* ── Table ─── */
-    .table-wrap {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: .83rem;
-    }
-    thead {
-      background: var(--surface2);
-    }
-    th {
-      padding: 12px 16px;
-      text-align: left;
-      font-size: .68rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .07em;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-    td {
-      padding: 11px 16px;
-      border-top: 1px solid var(--border);
-      color: var(--text);
-    }
-    tr:hover td { background: var(--surface2); }
-    .td-muted { color: var(--muted); font-size: .78rem; }
-    .td-bold { font-weight: 700; }
-    .badge {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 20px;
-      font-size: .7rem;
-      font-weight: 700;
-    }
-    .badge-green  { background: rgba(34,197,94,.15);  color: var(--green); }
-    .badge-yellow { background: rgba(245,158,11,.15); color: var(--yellow); }
-    .badge-red    { background: rgba(239,68,68,.15);  color: var(--red); }
-    .badge-blue   { background: rgba(99,102,241,.15); color: var(--accent2); }
-    .badge-gray   { background: var(--surface2); color: var(--muted); }
-
-    /* ── Bar chart ─── */
-    .bar-chart {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-    }
-    .bar-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 10px;
-    }
-    .bar-row:last-child { margin-bottom: 0; }
-    .bar-name {
-      width: 180px;
-      font-size: .78rem;
-      color: var(--text);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      flex-shrink: 0;
-    }
-    .bar-track {
-      flex: 1;
-      height: 8px;
-      background: var(--surface2);
-      border-radius: 20px;
-      overflow: hidden;
-    }
-    .bar-fill {
-      height: 100%;
-      background: var(--accent);
-      border-radius: 20px;
-      transition: width .5s;
-    }
-    .bar-count {
-      width: 36px;
-      text-align: right;
-      font-size: .78rem;
-      font-weight: 700;
-      color: var(--muted);
-      flex-shrink: 0;
-    }
-
-    /* ── Chat messages ─── */
-    .chat-subject-group {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      margin-bottom: 16px;
-      overflow: hidden;
-    }
-    .chat-subject-header {
-      padding: 14px 18px;
-      background: var(--surface2);
-      font-weight: 700;
-      font-size: .88rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-      user-select: none;
-    }
-    .chat-subject-header:hover { background: var(--border); }
-    .chat-msg-list { display: none; }
-    .chat-msg-list.open { display: block; }
-    .chat-msg {
-      padding: 12px 18px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-    }
-    .chat-msg:hover { background: var(--surface2); }
-    .chat-avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: .75rem;
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-    .chat-msg-body { flex: 1; }
-    .chat-msg-meta {
-      font-size: .7rem;
-      color: var(--muted);
-      margin-bottom: 2px;
-    }
-    .chat-msg-meta strong { color: var(--text); }
-    .chat-msg-text {
-      font-size: .83rem;
-      color: var(--text);
-      line-height: 1.45;
-    }
-    .chat-msg.deleted .chat-msg-text {
-      color: var(--muted);
-      font-style: italic;
-    }
-
-    /* ── Search bar ─── */
-    .search-bar {
-      width: 100%;
-      padding: 11px 16px;
-      background: var(--surface);
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      color: var(--text);
-      font-size: .85rem;
-      outline: none;
-      margin-bottom: 16px;
-      transition: border-color .18s;
-    }
-    .search-bar:focus { border-color: var(--accent); }
-
-    /* ── Loading ─── */
-    .loading {
-      padding: 48px;
-      text-align: center;
-      color: var(--muted);
-      font-size: .9rem;
-    }
-    .spinner {
-      width: 28px;
-      height: 28px;
-      border: 3px solid var(--border);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin .7s linear infinite;
-      margin: 0 auto 12px;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* ── Premium kod generatoru ─── */
-    .premium-gen-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 16px;
-      margin-bottom: 28px;
-    }
-    .premium-plan-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 18px;
-    }
-    .premium-plan-name {
-      font-size: .8rem;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 2px;
-    }
-    .premium-plan-price {
-      font-size: 1.3rem;
-      font-weight: 900;
-      color: var(--accent2);
-      margin-bottom: 12px;
-    }
-    .premium-plan-card input[type="number"] {
-      width: 100%;
-      padding: 8px 10px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text);
-      font-size: .8rem;
-      margin-bottom: 8px;
-      outline: none;
-    }
-    .premium-plan-card button {
-      width: 100%;
-      padding: 9px;
-      background: var(--accent);
-      border: none;
-      border-radius: 8px;
-      color: #fff;
-      font-weight: 700;
-      font-size: .78rem;
-      cursor: pointer;
-      transition: opacity .18s;
-    }
-    .premium-plan-card button:hover { opacity: .87; }
-    .premium-plan-result {
-      margin-top: 10px;
-      font-size: .72rem;
-      color: var(--muted);
-      word-break: break-all;
-      line-height: 1.6;
-    }
-    .premium-plan-result code {
-      display: block;
-      background: var(--surface2);
-      border-radius: 6px;
-      padding: 4px 8px;
-      margin-top: 4px;
-      color: var(--green);
-      font-weight: 700;
-    }
-
-    /* ── Push bildirişlər ─── */
-    .push-form {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-      max-width: 640px;
-    }
-    .push-form-head { font-size: .95rem; font-weight: 800; margin-bottom: 4px; }
-    .push-form label {
-      display: flex;
-      justify-content: space-between;
-      font-size: .72rem;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      margin: 14px 0 6px;
-    }
-    .push-form input, .push-form textarea, .push-form select {
-      width: 100%;
-      padding: 10px 12px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      color: var(--text);
-      font-size: .85rem;
-      font-family: inherit;
-      outline: none;
-    }
-    .push-form textarea { resize: vertical; }
-    .push-form input:focus, .push-form textarea:focus, .push-form select:focus { border-color: var(--accent); }
-    .push-form #push-email { margin-top: 8px; }
-    .push-preview {
-      margin-top: 16px;
-      padding: 12px 14px;
-      border: 1px dashed var(--border);
-      border-radius: 12px;
-    }
-    .push-preview-lbl { font-size: .66rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 6px; }
-    .push-preview b { display: block; font-size: .85rem; }
-    .push-preview span { display: block; font-size: .78rem; color: var(--muted); white-space: pre-wrap; margin-top: 2px; }
-    .push-actions { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
-    .push-btn {
-      padding: 10px 18px;
-      background: var(--accent);
-      border: none;
-      border-radius: 10px;
-      color: #fff;
-      font-weight: 700;
-      font-size: .8rem;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: opacity .18s;
-    }
-    .push-btn:hover { opacity: .87; }
-    .push-btn.secondary { background: var(--surface2); border: 1px solid var(--border); color: var(--text); }
-    .push-btn:disabled { opacity: .5; cursor: not-allowed; }
-    .push-result { margin-top: 14px; font-size: .8rem; line-height: 1.6; color: var(--muted); white-space: pre-line; }
-    .push-result.ok  { color: var(--green); }
-    .push-result.err { color: var(--red); }
-
-
-    /* ── Material istəkləri: yazışma təfərrüatı + bildiriş jurnalı ─── */
-    .rq-top { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 16px; }
-    .rq-top .search-bar { flex: 1 1 240px; margin: 0; }
-    .rq-link { background: none; border: 0; padding: 0; font: inherit; font-weight: 700; color: var(--accent2); cursor: pointer; text-align: left; }
-    .rq-link:hover { text-decoration: underline; }
-    .rq-btn { display: inline-flex; align-items: center; gap: 4px; padding: 6px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface2); color: var(--text); font: inherit; font-size: .78rem; font-weight: 700; cursor: pointer; }
-    .rq-btn:hover { border-color: var(--accent); }
-    .rq-btn.danger { color: var(--red); border-color: rgba(239,68,68,.35); }
-    .rq-btn.danger:hover { background: rgba(239,68,68,.12); border-color: var(--red); }
-    .rq-btn:disabled { opacity: .5; cursor: not-allowed; }
-    .rq-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 18px 20px; margin-bottom: 14px; }
-    .rq-card-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin-bottom: 10px; }
-    .rq-card-head .grow { flex: 1 1 auto; }
-    .rq-who { font-weight: 800; }
-    .rq-who small { font-weight: 600; color: var(--muted); margin-left: 4px; }
-    .rq-text { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.55; }
-    .rq-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-    .rq-files { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-    .rq-file { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface2); color: var(--accent2); font-size: .78rem; font-weight: 700; text-decoration: none; }
-    .rq-file small { color: var(--muted); font-weight: 600; }
-    .rq-notifs { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border); display: flex; flex-direction: column; gap: 6px; }
-    .rq-card > .rq-notifs:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
-    .rq-notifs-title { font-size: .66rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-    .rq-notif { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: .78rem; line-height: 1.5; }
-    .rq-notif .to { font-weight: 700; }
-    .rq-notif small { color: var(--muted); }
-    .rq-notif .why { flex-basis: 100%; color: var(--red); font-size: .74rem; }
-    .rq-empty-note { color: var(--muted); font-size: .78rem; }
-    .rq-h { font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 22px 0 10px; }
-    .push-log-wrap { margin-top: 28px; }
-
-    /* ── Responsive ─── */
-    @media (max-width: 768px) {
-      .sidebar { width: 60px; padding: 16px 8px; }
-      .sidebar-logo, .nav-item span, .logout-btn span { display: none; }
-      .nav-item { justify-content: center; padding: 12px; }
-      .main-content { margin-left: 60px; padding: 16px; }
-      .bar-name { width: 100px; }
-    }
-  </style>
-</head>
-<body>
-
-<!-- ── LOGIN ─────────────────────────────────────────────────── -->
-<div id="login-screen">
-  <div class="login-card">
-    <div class="login-logo"><span class="material-symbols-outlined">shield</span></div>
-    <div class="login-title">Admin Panel</div>
-    <div class="login-sub">UNEC Tələbə Platforması</div>
-    <input class="login-input" id="admin-key-input"
-           type="password" placeholder="Admin kodu"
-           onkeydown="if(event.key==='Enter') doLogin()">
-    <button class="login-btn" onclick="doLogin()">Daxil ol</button>
-    <div class="login-error" id="login-error"></div>
-  </div>
-</div>
-
-<!-- ── APP ───────────────────────────────────────────────────── -->
-<div id="app">
-
-  <div class="sidebar">
-    <div class="sidebar-logo"><span class="material-symbols-outlined msi">shield</span><span>UNEC</span> Admin</div>
-
-    <button class="nav-item active" onclick="showTab('overview')" id="nav-overview">
-      <span class="ni"><span class="material-symbols-outlined">bar_chart</span></span><span>Ümumi baxış</span>
-    </button>
-    <button class="nav-item" onclick="showTab('users')" id="nav-users">
-      <span class="ni"><span class="material-symbols-outlined">group</span></span><span>İstifadəçilər</span>
-    </button>
-    <button class="nav-item" onclick="showTab('chats')" id="nav-chats">
-      <span class="ni"><span class="material-symbols-outlined">chat_bubble</span></span><span>Chat mesajları</span>
-    </button>
-    <button class="nav-item" onclick="showTab('requests')" id="nav-requests">
-      <span class="ni"><span class="material-symbols-outlined">assignment</span></span><span>Material istəkləri</span>
-    </button>
-    <button class="nav-item" onclick="showTab('pdfs')" id="nav-pdfs">
-      <span class="ni"><span class="material-symbols-outlined">description</span></span><span>PDF statistika</span>
-    </button>
-    <button class="nav-item" onclick="showTab('premium')" id="nav-premium">
-      <span class="ni"><span class="material-symbols-outlined">workspace_premium</span></span><span>Premium Kodlar</span>
-    </button>
-    <button class="nav-item" onclick="showTab('push')" id="nav-push">
-      <span class="ni"><span class="material-symbols-outlined">notifications</span></span><span>Bildirişlər</span>
-    </button>
-
-    <div class="sidebar-bottom">
-      <button class="logout-btn" onclick="doLogout()">
-        <span><span class="material-symbols-outlined">logout</span></span><span>Çıxış</span>
-      </button>
-    </div>
-  </div>
-
-  <div class="main-content">
-    <div class="topbar">
-      <div class="page-title" id="page-title">Ümumi baxış</div>
-      <button class="refresh-btn" onclick="refreshCurrent()"><span class="material-symbols-outlined msi">refresh</span> Yenilə</button>
-    </div>
-
-    <!-- OVERVIEW -->
-    <div class="tab-panel active" id="panel-overview">
-      <div id="overview-content"><div class="loading"><div class="spinner"></div>Yüklənir...</div></div>
-    </div>
-
-    <!-- USERS -->
-    <div class="tab-panel" id="panel-users">
-      <input class="search-bar" id="users-search" placeholder="Ad, email, fakültə axtar..." oninput="filterUsers()">
-      <div id="users-content"><div class="loading"><div class="spinner"></div>Yüklənir...</div></div>
-    </div>
-
-    <!-- CHATS -->
-    <div class="tab-panel" id="panel-chats">
-      <input class="search-bar" id="chats-search" placeholder="Mesaj, istifadəçi axtar..." oninput="filterChats()">
-      <div id="chats-content"><div class="loading"><div class="spinner"></div>Yüklənir...</div></div>
-    </div>
-
-    <!-- REQUESTS -->
-    <div class="tab-panel" id="panel-requests">
-      <div class="rq-top" id="requests-top">
-        <input class="search-bar" id="requests-search" placeholder="İstək, istifadəçi axtar..." oninput="filterRequests()">
-      </div>
-      <div id="requests-content"><div class="loading"><div class="spinner"></div>Yüklənir...</div></div>
-    </div>
-
-    <!-- PDFS -->
-    <div class="tab-panel" id="panel-pdfs">
-      <div id="pdfs-content"><div class="loading"><div class="spinner"></div>Yüklənir...</div></div>
-    </div>
-
-    <!-- PREMIUM -->
-    <div class="tab-panel" id="panel-premium">
-      <div class="premium-gen-grid" id="premium-gen-grid"></div>
-      <div id="premium-content"><div class="loading"><div class="spinner"></div>Yüklənir...</div></div>
-    </div>
-
-    <!-- PUSH -->
-    <div class="tab-panel" id="panel-push">
-      <div class="summary-grid" id="push-stats"><div class="loading"><div class="spinner"></div>Yüklənir...</div></div>
-
-      <div class="push-form">
-        <div class="push-form-head">Yeni bildiriş göndər</div>
-
-        <label for="push-title">Başlıq <span id="push-title-count">0/80</span></label>
-        <input id="push-title" maxlength="80" placeholder="Məs: Yeni material əlavə olundu" oninput="pushPreview()">
-
-        <label for="push-body">Mətn <span id="push-body-count">0/240</span></label>
-        <textarea id="push-body" rows="3" maxlength="240" placeholder="Qısa və aydın yaz — bildirişdə 2-3 sətir görünür" oninput="pushPreview()"></textarea>
-
-        <label for="push-url">Klik linki (boşdursa — ana səhifə)</label>
-        <input id="push-url" placeholder="#/requests  və ya  https://unecstudentshub.com/...  və ya  https://t.me/...">
-
-        <label for="push-audience">Kimə</label>
-        <select id="push-audience" onchange="pushAudienceChanged()">
-          <option value="all">Hamıya (icazə verənlərin hamısı)</option>
-          <option value="az">Yalnız Azərbaycan dilini seçənlər</option>
-          <option value="en">Yalnız English seçənlər</option>
-          <option value="user">Konkret istifadəçi (test üçün)</option>
-        </select>
-        <input id="push-email" type="email" placeholder="İstifadəçinin email ünvanı (saytda hesabı olan)" style="display:none">
-
-        <div class="push-preview">
-          <div class="push-preview-lbl">Önizləmə</div>
-          <b id="push-prev-title">UNEC Students Hub</b>
-          <span id="push-prev-body">Mətn burada görünəcək</span>
-        </div>
-
-        <div class="push-actions">
-          <button class="push-btn secondary" id="push-count-btn" onclick="pushSend(true)">
-            <span class="material-symbols-outlined msi">group</span>Neçə cihaza gedəcək?
-          </button>
-          <button class="push-btn" id="push-send-btn" onclick="pushSend(false)">
-            <span class="material-symbols-outlined msi">send</span>Göndər
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>İdarəetmə · UNEC Students Hub</title>
+    <link rel="icon" href="../images/favicon.svg" />
+    <link rel="stylesheet" href="admin.css?v=20261110" />
+    <script src="workspace.js?v=20261110" defer></script>
+    <script src="admin.js?v=20261110" defer></script>
+  </head>
+  <body>
+    <svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <symbol id="icon-bar_chart" viewBox="0 0 24 24">
+          <path d="M4 20V10m8 10V4m8 16v-7" />
+        </symbol>
+        <symbol id="icon-group" viewBox="0 0 24 24">
+          <circle cx="9" cy="7" r="3" />
+          <path
+            d="M3 21v-3a6 6 0 0 1 12 0v3m2-17a3 3 0 0 1 0 6m3 11v-3a5 5 0 0 0-3-5"
+          />
+        </symbol>
+        <symbol id="icon-chat_bubble" viewBox="0 0 24 24">
+          <path d="M4 3h16v14H8l-4 4z" />
+        </symbol>
+        <symbol id="icon-assignment" viewBox="0 0 24 24">
+          <rect x="4" y="4" width="16" height="17" rx="2" />
+          <path d="M9 3h6v4H9zm-1 9h8m-8 4h8" />
+        </symbol>
+        <symbol id="icon-description" viewBox="0 0 24 24">
+          <path d="M4 2h10l6 6v14H4zm10 0v6h6M8 13h8m-8 4h8" />
+        </symbol>
+        <symbol id="icon-workspace_premium" viewBox="0 0 24 24">
+          <circle cx="12" cy="8" r="6" />
+          <path d="M8 14v8l4-3 4 3v-8" />
+        </symbol>
+        <symbol id="icon-notifications" viewBox="0 0 24 24">
+          <path d="M5 17h14l-2-3V8a5 5 0 0 0-10 0v6zm5 3h4" />
+        </symbol>
+        <symbol id="icon-logout" viewBox="0 0 24 24">
+          <path d="M9 3H3v18h6m5-14 5 5-5 5m-7-5h12" />
+        </symbol>
+        <symbol id="icon-refresh" viewBox="0 0 24 24">
+          <path
+            d="M20 7v6h-6M4 17v-6h6m-5-4a8 8 0 0 1 14 1M5 16a8 8 0 0 0 14 1"
+          />
+        </symbol>
+        <symbol id="icon-forum" viewBox="0 0 24 24">
+          <path d="M3 3h14v12H7l-4 4zm17 4h2v15l-5-4h-6" />
+        </symbol>
+        <symbol id="icon-attach_file" viewBox="0 0 24 24">
+          <path d="m8 13 6-6a3 3 0 0 1 4 4l-8 8a5 5 0 0 1-7-7l9-9" />
+        </symbol>
+        <symbol id="icon-delete" viewBox="0 0 24 24">
+          <path d="M3 6h18M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7m4-7v7" />
+        </symbol>
+        <symbol id="icon-arrow_back" viewBox="0 0 24 24">
+          <path d="m11 4-8 8 8 8m-8-8h18" />
+        </symbol>
+        <symbol id="icon-add_circle" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 7v10m-5-5h10" />
+        </symbol>
+        <symbol id="icon-send" viewBox="0 0 24 24">
+          <path d="m2 3 20 9-20 9 4-9zm4 9h16" />
+        </symbol>
+        <symbol id="icon-star" viewBox="0 0 24 24">
+          <path d="m12 2 3 7 7 1-5 5 1 7-6-4-6 4 1-7-5-5 7-1z" />
+        </symbol>
+        <symbol id="icon-local_fire_department" viewBox="0 0 24 24">
+          <path
+            d="M12 2c4 7 8 8 8 13a8 8 0 0 1-16 0c0-3 2-6 4-8v6c4-2 4-6 4-11z"
+          />
+        </symbol>
+      </defs>
+    </svg>
+    <section id="login-screen">
+      <form class="login-card" id="login-form">
+        <div class="brand-mark">U</div>
+        <p class="eyebrow">UNEC STUDENTS HUB</p>
+        <h1>İdarəetmə mərkəzi</h1>
+        <p class="muted">
+          Platformanın məlumatlarını və gündəlik işlərini bir yerdən idarə et.
+        </p>
+        <label for="admin-key-input">Admin giriş kodu</label>
+        <div class="password-field">
+          <input
+            id="admin-key-input"
+            type="password"
+            autocomplete="current-password"
+            required
+          /><button
+            type="button"
+            id="toggle-key"
+            aria-label="Giriş kodunu göstər"
+            aria-pressed="false"
+          >
+            Göstər
           </button>
         </div>
-        <div class="push-result" id="push-result"></div>
-      </div>
-
-      <div class="push-log-wrap">
-        <div class="section-title">Son göndərişlər (əl ilə + istək cavabları)</div>
-        <div id="push-log"><div class="loading"><div class="spinner"></div>Yüklənir...</div></div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<script>
-// ── Config ─────────────────────────────────────────────────────
-const API = 'https://ericismyhero-github-io.vercel.app/api/admin-data';
-
-// ── State ──────────────────────────────────────────────────────
-let adminKey = '';
-let currentTab = 'overview';
-let cache = {};
-
-// ── Auth ───────────────────────────────────────────────────────
-async function doLogin() {
-  const key = document.getElementById('admin-key-input').value.trim();
-  if (!key) return;
-
-  const errEl = document.getElementById('login-error');
-  errEl.textContent = 'Yoxlanılır...';
-
-  try {
-    const res = await apiFetch('all', key);
-    if (res.error) throw new Error(res.error);
-
-    adminKey = key;
-    cache['overview'] = res;
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    renderOverview(res);
-  } catch (e) {
-    errEl.textContent = e.message === 'Səlahiyyətsiz giriş' ? 'Yanlış kod.' : 'Xəta: ' + e.message;
-  }
-}
-
-function doLogout() {
-  adminKey = '';
-  cache = {};
-  document.getElementById('admin-key-input').value = '';
-  document.getElementById('login-error').textContent = '';
-  document.getElementById('login-screen').style.display = 'flex';
-  document.getElementById('app').style.display = 'none';
-}
-
-// ── API ────────────────────────────────────────────────────────
-async function apiFetch(section, key) {
-  const k = key || adminKey;
-  const res = await fetch(API, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'X-Admin-Key': k },
-    body: JSON.stringify({ section, adminKey: k }),
-  });
-  return res.json();
-}
-
-// ── Tab navigation ─────────────────────────────────────────────
-const TAB_TITLES = {
-  overview: 'Ümumi baxış',
-  users:    'İstifadəçilər',
-  chats:    'Chat mesajları',
-  requests: 'Material istəkləri',
-  pdfs:     'PDF statistika',
-  premium:  'Premium Kodlar',
-  push:     'Bildirişlər',
-};
-
-async function showTab(tab) {
-  currentTab = tab;
-  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('nav-' + tab).classList.add('active');
-  document.getElementById('panel-' + tab).classList.add('active');
-  document.getElementById('page-title').textContent = TAB_TITLES[tab];
-
-  if (cache[tab]) {
-    renderTab(tab, cache[tab]);
-    return;
-  }
-  await loadTab(tab);
-}
-
-async function loadTab(tab) {
-  if (tab === 'push') return loadPush();
-  if (tab === 'requests') return loadRequestsTab();
-  const section = tab === 'overview' ? 'all' : tab;
-  document.getElementById(tab + '-content').innerHTML =
-    '<div class="loading"><div class="spinner"></div>Yüklənir...</div>';
-  try {
-    const data = await apiFetch(section);
-    if (data.error) throw new Error(data.error);
-    cache[tab] = data;
-    renderTab(tab, data);
-  } catch (e) {
-    document.getElementById(tab + '-content').innerHTML =
-      `<div class="loading" style="color:var(--red)">Xəta: ${e.message}</div>`;
-  }
-}
-
-function refreshCurrent() {
-  delete cache[currentTab];
-  loadTab(currentTab);
-}
-
-function renderTab(tab, data) {
-  if (tab === 'overview')  renderOverview(data);
-  if (tab === 'users')     renderUsers(data.users);
-  if (tab === 'chats')     renderChats(data.chats);
-  if (tab === 'requests')  renderRequests(data);
-  if (tab === 'pdfs')      renderPdfs(data);
-  if (tab === 'premium')   renderPremium(data.premiumCodes);
-}
-
-// ── OVERVIEW ───────────────────────────────────────────────────
-function renderOverview(data) {
-  const s = data.summary || {};
-  const html = `
-    <div class="summary-grid">
-      <div class="summary-card">
-        <div class="summary-val accent">${s.totalUsers || 0}</div>
-        <div class="summary-lbl">Ümumi istifadəçi</div>
-      </div>
-      <div class="summary-card">
-        <div class="summary-val green">${s.activeToday || 0}</div>
-        <div class="summary-lbl">Bu gün aktiv</div>
-      </div>
-      <div class="summary-card">
-        <div class="summary-val yellow">${s.totalRequests || 0}</div>
-        <div class="summary-lbl">Material istəkləri</div>
-      </div>
-      <div class="summary-card">
-        <div class="summary-val red">${s.openRequests || 0}</div>
-        <div class="summary-lbl">Açıq istəklər</div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="section-title">Ən çox açılan PDF-lər (son 500 açılış)</div>
-      ${renderBarChart(data.pdfOpens || [], 8)}
-    </div>
-
-    <div class="section">
-      <div class="section-title">Ən aktiv istifadəçilər (XP sırası)</div>
-      ${renderTopUsersTable(data.topUsers || [])}
-    </div>
-
-    <div class="section">
-      <div class="section-title">Son material istəkləri</div>
-      ${renderRequestsTable((data.requests || []).slice(0, 8))}
-    </div>
-  `;
-  document.getElementById('overview-content').innerHTML = html;
-}
-
-function renderBarChart(items, limit) {
-  if (!items.length) return '<div class="loading">Məlumat yoxdur.</div>';
-  const top = items.slice(0, limit);
-  const max = top[0]?.count || 1;
-  return `<div class="bar-chart">${top.map(item => `
-    <div class="bar-row">
-      <div class="bar-name" title="${esc(item.name)}">${esc(item.name)}</div>
-      <div class="bar-track"><div class="bar-fill" style="width:${Math.round(item.count/max*100)}%"></div></div>
-      <div class="bar-count">${item.count}</div>
-    </div>`).join('')}</div>`;
-}
-
-function renderTopUsersTable(users) {
-  if (!users.length) return '<div class="loading">İstifadəçi yoxdur.</div>';
-  return `<div class="table-wrap"><table>
-    <thead><tr>
-      <th>#</th><th>Ad</th><th>Email</th><th>Fakültə</th><th>XP</th><th>Streak</th><th>Testlər</th><th>Son giriş</th>
-    </tr></thead>
-    <tbody>${users.slice(0, 10).map((u, i) => `
-      <tr>
-        <td class="td-muted">${i+1}</td>
-        <td class="td-bold">${esc(u.name)}</td>
-        <td class="td-muted">${esc(u.email)}</td>
-        <td class="td-muted">${esc(u.faculty || '—')}</td>
-        <td><span class="badge badge-blue">${u.xp} XP</span></td>
-        <td><span class="badge ${u.streak > 5 ? 'badge-green' : 'badge-gray'}">${u.streak} <span class="material-symbols-outlined msi">local_fire_department</span></span></td>
-        <td class="td-muted">${u.totalTests || 0}</td>
-        <td class="td-muted">${fmtDate(u.lastLogin)}</td>
-      </tr>`).join('')}
-    </tbody></table></div>`;
-}
-
-// ── USERS ──────────────────────────────────────────────────────
-let _allUsers = [];
-
-function renderUsers(users) {
-  _allUsers = users || [];
-  document.getElementById('users-content').innerHTML = buildUsersTable(_allUsers);
-}
-
-function filterUsers() {
-  const q = document.getElementById('users-search').value.toLowerCase();
-  const filtered = _allUsers.filter(u =>
-    (u.name+u.email+u.faculty+u.major).toLowerCase().includes(q));
-  document.getElementById('users-content').innerHTML = buildUsersTable(filtered);
-}
-
-function buildUsersTable(users) {
-  if (!users.length) return '<div class="loading">İstifadəçi tapılmadı.</div>';
-  return `<div class="table-wrap"><table>
-    <thead><tr>
-      <th>Ad</th><th>Email</th><th>Fakültə / İxtisas</th><th>Kurs</th>
-      <th>XP</th><th>Streak</th><th>Testlər</th><th>Qeydiyyat</th><th>Son giriş</th>
-    </tr></thead>
-    <tbody>${users.map(u => `
-      <tr>
-        <td class="td-bold">${esc(u.name)}</td>
-        <td class="td-muted">${esc(u.email)}</td>
-        <td class="td-muted">${esc(u.faculty||'—')} / ${esc(u.major||'—')}</td>
-        <td class="td-muted">${u.year || '—'}</td>
-        <td><span class="badge badge-blue">${u.xp} XP</span></td>
-        <td><span class="badge ${u.streak > 5 ? 'badge-green' : 'badge-gray'}">${u.streak} <span class="material-symbols-outlined msi">local_fire_department</span></span></td>
-        <td class="td-muted">${u.totalTests || 0}</td>
-        <td class="td-muted">${fmtDate(u.createdAt)}</td>
-        <td class="td-muted">${fmtDate(u.lastLogin)}</td>
-      </tr>`).join('')}
-    </tbody></table></div>`;
-}
-
-// ── CHATS ──────────────────────────────────────────────────────
-let _allChats = [];
-
-function renderChats(chats) {
-  _allChats = chats || [];
-  document.getElementById('chats-content').innerHTML = buildChatsHtml(_allChats);
-}
-
-function filterChats() {
-  const q = document.getElementById('chats-search').value.toLowerCase();
-  const filtered = _allChats.map(group => ({
-    ...group,
-    messages: group.messages.filter(m =>
-      (m.text + m.userName + m.userEmail).toLowerCase().includes(q))
-  })).filter(g => g.messages.length > 0);
-  document.getElementById('chats-content').innerHTML = buildChatsHtml(filtered);
-}
-
-function buildChatsHtml(chats) {
-  if (!chats.length) return '<div class="loading">Chat tapılmadı.</div>';
-  return chats.map((group, gi) => `
-    <div class="chat-subject-group">
-      <div class="chat-subject-header" onclick="toggleChatGroup(${gi})">
-        <span><span class="material-symbols-outlined msi">chat_bubble</span> ${esc(group.subject)}</span>
-        <span class="badge badge-blue">${group.count} mesaj</span>
-      </div>
-      <div class="chat-msg-list" id="chatgroup-${gi}">
-        ${group.messages.map(m => `
-          <div class="chat-msg ${m.deleted ? 'deleted' : ''}">
-            <div class="chat-avatar">${(m.userName||'?')[0].toUpperCase()}</div>
-            <div class="chat-msg-body">
-              <div class="chat-msg-meta">
-                <strong>${esc(m.userName)}</strong>
-                · ${esc(m.userEmail)}
-                · ${fmtDate(m.ts)}
-                ${m.deleted ? '· <span style="color:var(--red)">Silindi</span>' : ''}
-              </div>
-              <div class="chat-msg-text">${esc(m.text)}</div>
-            </div>
-          </div>`).join('')}
-      </div>
-    </div>`).join('');
-}
-
-function toggleChatGroup(gi) {
-  const el = document.getElementById('chatgroup-' + gi);
-  el.classList.toggle('open');
-}
-
-// ── REQUESTS ───────────────────────────────────────────────────
-// Siyahı və təfərrüat serverdən (push funksiyası) gəlir: cavab sayı, fayllar, bildiriş nəticələri
-let _allRequests = [];
-let _rqTotals = null;
-let _rqOpen = null;           // açıq istəyin id-si (null — siyahı)
-
-async function loadRequestsTab() {
-  const el = document.getElementById('requests-content');
-  el.innerHTML = '<div class="loading"><div class="spinner"></div>Yüklənir...</div>';
-  try {
-    const d = await pushApi({ action: 'admin-requests' });
-    cache.requests = d;
-    renderRequests(d);
-  } catch (e) {
-    el.innerHTML = `<div class="loading" style="color:var(--red)">Xəta: ${esc(e.message)}</div>`;
-  }
-}
-
-function renderRequests(data) {
-  _allRequests = (data && data.requests) || [];
-  _rqTotals = (data && data.totals) || null;
-  _rqOpen = null;
-  document.getElementById('requests-top').style.display = '';
-  document.getElementById('requests-content').innerHTML = buildRequestsTable(_allRequests);
-}
-
-function filterRequests() {
-  if (_rqOpen) return;
-  const q = document.getElementById('requests-search').value.toLowerCase();
-  const filtered = _allRequests.filter(r => (r.text + ' ' + r.name + ' ' + r.subject + ' ' + r.course).toLowerCase().includes(q));
-  document.getElementById('requests-content').innerHTML = buildRequestsTable(filtered, !!q);
-}
-
-function buildRequestsTable(requests, filtered) {
-  const totals = (!filtered && _rqTotals) ? `
-    <div class="summary-grid">
-      <div class="summary-card"><div class="summary-val accent">${_rqTotals.requests}</div><div class="summary-lbl">İstək</div></div>
-      <div class="summary-card"><div class="summary-val yellow">${_rqTotals.open}</div><div class="summary-lbl">Açıq</div></div>
-      <div class="summary-card"><div class="summary-val green">${_rqTotals.messages}</div><div class="summary-lbl">Cavab (mesaj)</div></div>
-    </div>` : '';
-  if (!requests.length) return totals + '<div class="loading">İstək tapılmadı.</div>';
-  return totals + `<div class="table-wrap"><table>
-    <thead><tr>
-      <th>İstək</th><th>İstifadəçi</th><th>Cavab</th><th>Upvote</th><th>Status</th><th>Son fəaliyyət</th><th></th>
-    </tr></thead>
-    <tbody>${requests.map(r => `
-      <tr>
-        <td class="td-bold"><button class="rq-link" onclick="openRequestDetail('${esc(r.id)}')">${esc(r.text.length > 90 ? r.text.slice(0, 90) + '…' : r.text)}</button>
-          ${(r.course || r.subject) ? `<br><small class="td-muted">${esc([r.course, r.subject].filter(Boolean).join(' · '))}</small>` : ''}</td>
-        <td class="td-muted">${esc(r.name)}</td>
-        <td><span class="badge ${r.msgCount ? 'badge-green' : 'badge-gray'}">${r.msgCount}</span></td>
-        <td><span class="badge badge-blue">▲ ${r.upvotes}</span></td>
-        <td><span class="badge ${r.status === 'fulfilled' ? 'badge-green' : 'badge-yellow'}">${r.status === 'closed' ? 'Bağlanıb' : r.status === 'fulfilled' ? 'Tapıldı' : 'Açıq'}</span></td>
-        <td class="td-muted">${fmtDateTime(r.lastMessageAt || r.createdAt)}</td>
-        <td><button class="rq-btn" onclick="openRequestDetail('${esc(r.id)}')"><span class="material-symbols-outlined msi">forum</span>Bax</button></td>
-      </tr>`).join('')}
-    </tbody></table></div>`;
-}
-
-// Ümumi baxışdakı qısa siyahı (admin-data cavabı: userName, userEmail, upvotes, found)
-function renderRequestsTable(requests) {
-  if (!requests.length) return '<div class="loading">İstək tapılmadı.</div>';
-  return `<div class="table-wrap"><table>
-    <thead><tr>
-      <th>İstək</th><th>İstifadəçi</th><th>Upvote</th><th>Status</th><th>Tarix</th>
-    </tr></thead>
-    <tbody>${requests.map(r => `
-      <tr>
-        <td class="td-bold">${esc(r.text)}</td>
-        <td class="td-muted">${esc(r.userName)} <br><small>${esc(r.userEmail)}</small></td>
-        <td><span class="badge badge-blue">▲ ${r.upvotes}</span></td>
-        <td><span class="badge ${r.found ? 'badge-green' : 'badge-yellow'}">${r.found ? 'Tapıldı' : 'Açıq'}</span></td>
-        <td class="td-muted">${fmtDate(r.createdAt)}</td>
-      </tr>`).join('')}
-    </tbody></table></div>`;
-}
-
-function rqFilesHtml(atts) {
-  const list = (atts || []).filter(a => a && /^https:\/\//i.test(a.url || ''));
-  if (!list.length) return '';
-  return `<div class="rq-files">${list.map(a => `<a class="rq-file" href="${esc(a.url)}" target="_blank" rel="noopener noreferrer"><span class="material-symbols-outlined msi">attach_file</span>${esc(a.name || 'fayl')} <small>${esc(fmtSize(a.size))}</small></a>`).join('')}</div>`;
-}
-
-// Bir mesaj üçün kimlərə bildiriş getdi və nəticəsi nə oldu
-function rqNotifsHtml(list) {
-  if (!list.length) return `<div class="rq-notifs"><div class="rq-notifs-title">Bildirişlər</div><div class="rq-empty-note">Bu mesaj üçün bildiriş göndərilməyib (alıcı yoxdur və ya istək sahibi özü yazıb və cavab verən yoxdur).</div></div>`;
-  return `<div class="rq-notifs"><div class="rq-notifs-title">Bildirişlər (${list.length})</div>${list.map(n => {
-    const errs = Object.entries(n.errors || {}).map(([k, v]) => `${esc(k)}: ${esc(v)}`).join(', ');
-    let st;
-    if (!n.devices) st = '<span class="badge badge-gray">Aktiv cihaz yoxdur</span>';
-    else if (n.sent && !n.failed) st = `<span class="badge badge-green">Çatdı ${n.sent}/${n.devices}</span>`;
-    else if (n.sent) st = `<span class="badge badge-yellow">Qismən ${n.sent}/${n.devices}</span>`;
-    else st = `<span class="badge badge-red">Çatmadı 0/${n.devices}</span>`;
-    return `<div class="rq-notif">
-        <span class="material-symbols-outlined msi">notifications</span>
-        <span class="to">${esc(n.toName || '—')}</span><small>${esc(n.toEmail || '')}</small>
-        <span class="badge ${n.recipientRole === 'owner' ? 'badge-blue' : 'badge-gray'}">${n.recipientRole === 'owner' ? 'istək sahibi' : 'əvvəl yazan'}</span>
-        ${st}
-        ${n.removed ? `<span class="badge badge-gray">köhnə token silindi: ${n.removed}</span>` : ''}
-        <small>${fmtDateTime(n.createdAt)}</small>
-        ${errs ? `<div class="why">Xəta: ${errs}</div>` : ''}
-        ${n.title || n.body ? `<div class="td-muted" style="flex-basis:100%">“${esc(n.title)}” — ${esc(n.body)}</div>` : ''}
-      </div>`;
-  }).join('')}</div>`;
-}
-
-async function openRequestDetail(id) {
-  _rqOpen = id;
-  document.getElementById('requests-top').style.display = 'none';
-  const el = document.getElementById('requests-content');
-  el.innerHTML = '<div class="loading"><div class="spinner"></div>Yüklənir...</div>';
-  try {
-    const d = await pushApi({ action: 'admin-request', requestId: id });
-    if (_rqOpen !== id) return;
-    const r = d.request;
-    const byMsg = {};
-    const orphan = [];
-    for (const n of d.notifications || []) {
-      if (n.messageId && d.messages.some(m => m.id === n.messageId)) (byMsg[n.messageId] = byMsg[n.messageId] || []).push(n);
-      else orphan.push(n);
-    }
-    el.innerHTML = `
-      <div class="rq-top"><button class="rq-btn" onclick="closeRequestDetail()"><span class="material-symbols-outlined msi">arrow_back</span>Siyahıya qayıt</button>
-        <button class="rq-btn" onclick="openRequestDetail('${esc(r.id)}')"><span class="material-symbols-outlined msi">refresh</span>Yenilə</button></div>
-      <div class="rq-card">
-        <div class="rq-card-head">
-          <span class="rq-who">${esc(r.name || '—')}<small>${esc(r.email)}</small></span>
-          <span class="badge badge-blue">istək sahibi</span>
-          <span class="badge ${r.status === 'fulfilled' ? 'badge-green' : 'badge-yellow'}">${r.status === 'closed' ? 'Bağlanıb' : r.status === 'fulfilled' ? 'Tapıldı' : 'Açıq'}</span>
-          <span class="grow"></span>
-          <span class="td-muted">${fmtDateTime(r.createdAt)}</span>
-          <button class="rq-btn danger" onclick="adminDeleteRequest('${esc(r.id)}')"><span class="material-symbols-outlined msi">delete</span>İstəyi sil</button>
-        </div>
-        <div class="rq-text">${esc(r.text)}</div>
-        <div class="rq-meta">
-          ${r.course ? `<span class="badge badge-gray">${esc(r.course)}</span>` : ''}${r.subject ? `<span class="badge badge-gray">${esc(r.subject)}</span>` : ''}
-          <span class="badge badge-blue">▲ ${r.upvotes}</span><span class="badge badge-gray">${d.messages.length} mesaj</span>
-        </div>
-      </div>
-      <div class="rq-h">Yazışma (${d.messages.length})</div>
-      ${d.messages.length ? d.messages.map(m => `
-        <div class="rq-card">
-          <div class="rq-card-head">
-            <span class="rq-who">${esc(m.name || '—')}<small>${esc(m.email)}</small></span>
-            <span class="badge ${m.role === 'owner' ? 'badge-blue' : 'badge-gray'}">${m.role === 'owner' ? 'istək sahibi' : 'cavab verən'}</span>
-            <span class="grow"></span>
-            <span class="td-muted">${fmtDateTime(m.createdAt)}</span>
-            <button class="rq-btn danger" onclick="adminDeleteMessage('${esc(r.id)}','${esc(m.id)}')"><span class="material-symbols-outlined msi">delete</span>Sil</button>
-          </div>
-          ${m.text ? `<div class="rq-text">${esc(m.text)}</div>` : ''}
-          ${rqFilesHtml(m.attachments)}
-          ${rqNotifsHtml(byMsg[m.id] || [])}
-        </div>`).join('') : '<div class="loading">Hələ cavab yoxdur.</div>'}
-      ${orphan.length ? `<div class="rq-h">Silinmiş mesajlar üçün göndərilənlər</div><div class="rq-card">${rqNotifsHtml(orphan)}</div>` : ''}`;
-  } catch (e) {
-    if (_rqOpen !== id) return;
-    el.innerHTML = `<div class="rq-top"><button class="rq-btn" onclick="closeRequestDetail()"><span class="material-symbols-outlined msi">arrow_back</span>Siyahıya qayıt</button></div>
-      <div class="loading" style="color:var(--red)">Xəta: ${esc(e.message)}</div>`;
-  }
-}
-
-function closeRequestDetail() {
-  _rqOpen = null;
-  if (cache.requests) renderRequests(cache.requests); else loadRequestsTab();
-}
-
-async function adminDeleteMessage(reqId, msgId) {
-  if (!confirm('Bu mesaj (və əlavə faylları) silinsin? Geri qaytarmaq mümkün deyil.')) return;
-  try { await pushApi({ action: 'admin-msg-delete', requestId: reqId, messageId: msgId }); delete cache.requests; await openRequestDetail(reqId); }
-  catch (e) { alert('Xəta: ' + e.message); }
-}
-
-async function adminDeleteRequest(reqId) {
-  if (!confirm('Bu istək, bütün cavablar və faylları silinsin? Geri qaytarmaq mümkün deyil.')) return;
-  try { await pushApi({ action: 'admin-req-delete', requestId: reqId }); delete cache.requests; _rqOpen = null; await loadRequestsTab(); }
-  catch (e) { alert('Xəta: ' + e.message); }
-}
-
-// ── PDFS ───────────────────────────────────────────────────────
-function renderPdfs(data) {
-  const opens   = data.pdfOpens   || [];
-  const ratings = data.pdfRatings || [];
-  const html = `
-    <div class="section">
-      <div class="section-title">Ən çox açılan PDF-lər</div>
-      ${renderBarChart(opens, 20)}
-    </div>
-    <div class="section">
-      <div class="section-title">PDF reytinqləri (səs sayına görə)</div>
-      ${ratings.length ? `<div class="table-wrap"><table>
-        <thead><tr><th>PDF ID</th><th>Ortalama reytinq</th><th>Səs sayı</th></tr></thead>
-        <tbody>${ratings.map(r => `
-          <tr>
-            <td class="td-bold">${esc(r.id)}</td>
-            <td><span class="badge badge-yellow">${Number(r.avgRating).toFixed(1)} <span class="material-symbols-outlined msi">star</span></span></td>
-            <td class="td-muted">${r.totalVotes} səs</td>
-          </tr>`).join('')}
-        </tbody></table></div>` : '<div class="loading">Reytinq yoxdur.</div>'}
-    </div>
-  `;
-  document.getElementById('pdfs-content').innerHTML = html;
-}
-
-// ── PREMIUM KODLAR ────────────────────────────────────────────
-const PREMIUM_PLAN_INFO = {
-  '7d':       { name: '7 günlük',   price: '2.49₼' },
-  '15d':      { name: '15 günlük',  price: '4.99₼' },
-  '32d':      { name: '32 günlük',  price: '9.99₼' },
-  'lifetime': { name: 'Ömürlük',    price: '19.99₼' },
-};
-
-function renderPremium(codes) {
-  codes = codes || [];
-  document.getElementById('premium-gen-grid').innerHTML =
-    Object.entries(PREMIUM_PLAN_INFO).map(([plan, info]) => `
-      <div class="premium-plan-card">
-        <div class="premium-plan-name">${info.name}</div>
-        <div class="premium-plan-price">${info.price}</div>
-        <input type="number" id="premium-count-${plan}" value="1" min="1" max="50">
-        <button onclick="generatePremiumCode('${plan}')">
-          <span class="material-symbols-outlined msi">add_circle</span>Kod yarat
+        <button class="login-btn" id="login-submit" type="submit">
+          Daxil ol
         </button>
-        <div class="premium-plan-result" id="premium-result-${plan}"></div>
-      </div>
-    `).join('');
+        <p class="login-error" id="login-error" role="alert"></p>
+        <a class="back-site" href="../">← Sayta qayıt</a>
+      </form>
+    </section>
+    <div id="app" hidden>
+      <button
+        class="scrim"
+        id="nav-scrim"
+        aria-label="Menyunu bağla"
+        hidden
+      ></button>
+      <aside class="sidebar" id="admin-nav">
+        <a class="sidebar-logo" href="../"
+          ><span class="brand-mark">U</span
+          ><span>UNEC <small>İdarəetmə mərkəzi</small></span></a
+        >
+        <p class="nav-label">İŞ SAHƏSİ</p>
+        <button
+          class="nav-item"
+          id="nav-workspace"
+          data-tab="workspace"
+          type="button"
+        >
+          <span class="nav-index">◇</span><span>Məzmun iş sahəsi</span>
+        </button>
+        <nav aria-label="Admin bölmələri">
+          <button
+            class="nav-item active"
+            id="nav-overview"
+            data-tab="overview"
+            type="button"
+          >
+            <span class="nav-index">01</span><span>Ümumi baxış</span></button
+          ><button
+            class="nav-item"
+            id="nav-users"
+            data-tab="users"
+            type="button"
+          >
+            <span class="nav-index">02</span><span>İstifadəçilər</span></button
+          ><button
+            class="nav-item"
+            id="nav-requests"
+            data-tab="requests"
+            type="button"
+          >
+            <span class="nav-index">03</span
+            ><span>Material istəkləri</span></button
+          ><button
+            class="nav-item"
+            id="nav-chats"
+            data-tab="chats"
+            type="button"
+          >
+            <span class="nav-index">04</span><span>Fənn çatları</span></button
+          ><button class="nav-item" id="nav-pdfs" data-tab="pdfs" type="button">
+            <span class="nav-index">05</span
+            ><span>Material statistikası</span></button
+          ><button
+            class="nav-item"
+            id="nav-premium"
+            data-tab="premium"
+            type="button"
+          >
+            <span class="nav-index">06</span><span>Premium kodlar</span></button
+          ><button class="nav-item" id="nav-push" data-tab="push" type="button">
+            <span class="nav-index">07</span><span>Bildirişlər</span>
+          </button>
+        </nav>
+        <div class="sidebar-bottom">
+          <button class="theme-btn" id="theme-btn" type="button">
+            Açıq görünüş</button
+          ><a href="../" class="back-site">Saytı aç</a
+          ><button class="logout-btn" id="logout-btn" type="button">
+            Hesabdan çıx
+          </button>
+        </div>
+      </aside>
+      <main class="main-content" id="admin-main">
+        <header class="topbar">
+          <div class="heading">
+            <button
+              id="nav-toggle"
+              type="button"
+              aria-controls="admin-nav"
+              aria-expanded="false"
+            >
+              Menü
+            </button>
+            <div>
+              <p class="eyebrow">UNEC / İDARƏETMƏ</p>
+              <h1 class="page-title" id="page-title">Ümumi baxış</h1>
+              <p class="muted" id="page-description">
+                Göstəricilər və son fəaliyyət
+              </p>
+            </div>
+          </div>
+          <div class="top-actions">
+            <button id="export-btn" type="button" hidden>CSV endir</button
+            ><button class="refresh-btn" id="refresh-btn" type="button">
+              Yenilə
+            </button>
+          </div>
+        </header>
+        <p class="sync-status" id="sync-status" role="status"></p>
+        <div id="data-notice" class="data-notice" hidden></div>
+        <section
+          class="tab-panel"
+          id="panel-workspace"
+          aria-labelledby="nav-workspace"
+        ></section>
+        <section
+          class="tab-panel active"
+          id="panel-overview"
+          aria-labelledby="nav-overview"
+        >
+          <div id="overview-content"></div>
+        </section>
+        <section class="tab-panel" id="panel-users" aria-labelledby="nav-users">
+          <div class="filters" id="users-top">
+            <label class="search-label" for="users-search"
+              >Axtar<input
+                class="search-bar"
+                id="users-search"
+                type="search"
+                placeholder="Ad, mətn və ya açar söz…" /></label
+            ><label
+              >Sıralama<select id="users-sort">
+                <option value="xp">XP üzrə</option>
+                <option value="lastLogin">Son giriş</option>
+                <option value="createdAt">Yeni hesablar</option>
+                <option value="name">Ad üzrə</option>
+              </select></label
+            >
+          </div>
+          <div id="users-content"></div>
+        </section>
+        <section
+          class="tab-panel"
+          id="panel-requests"
+          aria-labelledby="nav-requests"
+        >
+          <div class="filters" id="requests-top">
+            <label class="search-label" for="requests-search"
+              >Axtar<input
+                class="search-bar"
+                id="requests-search"
+                type="search"
+                placeholder="Ad, mətn və ya açar söz…" /></label
+            ><label
+              >Status<select id="requests-status">
+                <option value="all">Bütün istəklər</option>
+                <option value="open">Açıq</option>
+                <option value="fulfilled">Tapıldı</option>
+                <option value="closed">Bağlanıb</option>
+              </select></label
+            >
+          </div>
+          <div id="requests-content"></div>
+        </section>
+        <section class="tab-panel" id="panel-chats" aria-labelledby="nav-chats">
+          <div class="filters" id="chats-top">
+            <label class="search-label" for="chats-search"
+              >Axtar<input
+                class="search-bar"
+                id="chats-search"
+                type="search"
+                placeholder="Ad, mətn və ya açar söz…"
+            /></label>
+          </div>
+          <div id="chats-content"></div>
+        </section>
+        <section class="tab-panel" id="panel-pdfs" aria-labelledby="nav-pdfs">
+          <div id="pdfs-content"></div>
+        </section>
+        <section
+          class="tab-panel"
+          id="panel-premium"
+          aria-labelledby="nav-premium"
+        >
+          <div class="premium-gen-grid" id="premium-gen-grid"></div>
+          <div class="filters">
+            <label class="search-label" for="premium-search"
+              >Kod axtar<input
+                type="search"
+                class="search-bar"
+                id="premium-search"
+                placeholder="Kod, plan və ya istifadəçi ID-si…" /></label
+            ><label
+              >Status<select id="premium-status">
+                <option value="all">Bütün kodlar</option>
+                <option value="unused">İstifadə edilməyib</option>
+                <option value="used">İstifadə edilib</option>
+              </select></label
+            >
+          </div>
+          <div id="premium-content"></div>
+        </section>
+        <section class="tab-panel" id="panel-push" aria-labelledby="nav-push">
+          <div class="summary-grid" id="push-stats"></div>
+          <div class="push-form">
+            <div class="push-form-head">Yeni bildiriş göndər</div>
 
-  document.getElementById('premium-content').innerHTML = buildPremiumTable(codes);
-}
+            <label for="push-title"
+              >Başlıq <span id="push-title-count">0/80</span></label
+            >
+            <input
+              id="push-title"
+              maxlength="80"
+              placeholder="Məs: Yeni material əlavə olundu"
+            />
 
-async function generatePremiumCode(plan) {
-  const countEl  = document.getElementById(`premium-count-${plan}`);
-  const resultEl = document.getElementById(`premium-result-${plan}`);
-  const count = Math.min(Math.max(parseInt(countEl.value) || 1, 1), 50);
-  resultEl.textContent = 'Yaradılır...';
-  try {
-    const res = await fetch(API, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Admin-Key': adminKey },
-      body: JSON.stringify({ section: 'premium', action: 'generate', plan, count, adminKey }),
-    });
-    const data = await res.json();
-    if (data.error) throw new Error(data.error);
-    resultEl.innerHTML = data.codes.map(c => `<code>${c}</code>`).join('');
-    delete cache['premium'];
-  } catch (e) {
-    resultEl.textContent = 'Xəta: ' + e.message;
-  }
-}
+            <label for="push-body"
+              >Mətn <span id="push-body-count">0/240</span></label
+            >
+            <textarea
+              id="push-body"
+              rows="3"
+              maxlength="240"
+              placeholder="Qısa və aydın yaz — bildirişdə 2-3 sətir görünür"
+            ></textarea>
 
-function buildPremiumTable(codes) {
-  if (!codes.length) return '<div class="loading">Hələ kod yaradılmayıb.</div>';
-  return `<div class="table-wrap"><table>
-    <thead><tr>
-      <th>Kod</th><th>Plan</th><th>Status</th><th>Yaradılıb</th><th>İstifadə olunub</th>
-    </tr></thead>
-    <tbody>${codes.map(c => `
-      <tr>
-        <td class="td-bold">${esc(c.code)}</td>
-        <td class="td-muted">${(PREMIUM_PLAN_INFO[c.plan] || {}).name || esc(c.plan)}</td>
-        <td><span class="badge ${c.status === 'used' ? 'badge-gray' : 'badge-green'}">${c.status === 'used' ? 'İstifadə olunub' : 'Boşdur'}</span></td>
-        <td class="td-muted">${fmtDate(c.createdAt)}</td>
-        <td class="td-muted">${c.redeemedAt ? fmtDate(c.redeemedAt) : '—'}</td>
-      </tr>`).join('')}
-    </tbody></table></div>`;
-}
+            <label for="push-url">Klik linki (boşdursa — ana səhifə)</label>
+            <input
+              id="push-url"
+              placeholder="#/requests  və ya  https://unecstudentshub.com/...  və ya  https://t.me/..."
+            />
 
-// ── PUSH BİLDİRİŞLƏR ──────────────────────────────────────────
-const PUSH_API = API.replace('/admin-data', '/push');
-const PUSH_ERRORS = {
-  unauthorized:            'Admin kodu yanlışdır.',
-  push_disabled:           'Push aktiv deyil: Vercel-də FIREBASE_VAPID_KEY və FIREBASE_SERVICE_ACCOUNT təyin edilməlidir.',
-  title_and_body_required: 'Başlıq və mətn boş ola bilməz.',
-  invalid_url:             'Link yanlışdır: "#/marşrut", "/yol" və ya unecstudentshub.com / t.me linki olmalıdır.',
-  invalid_audience:        'Auditoriya yanlışdır.',
-  invalid_cursor:          'Davam kursoru yanlışdır — göndərişi yenidən başlat.',
-  user_not_found:          'Bu email ilə istifadəçi tapılmadı.',
-  request_not_found:       'İstək tapılmadı (silinmiş ola bilər).',
-  message_not_found:       'Mesaj tapılmadı (silinmiş ola bilər).',
-};
-let pushBusy = false;
+            <label for="push-audience">Kimə</label>
+            <select id="push-audience">
+              <option value="all">Hamıya (icazə verənlərin hamısı)</option>
+              <option value="az">Yalnız Azərbaycan dilini seçənlər</option>
+              <option value="en">Yalnız English seçənlər</option>
+              <option value="user">Konkret istifadəçi (test üçün)</option>
+            </select>
+            <input
+              id="push-email"
+              type="email"
+              placeholder="İstifadəçinin email ünvanı (saytda hesabı olan)"
+              style="display: none"
+            />
 
-async function pushApi(payload) {
-  let res;
-  try {
-    res = await fetch(PUSH_API, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Admin-Key': adminKey },
-      body: JSON.stringify(payload),
-    });
-  } catch (e) {
-    // fetch özü uğursuz oldu: adətən funksiya Vercel-də yoxdur (404) və ya çökür (5xx) — brauzer bunu "CORS" kimi göstərir
-    throw new Error('Serverə qoşulmaq olmadı. ' + PUSH_API + ' ünvanını brauzerdə aç: {"enabled":true,"vapidKey":"B…"} görünməlidir. ' +
-      '"NOT_FOUND" → ai-vercel/api/push.js deploy olunmayıb (Vercel → Deployments: son deploy Ready olmalıdır); "FUNCTION_INVOCATION_FAILED" → Vercel → Logs-a bax. (PUSH-SETUP.md, 10-cu bölmə)');
-  }
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok || data.error) {
-    if (data.error === 'module_load_failed') {
-      throw new Error('Server kodu yüklənmədi: ' + (data.message || '') + ' — ai-vercel qovluğunun bütün faylları (xüsusən lib/firestore.js və lib/push.js) deploy olunubmu?');
-    }
-    throw new Error(PUSH_ERRORS[data.error] || data.message || data.error || ('HTTP ' + res.status));
-  }
-  return data;
-}
+            <div class="push-preview">
+              <div class="push-preview-lbl">Önizləmə</div>
+              <b id="push-prev-title">UNEC Students Hub</b>
+              <span id="push-prev-body">Mətn burada görünəcək</span>
+            </div>
 
-async function loadPush() {
-  const el = document.getElementById('push-stats');
-  el.innerHTML = '<div class="loading"><div class="spinner"></div>Yüklənir...</div>';
-  try {
-    const d = await pushApi({ action: 'stats' });
-    el.innerHTML = `
-      <div class="summary-card"><div class="summary-val accent">${d.total}</div><div class="summary-lbl">Abunəçi cihaz</div></div>
-      <div class="summary-card"><div class="summary-val green">${d.loggedIn}</div><div class="summary-lbl">Hesabla bağlı</div></div>
-      <div class="summary-card"><div class="summary-val">${d.az}</div><div class="summary-lbl">Azərbaycan dili</div></div>
-      <div class="summary-card"><div class="summary-val">${d.en}</div><div class="summary-lbl">English</div></div>`;
-  } catch (e) {
-    el.innerHTML = `<div class="loading" style="color:var(--red)">${esc(e.message)}</div>`;
-  }
-  pushPreview();
-  loadPushLog();
-}
+            <div class="push-actions">
+              <button class="push-btn secondary" id="push-count-btn">
+                <svg class="msi" aria-hidden="true">
+                  <use href="#icon-group" /></svg
+                >Neçə cihaza gedəcək?
+              </button>
+              <button class="push-btn" id="push-send-btn">
+                <svg class="msi" aria-hidden="true">
+                  <use href="#icon-send" /></svg
+                >Göndər
+              </button>
+            </div>
+            <div class="push-result" id="push-result"></div>
+          </div>
 
-// Son göndərişlər: əl ilə göndərilənlər + istək cavablarına görə avtomatik gedənlər
-async function loadPushLog() {
-  const el = document.getElementById('push-log');
-  try {
-    const d = await pushApi({ action: 'admin-push-log', limit: 60 });
-    const items = d.items || [];
-    if (!items.length) { el.innerHTML = '<div class="loading">Hələ göndəriş yoxdur.</div>'; return; }
-    el.innerHTML = `<div class="table-wrap"><table>
-      <thead><tr><th>Tarix</th><th>Növ</th><th>Bildiriş</th><th>Kimə</th><th>Nəticə</th></tr></thead>
-      <tbody>${items.map(i => {
-        const auto = i.kind === 'request-message';
-        const res = i.total
-          ? `<span class="badge ${i.sent && !i.failed ? 'badge-green' : (i.sent ? 'badge-yellow' : 'badge-red')}">${i.sent}/${i.total}</span>`
-          : '<span class="badge badge-gray">cihaz yox</span>';
-        const extra = [i.failed ? 'uğursuz ' + i.failed : '', i.removed ? 'silindi ' + i.removed : ''].filter(Boolean).join(', ');
-        const errs = Object.entries(i.errors || {}).map(([k, v]) => k + ': ' + v).join(', ');
-        return `<tr>
-          <td class="td-muted">${fmtDateTime(i.createdAt)}</td>
-          <td><span class="badge ${auto ? 'badge-blue' : 'badge-gray'}">${auto ? 'İstək cavabı' : 'Əl ilə'}</span></td>
-          <td><span class="td-bold">${esc(i.title)}</span><br><small class="td-muted">${esc(i.body)}</small></td>
-          <td class="td-muted">${auto
-            ? `${esc(i.fromName || '—')} → <b>${esc(i.toName || '—')}</b>${i.requestId ? `<br><button class="rq-link" onclick="openRequestFromLog('${esc(i.requestId)}')">İstəyə bax</button>` : ''}`
-            : esc({ all: 'Hamı', az: 'Azərbaycan dili', en: 'English', user: 'Konkret istifadəçi' }[i.audience] || i.audience || '—')}</td>
-          <td>${res}${extra ? `<br><small class="td-muted">${esc(extra)}</small>` : ''}${errs ? `<br><small style="color:var(--red)">${esc(errs)}</small>` : ''}</td>
-        </tr>`;
-      }).join('')}</tbody></table></div>`;
-  } catch (e) {
-    el.innerHTML = `<div class="loading" style="color:var(--red)">${esc(e.message)}</div>`;
-  }
-}
-
-async function openRequestFromLog(id) {
-  await showTab('requests');
-  openRequestDetail(id);
-}
-
-function pushPreview() {
-  const t = document.getElementById('push-title').value;
-  const b = document.getElementById('push-body').value;
-  document.getElementById('push-title-count').textContent = t.length + '/80';
-  document.getElementById('push-body-count').textContent = b.length + '/240';
-  document.getElementById('push-prev-title').textContent = t.trim() || 'UNEC Students Hub';
-  document.getElementById('push-prev-body').textContent = b.trim() || 'Mətn burada görünəcək';
-}
-
-function pushAudienceChanged() {
-  const user = document.getElementById('push-audience').value === 'user';
-  document.getElementById('push-email').style.display = user ? 'block' : 'none';
-}
-
-function pushSetBusy(on) {
-  pushBusy = on;
-  document.getElementById('push-send-btn').disabled = on;
-  document.getElementById('push-count-btn').disabled = on;
-}
-
-function pushResult(text, kind) {
-  const out = document.getElementById('push-result');
-  out.textContent = text;
-  out.className = 'push-result' + (kind ? ' ' + kind : '');
-}
-
-// dryRun=true → yalnız alıcı sayını göstərir; false → sayı göstərir, təsdiq alır və göndərir
-async function pushSend(dryRun) {
-  if (pushBusy) return;
-  const payload = {
-    action:   'send',
-    title:    document.getElementById('push-title').value.trim(),
-    body:     document.getElementById('push-body').value.trim(),
-    url:      document.getElementById('push-url').value.trim(),
-    audience: document.getElementById('push-audience').value,
-    email:    document.getElementById('push-email').value.trim(),
-  };
-  if (!payload.title || !payload.body) return pushResult('Başlıq və mətn boş ola bilməz.', 'err');
-  if (payload.audience === 'user' && !payload.email) return pushResult('İstifadəçinin email ünvanını yaz.', 'err');
-
-  pushSetBusy(true);
-  pushResult('Yoxlanılır...');
-  const agg = { sent: 0, failed: 0, removed: 0, errors: {} };
-  let after = null, last = {};
-  try {
-    const dry = await pushApi({ ...payload, dryRun: true });
-    if (dryRun) return pushResult(`Bu bildiriş ${dry.total} cihaza gedəcək.`);
-    if (!dry.total) return pushResult('Alıcı yoxdur: bu auditoriyada abunəçi cihaz tapılmadı.', 'err');
-    if (!confirm(`"${payload.title}"\n\nBu bildiriş ${dry.total} cihaza göndərilsin? Geri qaytarmaq mümkün deyil.`)) return pushResult('Ləğv edildi.');
-
-    // Server bir sorğuda ~8 san. işləyir; çox cihaz varsa `cursor` qaytarır və biz qalanlara davam edirik (təkrar getmir).
-    for (let round = 0; round < 500; round++) {
-      pushResult(`Göndərilir... ${agg.sent + agg.failed + agg.removed} / ${dry.total}  (pəncərəni bağlama)`);
-      last = await pushApi({ ...payload, dryRun: false, after });
-      agg.sent += last.sent; agg.failed += last.failed; agg.removed += last.removed;
-      for (const [k, v] of Object.entries(last.errors || {})) agg.errors[k] = (agg.errors[k] || 0) + v;
-      after = last.cursor || null;
-      if (!after || !last.attempted) break;
-    }
-    const done = agg.sent + agg.failed + agg.removed;
-    const lines = [`Göndərildi: ${agg.sent} / ${dry.total}`];
-    if (agg.removed) lines.push(`Köhnəlmiş token silindi: ${agg.removed}`);
-    if (agg.failed)  lines.push(`Uğursuz: ${agg.failed} (${Object.entries(agg.errors).map(([k, v]) => k + ': ' + v).join(', ')})`);
-    if (agg.errors.PERMISSION_DENIED) lines.push('İcazə xətası: Firebase Cloud Messaging API (V1) aktivdirmi və service account-un FCM icazəsi varmı? (PUSH-SETUP.md, 2-ci bölmə)');
-    if (last.stopped) lines.push(`Diqqət: göndəriş dayandırıldı, ${Math.max(0, dry.total - done)} cihaza çatılmadı. Eyni bildirişi təkrar göndərmə — artıq alanlara da gedər.`);
-    pushResult(lines.join('\n'), agg.sent > 0 && !last.stopped ? 'ok' : 'err');
-    loadPush();
-  } catch (e) {
-    const done = agg.sent + agg.failed + agg.removed;
-    pushResult('Xəta: ' + e.message + (done ? `\nXətadan əvvəl ${done} cihaza göndərilmişdi — eyni bildirişi təkrar göndərmə.` : ''), 'err');
-  } finally {
-    pushSetBusy(false);
-  }
-}
-
-// ── Helpers ────────────────────────────────────────────────────
-function esc(str) {
-  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-function fmtDateTime(iso) {
-  if (!iso) return '—';
-  const d = new Date(iso);
-  if (isNaN(d)) return '—';
-  return d.toLocaleString('az-AZ', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
-}
-
-function fmtSize(b) {
-  if (!(b > 0)) return '';
-  return b >= 1048576 ? (b / 1048576).toFixed(1).replace(/\.0$/, '') + ' MB' : Math.max(1, Math.round(b / 1024)) + ' KB';
-}
-
-function fmtDate(iso) {
-  if (!iso) return '—';
-  const d = new Date(iso);
-  return d.toLocaleDateString('az-AZ', { day:'numeric', month:'short', year:'numeric' });
-}
-</script>
-</body>
+          <div class="push-log-wrap">
+            <div class="section-title">
+              Son göndərişlər (əl ilə + istək cavabları)
+            </div>
+            <div id="push-log">
+              <div class="loading">
+                <div class="spinner"></div>
+                Yüklənir...
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <div id="admin-toast" class="toast" role="status" hidden></div>
+  </body>
 </html>

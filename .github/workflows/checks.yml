@@ -23,6 +23,6 @@ jobs:
       - run: node tools/build-site.mjs --check
       - name: JavaScript syntax
         run: |
-          find scripts ai-vercel tools -name '*.js' -o -name '*.mjs' | xargs -n1 node --check
+          find scripts ai-vercel tools admin-panel -name '*.js' -o -name '*.mjs' | xargs -n1 node --check
           node --check sw.js
           node --check offline-assets.js

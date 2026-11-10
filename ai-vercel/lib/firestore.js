@@ -148,8 +148,9 @@ export async function commitUpdate(path, data, { increments = {}, serverTimes = 
 }
 
 /** structuredQuery → [{ id, data }] */
-export async function runQuery(structuredQuery, env = process.env) {
-  const res = await fetch(`${base(env)}:runQuery`, await authed(env, { method: 'POST', body: JSON.stringify({ structuredQuery }) }));
+export async function runQuery(structuredQuery, env = process.env, parent = '') {
+  const endpoint = base(env) + (parent ? '/' + parent : '');
+  const res = await fetch(`${endpoint}:runQuery`, await authed(env, { method: 'POST', body: JSON.stringify({ structuredQuery }) }));
   if (!res.ok) throw new Error(`Firestore sorğu xətası: ${res.status}`);
   const rows = await res.json();
   return rows.filter(r => r.document).map(r => docResult(r.document));
