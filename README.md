@@ -4,7 +4,7 @@ An open-source student platform built for the UNEC community.
 
 UNEC Students Hub is a modern web platform designed to centralize academic resources, productivity tools, and student services in one place. The project aims to enhance the daily university experience by providing fast, accessible, and community-driven solutions.
 
-**Live site:** [unecstudentshub.com](https://unecstudentshub.com) · **Latest release:** [v.1.1.21](https://github.com/EricIsMyHero/ericismyhero.github.io/releases/latest)
+**Live site:** [unecstudentshub.com](https://unecstudentshub.com) · **Latest release:** [v1.1.22](https://github.com/EricIsMyHero/ericismyhero.github.io/releases/latest)
 
 This platform is independently developed and is not affiliated with UNEC or any official institution.
 
@@ -25,6 +25,7 @@ ericismyhero.github.io/
 ├── ads.txt                     ← Advertising configuration
 ├── LICENCE
 ├── README.md
+├── releases/                   ← English release notes
 │
 ├── scripts/                    ← Application logic
 │   ├── i18n.js                 ← Centralized translation system (AZ / EN)
@@ -77,7 +78,9 @@ ericismyhero.github.io/
 │   └── og-image.png            ← Social preview image
 │
 ├── admin-panel/
-│   └── index.html              ← Administration dashboard (push sender + send history, material requests with threads, files and notification results)
+│   ├── index.html              ← Administration shell and login
+│   ├── admin.js / admin.css     ← Operations dashboard, accounts, requests, statistics, codes and push
+│   └── workspace.js / .css      ← Content planning, task board and local JSON backups
 │
 ├── ai-vercel/
 │   ├── api/
@@ -158,6 +161,7 @@ The interface is a single-page app without a framework. All screens live in `ind
 * **Student Compass:** a public AZ/EN article library for students and university applicants, with audience/category filters, text search, local saved articles, reading time, update dates, practical next steps and official sources. It includes stipend amounts, four separate UNEC campus guides, the 25% resit ceiling, summer-school and repeated-course fees, and academic leave. Financial tables distinguish official stipend amounts from illustrative tuition calculations. A dedicated Home entry preserves the existing six-tool grid; the sidebar, mobile menu and More page also link to the library. Home has no feature-search field. Article filters survive navigation and reloads. The app’s cached public data makes articles readable offline after an online visit; external sources require a connection. Canonical `/compass/<id>/` pages provide full article text and sharing metadata.
 * **Design tokens** are defined once in `styles/tokens.css`. The older theme variables (`--bg`, `--surface`, `--accent` …) are bridged to them, so every color theme keeps working.
 * **Subject material cards:** the display title, PDF icon, badges and rating stay on the card; the raw filename and direct open, download and favorite controls are removed from this view. A labeled **View details** link with an arrow opens the existing material information page, where the filename and file actions remain available. The card background also links to that page, while rating buttons keep their separate behavior. The new labels support both AZ and EN and update when the language changes.
+* **Material details:** the Summary section presents factual cards without a generated description. Subject discussion and issue reporting are available from the three-dot menu; their duplicate links below Download have been removed.
 * **Related materials:** the material information page shows other PDFs from the **same subject**, excluding the open file. On phones (below 768px), this is the only recommendation group. Tablets and desktops (768px and above) show a second column with materials from **other subjects in the same course and semester**, excluding files already listed for the current subject. Each group initially shows at most **3 cards**; **See all** expands any remaining cards in place, and **Show less** collapses the group again. Empty groups show a message instead of falling back to unrelated materials.
 * **News panel:** `scripts/app-screens.js` asks `GET /api/telegram-news` (`ai-vercel/api/telegram-news.js`) for the latest 3 posts of the public Telegram channel `unecstudentshub`. The function reads the channel's public web preview (`t.me/s/<channel>`), so it works for public *channels* only; the channel name can be changed with the `TELEGRAM_CHANNEL` environment variable. Responses are cached for 5 minutes on the CDN and 10 minutes in the browser.
 * **Launch splash:** `index.html` + `styles/splash.css` + `scripts/splash.js` show a short branded animation on the first visit (≈3.65 s: awakening → logo → network → brand reveal → dissolve) and a shorter one (≈1.6 s) for returning visitors. It is never shown on a refresh within the same session, within 30 minutes of the previous one, to search-engine crawlers, or without JavaScript. Force it with `?splash=full`, `?splash=short` or hide it with `?splash=off`. It leaves only when the animation, the DOM/first route, web fonts and the first Firebase auth state are all ready (each wait is capped); after 5 s it shows a “still loading” status, after 15 s (or if a core script fails to load) an error screen with *Try again* / *Continue anyway*. `prefers-reduced-motion` gets a static logo that fades out. The logo layers (`images/splash-*.webp`) are cut from the original `images/icon-1024.png` (transparent background, the tagline recolored white for the dark background); the logo is never redrawn in CSS. `manifest.json` uses `#00152E` for `background_color`/`theme_color` and dedicated icons (`icon-any-*` transparent, `icon-maskable-*` on the same navy) so the native launch screen of an installed PWA matches the splash; after changing the manifest an installed PWA may need to be reinstalled to pick up the new icons. Note: `tokens.css` zeroes animation/transition durations under reduced motion, so the splash overrides that for its own timing.
