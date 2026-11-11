@@ -579,7 +579,7 @@
   }
   function reportCurrent() {
     const m = currentMaterial;
-    if (m && typeof openReportModal === 'function') openReportModal(m.subject || t('extraMaterial'), m.course);
+    if (m && typeof openReportModal === 'function') openReportModal(m.subject || t('extraMaterial'), m.course, m);
   }
 
   // ── Kurslar marşrutu ────────────────────────────────────────

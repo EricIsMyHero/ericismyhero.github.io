@@ -80,6 +80,12 @@ export default async function handler(req, res) {
   try {
     const b = body(req);
 
+    if (['study-load', 'study-save'].includes(b.action)) {
+      const { studyAction } = await import('../lib/study.js');
+      const r = await studyAction(b.action, b);
+      return res.status(r.status).json(r.json);
+    }
+
     if (['account-export', 'account-delete'].includes(b.action)) {
       const { accountAction } = await import('../lib/account.js');
       const r = await accountAction(b.action, b);

@@ -125,7 +125,7 @@ test('export traverses only the authenticated user subtree, and deletion require
 
 test('interrupted account deletion resumes, preserves other users, and deletes authentication last', async () => {
   const docs = new Map(Object.entries({
-    'users/me': { name: 'Me' }, 'users/me/progress/main': { xp: 100 }, 'users/other': { name: 'Other' },
+    'users/me': { name: 'Me' }, 'users/me/progress/main': { xp: 100 }, 'users/me/study_data/main': { values: { favorites: ['pdf/private.pdf'] } }, 'users/other': { name: 'Other' },
     'subject_chats/no-parent/messages/own': { uid: 'me', text: 'remove' },
     'subject_chats/no-parent/messages/theirs': { uid: 'other', text: 'keep' },
     'material_requests/r': { uid: 'me', name: 'Me', text: 'request', status: 'open', upvoterIds: ['me', 'other'] },

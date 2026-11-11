@@ -18,8 +18,11 @@ function earnedCredit(s) {
 function calculateGPA(list) {
   let num = 0, den = 0;
   list.forEach(s => {
-    num += Number(s.score) * Number(s.credit);
-    den += earnedCredit(s);
+    const credit = Number(s.credit), score = Number(s.score);
+    if (!Number.isFinite(credit) || credit <= 0 || !Number.isFinite(score) || score < 0 || score > 100) return;
+    // ÜOMG uses earned credits above and all attempted credits below.
+    num += score * earnedCredit(s);
+    den += credit;
   });
   if (den === 0) return '0.00';
   return (num / den).toFixed(2);
@@ -38,17 +41,17 @@ function getGradeLabel(gpa) {
 
   if (g === 0) return { text: '—', color: '#64748b', ring: ['#334155', '#475569'] };
   // 91+ üçün parlaq mavi (Cyan/Blue)
-  if (g >= 91) return { text: 'Əla (A)', color: '#22d3ee', ring: ['#0891b2', '#22d3ee'] };
+  if (g >= 91) return { text: t('gpaGradeA'), color: '#22d3ee', ring: ['#0891b2', '#22d3ee'] };
   // 81-90 üçün tünd yaşıl
-  if (g >= 81) return { text: 'Çox yaxşı (B)', color: '#22c55e', ring: ['#15803d', '#22c55e'] };
+  if (g >= 81) return { text: t('gpaGradeB'), color: '#22c55e', ring: ['#15803d', '#22c55e'] };
   // 71-80 üçün açıq yaşıl
-  if (g >= 71) return { text: 'Yaxşı (C)', color: '#86efac', ring: ['#16a34a', '#86efac'] };
+  if (g >= 71) return { text: t('gpaGradeC'), color: '#86efac', ring: ['#16a34a', '#86efac'] };
   // 61-70 üçün sarı
-  if (g >= 61) return { text: 'Kafi (D)', color: '#facc15', ring: ['#ca8a04', '#facc15'] };
+  if (g >= 61) return { text: t('gpaGradeD'), color: '#facc15', ring: ['#ca8a04', '#facc15'] };
   // 51-60 üçün narıncı
-  if (g >= 51) return { text: 'Qənaətbəxş (E)', color: '#fb923c', ring: ['#ea580c', '#fb923c'] };
+  if (g >= 51) return { text: t('gpaGradeE'), color: '#fb923c', ring: ['#ea580c', '#fb923c'] };
   // 51-dən aşağı üçün qırmızı
-  return { text: 'Kəsildi (F)', color: '#f87171', ring: ['#dc2626', '#f87171'] };
+  return { text: t('gpaGradeF'), color: '#f87171', ring: ['#dc2626', '#f87171'] };
 }
 
 // ── Count-up animation ────────────────────────────────────────
@@ -89,14 +92,14 @@ function updateRing(gpa, colors) {
 // ── localStorage ──────────────────────────────────────────────
 function gpaSave() {
   try {
-    localStorage.setItem('unec_gpa_subjects', JSON.stringify(gpaSubjects));
+    window.UNECStudy.setItem('unec_gpa_subjects', JSON.stringify(gpaSubjects));
   } catch(e) {}
 }
 
 function gpaLoad() {
   try {
-    const s = localStorage.getItem('unec_gpa_subjects');
-    if (s) gpaSubjects = JSON.parse(s);
+    const s = JSON.parse(window.UNECStudy.getItem('unec_gpa_subjects') || '[]');
+    gpaSubjects = Array.isArray(s) && s.length ? s : [{ id: Date.now(), name: '', credit: 3, score: 0 }];
   } catch(e) {}
 }
 
@@ -132,14 +135,18 @@ function removeSubject(id) {
 function updateSubject(id, field, value) {
   const s = gpaSubjects.find(s => s.id === id);
   if (!s) return;
-  s[field] = value;
+  if (!['name', 'credit', 'score'].includes(field)) return;
+  s[field] = field === 'name' ? String(value).slice(0, 200) : Math.min(field === 'score' ? 100 : 60, Math.max(field === 'score' ? 0 : 1, Number(value) || 0));
+  if (field !== 'name' && value !== '' && Number(value) !== s[field]) {
+    document.querySelectorAll(`.gpa-subject-row[data-id="${id}"] .gpa-input-group--${field} input`).forEach(input => { input.value = s[field]; });
+  }
   gpaSave();
   gpaRenderSummary();
   gpaRenderPredictor();
   // inline weight update with flash
   const wEl = document.querySelector(`.gpa-subject-row[data-id="${id}"] .gpa-weight-val`);
   if (wEl) {
-    wEl.textContent = (Number(s.score) * Number(s.credit)).toFixed(0);
+    wEl.textContent = (Number(s.score) * earnedCredit(s)).toFixed(0);
     flashClass(wEl, 'gpa-weight-flash', 380);
   }
   // score input flash
@@ -176,7 +183,7 @@ function updateSubject(id, field, value) {
 
 // ── Summary render ────────────────────────────────────────────
 let _lastGPA = '0.00';
-function gpaRenderSummary() {
+function gpaRenderSummary(recordSnapshot = true) {
   const gpa    = calculateGPA(gpaSubjects);
   const total  = getTotalCredits(gpaSubjects);
   const earned = getEarnedCredits(gpaSubjects);
@@ -203,14 +210,14 @@ function gpaRenderSummary() {
   updateRing(gpa, grade.ring);
 
   // save snapshot for memory
-  gpaSaveSnapshot();
+  if (recordSnapshot) gpaSaveSnapshot();
   gpaRenderSmartMessage();
   gpaRenderMemoryCard();
 
 
   // count badge
   const countEl = document.getElementById('gpa-count-badge');
-  if (countEl) countEl.textContent = gpaSubjects.length + ' fənn';
+  if (countEl) countEl.textContent = t('gpaSubjectCountValue').replace('{n}', gpaSubjects.length);
 }
 
 // ── Predictor render ──────────────────────────────────────────
@@ -226,32 +233,36 @@ function gpaRenderPredictor() {
     return;
   }
 
-  const earnedNow    = getEarnedCredits(gpaSubjects);
-  const weightedNow  = gpaSubjects.reduce((a, s) => a + Number(s.score) * Number(s.credit), 0);
-  const required     = (targetVal * (earnedNow + remCr) - weightedNow) / remCr;
+  if (!Number.isFinite(targetVal) || targetVal < 0 || targetVal > 100 || !Number.isFinite(remCr)) {
+    resultEl.textContent = t('gpaPredictInvalid'); return;
+  }
+  const attemptedNow = getTotalCredits(gpaSubjects);
+  const weightedNow = gpaSubjects.reduce((a, s) => a + Number(s.score) * earnedCredit(s), 0);
+  const required = (targetVal * (attemptedNow + remCr) - weightedNow) / remCr;
 
   let msg, cls, icon;
   if (required > 100) {
     icon = 'sentiment_dissatisfied'; cls = 'target-impossible';
-    msg = `Bu hədəfə çatmaq <strong>mümkün deyil</strong>. Mövcud nəticəniz çox aşağıdır.`;
+    msg = t('gpaPredictImpossible');
   } else if (required < 0) {
     icon = 'celebration'; cls = 'target-done';
-    msg = `Siz artıq bu hədəfə <strong>çatmısınız!</strong> Qalan fənlər nəticənizi dəyişməyəcək.`;
+    msg = t('gpaPredictReached');
   } else {
     const r = Math.ceil(required);
     if (r < 51) {
       icon = 'check_circle'; cls = 'target-easy';
-      msg = `Hədəf GPA <strong>${targetVal}</strong> üçün qalan <strong>${remCr}</strong> kreditdən ortalama <strong>${r}</strong> bal lazımdır. Keçid balından aşağı olduğuna görə, faktiki olaraq istənilən nəticə keçər.`;
+      msg = t('gpaPredictLow');
     } else if (r >= 75) {
       icon = 'target'; cls = 'target-high';
-      msg = `Hədəf GPA <strong>${targetVal}</strong> üçün qalan <strong>${remCr}</strong> kreditdən ortalama <strong>${r}</strong> bal toplamalısınız.`;
+      msg = t('gpaPredictRequired');
     } else {
       icon = 'trending_up'; cls = 'target-mid';
-      msg = `Hədəf GPA <strong>${targetVal}</strong> üçün qalan <strong>${remCr}</strong> kreditdən ortalama <strong>${r}</strong> bal toplamalısınız.`;
+      msg = t('gpaPredictRequired');
     }
   }
 
-  resultEl.innerHTML = `<div class="gpa-target-msg ${cls}"><span class="target-icon"><span class="material-symbols-outlined">${icon}</span></span><span>${msg}</span></div>`;
+  msg = msg.replace('{target}', String(targetVal)).replace('{credits}', String(remCr)).replace('{score}', String(Math.max(51, Math.ceil(required))));
+  resultEl.innerHTML = `<div class="gpa-target-msg ${cls}"><span class="target-icon"><span class="material-symbols-outlined">${icon}</span></span><span>${escHtml(msg)}</span></div>`;
 }
 
 // ── Mode toggle ───────────────────────────────────────────────
@@ -280,7 +291,7 @@ function gpaSetMode(mode) {
 function gpaShare() {
   const gpa   = calculateGPA(gpaSubjects);
   const grade = getGradeLabel(gpa).text;
-  const text  = `UNEC GPA-m: ${gpa} (${grade})\nhesabla: ${window.location.href}`;
+  const text = t('gpaShareText').replace('{gpa}', gpa).replace('{grade}', grade) + '\n' + window.location.href;
   if (navigator.share) {
     navigator.share({ text });
   } else {
@@ -307,11 +318,11 @@ function subjectRowHtml(s, i) {
   const rm = `<svg class="ic" aria-hidden="true"><use href="#i-x"/></svg>`;
   return `
 <div class="gpa-subject-row gpa-risk-${risk}" data-id="${s.id}" id="gpa-row-${s.id}">
-  <input class="gpa-subject-name" type="text" placeholder="${escHtml(t('gpaNamePlaceholder'))}" aria-label="${escHtml(t('gpaNamePlaceholder'))}"
+  <input class="gpa-subject-name" type="text" maxlength="200" placeholder="${escHtml(t('gpaNamePlaceholder'))}" aria-label="${escHtml(t('gpaNamePlaceholder'))}"
     value="${escHtml(s.name)}" oninput="updateSubject(${s.id},'name',this.value)" />
   <div class="gpa-input-group gpa-input-group--credit">
     <label>${escHtml(t('gpaCreditShort'))}</label>
-    <input class="gpa-num-input" type="number" inputmode="numeric" min="1" max="10" step="1" value="${s.credit}"
+    <input class="gpa-num-input" type="number" inputmode="numeric" min="1" max="60" step="1" value="${s.credit}"
       aria-label="${escHtml(t('gpaCreditShort'))}" oninput="updateSubject(${s.id},'credit',this.value)" />
   </div>
   <div class="gpa-input-group gpa-input-group--score">
@@ -321,7 +332,7 @@ function subjectRowHtml(s, i) {
   </div>
   <div class="gpa-input-group gpa-input-group--weight">
     <label>${escHtml(t('gpaWeightShort'))}</label>
-    <span class="gpa-weight-val">${(Number(s.score)*Number(s.credit)).toFixed(0)}</span>
+    <span class="gpa-weight-val">${(Number(s.score)*earnedCredit(s)).toFixed(0)}</span>
   </div>
   <span class="gpa-status-badge ${passed?'passed':'failed'}" data-id="${s.id}">${passed ? t('gpaPassed') : t('gpaFailed')}</span>
   <span class="gpa-risk-dot gpa-risk-dot-${risk}" title="${riskLabel}"></span>
@@ -332,7 +343,7 @@ function subjectRowHtml(s, i) {
 }
 
 // ── Full render ───────────────────────────────────────────────
-function gpaRender() {
+function gpaRender(recordSnapshot = true) {
   const listEl = document.getElementById('gpa-subject-list');
   if (!listEl) return;
 
@@ -340,17 +351,17 @@ function gpaRender() {
     listEl.innerHTML = `
       <div class="gpa-empty-state">
         <span class="gpa-empty-icon material-symbols-outlined">menu_book</span>
-        <div class="gpa-empty-title">İlk fənnini əlavə et</div>
-        <div class="gpa-empty-sub">Aşağıdakı düyməyə bas, fənn adı, kredit və balını daxil et</div>
+        <div class="gpa-empty-title">${escHtml(t('gpaEmptyTitle'))}</div>
+        <div class="gpa-empty-sub">${escHtml(t('gpaEmptyHint'))}</div>
       </div>`;
   } else {
     listEl.innerHTML = gpaSubjects.map((s,i) => subjectRowHtml(s,i)).join('');
   }
 
   const countEl = document.getElementById('gpa-count-badge');
-  if (countEl) countEl.textContent = gpaSubjects.length + ' fənn';
+  if (countEl) countEl.textContent = t('gpaSubjectCountValue').replace('{n}', gpaSubjects.length);
 
-  gpaRenderSummary();
+  gpaRenderSummary(recordSnapshot);
   gpaRenderSmartMessage();
   gpaRenderMemoryCard();
   if (gpaMode === 'predictor') gpaRenderPredictorList();
@@ -371,7 +382,7 @@ function flashClass(el, cls, duration=400) {
 // ── Semester Memory ───────────────────────────────────────────
 function gpaGetHistory() {
   try {
-    return JSON.parse(localStorage.getItem('unec_gpa_history') || '[]');
+    return JSON.parse(window.UNECStudy.getItem('unec_gpa_history') || '[]');
   } catch(e) { return []; }
 }
 
@@ -385,7 +396,7 @@ function gpaSaveSnapshot() {
   if (history.length && history[history.length-1].gpa === gpa) return;
   history.push({ gpa, label, ts: Date.now() });
   if (history.length > 20) history.shift();
-  try { localStorage.setItem('unec_gpa_history', JSON.stringify(history)); } catch(e) {}
+  try { window.UNECStudy.setItem('unec_gpa_history', JSON.stringify(history)); } catch(e) {}
 
   // Firebase-ə saxla + streak yenilə
   if (typeof onGpaUpdated === 'function') {
@@ -418,15 +429,15 @@ function gpaRenderMemoryCard() {
     <div class="gpa-mem-row">
       <div class="gpa-mem-cell">
         <span class="gpa-mem-val">${prev !== null ? prev.toFixed(2) : '—'}</span>
-        <span class="gpa-mem-lbl">Əvvəlki</span>
+        <span class="gpa-mem-lbl">${escHtml(t('gpaPrevious'))}</span>
       </div>
       <div class="gpa-mem-cell gpa-mem-center">
         ${diffStr}
-        <span class="gpa-mem-lbl">Dəyişim</span>
+        <span class="gpa-mem-lbl">${escHtml(t('gpaChange'))}</span>
       </div>
       <div class="gpa-mem-cell gpa-mem-right">
         <span class="gpa-mem-val ${totalDiff >= 0 ? 'pos' : 'neg'}">${totalDiff >= 0 ? '+' : ''}${totalDiff.toFixed(2)}</span>
-        <span class="gpa-mem-lbl">Ümumi trend</span>
+        <span class="gpa-mem-lbl">${escHtml(t('gpaTrend'))}</span>
       </div>
     </div>`;
 }
@@ -448,7 +459,7 @@ function gpaRenderSmartMessage() {
   const msg = GPA_MESSAGES.find(m => g >= m.min && g < m.max) || GPA_MESSAGES[GPA_MESSAGES.length-1];
   el.innerHTML = `<div class="gpa-smart-msg-inner ${msg.cls}">
     <span class="gpa-msg-emoji"><span class="material-symbols-outlined">${msg.emoji}</span></span>
-    <span class="gpa-msg-text">${msg.text}</span>
+    <span class="gpa-msg-text">${escHtml(t('gpaMessage' + GPA_MESSAGES.indexOf(msg)))}</span>
   </div>`;
 }
 
@@ -463,16 +474,16 @@ function getRiskLevel(s) {
 }
 
 function getRiskLabel(level) {
-  return { safe: '✓ Safe', warn: '⚠ Attention', danger: '✕ Critical', neutral: '— New' }[level];
+  return t({ safe: 'gpaRiskSafe', warn: 'gpaRiskWarn', danger: 'gpaRiskDanger', neutral: 'gpaRiskNew' }[level]);
 }
 
 // ── Init ──────────────────────────────────────────────────────
 let _gpaInited = false;
 function initGPA() {
-  if (_gpaInited) { gpaRender(); return; }
+  if (_gpaInited) { gpaLoad(); gpaRender(false); return; }
   _gpaInited = true;
   gpaLoad();
-  gpaRender();
+  gpaRender(false);
 
   // predictor inputs
   document.getElementById('gpa-pred-target')?.addEventListener('input', gpaRenderPredictor);
@@ -484,5 +495,11 @@ function gpaRenderPredictorList() {
   const el2 = document.getElementById('gpa-subject-list2');
   const count2 = document.getElementById('gpa-count-badge2');
   if (el2) el2.innerHTML = gpaSubjects.map((s,i) => subjectRowHtml(s,i)).join('');
-  if (count2) count2.textContent = gpaSubjects.length + ' fənn';
+  if (count2) count2.textContent = t('gpaSubjectCountValue').replace('{n}', gpaSubjects.length);
 }
+
+window.addEventListener('unec:langchange', () => { if (_gpaInited) { gpaRender(false); gpaRenderPredictor(); } });
+window.addEventListener('unec:studychange', event => {
+  if (!event.detail.keys.some(key => ['unec_gpa_subjects', 'unec_gpa_history'].includes(key))) return;
+  gpaLoad(); if (_gpaInited) { gpaRender(false); gpaRenderPredictor(); }
+});

@@ -71,7 +71,7 @@
   let lastRender = null;
   function savedIds() {
     try {
-      const values = JSON.parse(localStorage.getItem(KEY) || '[]');
+      const values = JSON.parse(window.UNECStudy.getItem(KEY) || '[]');
       return new Set(Array.isArray(values) ? values.filter(value => typeof value === 'string') : []);
     } catch (_) { return new Set(); }
   }
@@ -205,7 +205,7 @@
     const article = data().find(value => value.id === id); if (!article) return;
     const saved = savedIds(), wasSaved = saved.has(id);
     wasSaved ? saved.delete(id) : saved.add(id);
-    try { localStorage.setItem(KEY, JSON.stringify([...saved])); }
+    try { window.UNECStudy.setItem(KEY, JSON.stringify([...saved])); }
     catch (_) { U.toast(l('storageError'), 'error'); return; }
     const root = document.getElementById('compassRoot');
     if (U.route?.view !== 'article') {
@@ -259,6 +259,9 @@
   });
   window.addEventListener('storage', event => {
     if (event.key === KEY && U.route?.tab === 'compass') render(U.route);
+  });
+  window.addEventListener('unec:studychange', event => {
+    if (event.detail.keys.includes(KEY) && U.route?.tab === 'compass') render(U.route);
   });
   window.addEventListener('unec:routechange', event => { if (event.detail?.tab !== 'compass') lastRender = null; });
   window.addEventListener('unec:langchange', () => {

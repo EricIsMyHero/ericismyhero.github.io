@@ -562,10 +562,10 @@ function showPdfs(courseName, subjectName) {
 }
 
 // ── Sevimlilər ────────────────────────────────────────────────
-// Saxlanma formatı dəyişməyib: localStorage "favorites" = ["pdf/<fayl>", "pdf-extra/<fayl>"]
+// Favorites are scoped to the current account, with an offline device cache.
 function getFavorites() {
   try {
-    const v = JSON.parse(localStorage.getItem('favorites'));
+    const v = JSON.parse(window.UNECStudy.getItem('favorites'));
     return Array.isArray(v) ? v : [];
   } catch (e) { return []; }
 }
@@ -574,7 +574,7 @@ function toggleFavorite(filePath) {
   let favs = getFavorites();
   const on = !favs.includes(filePath);
   favs = on ? favs.concat(filePath) : favs.filter(f => f !== filePath);
-  try { localStorage.setItem('favorites', JSON.stringify(favs)); } catch (e) {}
+  try { window.UNECStudy.setItem('favorites', JSON.stringify(favs)); } catch (e) {}
   document.querySelectorAll('[data-fav]').forEach(b => {
     if (b.dataset.fav !== filePath) return;
     b.classList.toggle('active', on);
@@ -598,10 +598,12 @@ document.addEventListener('click', function (e) {
 // ── Xəta Bildiriş Modal ───────────────────────────────────────
 let reportSubjectName = '';
 let reportCourseName  = '';
+let reportMaterial = null;
 
-function openReportModal(subjectName, courseName) {
+function openReportModal(subjectName, courseName, material = null) {
   reportSubjectName = subjectName;
   reportCourseName  = courseName;
+  reportMaterial = material ? { file: String(material.file || ''), name: String(material.name || ''), url: String(material.url || ''), page: location.href } : null;
 
   const overlay  = document.getElementById('reportOverlay');
   const ctx      = document.getElementById('report-context');
@@ -610,7 +612,7 @@ function openReportModal(subjectName, courseName) {
   const textarea = document.getElementById('report-message');
   const select   = document.getElementById('report-type');
 
-  if (ctx)      ctx.textContent      = `${courseName} · ${subjectName}`;
+  if (ctx) ctx.textContent = [courseName, subjectName, reportMaterial?.file].filter(Boolean).join(' · ');
   if (form)     form.classList.remove('hidden');
   if (success)  success.classList.add('hidden');
   if (textarea) textarea.value       = '';
@@ -640,7 +642,7 @@ async function sendReport() {
   }
 
   sendBtn.disabled    = true;
-  sendBtn.textContent = 'Göndərilir...';
+  sendBtn.textContent = t('reportSending');
 
   try {
     const response = await fetch('https://formspree.io/f/xkoyapnj', {
@@ -650,7 +652,8 @@ async function sendReport() {
         "Kurs":      reportCourseName,
         "Fənn":      reportSubjectName,
         "Xəta növü": type,
-        "Məzmun":    message
+        "Məzmun":    message,
+        ...(reportMaterial ? { "Fayl": reportMaterial.file, "Material": reportMaterial.name, "Fayl keçidi": reportMaterial.url, "Səhifə": reportMaterial.page } : {})
       })
     });
 
@@ -663,13 +666,13 @@ async function sendReport() {
     }
   } catch (err) {
     const body = encodeURIComponent(
-      `Kurs: ${reportCourseName}\nFənn: ${reportSubjectName}\nXəta növü: ${type}\n\n${message}`
+      `Kurs: ${reportCourseName}\nFənn: ${reportSubjectName}\nXəta növü: ${type}\n${reportMaterial ? `Fayl: ${reportMaterial.file}\nMaterial: ${reportMaterial.name}\nFayl keçidi: ${reportMaterial.url}\nSəhifə: ${reportMaterial.page}\n` : ''}\n${message}`
     );
     window.open(`mailto:unecstudentshub@gmail.com?subject=UNEC%20X%C9%99ta%20Bildiri%C5%9Fi&body=${body}`, '_blank');
     closeReportModal();
   } finally {
     sendBtn.disabled  = false;
-    sendBtn.innerHTML = '<span class="material-symbols-outlined msi">arrow_outward</span> Göndər';
+    sendBtn.textContent = t('reportSend');
   }
 }
 

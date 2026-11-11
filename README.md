@@ -311,6 +311,10 @@ This project is released under the MIT License unless otherwise specified.
 
 The curriculum includes subject search, direct material links, printable PDF export and device-local completion tracking. After one successful online visit, the public app shell supports offline curriculum, GPA and timer tools. Remote PDFs and account services require internet access.
 
+Signed-in users can sync favorite materials, saved Compass articles, GPA subjects/history and exam dates across devices. `scripts/study-data.js` keeps an account-scoped offline journal; `study-load` and `study-save` actions in the existing `/api/push` function authenticate every request and store private data in `users/{uid}/study_data/main`. The existing Firebase service account configuration is sufficient. Saves merge changes against the device's last synced state and retry Firestore conflicts, preserving unrelated edits from another device. Sync runs after edits, on reconnect/focus and every 30 seconds while visible. Its status and a manual retry button are available in **More → Account data**. Existing browser-only records migrate to the first signed-in account; signing out hides its cached records. Account export and deletion include these records.
+
+The GPA calculator uses earned credits in the weighted numerator and all attempted credits in the denominator; failed subjects earn zero credits. The predictor uses the same formula. Skipping a Pomodoro changes modes without awarding completed sessions, minutes or badges. Material issue reports include the PDF filename, URL and material-page link.
+
 Public material pages under `materials/` provide share previews, canonical URLs and structured metadata. Generate these pages, the sitemap and the offline asset version after changing the catalog or application assets:
 
 ```sh

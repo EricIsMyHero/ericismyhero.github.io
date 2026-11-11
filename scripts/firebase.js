@@ -53,11 +53,13 @@ let currentProfile = null;
 
 async function onAuthStateChange(user) {
   currentUser = user;
+  if (window.UNECStudy) window.UNECStudy.setUser(user);
 
   if (user) {
     await _ensureUserDoc(user);
     currentProfile = await _getUserProfile(user.uid);
     await _handleDailyLogin(user.uid);
+    if (currentUser?.uid !== user.uid) return;
 
     _hideAuthModal();
     _showUserBadge(user);

@@ -122,7 +122,10 @@
   window.pomodoroSkip = function () {
     clearInterval(pState.intervalId);
     pState.running = false;
-    pomodoroSessionEnd();
+    // Skipping changes mode without recording time, awarding badges or notifying completion.
+    pState.mode = MODES[pState.mode].break ? 'focus' : 'short';
+    pState.remaining = MODES[pState.mode].duration;
+    renderPomodoro();
   };
 
   window.pomodoroSetMode = function (mode) {
@@ -204,13 +207,13 @@
 
   function loadExams() {
     try {
-      const raw = localStorage.getItem(EXAMS_KEY);
+      const raw = window.UNECStudy.getItem(EXAMS_KEY);
       return raw ? JSON.parse(raw) : [];
     } catch (_) { return []; }
   }
 
   function saveExams(list) {
-    try { localStorage.setItem(EXAMS_KEY, JSON.stringify(list)); } catch (_) {}
+    try { window.UNECStudy.setItem(EXAMS_KEY, JSON.stringify(list)); } catch (_) {}
   }
 
   window.showExamForm = function () {
@@ -309,6 +312,7 @@
 
   // Dil dəyişəndə etiketləri yenilə
   window.addEventListener('unec:langchange', () => { renderPomodoro(); renderExams(); });
+  window.addEventListener('unec:studychange', event => { if (event.detail.keys.includes(EXAMS_KEY)) renderExams(); });
 
   // ── Export ────────────────────────────────────────────────
   window.initTimer = initTimer;
