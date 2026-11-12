@@ -1,8 +1,10 @@
+import { stopDuringMigration } from '../lib/maintenance.js';
 import { verifyIdToken, body } from '../lib/payments.js';
 import { getDoc } from '../lib/firestore.js';
 import { getAiPolicy, usagePath, usageView, reserveAiUsage, refundAiUsage } from '../lib/ai.js';
 // api/ask.js — Vercel Serverless Function (Groq, pulsuz tier)
 export default async function handler(req, res) {
+  if (stopDuringMigration(req, res)) return;
 
   const allowedOrigins = [
     'https://unecstudentshub.com',

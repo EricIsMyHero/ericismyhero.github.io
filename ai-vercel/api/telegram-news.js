@@ -1,3 +1,4 @@
+import { stopDuringMigration } from '../lib/maintenance.js';
 // api/telegram-news.js — Vercel Serverless Function
 //
 // Açıq Telegram kanalının son postlarını (t.me/s/<kanal> veb önizləməsindən) oxuyub
@@ -81,6 +82,7 @@ export function parse(html, channel) {
 }
 
 export default async function handler(req, res) {
+  if (stopDuringMigration(req, res)) return;
   const origin = req.headers.origin;
   if (ALLOWED_ORIGINS.includes(origin)) res.setHeader('Access-Control-Allow-Origin', origin);
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');

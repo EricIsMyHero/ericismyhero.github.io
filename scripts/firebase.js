@@ -24,6 +24,10 @@ async function initFirebase() {
     const res = await fetch('https://ericismyhero-github-io.vercel.app/api/firebase-config');
     if (!res.ok) throw new Error('Config alınmadı: ' + res.status);
     const config = await res.json();
+    if (config.maintenance) {
+      showMigrationMaintenance();
+      return false;
+    }
 
     _app  = firebase.initializeApp(config);
     _auth = firebase.auth();
@@ -551,3 +555,24 @@ document.addEventListener('DOMContentLoaded', async () => {
   await trackMonthlyVisit();
   await showMonthlyVisitors();
 });
+
+// Temporary pause, controlled by the backend operator during data migration.
+function showMigrationMaintenance() {
+  if (document.getElementById('migrationMaintenance')) return;
+  const overlay = document.createElement('div');
+  overlay.id = 'migrationMaintenance';
+  overlay.setAttribute('role', 'alertdialog');
+  overlay.setAttribute('aria-modal', 'true');
+  overlay.setAttribute('aria-labelledby', 'migrationMaintenanceTitle');
+  Object.assign(overlay.style, { position: 'fixed', inset: '0', zIndex: '2147483647', background: '#071426', color: '#fff', display: 'grid', placeItems: 'center', padding: '24px', textAlign: 'center' });
+  const box = document.createElement('div'), title = document.createElement('h1'), message = document.createElement('p'), retry = document.createElement('button');
+  const english = typeof lang !== 'undefined' && lang === 'en';
+  title.id = 'migrationMaintenanceTitle'; title.textContent = english ? 'We are updating the platform' : 'Platforma yenilənir';
+  message.textContent = english ? 'Please return shortly. Your records are being preserved.' : 'Bir qədər sonra yenidən yoxla. Məlumatların qorunaraq köçürülür.';
+  retry.type = 'button'; retry.textContent = english ? 'Check again' : 'Yenidən yoxla';
+  Object.assign(retry.style, { padding: '12px 20px', font: 'inherit', cursor: 'pointer' });
+  retry.onclick = () => location.reload();
+  box.append(title, message, retry); overlay.append(box);
+  [...document.body.children].forEach(child => { if (!['SCRIPT', 'STYLE'].includes(child.tagName)) child.inert = true; });
+  document.body.append(overlay); retry.focus();
+}

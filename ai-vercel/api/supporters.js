@@ -1,3 +1,4 @@
+import { stopDuringMigration } from '../lib/maintenance.js';
 // api/supporters.js
 // GET — ictimai "Dəstəkçilər" siyahısı. Yalnız donorun görünməsinə icazə verdiyi məlumat qaytarılır:
 //   anonim → ad və məbləğ yoxdur; "yalnız ad" → məbləğ yoxdur; "ad + məbləğ" → ikisi də.
@@ -5,6 +6,7 @@
 import { setCors, listSupporters, getConfig } from '../lib/payments.js';
 
 export default async function handler(req, res) {
+  if (stopDuringMigration(req, res)) return;
   setCors(req, res, 'GET, OPTIONS');
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'GET') return res.status(405).json({ error: 'method_not_allowed' });

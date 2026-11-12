@@ -1,3 +1,4 @@
+import { stopDuringMigration } from '../lib/maintenance.js';
 // api/payment-callback.js
 // POST — şlüzdən (server→server) ödəniş nəticəsi.
 //   epoint : form-urlencoded { data, signature }  → Epoint merchant panelində result_url olaraq bu ünvan göstərilir.
@@ -7,6 +8,7 @@ import { getConfig, setCors, body, applyResult, getDoc, ORDER_RE } from '../lib/
 import { epoint } from '../lib/providers.js';
 
 export default async function handler(req, res) {
+  if (stopDuringMigration(req, res)) return;
   setCors(req, res, 'POST, OPTIONS');
   res.setHeader('Cache-Control', 'no-store');
   if (req.method === 'OPTIONS') return res.status(204).end();

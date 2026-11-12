@@ -1,9 +1,11 @@
+import { stopDuringMigration } from '../lib/maintenance.js';
 // api/payment-status.js
 // GET ?order=UNEC-… → { status: pending|paid|failed|review, amount, visibility, mode }
 // Qayıdış səhifəsi bununla yoxlayır; URL-dəki parametrlərə yox, serverdəki vəziyyətə etibar edilir.
 import { setCors, getDoc, publicOrder, ORDER_RE, getConfig } from '../lib/payments.js';
 
 export default async function handler(req, res) {
+  if (stopDuringMigration(req, res)) return;
   setCors(req, res, 'GET, OPTIONS');
   res.setHeader('Cache-Control', 'no-store');
   if (req.method === 'OPTIONS') return res.status(204).end();

@@ -1,3 +1,4 @@
+import { stopDuringMigration } from '../lib/maintenance.js';
 // api/payment-create.js
 // POST { amount, name?, visibility, lang?, idToken? } → sifariş yaradır, şlüz yönləndirməsini qaytarır.
 // Kart məlumatı bu sorğudan keçmir. Daxil olmuş istifadəçinin idToken-i server tərəfdə yoxlanılır.
@@ -8,6 +9,7 @@ import {
 } from '../lib/payments.js';
 
 export default async function handler(req, res) {
+  if (stopDuringMigration(req, res)) return;
   setCors(req, res, 'POST, OPTIONS');
   res.setHeader('Cache-Control', 'no-store');
   if (req.method === 'OPTIONS') return res.status(204).end();

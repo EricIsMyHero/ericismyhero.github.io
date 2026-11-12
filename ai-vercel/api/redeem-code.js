@@ -1,7 +1,9 @@
+import { stopDuringMigration } from '../lib/maintenance.js';
 import { verifyIdToken, body } from '../lib/payments.js';
 import { getDoc, patchDoc } from '../lib/firestore.js';
 
 export default async function handler(req, res) {
+  if (stopDuringMigration(req, res)) return;
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');

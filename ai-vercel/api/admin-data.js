@@ -1,6 +1,8 @@
+import { stopDuringMigration } from '../lib/maintenance.js';
 // Admin endpoint: no private responses are cached, authentication precedes DB access.
 import { isAdminKey, adminData } from "../lib/admin.js";
 export default async function handler(req, res) {
+  if (stopDuringMigration(req, res)) return;
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, X-Admin-Key");

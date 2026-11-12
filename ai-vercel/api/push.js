@@ -1,3 +1,4 @@
+import { stopDuringMigration } from '../lib/maintenance.js';
 // api/push.js
 // Push bildirişləri üçün TƏK serverless funksiya (Vercel Hobby planında limit — 12 funksiya, ona görə birləşdirilib).
 //
@@ -53,6 +54,7 @@ const loadThreads = () => import('../lib/threads.js');
 const failMsg = (e) => String((e && e.message) || e).slice(0, 300);
 
 export default async function handler(req, res) {
+  if (stopDuringMigration(req, res)) return;
   setCors(res);
   res.setHeader('Cache-Control', 'no-store');
   if (req.method === 'OPTIONS') return res.status(204).end();
