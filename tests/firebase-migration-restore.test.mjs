@@ -96,3 +96,24 @@ test('destination user enumeration follows every page', async () => {
   const result = await listAuthUsers(target, async url => new URL(url).searchParams.has('nextPageToken') ? { users: [{ localId: 'b' }] } : { users: [{ localId: 'a' }], nextPageToken: 'next' });
   assert.deepEqual(result.map(user => user.localId), ['a', 'b']);
 });
+
+test('REST password provider representation matches a CLI-exported password account without changing its journal fingerprint', () => {
+  const plan = makePlan(auth(), backup(), hashes, source, target), fingerprint = plan.fingerprint;
+  const actual = { users: [{ ...plan.users[0], providerUserInfo: [{ providerId: 'password', rawId: 'test@example.invalid' }] }], documents: [] };
+  assert.equal(reconcile(plan, actual, true).users.length, 0);
+  assert.equal(plan.fingerprint, fingerprint);
+  const google = auth(); delete google.users[0].passwordHash; delete google.users[0].salt;
+  google.users[0].providerUserInfo = [{ providerId: 'google.com', rawId: 'google-id' }];
+  const googlePlan = makePlan(google, backup(), '', source, target);
+  assert.throws(() => reconcile(googlePlan, { users: [{ ...googlePlan.users[0], providerUserInfo: [...googlePlan.users[0].providerUserInfo, { providerId: 'password', rawId: 'unexpected' }] }], documents: [] }, true), /providers: 1/);
+});
+
+test('account verification reports differing field counts but never private account values', () => {
+  const plan = makePlan(auth(), backup(), hashes, source, target);
+  const actual = { users: [{ ...plan.users[0], displayName: 'private-name', lastLoginAt: 'private-date', email: 'private@example.invalid' }], documents: [] };
+  assert.throws(() => reconcile(plan, actual, true), error => {
+    assert.match(error.message, /name: 1/); assert.match(error.message, /lastLoginAt: 1/); assert.match(error.message, /email: 1/);
+    assert.ok(!error.message.includes('private')); assert.ok(!error.message.includes('same-uid'));
+    return true;
+  });
+});

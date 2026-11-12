@@ -37,22 +37,35 @@ export function makePlan(auth, backup, hashText, source, target) {
     fingerprint: hash({ source, target, users, hashConfig, documents }) };
 }
 
-function userIdentity(user) {
+function userIdentity(user, expected = user) {
   let claims;
   try { claims = JSON.parse(user.customAttributes || '{}'); } catch (_) { throw new Error('Invalid custom claims in an Authentication record.'); }
   const timestamp = value => value && value !== '0' ? String(value) : '';
   return { uid: user.localId, email: (user.email || '').toLowerCase(), emailVerified: !!user.emailVerified,
     disabled: !!user.disabled, name: user.displayName || '', photo: user.photoUrl || '', phone: user.phoneNumber || '', claims,
     createdAt: timestamp(user.createdAt), lastLoginAt: timestamp(user.lastLoginAt || user.lastSignedInAt), mfaInfo: user.mfaInfo || [],
-    providers: (user.providerUserInfo || []).map(provider => ({ providerId: provider.providerId, id: provider.rawId || provider.federatedId || '' })).sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b))) };
+    // Firebase CLI omits the password provider from exports. The REST API may
+    // return it explicitly; a source password hash already establishes it.
+    providers: (user.providerUserInfo || []).filter(provider => !(provider.providerId === 'password' && expected.passwordHash)).map(provider => ({ providerId: provider.providerId, id: provider.rawId || provider.federatedId || '' })).sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b))) };
 }
 
 export function reconcile(plan, actual, resume) {
   if (!resume && (actual.users.length || actual.documents.length)) throw new Error('Destination is not empty and no matching local migration journal exists. Nothing will be overwritten.');
   const expectedUsers = new Map(plan.users.map(user => [user.localId, user]));
   const expectedDocs = new Map(plan.documents.map(doc => [doc.path, doc]));
+  const differences = new Map();
   for (const user of actual.users) {
-    if (!expectedUsers.has(user.localId) || !isDeepStrictEqual(userIdentity(user), userIdentity(expectedUsers.get(user.localId)))) throw new Error('An existing destination account differs from this backup. Stopped without overwriting it.');
+    const expected = expectedUsers.get(user.localId);
+    if (!expected) { differences.set('unknown accounts', (differences.get('unknown accounts') || 0) + 1); continue; }
+    const observed = userIdentity(user, expected), wanted = userIdentity(expected);
+    for (const field of Object.keys(wanted)) {
+      if (!isDeepStrictEqual(observed[field], wanted[field])) differences.set(field, (differences.get(field) || 0) + 1);
+    }
+  }
+  if (differences.size) {
+    // Report only fixed field names and counts: never UIDs, emails or values.
+    const summary = [...differences].sort(([a], [b]) => a.localeCompare(b)).map(([field, count]) => field + ': ' + count).join('; ');
+    throw new Error('An existing destination account differs from this backup. Verification fields: ' + summary + '. Stopped without overwriting it.');
   }
   for (const doc of actual.documents) {
     if (!expectedDocs.has(doc.path) || !isDeepStrictEqual(doc.fields || {}, expectedDocs.get(doc.path).fields)) throw new Error('An existing destination document differs from this backup. Stopped without overwriting it.');
