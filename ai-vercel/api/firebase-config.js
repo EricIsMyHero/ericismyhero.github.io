@@ -1,4 +1,5 @@
 import { migrationPaused } from '../lib/maintenance.js';
+import { migrationReadiness } from '../lib/migration-readiness.js';
 // api/firebase-config.js
 // Vercel serverless function — Firebase config-i env variable-lardan qaytarır.
 // Bu fayl GitHub-da görünür, amma dəyərlər Vercel-in
@@ -30,7 +31,7 @@ export default function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'GET');
   res.setHeader('Cache-Control', 'no-store'); // config-i cache etmə
 
-  if (migrationPaused()) return res.status(200).json({ maintenance: true, projectId: process.env.FIREBASE_PROJECT_ID || '', deployment: process.env.VERCEL_DEPLOYMENT_ID || process.env.VERCEL_URL || '' });
+  if (migrationPaused()) return res.status(200).json({ maintenance: true, projectId: process.env.FIREBASE_PROJECT_ID || '', deployment: process.env.VERCEL_DEPLOYMENT_ID || process.env.VERCEL_URL || '', ...migrationReadiness() });
 
   // Env variable-ların hamısı dolu olduğunu yoxla
   const required = [
