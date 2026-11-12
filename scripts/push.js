@@ -16,7 +16,7 @@
   const U = window.UNEC || {};
   const API = ((typeof BACKEND_URL !== 'undefined' && BACKEND_URL) || 'https://ericismyhero-github-io.vercel.app') + '/api/push';
   const K_ON = 'push_on';        // '1' — istifadəçi bu cihazda bildirişi aktiv edib
-  const K_META = 'push_meta';    // { token, uid, lang, ts } — serverə axırıncı göndərilən vəziyyət
+  const K_META = 'push_meta';    // token + account/language + Firebase project/app identity
   const RESYNC_MS = 7 * 24 * 60 * 60 * 1000;
 
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
@@ -40,6 +40,18 @@
   const isStandalone = () => (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
   const firebaseReady = () => typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0 && typeof firebase.messaging === 'function';
   const currentUser = () => (typeof getCurrentUser === 'function' ? getCurrentUser() : null);
+  const firebaseIdentity = () => {
+    const options = firebase.app().options;
+    return { projectId: options.projectId, appId: options.appId };
+  };
+  function subscriptionKeyMatches(subscription, vapidKey) {
+    const key = subscription?.options?.applicationServerKey;
+    if (!key) return false;
+    const encoded = vapidKey.replace(/-/g, '+').replace(/_/g, '/');
+    const decoded = atob(encoded + '='.repeat((4 - encoded.length % 4) % 4));
+    const bytes = new Uint8Array(key);
+    return bytes.length === decoded.length && bytes.every((byte, index) => byte === decoded.charCodeAt(index));
+  }
 
   async function fcmSupported() {
     try {
@@ -93,25 +105,39 @@
     return j;
   }
 
-  async function idTokenOrNull() {
-    try { const u = currentUser(); return u ? await u.getIdToken() : null; } catch (e) { return null; }
+  async function idTokenOrNull(u = currentUser()) {
+    try { return u ? await u.getIdToken() : null; } catch (e) { return null; }
   }
 
   // FCM tokeni (icazə artıq verilmiş olmalıdır — burada sorğu çıxmır)
   async function getFcmToken() {
     const cfg = await api();                                   // GET → { enabled, vapidKey }
     if (!cfg.enabled || !cfg.vapidKey) throw new Error('push_disabled');
-    const reg = await navigator.serviceWorker.register('/sw.js');
+    const reg = await navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' });
     await navigator.serviceWorker.ready;                       // aktiv worker olmadan subscribe() işləmir
+    const previous = await reg.pushManager.getSubscription();
+    if (previous && !subscriptionKeyMatches(previous, cfg.vapidKey)) {
+      // A subscription bound to the old VAPID key cannot receive new-project pushes.
+      if (!await previous.unsubscribe()) throw new Error('push_subscription_rotation_failed');
+    }
     const token = await firebase.messaging().getToken({ vapidKey: cfg.vapidKey, serviceWorkerRegistration: reg });
     if (!token) throw new Error('no_token');
     return token;
   }
 
-  async function saveToServer(token) {
+  async function saveToServer(token, requireOn = false) {
+    if (requireOn && (state() !== 'on' || busy)) return;
     const u = currentUser();
-    await api({ action: 'subscribe', token, lang: curLang(), idToken: await idTokenOrNull() });
-    ls.setJSON(K_META, { token, uid: u ? u.uid : null, lang: curLang(), ts: Date.now() });
+    const previous = ls.getJSON(K_META);
+    await api({ action: 'subscribe', token, lang: curLang(), idToken: await idTokenOrNull(u) });
+    if (requireOn && (state() !== 'on' || busy)) {
+      await api({ action: 'unsubscribe', token });
+      return;
+    }
+    ls.setJSON(K_META, { token, uid: u ? u.uid : null, lang: curLang(), ts: Date.now(), ...firebaseIdentity() });
+    if (previous?.token && previous.token !== token) {
+      try { await api({ action: 'unsubscribe', token: previous.token }); } catch (_) { /* new subscription is already saved */ }
+    }
   }
 
   // ── Əməliyyatlar ────────────────────────────────────────────
@@ -132,7 +158,7 @@
       console.warn('[push] aktivləşdirmə xətası:', e);
       toast(tr('pushToastErr'), 'error');
     } finally {
-      busy = false; render();
+      busy = false; render(); await resumePendingSync();
     }
   }
 
@@ -146,23 +172,32 @@
       ls.del(K_ON); ls.del(K_META);
       toast(tr('pushToastOff'));
     } finally {
-      busy = false; render();
+      busy = false; render(); await resumePendingSync();
     }
   }
 
   // Aktiv abunəlikdə: giriş/çıxış, dil dəyişikliyi və ya 7 gün keçəndə serveri yenilə
   // (hesabı tokenə bağlayır, çıxış edəndə ayırır, köhnəlmiş tokeni təzələyir).
+  let syncing = false, syncPending = false;
+  async function resumePendingSync() {
+    if (syncPending && !syncing && !busy) { syncPending = false; await sync(); }
+  }
   async function sync() {
     if (state() !== 'on' || !firebaseReady()) return;
+    if (syncing || busy) { syncPending = true; return; }
+    syncing = true;
     try {
       const meta = ls.getJSON(K_META);
       const u = currentUser();
+      const identity = firebaseIdentity();
       const fresh = meta && meta.token && (meta.uid || null) === (u ? u.uid : null) &&
+                    meta.projectId === identity.projectId && meta.appId === identity.appId &&
                     meta.lang === curLang() && Date.now() - (meta.ts || 0) < RESYNC_MS;
       if (fresh) return;
       if (!(await fcmSupported())) return;
-      await saveToServer(await getFcmToken());
+      await saveToServer(await getFcmToken(), true);
     } catch (e) { console.warn('[push] sinxronizasiya xətası:', e); }
+    finally { syncing = false; await resumePendingSync(); }
   }
 
   // ── Qoşulma ─────────────────────────────────────────────────
