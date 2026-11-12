@@ -37,7 +37,7 @@ export function makePlan(auth, backup, hashText, source, target) {
     fingerprint: hash({ source, target, users, hashConfig, documents }) };
 }
 
-function userIdentity(user, expected = user) {
+export function userIdentity(user, expected = user) {
   let claims;
   try { claims = JSON.parse(user.customAttributes || '{}'); } catch (_) { throw new Error('Invalid custom claims in an Authentication record.'); }
   const timestamp = value => value && value !== '0' ? String(value) : '';

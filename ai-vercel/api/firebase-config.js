@@ -30,7 +30,7 @@ export default function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'GET');
   res.setHeader('Cache-Control', 'no-store'); // config-i cache etmə
 
-  if (migrationPaused()) return res.status(200).json({ maintenance: true, projectId: process.env.FIREBASE_PROJECT_ID || '' });
+  if (migrationPaused()) return res.status(200).json({ maintenance: true, projectId: process.env.FIREBASE_PROJECT_ID || '', deployment: process.env.VERCEL_DEPLOYMENT_ID || process.env.VERCEL_URL || '' });
 
   // Env variable-ların hamısı dolu olduğunu yoxla
   const required = [
