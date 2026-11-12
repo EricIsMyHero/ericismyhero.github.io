@@ -9,14 +9,14 @@
   const txt = () => labels[lang] || labels.az;
   // Adapt legacy overlays to the same focus trap and focus restoration as sheets.
   let current = null;
-  function open(id) {
+  function open(id, opener) {
     const el = document.getElementById(id); if (!el) return;
     if (current) U.closeAllLayers();
     el.classList.remove('hidden'); el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true');
     const heading = el.querySelector('h2,.auth-title,.qr-pay-modal-title,.quiz-results-title');
     if (heading) { if (!heading.id) heading.id = id + '-title'; el.setAttribute('aria-labelledby', heading.id); }
     const siblings = [...document.body.children].filter(node => node !== el && !node.inert);
-    U.openLayer(el, null, document.activeElement, () => { el.classList.add('hidden'); siblings.forEach(node => { node.inert = false; }); current = null; });
+    U.openLayer(el, null, opener || document.activeElement, () => { if (id === 'authOverlay') window.UNECAuth?.reset(); el.classList.add('hidden'); siblings.forEach(node => { node.inert = false; }); current = null; });
     siblings.forEach(node => { node.inert = true; }); current = id;
   }
   const close = id => { if (current === id) U.closeLayer(); else document.getElementById(id)?.classList.add('hidden'); };
@@ -36,7 +36,7 @@
     window[closer] = () => close(id);
   }
   const auth = window.openAuthModal, hideAuth = window._hideAuthModal;
-  window.openAuthModal = function (...args) { auth(...args); open('authOverlay'); };
+  window.openAuthModal = function (...args) { const opener = document.activeElement; auth(...args); open('authOverlay', opener); };
   window._hideAuthModal = () => { close('authOverlay'); hideAuth(); };
   document.addEventListener('click', event => {
     if (current === 'authOverlay' && (event.target.id === 'authOverlay' || event.target.closest('#authOverlay .auth-modal-close'))) {

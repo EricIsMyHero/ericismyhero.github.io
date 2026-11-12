@@ -67,7 +67,7 @@ ericismyhero.github.io/
 │   ├── screens.css             ← Home, Courses, material card & detail, GPA, More
 │   ├── tools.css               ← Tests, Dashboard, Timer & Exams, Material Requests (list, threads, composer), Curriculum Planner
 │   ├── support.css             ← Support screen and payment flow
-│   └── legacy.css              ← Small adapters for the parts not redesigned yet (sign-in dialog, AI chat …)
+│   └── legacy.css              ← Small adapters for remaining legacy components (AI chat …)
 │
 ├── images/                     ← Project assets
 │   ├── favicon.ico / .svg / -16.png / -32.png
@@ -261,7 +261,7 @@ Review and commit both `pdfs.js` and `data/material-history.json` after syncing.
 * ✅ UI & Layout Redesign
 * ✅ Redesign of the remaining older screens (Tests, Dashboard, Timer & Exams, Material Requests, Curriculum Planner)
 * ✅ Support screen with an online payment flow *(test mode until a gateway contract is in place)*
-* Redesign of the sign-in dialog *(next)*
+* ✅ Redesign of the sign-in dialog — responsive forms, accessible password controls and translated validation
 * Payment gateway go-live (Epoint), offer / refund-policy page
 * ✅ AI Study Assistant
 * Student Marketplace

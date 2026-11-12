@@ -130,22 +130,22 @@ async function _getUserProfile(uid) {
 // ============================================================
 
 async function signInWithGoogle() {
-  if (!_auth) return;
+  if (!_auth) { _showAuthError(t('authNotReady')); return; }
   try {
     const provider = new firebase.auth.GoogleAuthProvider();
     provider.setCustomParameters({ prompt: 'select_account' });
     const result = await _auth.signInWithPopup(provider);
     if (result.user) {
-      console.log('[firebase] Google login uğurlu:', result.user.email);
+      _hideAuthModal();
     }
   } catch (e) {
-    console.error('[firebase] Google login xətası:', e);
+    console.warn('[firebase] Google login:', e.code);
     _showAuthError(_authErrorMessage(e.code));
   }
 }
 
 async function signUpWithEmail(email, password, name) {
-  if (!_auth) return;
+  if (!_auth) { _showAuthError(t('authNotReady')); return; }
   try {
     const cred = await _auth.createUserWithEmailAndPassword(email, password);
     await cred.user.updateProfile({ displayName: name });
@@ -155,7 +155,7 @@ async function signUpWithEmail(email, password, name) {
 }
 
 async function signInWithEmail(email, password) {
-  if (!_auth) return;
+  if (!_auth) { _showAuthError(t('authNotReady')); return; }
   try {
     await _auth.signInWithEmailAndPassword(email, password);
   } catch (e) {
@@ -170,28 +170,27 @@ async function signOut() {
 }
 
 async function sendPasswordReset(email) {
-  if (!_auth || !email) return;
+  if (!_auth || !email) { _showAuthError(t('authNotReady')); return; }
   try {
     await _auth.sendPasswordResetEmail(email);
-    _showAuthError('✓ Şifrə sıfırlama linki göndərildi.', 'success');
+    _showAuthError(t('authResetSent'), 'success');
   } catch (e) {
-    _showAuthError(_authErrorMessage(e.code));
+    if (e.code === 'auth/user-not-found') _showAuthError(t('authResetSent'), 'success');
+    else _showAuthError(_authErrorMessage(e.code));
   }
 }
 
 function _authErrorMessage(code) {
-  const map = {
-    'auth/email-already-in-use':   'Bu email artıq qeydiyyatdan keçib.',
-    'auth/invalid-email':          'Düzgün email daxil edin.',
-    'auth/weak-password':          'Şifrə ən azı 8 simvol, böyük hərf və rəqəm olmalıdır.',
-    'auth/password-does-not-meet-requirements': 'Şifrə tələblərə uyğun deyil: ən azı 8 simvol, böyük hərf və rəqəm olmalıdır.',
-    'auth/user-not-found':         'Bu email ilə hesab tapılmadı.',
-    'auth/wrong-password':         'Şifrə yanlışdır.',
-    'auth/too-many-requests':      'Çox sayda cəhd. Bir az gözləyin.',
-    'auth/popup-closed-by-user':   '',
-    'auth/network-request-failed': 'Şəbəkə xətası. İnterneti yoxlayın.'
+  if (['auth/popup-closed-by-user', 'auth/cancelled-popup-request'].includes(code)) return '';
+  const keys = {
+    'auth/email-already-in-use': 'authEmailInUse', 'auth/invalid-email': 'authEmailInvalid',
+    'auth/weak-password': 'authPasswordInvalid', 'auth/password-does-not-meet-requirements': 'authPasswordInvalid',
+    'auth/user-not-found': 'authBadCredentials', 'auth/wrong-password': 'authBadCredentials',
+    'auth/invalid-credential': 'authBadCredentials', 'auth/invalid-login-credentials': 'authBadCredentials',
+    'auth/too-many-requests': 'authTooMany', 'auth/network-request-failed': 'authNetwork',
+    'auth/popup-blocked': 'authPopupBlocked', 'auth/operation-not-allowed': 'authProviderDisabled'
   };
-  return map[code] || 'Xəta baş verdi. Yenidən cəhd edin.';
+  return t(keys[code] || 'authGenericError');
 }
 
 // ============================================================
@@ -394,11 +393,13 @@ function openAuthModal(mode = 'login') {
 }
 
 function _hideAuthModal() {
+  window.UNECAuth?.reset();
   const overlay = document.getElementById('authOverlay');
   if (overlay) overlay.classList.add('hidden');
 }
 
 function setAuthMode(mode) {
+  if (window.UNECAuth) return window.UNECAuth.setMode(mode);
   document.querySelectorAll('.auth-panel').forEach(p => p.classList.add('hidden'));
   const panel = document.getElementById(`auth-panel-${mode}`);
   if (panel) panel.classList.remove('hidden');
@@ -409,7 +410,8 @@ function _showAuthError(msg, type = 'error') {
   document.querySelectorAll('.auth-error').forEach(el => {
     if (el.closest('.auth-panel:not(.hidden)')) {
       el.textContent = msg;
-      el.style.color = type === 'success' ? 'var(--accent2)' : '#ef4444';
+      el.dataset.status = type;
+      el.style.removeProperty('color');
     }
   });
 }
