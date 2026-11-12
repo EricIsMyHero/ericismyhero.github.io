@@ -352,3 +352,13 @@ node tools/firebase-firestore-backup.mjs --key /private/source-key.json --projec
 ```
 
 The tool checks the source project, traverses paginated collections and subcollections (including missing parent documents), preserves native Firestore field representations, refuses to overwrite an existing backup and prints a SHA-256 checksum. It does not write to Firebase. This is a live read, not a point-in-time snapshot; pause source writes and take a final export for cutover. Authentication users/password-hash configuration, Firestore rules/indexes and file contents require separate backups. Keep every export private.
+
+### Firebase migration preflight
+
+`tools/firebase-migration-check.mjs` and its sibling backup module perform read-only checks before a project migration. Keep both scripts in the same local folder. The default private input files are `auth-backup.json`, `firestore-backup.json`, `firebase-hash-config.txt` (the original SCRYPT hash configuration copied from the source Authentication console) and `firebase-new-key.json` (a service-account key from the destination project). Never commit or share these files.
+
+```sh
+node tools/firebase-migration-check.mjs --source OLD_PROJECT_ID --target NEW_PROJECT_ID --location FIRESTORE_REGION
+```
+
+The check rejects incomplete or mismatched backups, duplicate UIDs/paths, missing password hashes and unsupported tenant accounts; checks password hash parameters locally; then verifies the destination region, native database mode and empty Authentication/Firestore services. It writes no Firebase data and does not activate the destination. Rules, indexes, providers, authorized domains, file storage and push configuration still require a separate migration checklist before cutover.

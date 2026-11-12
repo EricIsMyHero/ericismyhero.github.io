@@ -49,7 +49,7 @@ export async function exportFirestore(projectId, request, progress = () => {}) {
     documents: documents.sort((a, b) => a.path.localeCompare(b.path)) };
 }
 
-export function authenticatedRequest(key, projectId, fetcher = fetch) {
+export function authenticatedRequest(key, projectId, fetcher = fetch, options = {}) {
   if (key.project_id !== projectId || key.type !== 'service_account' || !key.client_email || !key.private_key) {
     throw new Error('The key must be a service-account key from the specified SOURCE project.');
   }
@@ -60,7 +60,7 @@ export function authenticatedRequest(key, projectId, fetcher = fetch) {
       if (!token || expires - now < 120) {
         const encode = value => Buffer.from(JSON.stringify(value)).toString('base64url');
         const unsigned = encode({ alg: 'RS256', typ: 'JWT' }) + '.' + encode({ iss: key.client_email,
-          scope: 'https://www.googleapis.com/auth/datastore', aud: 'https://oauth2.googleapis.com/token', iat: now, exp: now + 3600 });
+          scope: options.scope || 'https://www.googleapis.com/auth/datastore', aud: 'https://oauth2.googleapis.com/token', iat: now, exp: now + 3600 });
         const assertion = unsigned + '.' + crypto.sign('RSA-SHA256', Buffer.from(unsigned), key.private_key).toString('base64url');
         const response = await fetcher('https://oauth2.googleapis.com/token', { method: 'POST', signal: AbortSignal.timeout(30000),
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -76,7 +76,7 @@ export function authenticatedRequest(key, projectId, fetcher = fetch) {
       if ([429, 500, 502, 503, 504].includes(response.status) && attempt < 3) {
         await new Promise(resolve => setTimeout(resolve, 1000 * 2 ** attempt)); continue;
       }
-      throw new Error(`Firestore backup failed (HTTP ${response.status}). Check the source project, Firestore database and service-account permissions.`);
+      throw new Error(`${options.label || 'Firestore backup'} failed (HTTP ${response.status}). Check the project, enabled Firebase services and service-account permissions.`);
     }
   };
 }
