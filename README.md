@@ -342,3 +342,13 @@ The shell, styles and behaviour live in `admin-panel/index.html`, `admin.css` an
 **Content workspace:** `workspace.js` and `workspace.css` implement the supplied planning prototype inside an isolated panel. Categories cover posts, stories, release notes, material appeals, notification drafts and technical checks. Each task includes status, priority, owner, text, CTA, link, review notes, target/actual metrics and optional commit context. Create, edit, duplicate, delete, copy and table/board views are supported, along with search and filters. Tasks use device-local `unec-workspace-v1` storage, with version-1 JSON export/import for backups or transfer (maximum 2,000 tasks / 5 MB import). Imports replace the current workspace only after confirmation. Local tasks do not synchronise across browsers or admins. GitHub changes are read-only public commit data with a direct-link fallback. Drafts never publish to GitHub or social networks and never send push automatically; use the separate notification sender for a deliberate send.
 
 Premium generation returns any successfully created codes if a batch fails partway through, so the operator can retain them before retrying. Codes use cryptographic randomness. Notification sending retains audience preview, confirmation, chunked delivery and per-message send history. Test these workflows with fixture responses; do not send test broadcasts or delete production data during browser verification.
+
+### Read-only Firestore backup
+
+`tools/firebase-firestore-backup.mjs` runs locally on Node.js 20+ without npm dependencies. Use a service-account JSON key from the source project and keep keys and exports outside the repository:
+
+```sh
+node tools/firebase-firestore-backup.mjs --key /private/source-key.json --project SOURCE_PROJECT_ID --out /private/firestore-backup.json
+```
+
+The tool checks the source project, traverses paginated collections and subcollections (including missing parent documents), preserves native Firestore field representations, refuses to overwrite an existing backup and prints a SHA-256 checksum. It does not write to Firebase. This is a live read, not a point-in-time snapshot; pause source writes and take a final export for cutover. Authentication users/password-hash configuration, Firestore rules/indexes and file contents require separate backups. Keep every export private.
