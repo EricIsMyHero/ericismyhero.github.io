@@ -27,6 +27,13 @@ export default async function handler(req, res) {
   const b = body(req);
   const user = await verifyIdToken(b.idToken);
   if (!user) return res.status(401).json({ error: 'login_required' });
+  if (typeof b.action === 'string' && b.action.startsWith('written-')) {
+    try {
+      const { writtenAction } = await import('../lib/written-exams.js');
+      const result = await writtenAction(b, user.uid);
+      return res.status(result.status).json(result.json);
+    } catch (_) { return res.status(503).json({ error: 'written_unavailable' }); }
+  }
   let policy;
   try { policy = await getAiPolicy(user.uid); }
   catch (_) { return res.status(503).json({ error: 'usage_unavailable' }); }

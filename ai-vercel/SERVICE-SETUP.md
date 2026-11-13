@@ -49,3 +49,47 @@ Commit the generated material pages, `sitemap.xml`, `offline-assets.js` and hist
 The service worker precaches only explicitly listed public same-origin assets. It never caches Firebase responses, APIs, tokens, user exports or remote PDFs. Curriculum data, completion checkboxes, GPA and timer tools work after an initial successful online visit. A complete new cache version is installed before activation. Only caches with the `unec-static-` prefix are removed during upgrades; browser study data is retained.
 
 GitHub Actions validates generated files, timestamps, syntax and unit tests on pushes/PRs. A separate weekly/manual job checks catalog links using browser headers, range requests and retries. No secrets are needed for these checks.
+
+## AI written practice
+
+Written practice shares `/api/ask` with the existing assistant, using authenticated
+`written-*` actions. It does not consume chatbot credits. No additional Vercel
+function or paid AI fallback is introduced. Install with `npm ci` in `ai-vercel`
+and use Node.js 24. The pinned `unpdf` dependency extracts PDF text server-side.
+
+The existing `GROQ_API_KEY` enables grading. The default model is
+`openai/gpt-oss-120b`; optionally set `WRITTEN_EXAM_MODEL` to a Groq model that
+supports JSON output. Free-tier availability depends on the provider and account
+quotas. A 429 pauses grading; saved answers and completed question grades remain
+available for retry. This is formative practice, not an official mark.
+
+Midterm draws 3 questions (30 points maximum); Semester draws 5 (50 maximum).
+Each question allows 20 minutes, enforced by server deadlines. Moving forward
+locks the preceding answer. The shared limit is 3 started exams per UID per Baku
+calendar day, including abandoned exams. Start request IDs make retries
+idempotent, and Firestore update-time preconditions protect concurrent quota and
+grading operations. Blank answers receive zero; insufficient or unverifiable
+reference-based grading produces an ungraded result and no fabricated total.
+
+Only written PDFs listed in the generated `lib/written-sources.js` are fetched.
+Run `node tools/build-site.mjs` from the repository root after catalogue changes.
+Source URLs and references supplied by a browser are never trusted. Extraction
+requires numbered text questions and reference explanations; scans, question-only
+files, unsupported layouts and overly long answer blocks may be ineligible.
+Do not interpret the extracted count as a promise to support every question in a PDF.
+The source fingerprint must still match when grading resumes.
+
+Private sessions are stored in the existing server-only `ai_usage/{uidHash}`
+document, under `written.days`, separately from chat quota fields. Existing rules
+deny browser access to that collection. No new public write rules are needed.
+Writes retain the current and previous Baku day and remove older practice entries;
+this is not an automatic TTL cleanup when an account is inactive. Account exports
+include written practice, and account deletion removes the whole usage document.
+Browser drafts use account-specific session storage and are cleared on sign-out;
+the resume pointer contains only an exam ID/day. Answers and selected reference
+text are sent to Groq at grading time, as disclosed in the interface and privacy
+policy. The AI key and reference answers are not sent to the browser before grading.
+
+Run `node --test tests/written-exams.test.mjs` from the repository root for isolated
+quota, timer, concurrency, grounding and PDF extraction tests. Live grading also
+requires the existing Firebase service-account configuration and a working Groq key.

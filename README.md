@@ -416,3 +416,20 @@ Materials open at `#/materials` as one alphabetical subject list. Each subject (
 Course containers in `pdfs.js` remain historical compatibility metadata for existing ratings, chats and old links. They do not determine browsing or curricular placement. Existing `#/courses`, `#/m/<course>/<subject>/<file>` and `#/x/<course>/<file>` links remain supported; old rating document IDs and favourite keys are unchanged. New material links omit the course. The student's year and the major-specific semester schedule remain in their profile/curriculum.
 
 Add new subjects under the neutral `data["Materiallar"].subjects` container in `pdfs.js`, and new extras under `extrasData["Materiallar"]`. A new entry needs its subject name, format, files and verified addition timestamps; it does not need a course or semester. Historical containers remain intact for compatibility.
+
+### AI written practice (beta)
+
+**Tests → Written · AI** offers Midterm (3 questions / 30 points) and Semester
+(5 questions / 50 points), with 20 minutes per question and 3 started exams per
+signed-in user per Baku day. The newest written PDF is selected by default; users
+can change the source. The server extracts numbered questions with reference
+answers from the selected PDF, then Groq evaluates the student's own explanation
+against that reference. Grading supports retries without starting another exam.
+AI scores are formative, and unsupported/scanned or question-only PDFs cannot be
+used as reference material.
+
+The backend uses Node.js 24 and the pinned `unpdf` package. Install dependencies
+with `npm ci --prefix ai-vercel`; run `node --test tests/*.test.cjs tests/*.test.mjs`.
+See [service setup](ai-vercel/SERVICE-SETUP.md#ai-written-practice) for configuration,
+provider quotas, private records and deployment details. After changing `pdfs.js`,
+run `node tools/build-site.mjs` to refresh the trusted written-source list.

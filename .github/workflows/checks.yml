@@ -14,15 +14,16 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '24'
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - run: npm ci --prefix ai-vercel --ignore-scripts
       - run: node --test tests/*.test.cjs tests/*.test.mjs
       - run: python3 tools/sync-material-dates.py --check
       - run: node tools/build-site.mjs --check
       - name: JavaScript syntax
         run: |
-          find scripts ai-vercel tools admin-panel -name '*.js' -o -name '*.mjs' | xargs -n1 node --check
+          find scripts ai-vercel tools admin-panel -path '*/node_modules' -prune -o \( -name '*.js' -o -name '*.mjs' \) -print0 | xargs -0 -n1 node --check
           node --check sw.js
           node --check offline-assets.js

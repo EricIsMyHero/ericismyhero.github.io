@@ -138,6 +138,7 @@
   <link rel="stylesheet" href="styles/shell.css?v=20261106-3">
   <link rel="stylesheet" href="styles/screens.css?v=20261110">
   <link rel="stylesheet" href="styles/tools.css?v=20261113-test-source">
+  <link rel="stylesheet" href="styles/written.css?v=20261113-written">
   <link rel="stylesheet" href="styles/support.css?v=20261106-3">
   <link rel="stylesheet" href="styles/legacy.css?v=20261106-3">
   <link rel="stylesheet" href="styles/compass.css?v=20261109-2">
@@ -701,6 +702,11 @@
             <h1 data-i18n="navTests">Testlər</h1>
           </div>
 
+          <div class="wp-tabs" role="group" aria-label="Test formatı / Exam format">
+            <button type="button" id="wp-tab-mcq" aria-pressed="true" onclick="WrittenPractice.setMode('mcq')">Test</button>
+            <button type="button" id="wp-tab-written" aria-pressed="false" onclick="WrittenPractice.setMode('written')">Yazılı · AI</button>
+          </div>
+          <div id="test-mcq-pane">
           <!-- Fənn seçimi -->
           <div id="test-landing">
             <section class="tl-intro" aria-labelledby="test-hero-title">
@@ -833,6 +839,9 @@
               <div id="testReviewList" data-filter="all"></div>
             </section>
           </div>
+
+          </div>
+          <section id="test-written-pane" class="wp" hidden aria-label="Yazılı sınaq / Written practice"></section>
 
         </div>
       </div>
@@ -2249,7 +2258,8 @@
 <script src="scripts/push.js?v=20261112-project"></script>
 <script src="scripts/auth-dialog.js?v=20261112"></script>
 <script src="scripts/site-enhancements.js?v=20261112-auth"></script>
-<script src="scripts/policies.js?v=20261111"></script>
+<script src="scripts/policies.js?v=20261113-written"></script>
+<script src="scripts/written-practice.js?v=20261113-written"></script>
 <script src="scripts/account.js?v=20261111"></script>
 <section class="sheet" id="sheet-account-delete" role="dialog" aria-modal="true" aria-labelledby="accountDeleteTitle" inert>
   <div class="sheet-head"><h2 id="accountDeleteTitle">Hesabımı sil</h2><button class="icon-btn" type="button" data-sheet-close aria-label="Bağla" data-i18n-aria="btnClose">✕</button></div>

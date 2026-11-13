@@ -303,7 +303,7 @@
       case 'courses':
         if (typeof U.showCoursesRoute === 'function') U.showCoursesRoute(r, prevRoute);
         break;
-      case 'tests':      if (typeof initTestSystem === 'function') initTestSystem(); break;
+      case 'tests':      if (r.query?.mode !== 'written' && typeof initTestSystem === 'function') initTestSystem(); break;
       case 'gpa':        if (typeof initGPA === 'function') initGPA(); if (U.syncGpaStepper) U.syncGpaStepper(); break;
       case 'compass': if (U.renderCompass) U.renderCompass(r); break;
       case 'curriculum': if (typeof initCurriculum === 'function') initCurriculum(); break;

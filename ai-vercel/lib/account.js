@@ -96,6 +96,7 @@ export async function accountAction(action, b, env = process.env, services = {})
       schemaVersion: 1, exportedAt: new Date().toISOString(),
       account: user, scope: 'Account profile and private study records; public discussions are not included.',
       records: await exportProfile(user.uid, db, env),
+      writtenPractice: (await db.getDoc(usagePath(user.uid), env))?.data.written || null,
     } };
     if (b.confirm !== 'DELETE') return { status: 400, json: { error: 'confirmation_required' } };
     if (!recentLogin(b.idToken, user.uid)) return { status: 403, json: { error: 'recent_login_required' } };
