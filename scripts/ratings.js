@@ -200,7 +200,7 @@ async function renderMaterialLeaderboard(courseName, subjectName, pdfFiles) {
   const items = pdfFiles.map(p => ({
     name:  p.name,
     file:  p.file,
-    id:    ratingDocId(courseName, subjectName, p.file),
+    id:    ratingDocId(p.course || courseName, p.subject || subjectName, p.file),
     avg:   0,
     count: 0
   }));

@@ -55,7 +55,7 @@
   }
   function withSearch(m) {
     const typeLabel = (PDF_TYPES[m.pdfType] || {}).label || '';
-    m.search = normAz([m.name, m.subject, m.course, m.file, m.code, m.desc, typeLabel].join(' '));
+    m.search = normAz([m.name, m.subject, m.file, m.code, m.desc, typeLabel, ...(m.aliases || []).flatMap(a => [a.subject, a.code])].join(' '));
     return m;
   }
 
@@ -63,27 +63,41 @@
   function getIndex() {
     if (index) return index;
     const list = [];
-    const seen = new Set();
+    const seen = new Map();
     Object.entries(data).forEach(([course, cd]) => {
       Object.entries(cd.subjects).forEach(([subject, subj]) => {
         subj.pdfs.forEach(p => {
-          const k = course + '|' + p.file;
-          if (seen.has(k)) return;           // eyni kursda eyni fayl iki fənndə təkrarlanıbsa, siyahıda bir dəfə
-          seen.add(k);
-          list.push(withSearch(makeEntry(course, subject, subj, p)));
+          const k = 'pdf/' + p.file;
+          const alias = { course, subject, subjObj: subj, code: p.code || getSubjectCode(subj), format: subj.type };
+          if (seen.has(k)) { seen.get(k).aliases.push(alias); return; }
+          const entry = makeEntry(course, subject, subj, p);
+          entry.aliases = [alias]; seen.set(k, entry); list.push(entry);
         });
       });
     });
     Object.entries(extrasData || {}).forEach(([course, items]) => {
-      items.forEach(p => list.push(withSearch(makeExtra(course, p))));
+      items.forEach(p => { const key = 'pdf-extra/' + p.file; if (!seen.has(key)) { const m = makeExtra(course, p); seen.set(key, m); list.push(m); } });
     });
-    return (index = newestFirst(list));
+    return (index = newestFirst(list.map(withSearch)));
+  }
+
+  let subjects = null;
+  function getSubjectCatalog() {
+    if (subjects) return subjects;
+    subjects = {};
+    for (const [course, entry] of Object.entries(data)) for (const [name, subj] of Object.entries(entry.subjects)) {
+      if (!subjects[name]) subjects[name] = { ...subj, legacyCourse: course, pdfs: [], entries: [] };
+      for (const pdf of subj.pdfs) if (!subjects[name].pdfs.some(p => p.file === pdf.file)) {
+        subjects[name].pdfs.push(pdf); subjects[name].entries.push(makeEntry(course, name, subj, pdf));
+      }
+    }
+    return subjects;
   }
 
   function resolveEntry(r) {
     if (r.extra) {
       const p = ((extrasData || {})[r.course] || []).find(x => x.file === r.file);
-      return p ? makeExtra(r.course, p) : null;
+      return p ? makeExtra(r.course, p) : getIndex().find(m => m.kind === 'extra' && m.file === r.file) || null;
     }
     const cd = data[r.course];
     const subj = cd && cd.subjects[r.subject];
@@ -93,6 +107,7 @@
     }
     for (const [c, cd2] of Object.entries(data)) {
       for (const [s, sj] of Object.entries(cd2.subjects)) {
+        if (r.subject && s !== r.subject) continue;
         const p = sj.pdfs.find(x => x.file === r.file);
         if (p) return makeEntry(c, s, sj, p);
       }
@@ -101,25 +116,20 @@
   }
 
   function entriesForSubject(course, subject) {
-    const subj = data[course].subjects[subject];
-    return newestFirst(subj.pdfs.map(p => makeEntry(course, subject, subj, p)));
+    return newestFirst(getSubjectCatalog()[subject]?.entries || []);
   }
   function extraEntries(course) {
-    return newestFirst(((extrasData || {})[course] || []).map(p => makeExtra(course, p)));
+    return getIndex().filter(m => m.kind === 'extra');
   }
   function favoriteEntries(course) {
     const favs = new Set(getFavorites());
-    const out = [];
-    Object.entries(data[course].subjects).forEach(([subject, subj]) => {
-      subj.pdfs.forEach(p => { if (favs.has('pdf/' + p.file)) out.push(makeEntry(course, subject, subj, p)); });
-    });
-    extraEntries(course).forEach(m => { if (favs.has(m.favKey)) out.push(m); });
-    return newestFirst(out);
+    return getIndex().filter(m => favs.has(m.favKey));
   }
 
+  const subjectHref = subject => '#/subject/' + enc(subject);
   const matHref = m => m.kind === 'extra'
-    ? `#/x/${enc(m.course)}/${enc(m.file)}`
-    : `#/m/${enc(m.course)}/${enc(m.subject)}/${enc(m.file)}`;
+    ? `#/extra/${enc(m.file)}`
+    : `#/material/${enc(m.subject)}/${enc(m.file)}`;
   const publicMatHref = m => '/materials/' + enc((m.kind === 'extra' ? 'extra-' : '') + m.file.replace(/\.pdf$/i, '')) + '/';
   const typeColor = m => (PDF_TYPES[m.pdfType] || {}).color || (m.kind === 'extra' ? EXTRA_COLOR : DEFAULT_COLOR);
   const formatLabel = f => f === 'test' ? t('formatTest') : (f === 'yazili' ? t('formatWritten') : '');
@@ -195,7 +205,7 @@
         <span class="mat-icon" aria-hidden="true">${ic('pdf')}<b>PDF</b></span>
         <div class="mat-body">
           <h3 class="mat-title"><a href="${matHref(m)}">${esc(m.name)}</a></h3>
-          <div class="mat-meta"><span>${esc(sub)}</span><span class="sep">•</span><span>${esc(m.course)}</span></div>
+          <div class="mat-meta"><span>${esc(sub)}</span></div>
           <div class="mat-badges">${badgesHTML(m, false)}${rid ? `<span class="mat-rate-slot" data-rid="${esc(rid)}"></span>` : ''}</div>
         </div>
         <div class="mat-side">${favBtnHTML(m)}${ic('chevron-right', 'chev')}</div>
@@ -229,8 +239,7 @@
   // Fənn səhifəsinin yuxarı kartı
   function subjectHeroHTML(course, subject, subj, entries) {
     const code = getSubjectCode(subj);
-    const sem = semesterLabel(subj.semester);
-    const desc = code ? tr('subjectDesc', { code, course, semester: sem }) : `${course}, ${sem}.`;
+    const desc = code ? t('mdCode') + ': ' + code : t('materialSubjectIntro');
     return `
     <section class="subject-hero" aria-labelledby="subjHeroTitle">
       ${subj.type ? `<span class="badge ${subj.type === 'test' ? 'badge--green' : 'badge--orange'}">${esc(formatLabel(subj.type))}</span>` : ''}
@@ -257,26 +266,24 @@
     if (typeof renderAllPdfRatings === 'function') renderAllPdfRatings();
   }
 
-  Object.assign(U, { makeEntry, makeExtra, getIndex, resolveEntry, entriesForSubject, extraEntries, favoriteEntries,
+  Object.assign(U, { makeEntry, makeExtra, getIndex, getSubjectCatalog, subjectHref, resolveEntry, entriesForSubject, extraEntries, favoriteEntries,
     matHref, publicMatHref, matCardHTML, richCardHTML, subjectHeroHTML, afterSubjectRender, fetchRatings, avgRatingFor, favBtnHTML, formatLabel, semesterLabel });
 
   // ═════════════════════════════════════════════════════════════
   // KURSLAR — "Bütün materiallar" siyahısı
   // ═════════════════════════════════════════════════════════════
-  const newState = () => ({ q: '', course: 'all', fav: false, format: new Set(), ptype: new Set(), sem: new Set(), major: 'all', shown: PAGE });
+  const newState = () => ({ q: '', fav: false, format: new Set(), ptype: new Set(), major: 'all', shown: PAGE });
   const S = (U.matState = newState());
   const resetState = () => Object.assign(S, newState());
 
-  function hasSheetFilter() { return S.format.size || S.ptype.size || S.sem.size || S.major !== 'all'; }
+  function hasSheetFilter() { return S.format.size || S.ptype.size || S.major !== 'all'; }
 
   function filterMaterials() {
     let res = getIndex();
-    if (S.course !== 'all') res = res.filter(m => m.course === S.course);
     if (S.fav) { const f = new Set(getFavorites()); res = res.filter(m => f.has(m.favKey)); }
     if (S.format.size) res = res.filter(m => m.kind === 'pdf' && S.format.has(m.format));
     if (S.ptype.size)  res = res.filter(m => S.ptype.has(m.pdfType));
-    if (S.sem.size)    res = res.filter(m => m.kind === 'pdf' && S.sem.has(m.semester));
-    if (S.major !== 'all') res = res.filter(m => m.kind === 'pdf' && subjectMatchesMajor(m.subject, m.subjObj, S.major, courseNumber(m.course)));
+    if (S.major !== 'all') res = res.filter(m => m.kind === 'pdf' && (m.aliases || [m]).some(a => subjectMatchesMajor(a.subject, a.subjObj, S.major, null)));
     const q = normAz(S.q);
     if (q) {
       const toks = q.split(' ');
@@ -291,8 +298,7 @@
     const favCount = (function () { const f = new Set(getFavorites()); return getIndex().filter(m => f.has(m.favKey)).length; })();
     const chip = (attr, label, pressed, extra) => `<button type="button" class="chip" ${attr} aria-pressed="${pressed}">${extra || ''}${esc(label)}</button>`;
     box.innerHTML =
-      chip('data-chip="all"', t('matFilterAll'), S.course === 'all') +
-      Object.keys(data).map(c => chip(`data-chip="course" data-v="${esc(c)}"`, c, S.course === c)).join('') +
+      chip('data-chip="all"', t('matFilterAll'), !S.fav) +
       chip('data-chip="fav"', t('matFilterFav') + (favCount ? ` (${favCount})` : ''), S.fav, ic('star'));
   }
 
@@ -309,7 +315,7 @@
     if (fb) fb.classList.toggle('has-filter', !!hasSheetFilter());
 
     if (!res.length) {
-      const favEmpty = S.fav && !S.q && S.course === 'all' && !hasSheetFilter();
+      const favEmpty = S.fav && !S.q && !hasSheetFilter();
       list.innerHTML = `<div class="state-box" style="grid-column:1/-1">${ic(favEmpty ? 'star' : 'search')}
         <h3>${esc(t(favEmpty ? 'matEmptyFav' : 'matEmpty'))}</h3><p>${esc(t(favEmpty ? 'matEmptyFavHint' : 'matEmptyHint'))}</p></div>`;
     } else {
@@ -350,14 +356,11 @@
       <div class="opt-group"><h3>${esc(t('matFilterType'))}</h3><div class="opt-chips">
         ${pts.map(k => mk('ptype', k, PDF_TYPES[k].label, draft.ptype.has(k))).join('')}
       </div></div>
-      <div class="opt-group"><h3>${esc(t('matFilterSemester'))}</h3><div class="opt-chips">
-        ${mk('sem', '1', t('semFall'), draft.sem.has(1))}${mk('sem', '2', t('semSpring'), draft.sem.has(2))}
-      </div></div>
       ${majors ? `<div class="opt-group"><h3>${esc(t('matFilterMajor'))}</h3><div class="opt-chips">${majors}</div></div>` : ''}`;
   }
 
   function openFilter(opener) {
-    draft = { format: new Set(S.format), ptype: new Set(S.ptype), sem: new Set(S.sem), major: S.major };
+    draft = { format: new Set(S.format), ptype: new Set(S.ptype), major: S.major };
     buildFilterSheet();
     U.openSheet('sheet-filter', opener);
   }
@@ -383,8 +386,7 @@
       const b = e.target.closest('[data-chip]');
       if (!b) return;
       const kind = b.dataset.chip;
-      if (kind === 'all') S.course = 'all';
-      else if (kind === 'course') S.course = b.dataset.v;
+      if (kind === 'all') S.fav = false;
       else if (kind === 'fav') S.fav = !S.fav;
       S.shown = PAGE;
       renderMaterials();
@@ -402,17 +404,17 @@
       const g = b.dataset.f, v = b.dataset.v;
       if (g === 'major') draft.major = v;
       else {
-        const key = g === 'sem' ? Number(v) : v;
+        const key = v;
         const set = draft[g];
         if (set.has(key)) set.delete(key); else set.add(key);
       }
       buildFilterSheet();
     });
     const reset = $('#filterReset');
-    if (reset) reset.addEventListener('click', () => { draft = { format: new Set(), ptype: new Set(), sem: new Set(), major: 'all' }; buildFilterSheet(); });
+    if (reset) reset.addEventListener('click', () => { draft = { format: new Set(), ptype: new Set(), major: 'all' }; buildFilterSheet(); });
     const apply = $('#filterApply');
     if (apply) apply.addEventListener('click', () => {
-      if (draft) { S.format = draft.format; S.ptype = draft.ptype; S.sem = draft.sem; S.major = draft.major; }
+      if (draft) { S.format = draft.format; S.ptype = draft.ptype; S.major = draft.major; }
       S.shown = PAGE;
       U.closeSheet();
       renderMaterials();
@@ -426,7 +428,7 @@
     document.addEventListener('click', e => {
       const b = e.target.closest('.mode-switch [data-mode]');
       if (!b) return;
-      U.go(b.dataset.mode === 'subjects' ? '/courses/subjects' : '/courses/all');
+      U.go(b.dataset.mode === 'subjects' ? '/materials' : '/materials/all');
     });
   }
 
@@ -457,12 +459,11 @@
     if (m.kind === 'extra') {
       return { subject: extraEntries(m.course).filter(x => x.file !== m.file), semester: [] };
     }
-    const own = entriesForSubject(m.course, m.subject);
+    const own = entriesForSubject(null, m.subject);
     const ownFiles = new Set(own.map(x => x.file));
     return {
       subject: own.filter(x => x.file !== m.file),
-      semester: m.semester ? getIndex().filter(x => x.kind === 'pdf' && x.course === m.course
-        && x.subject !== m.subject && x.semester === m.semester && !ownFiles.has(x.file)) : []
+      semester: getIndex().filter(x => x.kind === 'pdf' && x.subject !== m.subject && !ownFiles.has(x.file))
     };
   }
 
@@ -490,13 +491,12 @@
       box.innerHTML = `
         <div class="page-head"><button class="icon-btn" type="button" data-back aria-label="${esc(t('appBack'))}">${ic('arrow-left')}</button><h1>${esc(t('mdNotFound'))}</h1></div>
         <div class="state-box">${ic('search')}<h3>${esc(t('mdNotFound'))}</h3><p>${esc(t('mdNotFoundHint'))}</p>
-        <a class="btn btn--primary" href="#/courses/subjects">${esc(t('navCourses'))}</a></div>`;
+        <a class="btn btn--primary" href="#/materials">${esc(t('navCourses'))}</a></div>`;
       return;
     }
     U.currentMaterialTitle = m.name;
     const facts = [
-      [t('mdCourse'), m.course],
-      m.kind === 'pdf' ? [t('mdSemester'), semesterLabel(m.semester)] : null,
+      m.kind === 'pdf' ? [t('mdSubject'), m.subject] : null,
       m.kind === 'pdf' && m.format ? [t('mdFormat'), formatLabel(m.format)] : null,
       m.code ? [t('mdCode'), m.code] : null,
       [t('mdFile'), m.file]
@@ -529,7 +529,7 @@
         </div>
         <aside class="md-related">
           ${relatedSectionHTML('subject', t(m.kind === 'pdf' ? 'mdSameSubject' : 'mdSimilar'), currentRelated.subject)}
-          ${m.kind === 'pdf' ? relatedSectionHTML('semester', t('mdSameSemester'), currentRelated.semester) : ''}
+          ${m.kind === 'pdf' ? relatedSectionHTML('semester', t('mdOtherSubjects'), currentRelated.semester) : ''}
         </aside>
       </div>`;
 
@@ -563,7 +563,7 @@
     const sb = $('#mdSubjectBtn'), rb = $('#mdReportBtn'), sh = $('#mdShareBtn');
     if (sb) sb.addEventListener('click', () => {
       const m = currentMaterial; U.closeSheet();
-      if (m) U.go(m.kind === 'pdf' ? `/courses/subjects/${enc(m.course)}/${enc(m.subject)}` : `/courses/subjects/${enc(m.course)}`);
+      if (m) U.go(m.kind === 'pdf' ? `/subject/${enc(m.subject)}` : '/materials');
     });
     if (rb) rb.addEventListener('click', () => { U.closeSheet(); reportCurrent(); });
     if (sh) sh.addEventListener('click', async () => {
@@ -588,7 +588,7 @@
     switch (r.view) {
       case 'entry':
         // Parametrsiz #/courses: Kurslar "Fənlər üzrə" ilə açılır (köhnə linklər və bookmark-lar üçün)
-        U.go('/courses/subjects', { replace: true });
+        U.go('/materials', { replace: true });
         return;
       case 'materials': {
         const q = r.query || {};
@@ -596,7 +596,6 @@
         if (hasQuery) {
           resetState();
           if (q.q) S.q = q.q;
-          if (q.course && data[q.course]) S.course = q.course;
           if (q.fav === '1') S.fav = true;
         } else if (!prev || prev.tab !== 'courses') {
           resetState();
@@ -612,14 +611,13 @@
         renderMaterialDetail(r);
         break;
       case 'home':
-        goTo('home');
+        showSubjects();
         break;
       case 'subjects':
-        if (!data[r.course]) { U.go('/courses/subjects', { replace: true }); return; }
-        showSubjects(r.course);
+        showSubjects();
         break;
       case 'pdfs':
-        if (!data[r.course] || !data[r.course].subjects[r.subject]) { U.go(data[r.course] ? '/courses/subjects/' + enc(r.course) : '/courses/subjects', { replace: true }); return; }
+        if (!getSubjectCatalog()[r.subject]) { U.go('/materials', { replace: true }); return; }
         showPdfs(r.course, r.subject);
         break;
       default: break;
@@ -631,6 +629,12 @@
     const r = U.route;
     if (!r || r.tab !== 'courses') return;
     if (r.view === 'materials') renderMaterials();
+    else if (['home', 'subjects'].includes(r.view)) {
+      const heading = $('#bc-course'); if (heading) heading.textContent = t('navCourses');
+      renderSubjects();
+      if ($('#tab-extras-btn')?.classList.contains('active')) renderExtras();
+      if ($('#tab-favorites-btn')?.classList.contains('active')) renderFavorites();
+    }
     else if (r.view === 'material') renderMaterialDetail(r);
     else if (r.view === 'pdfs') showPdfs(r.course, r.subject);
   }

@@ -151,11 +151,12 @@ function filterSubjects(query) {
   const semesterHeaders = grid.querySelectorAll('.semester-header');
   const searchResultsInfo = document.getElementById('searchResultsInfo');
   let visibleCount = 0;
+  const normalizedQuery = UNEC.normAz(query);
 
   cards.forEach(card => {
-    const subjectName = card.querySelector('h4').textContent.toLowerCase();
+    const subjectName = UNEC.normAz(card.querySelector('h4').textContent);
     const subjectCode = (card.dataset.code || '').toLowerCase();
-    const matches = !query || subjectName.includes(query) || (subjectCode && subjectCode.includes(query));
+    const matches = !normalizedQuery || subjectName.includes(normalizedQuery) || (subjectCode && subjectCode.includes(normalizedQuery));
     card.style.display = matches ? 'flex' : 'none';
     if (matches) visibleCount++;
   });
@@ -165,43 +166,25 @@ function filterSubjects(query) {
   });
 
   if (searchResultsInfo) {
-    searchResultsInfo.textContent = query ? `${visibleCount} nəticə tapıldı` : '';
+    searchResultsInfo.textContent = query ? UNEC.tr('subjectSearchCount', { n: visibleCount }) : '';
   }
 }
 
 // ── Render — Kurslar (Fənlər üzrə: kurs kartları) ───────────
 const IC_SVG = name => `<svg class="ic" aria-hidden="true"><use href="#i-${name}"/></svg>`;
 
-function renderCourses() {
-  const t    = translations[lang];
-  const grid = document.getElementById('courses-grid');
-  if (!grid) return;
-  grid.innerHTML = '';
-  Object.entries(data).forEach(([courseName, courseData]) => {
-    const subCount = Object.keys(courseData.subjects).length;
-    const pdfCount = Object.values(courseData.subjects).reduce((a, subj) => a + subj.pdfs.length, 0);
-    const a = document.createElement('a');
-    a.className = 'course-card animate-in';
-    a.href = '#/courses/subjects/' + encodeURIComponent(courseName);
-    a.innerHTML = `
-      <span class="course-icon">${IC_SVG('graduation-cap')}</span>
-      <h3>${courseName}</h3>
-      <div class="sub-count">${subCount} ${t.subjects} · ${pdfCount} ${t.pdfs}</div>
-    `;
-    grid.appendChild(a);
-  });
-}
+function renderCourses() { /* Old entry point retained; the catalogue now opens at subjects. */ }
 
 // Köhnə kod adı: kursa keç (router vasitəsilə)
 function openSubjects(courseName) {
-  if (window.UNEC) UNEC.go('/courses/subjects/' + encodeURIComponent(courseName));
+  if (window.UNEC) UNEC.go('/materials');
 }
 
 // Router çağırır: kursun fənlər siyahısını göstər
 function showSubjects(courseName) {
-  currentCourse = courseName;
+  currentCourse = null;
   const bc = document.getElementById('bc-course');
-  if (bc) bc.textContent = courseName;
+  if (bc) bc.textContent = t('navCourses');
   goTo('subjects');
   switchTab('subjects');
   renderSubjects(courseName);
@@ -238,7 +221,7 @@ function renderExtras() {
 function renderFavorites() {
   const tx   = translations[lang];
   const list = document.getElementById('favorites-list');
-  const items = currentCourse ? UNEC.favoriteEntries(currentCourse) : [];
+  const items = UNEC.favoriteEntries();
   if (items.length === 0) {
     list.innerHTML = `<div class="empty-favs">${tx.noFavorites}</div>`;
     return;
@@ -253,13 +236,13 @@ function removeFavAndRefresh(filePath) {
 }
 
 // ── İxtisas filtri ───────────────────────────────────────────
-// Kurs + ixtisas seçiləndə yalnız həmin ixtisasın həmin kursdakı (2 semestr) fənləri göstərilir.
+// Vahid kataloqda ixtisas uyğunluğu həmin planın bütün semestrləri üzrə yoxlanır.
 // Mənbə: scripts/curriculum.js — CURRICULUM_DATA (code / codes) və CURRICULUM_CODES.
 // 1) pdfs.js-də fənnə  code: "00591"  yazılıbsa → şifr ixtisasın həmin kurs şifrlərindədirsə göstərilir.
 // 2) Ad ilə də yoxlanılır (eyni fənnin şifri ixtisaslara görə fərqli ola bilər, məs. Xarici dil;
 //    şifr yazılmamış fənlər də beləcə tapılır).
 // 3) Əl ilə təyin üçün pdfs.js-də (kursdan asılı olmayaraq):  majors: ["ecology", "statistics"]
-// 4) Tudifak fənləri heç bir ixtisasda və "Hamısı"-da görünmür — yalnız "Tudifak" çipində.
+// 4) Tudifak çipi həmin fənləri ayrıca süzür; "Hamısı" bütün fənləri göstərir.
 const MAJOR_LS_KEY = 'subjects_major_filter';
 
 // ── Tudifak bölməsi ──────────────────────────────────────────
@@ -377,8 +360,8 @@ function isValidMajorKey(key) {
 function subjectMatchesMajor(subjectName, subj, majorKey, courseNo) {
   const tudifak = isTudifakSubject(subjectName, subj);
   if (majorKey === TUDIFAK_KEY) return tudifak;   // Tudifak çipi: yalnız Tudifak fənləri
-  if (tudifak) return false;                      // Hamısı + ixtisaslar: Tudifak fənləri çıxmır
   if (!majorKey || majorKey === 'all') return true;
+  if (tudifak) return false;
   if (Array.isArray(subj.majors) && subj.majors.includes(majorKey)) return true;
   const idx     = getMajorIndex(majorKey);
   const courses = courseNo ? [courseNo] : [1, 2, 3, 4];
@@ -459,30 +442,25 @@ function renderSubjects(courseName) {
   renderMajorFilter();
 
   const majorKey   = getSelectedMajor();
-  const allEntries = Object.entries(data[courseName].subjects)
-    .filter(([name, subj]) => subjectMatchesMajor(name, subj, majorKey, courseNumber(courseName)));
+  const allEntries = Object.entries(UNEC.getSubjectCatalog())
+    .filter(([name, subj]) => subjectMatchesMajor(name, subj, majorKey, null))
+    .sort(([a], [b]) => a.localeCompare(b, 'az'));
 
   if (allEntries.length === 0) {
     grid.innerHTML = `<div class="empty-favs" style="grid-column:1/-1;">${t.noMajorSubjects}</div>`;
     return;
   }
 
-  const sem1 = allEntries.filter(([, subj]) => subj.semester === 1);
-  const sem2 = allEntries.filter(([, subj]) => subj.semester === 2);
 
   let iconIndex = 0;
 
   function renderGroup(entries, labelText) {
     if (entries.length === 0) return;
-    const header = document.createElement('div');
-    header.className = 'semester-header';
-    header.textContent = labelText;
-    grid.appendChild(header);
 
     entries.forEach(([subjectName, subj]) => {
       const a = document.createElement('a');
       a.className = 'subject-card animate-in';
-      a.href = '#/courses/subjects/' + encodeURIComponent(courseName) + '/' + encodeURIComponent(subjectName);
+      a.href = UNEC.subjectHref(subjectName);
       const subjCode = getSubjectCode(subj);
       a.dataset.code = subjCode;
       const safeName = String(subjectName).replace(/&/g, '&amp;').replace(/</g, '&lt;');
@@ -503,21 +481,20 @@ function renderSubjects(courseName) {
     });
   }
 
-  renderGroup(sem1, t.semesterFall);
-  renderGroup(sem2, t.semesterSpring);
+  renderGroup(allEntries);
 }
 
 // ── PDF Səhifəsi ─────────────────────────────────────────────
 // Köhnə kod adı: fənnə keç (router vasitəsilə)
 function openPDFs(subjectName) {
-  if (window.UNEC) UNEC.go('/courses/subjects/' + encodeURIComponent(currentCourse) + '/' + encodeURIComponent(subjectName));
+  if (window.UNEC) UNEC.go('/subject/' + encodeURIComponent(subjectName));
 }
 
 // Router çağırır
 function showPdfs(courseName, subjectName) {
-  currentCourse  = courseName;
+  const subj = UNEC.getSubjectCatalog()[subjectName];
+  currentCourse = courseName && data[courseName]?.subjects[subjectName] ? courseName : subj.legacyCourse;
   currentSubject = subjectName;
-  const subj  = data[courseName].subjects[subjectName];
   const type  = subj.type;
   const notes = EXAM_NOTES[type] || [];
 
@@ -554,11 +531,11 @@ function showPdfs(courseName, subjectName) {
   reportBtn.type = 'button';
   reportBtn.className = 'report-error-btn';
   reportBtn.innerHTML = `${IC_SVG('flag')}<span>${t('mdReport')}</span>`;
-  reportBtn.onclick = () => openReportModal(subjectName, courseName);
+  reportBtn.onclick = () => openReportModal(subjectName, currentCourse);
   list.appendChild(reportBtn);
 
   UNEC.afterSubjectRender(entries);
-  if (typeof renderSubjectChat === 'function') renderSubjectChat(courseName, subjectName, subj.pdfs);
+  if (typeof renderSubjectChat === 'function') renderSubjectChat(currentCourse, subjectName, entries);
 }
 
 // ── Sevimlilər ────────────────────────────────────────────────
@@ -612,7 +589,7 @@ function openReportModal(subjectName, courseName, material = null) {
   const textarea = document.getElementById('report-message');
   const select   = document.getElementById('report-type');
 
-  if (ctx) ctx.textContent = [courseName, subjectName, reportMaterial?.file].filter(Boolean).join(' · ');
+  if (ctx) ctx.textContent = [subjectName, reportMaterial?.file].filter(Boolean).join(' · ');
   if (form)     form.classList.remove('hidden');
   if (success)  success.classList.add('hidden');
   if (textarea) textarea.value       = '';

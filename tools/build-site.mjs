@@ -19,7 +19,7 @@ for (const [course, d] of Object.entries(data)) for (const [subject, s] of Objec
 for (const [course, list] of Object.entries(extrasData)) for (const p of list) entries.set('pdf-extra/' + p.file, { ...p, course, kind: 'extra', subject: 'Əlavə material', url: EXTRAS_BASE + p.file });
 const slug = m => (m.kind === 'extra' ? 'extra-' : '') + m.file.replace(/\.pdf$/i, '');
 const href = m => '/materials/' + encodeURIComponent(slug(m)) + '/';
-const app = m => m.kind === 'extra' ? `/#/x/${encodeURIComponent(m.course)}/${encodeURIComponent(m.file)}` : `/#/m/${encodeURIComponent(m.course)}/${encodeURIComponent(m.subject)}/${encodeURIComponent(m.file)}`;
+const app = m => m.kind === 'extra' ? `/#/extra/${encodeURIComponent(m.file)}` : `/#/material/${encodeURIComponent(m.subject)}/${encodeURIComponent(m.file)}`;
 function page(title, description, canonical, body, schema) {
   return `<!doctype html>
 <html lang="az"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -38,14 +38,14 @@ for (const m of ordered) {
   paths.add(dest);
   if (!Number.isFinite(Date.parse(m.addedAt))) throw new Error('Missing material timestamp: ' + m.file);
   const type = PDF_TYPES[m.pdfType]?.label || 'PDF';
-  const description = `${m.subject} — ${m.course}. ${type}: ${m.name}. Materiala bax, PDF faylını aç və ya endir.`;
-  const related = ordered.filter(p => p !== m && p.course === m.course && p.subject === m.subject).slice(0, 3);
-  outputs.set(dest, page(m.name, description, href(m), `<nav aria-label="Səhifə yolu"><a href="/materials/">Materiallar</a> / ${esc(m.subject)}</nav><h1>${esc(m.name)}</h1><p>${esc(description)}</p><dl><dt>Kurs</dt><dd>${esc(m.course)}</dd><dt>Fənn</dt><dd>${esc(m.subject)}</dd><dt>Fayl</dt><dd>${esc(m.file)}</dd><dt>Növ</dt><dd>${esc(type)}</dd>${m.code ? `<dt>Fənn şifri</dt><dd>${esc(m.code)}</dd>` : ''}<dt>Əlavə olunub</dt><dd><time datetime="${esc(m.addedAt)}">${esc(m.addedAt.slice(0, 10))}</time></dd></dl><div class="actions"><a class="primary" href="${esc(app(m))}">Saytda materiala bax</a><a href="${esc(m.url)}" target="_blank" rel="noopener">PDF-i aç / endir</a></div>${related.length ? '<h2>Həmin fənnin materialları</h2><ul>' + related.map(p => `<li><a href="${href(p)}">${esc(p.name)}</a></li>`).join('') + '</ul>' : ''}`, {
+  const description = `${m.subject}. ${type}: ${m.name}. Materiala bax, PDF faylını aç və ya endir.`;
+  const related = ordered.filter(p => p !== m && p.subject === m.subject).slice(0, 3);
+  outputs.set(dest, page(m.name, description, href(m), `<nav aria-label="Səhifə yolu"><a href="/materials/">Materiallar</a> / ${esc(m.subject)}</nav><h1>${esc(m.name)}</h1><p>${esc(description)}</p><dl><dt>Fənn</dt><dd>${esc(m.subject)}</dd><dt>Fayl</dt><dd>${esc(m.file)}</dd><dt>Növ</dt><dd>${esc(type)}</dd>${m.code ? `<dt>Fənn şifri</dt><dd>${esc(m.code)}</dd>` : ''}<dt>Əlavə olunub</dt><dd><time datetime="${esc(m.addedAt)}">${esc(m.addedAt.slice(0, 10))}</time></dd></dl><div class="actions"><a class="primary" href="${esc(app(m))}">Saytda materiala bax</a><a href="${esc(m.url)}" target="_blank" rel="noopener">PDF-i aç / endir</a></div>${related.length ? '<h2>Həmin fənnin materialları</h2><ul>' + related.map(p => `<li><a href="${href(p)}">${esc(p.name)}</a></li>`).join('') + '</ul>' : ''}`, {
     '@context': 'https://schema.org', '@type': 'LearningResource', name: m.name, description, url: origin + href(m), inLanguage: 'az', learningResourceType: type,
     encoding: { '@type': 'MediaObject', contentUrl: m.url, encodingFormat: 'application/pdf' }, publisher: { '@type': 'Organization', name: 'UNEC Students Hub' }
   }));
 }
-outputs.set('materials/index.html', page('Dərs materialları', 'UNEC tələbələri üçün fənlər üzrə PDF dərs və imtahan materialları.', '/materials/', '<h1>Dərs materialları</h1><p>Ən yeni materiallar əvvəl göstərilir. Fənn üzrə axtarış və filtrlər üçün <a href="/#/courses/all">material kataloqunu aç</a>.</p><ul class="catalog">' + ordered.map(m => `<li><a href="${href(m)}">${esc(m.name)}</a><small>${esc(m.course)} · ${esc(m.subject)}</small></li>`).join('') + '</ul>'));
+outputs.set('materials/index.html', page('Dərs materialları', 'UNEC tələbələri üçün fənlər üzrə PDF dərs və imtahan materialları.', '/materials/', '<h1>Dərs materialları</h1><p>Ən yeni materiallar əvvəl göstərilir. Fənn üzrə axtarış və filtrlər üçün <a href="/#/materials/all">material kataloqunu aç</a>.</p><ul class="catalog">' + ordered.map(m => `<li><a href="${href(m)}">${esc(m.name)}</a><small>${esc(m.subject)}</small></li>`).join('') + '</ul>'));
 const compass = compassOutputs(root);
 for (const [file, content] of compass.outputs) outputs.set(file, content);
 outputs.set('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ['/', '/materials/', ...ordered.map(href), '/compass/', ...compass.articles.map(a => '/compass/' + a.id + '/')].map(p => `  <url><loc>${esc(origin + p)}</loc></url>`).join('\n') + '\n</urlset>\n');

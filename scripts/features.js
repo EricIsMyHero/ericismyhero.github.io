@@ -266,25 +266,13 @@ async function _aiExtractPdfCached(file) {
 }
 
 async function buildContext(question) {
-  if (typeof data === 'undefined') return '';
-  const q       = question.toLowerCase();
-  const matched = [];
-  for (const [course, courseObj] of Object.entries(data)) {
-    for (const [subject, subObj] of Object.entries(courseObj.subjects || {})) {
-      const words = subject.toLowerCase().split(/\s+/).filter(w => w.length > 3);
-      if (words.filter(w => q.includes(w)).length > 0) {
-        matched.push({ course, subject, subObj });
-      }
-    }
-  }
-
-  if (!matched.length) {
-    const all = [];
-    for (const [course, courseObj] of Object.entries(data))
-      for (const subj of Object.keys(courseObj.subjects || {}))
-        all.push(`${course}: ${subj}`);
-    return `Saytda mövcud fənlər (heç biri sualla üst-üstə düşmədi):\n${all.join('\n')}`;
-  }
+  const catalog = window.UNEC?.getSubjectCatalog?.() || {};
+  const q = question.toLowerCase();
+  const matched = Object.entries(catalog).filter(([subject]) => {
+    const words = subject.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+    return words.some(w => q.includes(w));
+  }).map(([subject, subObj]) => ({ subject, subObj }));
+  if (!matched.length) return `Saytda mövcud fənlər (heç biri sualla üst-üstə düşmədi):\n${Object.keys(catalog).join('\n')}`;
 
   // Uyğun fənnlərin PDF-lərindən əsl mətni çıxar (RAG)
   const pdfsToRead = [];
@@ -298,7 +286,7 @@ async function buildContext(question) {
 
   const sections = [];
   for (const m of matched) {
-    sections.push(`Kurs: ${m.course} | Fənn: ${m.subject} | Növ: ${m.subObj.type} | Semestr: ${m.subObj.semester} | Materiallar: ${(m.subObj.pdfs || []).map(p => p.name).join(', ')}`);
+    sections.push(`Fənn: ${m.subject} | Növ: ${m.subObj.type} | Materiallar: ${(m.subObj.pdfs || []).map(p => p.name).join(', ')}`);
   }
 
   if (typeof extractPdfText === 'function' && typeof BASE !== 'undefined') {

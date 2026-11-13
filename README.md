@@ -31,7 +31,7 @@ ericismyhero.github.io/
 │   ├── i18n.js                 ← Centralized translation system (AZ / EN)
 │   ├── i18n-app.js             ← Strings of the redesigned interface (AZ / EN)
 │   ├── app-core.js             ← App shell: hash router, navigation, menu drawer, bottom sheets, toasts
-│   ├── app-materials.js        ← Courses list, filters, material cards and material detail
+│   ├── app-materials.js        ← Unified subject catalogue, filters, material cards and detail
 │   ├── app-screens.js          ← Home, "More" screen, news sheet, GPA stepper
 │   ├── data-utils.js
 │   ├── ui.js
@@ -112,9 +112,9 @@ Exam materials (PDFs) are hosted on Cloudflare R2 and are not stored in this rep
 
 ## Features
 
-* 📚 Exam Materials Library — newest-first ordering, search, course chips, filters, favorites, clear links to each material's information page, and related PDFs grouped by subject and semester
+* 📚 Exam Materials Library — a unified subject list, newest-first ordering, search, major/format filters, favorites, clear links to each material's information page, and related PDFs from the same or other subjects
 * 🎓 Major Filter — select one or several majors to see the exam materials of their subjects
-* 📝 Practice Tests — automatically discovers all electronic-test PDFs from the material catalogue, prepares and caches questions from the most recently added PDF by default, with a PDF selector, with a timer and answer review linking back to source PDFs. No separate subject/PDF list is maintained.
+* 📝 Practice Tests — automatically discovers all electronic-test PDFs from the material catalogue, prepares and caches questions from the most recently added PDF by default, with a PDF selector, a timer and answer review linking back to source PDFs. No separate subject/PDF list is maintained.
 * 📊 GPA Calculator
 * 📅 Curriculum Planner — 15 majors with subjects, subject codes, credits, hours, and absence limits; year filters, subject search, matching material links, and printable PDF views
 * 📥 Material Request System — sign in and turn on notifications to post a request; anyone signed in can reply in a public thread under it, attaching files (PDF, Word, PowerPoint, Excel, TXT, images — no video, up to 3 files × 10 MB); the requester gets a push notification for every reply, and the other participants when the requester answers
@@ -144,9 +144,9 @@ The interface is a single-page app without a framework. All screens live in `ind
 | Route | Screen |
 | --- | --- |
 | `#/home` | Home |
-| `#/courses/subjects` · `#/courses/subjects/<course>` · `#/courses/subjects/<course>/<subject>` | Browse by subject — **the Courses section opens here** (a bare `#/courses` redirects to it) |
-| `#/courses/all` · `#/courses?q=<text>` · `#/courses?course=<course>` · `#/courses?fav=1` | All materials (search, course chips, filter sheet); the query forms are used by search, the sidebar course list and Favorites |
-| `#/m/<course>/<subject>/<file>` · `#/x/<course>/<file>` | Material detail (shareable link; `x` = extra materials) |
+| `#/materials` · `#/subject/<subject>` | Unified subject list and all materials of one subject |
+| `#/materials/all` · `#/materials?q=<text>` · `#/materials/all?fav=1` | All unique materials, search, favourites and filters |
+| `#/material/<subject>/<file>` · `#/extra/<file>` | Material detail without a course assignment |
 | `#/tests` · `#/gpa` · `#/curriculum` · `#/requests` · `#/timer` · `#/dashboard` | Tools |
 | `#/requests/<id>` | A material request and its public reply thread (the link a push notification opens) |
 | `#/support` · `#/more` | Support, account and settings |
@@ -407,3 +407,12 @@ Push subscription metadata now includes Firebase project/app IDs so a project mi
 Public parsed questions are cached in IndexedDB on the student's device for seven days, keyed by parser version, PDF URL and catalogue `addedAt`. Storage failures fall back to memory. A new PDF or parser revision gets a fresh entry; when replacing a PDF at the same URL, update its catalogue timestamp or allow the cache to expire. Failed downloads are retried when selecting the subject again; the retry control refreshes the selected PDF. Neither raw PDFs nor private account data are stored in this cache. No Firebase writes or additional serverless endpoint are required.
 
 Parser and loading regression checks: `node --test tests/test-bank.test.cjs`.
+
+
+### Unified material catalogue
+
+Materials open at `#/materials` as one alphabetical subject list. Each subject (`#/subject/<name>`) includes all its PDFs, deduplicated by file, regardless of the historical storage course. `#/materials/all` provides the newest-first material list; extras and favourites are global. A PDF shared by several subjects appears once in the global list while remaining available under every relevant subject and curriculum link. Major matching considers all semesters in that major's plan. Material cards, details and public landing pages do not assign one course/semester to a PDF.
+
+Course containers in `pdfs.js` remain historical compatibility metadata for existing ratings, chats and old links. They do not determine browsing or curricular placement. Existing `#/courses`, `#/m/<course>/<subject>/<file>` and `#/x/<course>/<file>` links remain supported; old rating document IDs and favourite keys are unchanged. New material links omit the course. The student's year and the major-specific semester schedule remain in their profile/curriculum.
+
+Add new subjects under the neutral `data["Materiallar"].subjects` container in `pdfs.js`, and new extras under `extrasData["Materiallar"]`. A new entry needs its subject name, format, files and verified addition timestamps; it does not need a course or semester. Historical containers remain intact for compatibility.

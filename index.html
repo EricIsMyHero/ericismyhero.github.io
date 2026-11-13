@@ -323,8 +323,6 @@
       <span class="brand-text"><b>UNEC</b><small>Students Hub</small></span>
     </a>
     <nav aria-label="Əsas bölmələr" data-i18n-aria="appMainNav"><ul class="nav-list" id="sideNav"></ul></nav>
-    <div class="nav-heading" data-i18n="navCoursesHeading">Kurslar</div>
-    <nav aria-label="Kurslar" data-i18n-aria="navCoursesHeading"><ul class="nav-list" id="sideCourses"></ul></nav>
     <div class="progress-card" id="sideProgress" hidden></div>
   </aside>
 
@@ -413,7 +411,7 @@
           <div id="view-materials" class="screen">
             <div class="page-head">
               <button class="icon-btn" type="button" data-back aria-label="Geri" data-i18n-aria="appBack"><svg class="ic"><use href="#i-arrow-left"/></svg></button>
-              <h1 data-i18n="coursesTitle">Kurslar</h1>
+              <h1 data-i18n="coursesTitle">Materiallar</h1>
             </div>
             <div class="segmented mode-switch" role="group" aria-label="Görünüş">
               <button type="button" data-mode="all" aria-pressed="true" data-i18n="courseModeAll">Bütün materiallar</button>
@@ -428,7 +426,7 @@
               </div>
               <button class="icon-btn icon-btn--filled" id="matFilterBtn" type="button" aria-label="Filtr" data-i18n-aria="matFilterTitle" aria-haspopup="dialog"><svg class="ic"><use href="#i-filter"/></svg></button>
             </div>
-            <div class="chips chips-row" id="matChips" role="group" aria-label="Kurs filtri"></div>
+            <div class="chips chips-row" id="matChips" role="group" aria-label="Material seçimi" data-i18n-aria="materialSelection"></div>
             <p class="result-count" id="matCount" aria-live="polite"></p>
             <div class="mat-list" id="matList"></div>
           </div>
@@ -436,24 +434,15 @@
           <!-- Material detalı -->
           <div id="view-material" class="screen hidden"></div>
 
-          <!-- Fənlər üzrə: kurslar -->
-          <div id="view-home" class="hidden screen">
-            <div class="page-head">
-              <button class="icon-btn" type="button" data-back aria-label="Geri" data-i18n-aria="appBack"><svg class="ic"><use href="#i-arrow-left"/></svg></button>
-              <h1 data-i18n="coursesTitle">Kurslar</h1>
-            </div>
-            <div class="segmented mode-switch" role="group" aria-label="Görünüş" style="margin-bottom:18px">
-              <button type="button" data-mode="all" aria-pressed="false" data-i18n="courseModeAll">Bütün materiallar</button>
-              <button type="button" data-mode="subjects" aria-pressed="true" data-i18n="courseModeSubjects">Fənlər üzrə</button>
-            </div>
-            <div class="courses-grid" id="courses-grid"></div>
-          </div>
-
           <!-- Fənlər -->
           <div id="view-subjects" class="hidden screen">
             <div class="page-head">
-              <button class="icon-btn" type="button" onclick="history.back()" aria-label="Geri" data-i18n-aria="appBack"><svg class="ic"><use href="#i-arrow-left"/></svg></button>
+              <button class="icon-btn" type="button" data-back aria-label="Geri" data-i18n-aria="appBack"><svg class="ic"><use href="#i-arrow-left"/></svg></button>
               <h1 id="bc-course" style="font-size:1.25rem"></h1>
+            </div>
+            <div class="segmented mode-switch" role="group" aria-label="Görünüş" style="margin-bottom:18px">
+              <button type="button" data-mode="subjects" aria-pressed="true" data-i18n="courseModeSubjects">Fənlər üzrə</button>
+              <button type="button" data-mode="all" aria-pressed="false" data-i18n="courseModeAll">Bütün materiallar</button>
             </div>
             <div class="tab-bar" role="tablist">
               <button class="tab-btn active" id="tab-subjects-btn" onclick="switchTab('subjects')" role="tab"><svg class="ic"><use href="#i-book-open"/></svg><span id="label-subjects" data-i18n="subjectsLabel">Fənlər</span></button>
@@ -479,7 +468,7 @@
           <!-- Fənnin materialları -->
           <div id="view-pdfs" class="hidden screen">
             <div class="page-head">
-              <button class="icon-btn" type="button" onclick="history.back()" aria-label="Geri" data-i18n-aria="appBack"><svg class="ic"><use href="#i-arrow-left"/></svg></button>
+              <button class="icon-btn" type="button" data-back aria-label="Geri" data-i18n-aria="appBack"><svg class="ic"><use href="#i-arrow-left"/></svg></button>
               <h1 id="bc-subject" style="font-size:1.1rem;line-height:1.2"></h1>
               <button class="icon-btn" type="button" data-info-toggle onclick="toggleInfoPanel()" aria-label="Fənn haqqında" data-i18n-aria="subjectInfo"><svg class="ic"><use href="#i-info"/></svg></button>
             </div>
@@ -1604,7 +1593,7 @@
               <a class="menu-row" href="#/compass"><svg class="ic" aria-hidden="true"><use href="#i-compass"/></svg><span class="grow" data-i18n="navCompass">Tələbə Kompası</span><svg class="ic chev" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
               <button class="menu-row" type="button" onclick="openThanks()"><svg class="ic"><use href="#i-heart"/></svg><span class="grow" data-i18n="sidebarContributors">Töhfəçilər</span><svg class="ic chev"><use href="#i-chevron-right"/></svg></button>
               <button class="menu-row" type="button" id="rowNews"><svg class="ic"><use href="#i-bell"/></svg><span class="grow" data-i18n="moreNotifications">Yeniliklər</span><span class="dot" id="moreNewsDot" hidden></span><svg class="ic chev"><use href="#i-chevron-right"/></svg></button>
-              <a class="menu-row" href="#/courses?fav=1"><svg class="ic"><use href="#i-star"/></svg><span class="grow" data-i18n="moreFavorites">Seçilmişlər</span><small id="moreFavCount"></small><svg class="ic chev"><use href="#i-chevron-right"/></svg></a>
+              <a class="menu-row" href="#/materials/all?fav=1"><svg class="ic"><use href="#i-star"/></svg><span class="grow" data-i18n="moreFavorites">Seçilmişlər</span><small id="moreFavCount"></small><svg class="ic chev"><use href="#i-chevron-right"/></svg></a>
               <button class="menu-row" type="button" id="rowSettings"><svg class="ic"><use href="#i-settings"/></svg><span class="grow" data-i18n="moreSettings">Görünüş və dil</span><svg class="ic chev"><use href="#i-chevron-right"/></svg></button>
             </div>
           </section>
@@ -1647,8 +1636,8 @@
   <a class="bn-item" id="btn-home" data-route="home" href="#/home">
     <svg class="ic"><use href="#i-home"/></svg><span class="bn-label" data-i18n="navHome">Ana səhifə</span>
   </a>
-  <a class="bn-item" id="btn-courses" data-route="courses" href="#/courses/subjects">
-    <svg class="ic"><use href="#i-book-open"/></svg><span class="bn-label" data-i18n="navCourses">Kurslar</span>
+  <a class="bn-item" id="btn-courses" data-route="courses" href="#/materials">
+    <svg class="ic"><use href="#i-book-open"/></svg><span class="bn-label" data-i18n="navCourses">Materiallar</span>
   </a>
   <a class="bn-item" id="btn-support" data-route="support" href="#/support">
     <svg class="ic"><use href="#i-heart"/></svg><span class="bn-label" data-i18n="navSupport">Dəstək</span>
@@ -1669,8 +1658,6 @@
     <button class="icon-btn" id="drawerClose" type="button" aria-label="Menyunu bağla" data-i18n-aria="appMenuClose"><svg class="ic"><use href="#i-x"/></svg></button>
   </div>
   <nav aria-label="Əsas bölmələr" data-i18n-aria="appMainNav"><ul class="nav-list" id="drawerNav"></ul></nav>
-  <div class="nav-heading" data-i18n="navCoursesHeading">Kurslar</div>
-  <nav aria-label="Kurslar" data-i18n-aria="navCoursesHeading"><ul class="nav-list" id="drawerCourses"></ul></nav>
   <div class="progress-card" id="drawerProgress" hidden></div>
 </aside>
 
@@ -2233,32 +2220,32 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
-<script src="pdfs.js?v=20261109"></script>
+<script src="pdfs.js?v=20261113-subjects"></script>
 <script src="scripts/i18n.js?v=20261106-5"></script>
-<script src="scripts/i18n-app.js?v=20261113-test-source"></script>
-<script src="scripts/data-utils.js?v=20261106-3"></script>
+<script src="scripts/i18n-app.js?v=20261113-subjects"></script>
+<script src="scripts/data-utils.js?v=20261113-subjects"></script>
 <script src="scripts/study-data.js?v=20261111"></script>
-<script src="scripts/ui.js?v=20261111"></script>
-<script src="scripts/features.js?v=20261113-test-source"></script>
+<script src="scripts/ui.js?v=20261113-subjects"></script>
+<script src="scripts/features.js?v=20261113-subjects"></script>
 <script src="scripts/test-bank.js?v=20261113"></script>
 <script src="scripts/pdf-loader.js?v=20261113-source"></script>
 <script src="scripts/gpa.js?v=20261111"></script>
 <script src="scripts/firebase.js?v=20261112-auth"></script>
 <script src="scripts/chat.js?v=20261106-3"></script>
-<script src="scripts/ratings.js?v=20261106-3"></script>
+<script src="scripts/ratings.js?v=20261113-subjects"></script>
 <script src="scripts/requests.js?v=20261106-3"></script>
 <script src="scripts/dashboard.js?v=20261106-3"></script>
 <script src="scripts/payments.js?v=20261106-3"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="scripts/curriculum-progress.js?v=20261106-4"></script>
-<script src="scripts/curriculum.js?v=20261106-5"></script>
+<script src="scripts/curriculum.js?v=20261113-subjects"></script>
 <script src="scripts/badges.js?v=20261106-3"></script>
 <script src="scripts/timer.js?v=20261111"></script>
-<script src="scripts/app-core.js?v=20261109"></script>
-<script src="scripts/app-materials.js?v=20261111"></script>
+<script src="scripts/app-core.js?v=20261113-subjects"></script>
+<script src="scripts/app-materials.js?v=20261113-subjects"></script>
 <script src="data/compass-catalog.js?v=20261109-2"></script>
 <script src="scripts/compass.js?v=20261111"></script>
-<script src="scripts/app-screens.js?v=20261109-2"></script>
+<script src="scripts/app-screens.js?v=20261113-subjects"></script>
 <script src="scripts/push.js?v=20261112-project"></script>
 <script src="scripts/auth-dialog.js?v=20261112"></script>
 <script src="scripts/site-enhancements.js?v=20261112-auth"></script>

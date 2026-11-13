@@ -1084,3 +1084,20 @@ Object.assign(I18N.en, {
   testPdfHint: 'The most recently added PDF is selected by default. You can choose another material.',
   testLatestPdf: 'Most recently added'
 });
+
+Object.assign(I18N.az, {
+  navCourses: 'Materiallar', coursesTitle: 'Materiallar', navCoursesHeading: 'Materiallar',
+  featCoursesDesc: 'Fənlər üzrə PDF materialları', mdNotFoundHint: 'Link köhnəlmiş ola bilər. Materiallar bölməsindən yenidən axtar.',
+  mdSubject: 'Fənn', mdOtherSubjects: 'Digər fənnlərin materialları',
+  materialSubjectIntro: 'Bu fənnə aid bütün dərs materialları.', materialSelection: 'Material seçimi',
+  subjectSearchCount: '{n} fənn tapıldı',
+  noMajorSubjects: 'Bu ixtisas üçün uyğun material tapılmadı.'
+});
+Object.assign(I18N.en, {
+  navCourses: 'Materials', coursesTitle: 'Materials', navCoursesHeading: 'Materials',
+  featCoursesDesc: 'PDF materials by subject', mdNotFoundHint: 'The link may be outdated. Search again from Materials.',
+  mdSubject: 'Subject', mdOtherSubjects: 'Materials from other subjects',
+  materialSubjectIntro: 'All learning materials for this subject.', materialSelection: 'Material selection',
+  subjectSearchCount: '{n} subjects found',
+  noMajorSubjects: 'No matching subject materials were found for this major.'
+});

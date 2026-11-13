@@ -58,7 +58,7 @@
   // ── Naviqasiya tərifi (yan panel + drawer + ana səhifə kartları üçün tək mənbə) ──
   const NAV = [
     { id: 'home',       icon: 'home',            key: 'navHome',     route: '/home' },
-    { id: 'courses',    icon: 'book-open',       key: 'navCourses',  route: '/courses/subjects' },   // Kurslar "Fənlər üzrə" ilə açılır
+    { id: 'courses',    icon: 'book-open',       key: 'navCourses',  route: '/materials' },
     { id: 'tests',      icon: 'clipboard-check', key: 'navTests',    route: '/tests',      fc: 'tests',    desc: 'featTestsDesc' },
     { id: 'gpa',        icon: 'calculator',      key: 'navGpa',      route: '/gpa',        fc: 'gpa',      desc: 'featGpaDesc' },
     { id: 'curriculum', icon: 'calendar-days',   key: 'navPlan',     route: '/curriculum', fc: 'plan',     desc: 'featPlanDesc' },
@@ -85,18 +85,11 @@
     return `<li><a class="nav-link" href="#${item.route}" data-nav="${item.id}">${ic(item.icon)}<span>${esc(t(item.key))}</span>${withSub || ''}</a></li>`;
   }
 
-  function courseNames() { return (typeof data !== 'undefined') ? Object.keys(data) : []; }
-
   function renderNav() {
     const side = $('#sideNav');
     const drawer = $('#drawerNav');
     if (side)   side.innerHTML   = NAV.map(i => navLinkHTML(i)).join('');
     if (drawer) drawer.innerHTML = NAV.filter(i => !i.desktopOnly).map(i => navLinkHTML(i)).join('');
-    const courseHTML = courseNames().map(c => {
-      const count = Object.values(data[c].subjects).reduce((a, s) => a + s.pdfs.length, 0);
-      return `<li><a class="nav-link" href="#/courses?course=${enc(c)}" data-course-link="${esc(c)}">${ic('graduation-cap')}<span>${esc(c)}</span><span class="nav-sub">${count}</span></a></li>`;
-    }).join('');
-    ['sideCourses', 'drawerCourses'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = courseHTML; });
     syncNavState();
   }
 
@@ -193,12 +186,8 @@
   U.toast = toast;
 
   // ── Router ──────────────────────────────────────────────────
-  // Marşrutlar:
-  //   #/home  #/courses/subjects (Kurslar-ın giriş görünüşü: "Fənlər üzrə")  #/courses/subjects/<kurs>
-  //   #/courses/all  #/courses?q=&course=&fav=1 (düz materiallar siyahısı; filtrli linklər)
-  //   #/courses (parametrsiz) → #/courses/subjects-ə yönləndirilir
-  //   #/courses/subjects/<kurs>/<fənn>  #/m/<kurs>/<fənn>/<fayl>  #/x/<kurs>/<fayl>
-  //   #/tests #/gpa #/curriculum #/requests #/requests/<id> (istəyin yazışması) #/timer #/dashboard #/support #/more
+  // Public catalogue routes: #/materials, #/materials/all, #/subject/<name>,
+  // #/material/<subject>/<file>, #/extra/<file>. Old course-based hashes remain aliases.
   const TABS = ['home', 'courses', 'support', 'tests', 'gpa', 'dashboard', 'curriculum', 'compass', 'requests', 'timer', 'more'];
   let route = null;
   let prevRoute = null;
@@ -216,6 +205,10 @@
     new URLSearchParams(qs).forEach((v, k) => { query[k] = v; });
     const a = segs[0];
     const base = { hash: '#' + h, segs, query };
+    if (a === 'materials') return Object.assign(base, { tab: 'courses', view: segs[1] === 'all' || query.q != null || query.fav != null ? 'materials' : 'subjects' });
+    if (a === 'subject' && segs[1]) return Object.assign(base, { tab: 'courses', view: 'pdfs', subject: segs.slice(1).join('/') });
+    if (a === 'material' && segs.length >= 3) return Object.assign(base, { tab: 'courses', view: 'material', subject: segs[1], file: segs.slice(2).join('/') });
+    if (a === 'extra' && segs[1]) return Object.assign(base, { tab: 'courses', view: 'material', file: segs.slice(1).join('/'), extra: true });
     if (a === 'm' && segs.length >= 4)   return Object.assign(base, { tab: 'courses', view: 'material', course: segs[1], subject: segs[2], file: segs.slice(3).join('/') });
     if (a === 'x' && segs.length >= 3)   return Object.assign(base, { tab: 'courses', view: 'material', course: segs[1], subject: null, file: segs.slice(2).join('/'), extra: true });
     if (a === 'courses') {
@@ -242,9 +235,9 @@
       const query = new URLSearchParams(r.query).toString();
       return '/compass' + (query ? '?' + query : '');
     }
-    if (r.view === 'material')  return '/courses/subjects';
-    if (r.view === 'pdfs')      return '/courses/subjects/' + enc(r.course);
-    if (r.view === 'subjects')  return '/courses/subjects';
+    if (r.view === 'material')  return r.subject ? '/subject/' + enc(r.subject) : '/materials';
+    if (r.view === 'pdfs')      return '/materials';
+    if (r.view === 'subjects')  return '/home';
     if (r.view === 'home')      return '/home';
     if (r.view === 'thread')    return '/requests';
     if (r.tab === 'dashboard')  return '/more';

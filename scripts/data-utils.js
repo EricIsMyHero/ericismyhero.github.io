@@ -108,13 +108,10 @@ function applyTheme(name, btn) {
 
 // ── Statistika ───────────────────────────────────────────────
 function computeStats() {
-  let totalSubjects = 0, totalPdfs = 0;
-  Object.values(data).forEach(course => {
-    const subs = Object.values(course.subjects);
-    totalSubjects += subs.length;
-    subs.forEach(subj => totalPdfs += subj.pdfs.length);
-  });
-  document.getElementById('stat-courses').textContent  = Object.keys(data).length;
+  const totalSubjects = Object.keys(UNEC.getSubjectCatalog()).length;
+  const totalPdfs = UNEC.getIndex().length;
+  const legacyCourseCounter = document.getElementById('stat-courses');
+  if (legacyCourseCounter) legacyCourseCounter.textContent = '';
   document.getElementById('stat-subjects').textContent = totalSubjects;
   document.getElementById('stat-pdfs').textContent     = totalPdfs;
 

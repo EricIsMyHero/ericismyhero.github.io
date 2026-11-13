@@ -1,7 +1,9 @@
+// Historical course containers are retained only for existing rating/chat/link identities.
+// Material navigation uses a unified subject catalogue; curriculum placement comes from curriculum.js.
 // ============================================================
 // Hər fənnə mütləq "type" yazın: "test" və ya "yazili"
-// Hər fənnə mütləq "semester" yazın: 1 (Payız) və ya 2 (Yaz)
-// subjects altında: { type: "test", semester: 1, pdfs: [...] }
+// semester sahələri köhnə identifikator məlumatlarıdır; tədris yeri ixtisas planından gəlir.
+// subjects altında: { type: "test", code: "00016", pdfs: [...] }
 // ============================================================
 
 const R2_BASE = "https://pub-2179773f096a4b76a772ec1317daec99.r2.dev/";
@@ -420,7 +422,9 @@ const data = {
         ]
       }
     }
-  }
+  },
+  // Add new subjects here without assigning a course or a semester.
+  "Materiallar": { subjects: {} }
 };
 
 const extrasData = {
@@ -439,5 +443,6 @@ const extrasData = {
     { name: "Statistika", file: "statistikaelave1.pdf", desc: "Bəzi bir çox sualın cavabı var", pdfType: "optional", addedAt: "2026-10-08T15:52:26+04:00"}
   ],
   "4-cü kurs": [
-  ]
+  ],
+  "Materiallar": []
 };

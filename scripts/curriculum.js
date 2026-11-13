@@ -3303,11 +3303,13 @@ function curriculumMaterialsFor(subject) {
   const codes = new Set([subject.code, ...(subject.codes || [])].filter(Boolean).map(c => String(c).trim()));
   const name = canonSubjectName(subject.name);
   const seen = new Set();
-  return U.getIndex().filter(m => {
-    if (m.kind !== 'pdf' || isTudifakSubject(m.subject, m.subjObj)) return false;
-    if (!(codes.has(String(m.code).trim()) || canonSubjectName(m.subject) === name) || seen.has(m.favKey)) return false;
+  return U.getIndex().flatMap(m => {
+    if (m.kind !== 'pdf' || seen.has(m.favKey)) return [];
+    const match = (m.aliases || [m]).find(a => !isTudifakSubject(a.subject, a.subjObj) &&
+      (codes.has(String(a.code).trim()) || canonSubjectName(a.subject) === name));
+    if (!match) return [];
     seen.add(m.favKey);
-    return true;
+    return [{ ...m, ...match }];
   });
 }
 
@@ -3315,10 +3317,10 @@ function curriculumMaterialsHTML(subject, semester, index) {
   const entries = curriculumMaterialsFor(subject);
   if (!entries.length) return `<span class="curr-no-materials">${_currEsc(t('currNoMaterials'))}</span>`;
   const label = `${t('currMaterials')} (${entries.length})`;
-  const groups = new Set(entries.map(m => `${m.course}|${m.subject}`));
+  const groups = new Set(entries.map(m => m.subject));
   if (groups.size === 1) {
     const m = entries[0];
-    return `<a class="curr-material-link" href="#/courses/subjects/${encodeURIComponent(m.course)}/${encodeURIComponent(m.subject)}" aria-label="${_currEsc(t('currMaterials') + ': ' + subject.name)}">${_currEsc(label)} →</a>`;
+    return `<a class="curr-material-link" href="${window.UNEC.subjectHref(m.subject)}" aria-label="${_currEsc(t('currMaterials') + ': ' + subject.name)}">${_currEsc(label)} →</a>`;
   }
   return `<button type="button" class="curr-material-link" onclick="openCurriculumMaterials(${semester}, ${index}, this)" aria-haspopup="dialog" aria-label="${_currEsc(t('currMaterials') + ': ' + subject.name)}">${_currEsc(label)} →</button>`;
 }
