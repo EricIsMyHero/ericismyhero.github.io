@@ -349,6 +349,7 @@ const data = {
       },
       "Menecment": {
         type: "test", semester: 1, code: "00031", pdfs: [
+          { name: "Menecment", file: "menecmentY26.pdf", pdfType: "semester", addedAt: "2026-11-13T19:30:46+04:00"},
           { name: "Menecment", file: "menecment1.pdf", pdfType: "old", addedAt: "2026-10-08T15:58:46+04:00"},
           { name: "Menecment", file: "menecment2.pdf", pdfType: "old", addedAt: "2026-10-08T21:54:53+04:00"},
           { name: "Menecment", file: "menecment3.pdf", pdfType: "old", addedAt: "2026-10-08T21:54:53+04:00"},
@@ -377,6 +378,11 @@ const data = {
         type: "yazili", semester: 2, code: "00282", pdfs: [
           { name: "Ekonometrika", file: "ekonometrika1.pdf", pdfType: "semester", addedAt: "2026-10-08T15:58:46+04:00"},
           { name: "Ekonometrika", file: "ekonometrikakollek1.pdf", pdfType: "midterm", addedAt: "2026-10-08T15:58:46+04:00"},
+        ]
+      },
+      "Tətbiqi riyaziyyat": {
+        type: "test", semester: 2, code: "00892", pdfs: [
+          { name: "Tətbiqi Riyaziyyat Q25", file: "tetbiqiriyaziyyatQ25.pdf", pdfType: "semester", addedAt: "2026-11-13T19:30:46+04:00"}
         ]
       },
       "Beynəlxalq biznes iqtisadiyyatı": {
