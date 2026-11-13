@@ -447,6 +447,7 @@ let testState = {
   subjectLoading:  false,
   subjectRequest:  0,
   selectedSubject: null,
+  selectedFile:    null,
   selectedCount:   10,
   currentQuiz:     [],
   userAnswers:     [],
@@ -539,7 +540,11 @@ function _renderTestConfig() {
   if (info) {
     info.innerHTML = `<span class="tsi-icon">${_tIc(subjectIconName(subject))}</span>` +
       `<span class="tsi-text"><span class="tsi-label">${_tEsc(t('testSelected'))}</span><strong>${_tEsc(subject)}</strong>` +
-      `<span class="tsi-count">${_tEsc(_tTr('testAvailable', { n: total }))}</span></span>`;
+      `<span class="tsi-count">${_tEsc(testState.subjectLoading ? t('testLoadingTitle') : _tTr('testAvailable', { n: total }))}</span></span>`;
+  }
+  if (testState.subjectLoading) {
+    document.querySelectorAll('.test-count-btn').forEach(b => { b.disabled = true; });
+    return;
   }
 
   let anyEnabled = false;
@@ -573,20 +578,25 @@ function _renderTestConfig() {
 function _renderTestHint() {
   const hint = document.getElementById('testTimeHint');
   const subject = testState.selectedSubject;
-  if (!hint || !subject) return;
+  if (!hint || !subject || testState.subjectLoading) return;
   const n = Math.min(testState.selectedCount, QUESTION_BANK[subject].length);
   hint.textContent = _tTr('testTimeHint', { n, min: n });
 }
 
-async function selectSubject(subject, btn, refresh = false) {
+async function selectSubject(subject, btn, refresh = false, sourceUrl) {
   if (!window.TEST_CATALOG?.[subject]) return;
-  if (testState.subjectLoading && testState.selectedSubject === subject && !refresh) return;
+  const sources = UNECTests.sources(subject);
+  const source = sources.find(s => s.url === sourceUrl) || (testState.selectedSubject === subject && sources.find(s => s.url === testState.selectedFile)) || sources[0];
+  if (!source) return;
+  if (testState.subjectLoading && testState.selectedSubject === subject && testState.selectedFile === source.url && !refresh) return;
   document.querySelectorAll('.test-subject-btn').forEach(b => {
     b.classList.remove('active');
     b.setAttribute('aria-pressed', 'false');
   });
   if (btn) { btn.classList.add('active'); btn.setAttribute('aria-pressed', 'true'); }
   testState.selectedSubject = subject;
+  testState.selectedFile = source.url;
+  _renderTestPdfPicker();
   const request = ++testState.subjectRequest;
   testState.subjectLoading = true;
 
@@ -603,7 +613,7 @@ async function selectSubject(subject, btn, refresh = false) {
   document.getElementById('testSourceStatus').textContent = t('testLoadingTitle');
   document.getElementById('testSourceRetry').hidden = true;
   config.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  const task = UNECTests.load(subject, { refresh, onProgress: (done, total) => {
+  const task = UNECTests.load(subject, { sourceUrl: source.url, refresh, onProgress: (done, total) => {
     if (request !== testState.subjectRequest) return;
     document.getElementById('testLoadCount').textContent = `${done}/${total}`;
     document.getElementById('testLoadFill').style.width = (total ? done / total * 100 : 100) + '%';
@@ -618,6 +628,26 @@ async function selectSubject(subject, btn, refresh = false) {
     }
   }
 }
+
+function _renderTestPdfPicker() {
+  const select = document.getElementById('testPdfSelect');
+  if (!select || !testState.selectedSubject) return;
+  select.replaceChildren();
+  const sources = UNECTests.sources(testState.selectedSubject);
+  select.disabled = sources.length < 2;
+  sources.forEach((source, index) => {
+    const option = document.createElement('option');
+    option.value = source.url;
+    const date = Date.parse(source.addedAt);
+    const label = Number.isFinite(date) ? new Intl.DateTimeFormat(lang === 'en' ? 'en-GB' : 'az-AZ', { dateStyle: 'medium', timeZone: 'Asia/Baku' }).format(date) : '';
+    const name = source.name + (sources.filter(s => s.name === source.name).length > 1 ? ' (' + source.file + ')' : '');
+    option.textContent = name + (label ? ' · ' + label : '') + (index === 0 ? ' · ' + t('testLatestPdf') : '');
+    option.selected = source.url === testState.selectedFile;
+    select.appendChild(option);
+  });
+}
+
+function selectTestPdf(url) { return selectSubject(testState.selectedSubject, null, false, url); }
 
 function _renderTestSources() {
   if (testState.subjectLoading) return;
@@ -967,6 +997,7 @@ window.addEventListener('unec:langchange', () => {
   if (!document.getElementById('testSubjectGrid')) return;
   renderTestSubjects();
   if (testState.selectedSubject) _renderTestConfig();
+  _renderTestPdfPicker();
   _renderTestSources();
   if (document.getElementById('test-quiz').style.display === '' && testState.currentQuiz.length) {
     document.getElementById('testQNumber').textContent = `${t('testQuestionWord')} ${testState.currentIndex + 1}`;

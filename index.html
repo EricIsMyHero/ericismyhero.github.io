@@ -137,7 +137,7 @@
   <link rel="stylesheet" href="styles/tokens.css?v=20261106-3">
   <link rel="stylesheet" href="styles/shell.css?v=20261106-3">
   <link rel="stylesheet" href="styles/screens.css?v=20261110">
-  <link rel="stylesheet" href="styles/tools.css?v=20261113-tests">
+  <link rel="stylesheet" href="styles/tools.css?v=20261113-test-source">
   <link rel="stylesheet" href="styles/support.css?v=20261106-3">
   <link rel="stylesheet" href="styles/legacy.css?v=20261106-3">
   <link rel="stylesheet" href="styles/compass.css?v=20261109-2">
@@ -754,6 +754,11 @@
             <!-- Seçimdən sonra görünür -->
             <section class="test-config-section" id="testConfigSection" style="display:none;" aria-labelledby="testCountLabel">
               <div class="test-selected-info" id="testSelectedInfo"></div>
+              <div class="test-pdf-picker">
+                <label for="testPdfSelect" data-i18n="testPdfLabel">Sual mənbəyi</label>
+                <select id="testPdfSelect" aria-describedby="testPdfHint" onchange="selectTestPdf(this.value)"></select>
+                <p id="testPdfHint" data-i18n="testPdfHint">Standart olaraq ən son əlavə olunmuş PDF seçilir. İstəsən başqa material seç.</p>
+              </div>
               <div class="test-count-row">
                 <p class="test-count-label" id="testCountLabel" data-i18n="testCountLabel">Sual sayı</p>
                 <div class="test-count-btns" role="group" aria-labelledby="testCountLabel">
@@ -2230,13 +2235,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
 <script src="pdfs.js?v=20261109"></script>
 <script src="scripts/i18n.js?v=20261106-5"></script>
-<script src="scripts/i18n-app.js?v=20261113-tests"></script>
+<script src="scripts/i18n-app.js?v=20261113-test-source"></script>
 <script src="scripts/data-utils.js?v=20261106-3"></script>
 <script src="scripts/study-data.js?v=20261111"></script>
 <script src="scripts/ui.js?v=20261111"></script>
-<script src="scripts/features.js?v=20261113-tests"></script>
+<script src="scripts/features.js?v=20261113-test-source"></script>
 <script src="scripts/test-bank.js?v=20261113"></script>
-<script src="scripts/pdf-loader.js?v=20261113"></script>
+<script src="scripts/pdf-loader.js?v=20261113-source"></script>
 <script src="scripts/gpa.js?v=20261111"></script>
 <script src="scripts/firebase.js?v=20261112-auth"></script>
 <script src="scripts/chat.js?v=20261106-3"></script>

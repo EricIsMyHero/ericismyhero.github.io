@@ -278,27 +278,31 @@ class PDFParser {
     for (const name of Object.keys(TEST_CATALOG)) if (!QUESTION_BANK[name]) QUESTION_BANK[name] = [];
     renderTestSubjects();
   }
-  async function load(name, { refresh = false, onProgress = () => {} } = {}) {
-    if (subjects.get(name)?.pending) return subjects.get(name).pending;
+  async function load(name, { sourceUrl, refresh = false, onProgress = () => {} } = {}) {
     const sources = window.TEST_CATALOG?.[name] || [];
+    const source = sourceUrl ? sources.find(s => s.url === sourceUrl) : sources[0];
+    if (!source) throw new Error('invalid_test_source');
     const previous = subjects.get(name);
-    if (!refresh && previous?.result && !previous.result.failed && Date.now() - previous.time < MAX_AGE) return previous.result;
+    if (previous?.sourceUrl === source.url && previous.pending) return previous.pending;
+    if (!refresh && previous?.sourceUrl === source.url && previous.result && !previous.result.failed && Date.now() - previous.time < MAX_AGE) {
+      QUESTION_BANK[name] = previous.result.questions;
+      return previous.result;
+    }
+    QUESTION_BANK[name] = [];
     const work = (async () => {
-      const files = new Array(sources.length); let next = 0, completed = 0;
-      await Promise.all(Array.from({ length: Math.min(2, sources.length) }, async () => {
-        while (next < sources.length) {
-          const index = next++; files[index] = await file(sources[index], refresh);
-          onProgress(++completed, sources.length);
-        }
-      }));
+      const files = [await file(source, refresh)];
+      onProgress(1, 1);
       const result = { ...UNECTestBank.merge(files), files,
         failed: files.filter(f => f.error).length,
         rejected: files.reduce((sum, f) => sum + (f.stats?.rejected || 0), 0) };
-      QUESTION_BANK[name] = result.questions;
-      subjects.set(name, { result, time: Date.now() });
+      // A slow response from a previously selected PDF must not replace the current pool.
+      if (subjects.get(name)?.pending === work) {
+        QUESTION_BANK[name] = result.questions;
+        subjects.set(name, { sourceUrl: source.url, result, time: Date.now() });
+      }
       return result;
     })();
-    subjects.set(name, { pending: work, result: previous?.result });
+    subjects.set(name, { sourceUrl: source.url, pending: work });
     try { return await work; } finally { if (subjects.get(name)?.pending === work) subjects.delete(name); }
   }
   window.UNECTests = { init, load, status: name => subjects.get(name), sources: name => window.TEST_CATALOG?.[name] || [] };

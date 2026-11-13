@@ -1049,7 +1049,7 @@ Object.assign(I18N.az, {
   testHeroDesc: 'Elektron-test materiallarındakı suallarla məşq et. Cavablar mənbə PDF-dəki işarələrə əsaslanır.',
   testCatalogSubjects: '{n} fənn',
   testPdfCount: 'PDF mənbə: {n}',
-  testAutoReady: 'Suallar bu fənnin elektron-test materiallarından avtomatik hazırlandı.',
+  testAutoReady: 'Suallar seçilmiş PDF-dən avtomatik hazırlandı.',
   testAutoEmpty: 'Bu materiallarda oxunaqlı variantları və tək düzgün cavabı olan sual tapılmadı. PDF-lərə aşağıdan baxa bilərsən.',
   testOmitted: '{n} natamam, cavabsız və ya cavabları ziddiyyətli sual testə daxil edilmədi.',
   testFilesFailed: '{n} PDF yüklənmədi. Yenidən cəhd edə bilərsən.',
@@ -1063,7 +1063,7 @@ Object.assign(I18N.en, {
   testHeroDesc: 'Practise questions from electronic-test materials. Answers follow the markings in the source PDFs.',
   testCatalogSubjects: '{n} subjects',
   testPdfCount: 'PDF sources: {n}',
-  testAutoReady: 'Questions were prepared automatically from this subject’s electronic-test materials.',
+  testAutoReady: 'Questions were prepared automatically from the selected PDF.',
   testAutoEmpty: 'No readable questions with options and a single marked answer were found. You can open the source PDFs below.',
   testOmitted: '{n} incomplete, unmarked or conflicting questions were excluded.',
   testFilesFailed: '{n} PDFs could not be loaded. You can try again.',
@@ -1072,4 +1072,15 @@ Object.assign(I18N.en, {
   testSourceEmpty: 'No suitable questions found',
   testQuestionSource: 'View source',
   testLoadingSub: 'Preparing this subject’s materials'
+});
+
+Object.assign(I18N.az, {
+  testPdfLabel: 'Sual mənbəyi',
+  testPdfHint: 'Standart olaraq ən son əlavə olunmuş PDF seçilir. İstəsən başqa material seç.',
+  testLatestPdf: 'Ən son əlavə olunan'
+});
+Object.assign(I18N.en, {
+  testPdfLabel: 'Question source',
+  testPdfHint: 'The most recently added PDF is selected by default. You can choose another material.',
+  testLatestPdf: 'Most recently added'
 });

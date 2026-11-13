@@ -74,22 +74,53 @@ test('the live catalogue exposes all electronic-test PDFs without a separate sub
   }
   assert.ok(Object.keys(context.catalog).length > 0);
 });
-test('subject loading merges all PDFs, caches successful results and recovers from a partial network failure', async () => {
-  const context = vm.createContext({ console: { warn() {} }, setTimeout, clearTimeout, UNECTestBank: B, renderTestSubjects() {}, calls: {}, sample: marked,
-    data: { Year: { subjects: { ICT: { type: 'test', pdfs: [{ file: 'one.pdf' }, { file: 'two.pdf' }] }, Other: { type: 'test', pdfs: [{ file: 'one.pdf' }] } } } }, BASE: 'https://example.invalid/' });
-  context.window = context;
-  vm.runInContext(fs.readFileSync('scripts/pdf-loader.js', 'utf8'), context);
-  vm.runInContext(`extractPdfText=async url=>{calls[url]=(calls[url]||0)+1;if(url.endsWith('two.pdf')&&!globalThis.recovered)throw new Error('offline');return sample};UNECTests.init()`, context);
-  let result = await context.UNECTests.load('ICT');
-  assert.equal(result.failed, 1); assert.equal(result.questions.length, 2);
-  context.recovered = true;
-  result = await context.UNECTests.load('ICT');
-  assert.equal(result.failed, 0); assert.equal(result.questions.length, 2); assert.equal(result.duplicates, 2);
-  assert.equal(context.calls['https://example.invalid/pdf/one.pdf'], 1);
-  await Promise.all([context.UNECTests.load('Other'), context.UNECTests.load('Other')]);
-  assert.equal(context.calls['https://example.invalid/pdf/one.pdf'], 1);
-  await context.UNECTests.load('ICT', { refresh: true });
-  assert.equal(context.calls['https://example.invalid/pdf/one.pdf'], 2);
+function selectionFixture() {
+  const c = vm.createContext({ console: { warn() {} }, setTimeout, clearTimeout, UNECTestBank: B, renderTestSubjects() {}, calls: {}, sample: marked,
+    data: { Year: { subjects: { ICT: { type: 'test', pdfs: [{ file: 'Q26.pdf', addedAt: '2026-01-01' }, { file: 'Q25.pdf', addedAt: '2026-02-01' }] }, Other: { type: 'test', pdfs: [{ file: 'Q25.pdf', addedAt: '2026-02-01' }] } } } }, BASE: 'https://example.invalid/' });
+  c.window = c;
+  vm.runInContext(fs.readFileSync('scripts/pdf-loader.js', 'utf8'), c);
+  vm.runInContext(`extractPdfText=async url=>{calls[url]=(calls[url]||0)+1;return sample};UNECTests.init()`, c);
+  return c;
+}
+test('defaults to the latest upload, loads only that PDF and reuses each PDF cache when switching', async () => {
+  const c = selectionFixture();
+  const latest = 'https://example.invalid/pdf/Q25.pdf', older = 'https://example.invalid/pdf/Q26.pdf';
+  let result = await c.UNECTests.load('ICT');
+  assert.equal(result.files.length, 1); assert.equal(result.files[0].source.url, latest);
+  assert.equal(c.calls[latest], 1); assert.equal(c.calls[older], undefined);
+  result = await c.UNECTests.load('ICT', { sourceUrl: older });
+  assert.equal(result.files.length, 1); assert.ok(result.questions.every(q => q.sources.every(s => s.url === older)));
+  result = await c.UNECTests.load('ICT');
+  assert.ok(result.questions.every(q => q.sources.every(s => s.url === latest)));
+  await Promise.all([c.UNECTests.load('Other'), c.UNECTests.load('Other')]);
+  assert.equal(c.calls[latest], 1); assert.equal(c.calls[older], 1);
+  await c.UNECTests.load('ICT', { refresh: true });
+  assert.equal(c.calls[latest], 2); assert.equal(c.calls[older], 1);
+});
+test('a failed or empty newest PDF never silently falls back to an older PDF', async () => {
+  const c = selectionFixture();
+  vm.runInContext(`extractPdfText=async url=>{calls[url]=(calls[url]||0)+1;if(!globalThis.recovered)throw new Error('offline');return globalThis.empty?'':sample}`, c);
+  let result = await c.UNECTests.load('ICT');
+  assert.equal(result.failed, 1); assert.equal(result.questions.length, 0);
+  assert.equal(c.calls['https://example.invalid/pdf/Q26.pdf'], undefined);
+  c.recovered = true;
+  result = await c.UNECTests.load('ICT');
+  assert.equal(result.failed, 0); assert.equal(result.questions.length, 2);
+  c.empty = true;
+  result = await c.UNECTests.load('ICT', { refresh: true });
+  assert.equal(result.failed, 0); assert.equal(result.questions.length, 0);
+  assert.equal(c.calls['https://example.invalid/pdf/Q26.pdf'], undefined);
+  await assert.rejects(c.UNECTests.load('ICT', { sourceUrl: 'https://unlisted.invalid/other.pdf' }), /invalid_test_source/);
+});
+test('a slow response from an older selection cannot overwrite the newly selected PDF pool', async () => {
+  const c = selectionFixture();
+  vm.runInContext(`globalThis.oldStarted=new Promise(r=>globalThis.markStarted=r);extractPdfText=async url=>{if(url.endsWith('Q26.pdf')){markStarted();await new Promise(r=>globalThis.releaseOld=r)}return sample}`, c);
+  const old = c.UNECTests.load('ICT', { sourceUrl: 'https://example.invalid/pdf/Q26.pdf' });
+  await c.oldStarted;
+  await c.UNECTests.load('ICT');
+  c.releaseOld(); await old;
+  assert.ok(c.QUESTION_BANK.ICT.every(q => q.sources.every(s => s.file === 'Q25.pdf')));
+  assert.equal(c.UNECTests.status('ICT').result.files[0].source.file, 'Q25.pdf');
 });
 
 test('missing image formulas and punctuation-only stems never become scored questions', () => {
