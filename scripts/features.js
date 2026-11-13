@@ -444,6 +444,8 @@ let testState = {
   initialized:     false,
   loading:         false,
   loadFailed:      false,
+  subjectLoading:  false,
+  subjectRequest:  0,
   selectedSubject: null,
   selectedCount:   10,
   currentQuiz:     [],
@@ -461,7 +463,7 @@ const TEST_COUNTS = [10, 20, 30, 50];
 function initTestSystem() {
   if (testState.initialized) return;
   testState.initialized = true;
-  renderTestSubjects();
+  UNECTests.init();
 }
 
 // "Yenidən cəhd et" — fənn siyahısı yüklənməyibsə
@@ -476,14 +478,14 @@ function renderTestSubjects() {
   if (!grid) return;
 
   // sualı olan fənlər əvvəl, yüklənə bilməyənlər (0 sual) sonda
-  const names   = Object.keys(QUESTION_BANK).sort((a, b) => (QUESTION_BANK[a].length === 0) - (QUESTION_BANK[b].length === 0));
+  const names = Object.keys(window.TEST_CATALOG || {});
   const empty   = document.getElementById('testEmptyState');
   const section = document.getElementById('testSubjectSection');
   const total   = document.getElementById('testSubjectTotal');
+  const focused = grid.contains(document.activeElement) ? document.activeElement?.dataset.subject : null;
   grid.innerHTML = '';
 
-  const usable = names.filter(n => QUESTION_BANK[n].length > 0).length;
-  if (total) total.textContent = names.length ? _tTr('testSubjectsReady', { n: usable }) : '';
+  if (total) total.textContent = names.length ? _tTr('testCatalogSubjects', { n: names.length }) : '';
 
   if (!names.length) {
     if (testState.loading) {
@@ -504,27 +506,25 @@ function renderTestSubjects() {
 
   names.forEach(subject => {
     const count = QUESTION_BANK[subject].length;
+    const status = UNECTests.status(subject);
+    const description = status?.pending ? t('testLoadingTitle') : count ? _tTr('testQuestionsCount', { n: count }) : status?.result ? t(status.result.failed ? 'testSourceFailed' : 'testNoQuestions') : _tTr('testPdfCount', { n: UNECTests.sources(subject).length });
     const btn   = document.createElement('button');
     btn.type = 'button';
     btn.className = 'test-subject-btn';
     btn.setAttribute('data-subject', subject);
     btn.title = subject;
-    const isActive = testState.selectedSubject === subject && count > 0;
+    const isActive = testState.selectedSubject === subject;
     if (isActive) btn.classList.add('active');
     btn.setAttribute('aria-pressed', String(isActive));
     btn.innerHTML = `
       <span class="tsb-icon">${_tIc(subjectIconName(subject))}</span>
       <span class="tsb-name">${_tEsc(subject)}</span>
-      <span class="tsb-count">${count ? _tTr('testQuestionsCount', { n: count }) : _tEsc(t('testNoQuestions'))}</span>
+      <span class="tsb-count">${_tEsc(description)}</span>
       <span class="tsb-check" aria-hidden="true">${_tIc('check')}</span>`;
-    if (count) {
-      btn.onclick = () => selectSubject(subject, btn);
-    } else {
-      btn.disabled = true;
-      btn.classList.add('is-empty');
-    }
+    btn.onclick = () => selectSubject(subject, btn);
     grid.appendChild(btn);
   });
+  if (focused) [...grid.children].find(b => b.dataset.subject === focused)?.focus({ preventScroll: true });
 }
 
 // Seçilmiş fənnin məlumat sətri, sual sayı düymələri və vaxt qeydi
@@ -532,6 +532,8 @@ function _renderTestConfig() {
   const subject = testState.selectedSubject;
   if (!subject || !QUESTION_BANK[subject]) return;
   const total = QUESTION_BANK[subject].length;
+  const start = document.getElementById('testStartBtn');
+  if (start) start.disabled = testState.subjectLoading || !total;
 
   const info = document.getElementById('testSelectedInfo');
   if (info) {
@@ -576,20 +578,60 @@ function _renderTestHint() {
   hint.textContent = _tTr('testTimeHint', { n, min: n });
 }
 
-function selectSubject(subject, btn) {
-  if (!QUESTION_BANK[subject] || !QUESTION_BANK[subject].length) return;
+async function selectSubject(subject, btn, refresh = false) {
+  if (!window.TEST_CATALOG?.[subject]) return;
+  if (testState.subjectLoading && testState.selectedSubject === subject && !refresh) return;
   document.querySelectorAll('.test-subject-btn').forEach(b => {
     b.classList.remove('active');
     b.setAttribute('aria-pressed', 'false');
   });
   if (btn) { btn.classList.add('active'); btn.setAttribute('aria-pressed', 'true'); }
   testState.selectedSubject = subject;
+  const request = ++testState.subjectRequest;
+  testState.subjectLoading = true;
 
   const config = document.getElementById('testConfigSection');
   _renderTestConfig();
 
   config.style.display = '';
+  document.getElementById('testSources').innerHTML = '';
+  const load = document.getElementById('testLoadState');
+  load.hidden = false;
+  document.getElementById('testLoadSub').textContent = subject;
+  document.getElementById('testLoadCount').textContent = '';
+  document.getElementById('testLoadFill').style.width = '0%';
+  document.getElementById('testSourceStatus').textContent = t('testLoadingTitle');
+  document.getElementById('testSourceRetry').hidden = true;
   config.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  const task = UNECTests.load(subject, { refresh, onProgress: (done, total) => {
+    if (request !== testState.subjectRequest) return;
+    document.getElementById('testLoadCount').textContent = `${done}/${total}`;
+    document.getElementById('testLoadFill').style.width = (total ? done / total * 100 : 100) + '%';
+  } });
+  renderTestSubjects();
+  try { await task; }
+  finally {
+    renderTestSubjects();
+    if (request === testState.subjectRequest) {
+      testState.subjectLoading = false; load.hidden = true;
+      _renderTestConfig(); _renderTestSources();
+    }
+  }
+}
+
+function _renderTestSources() {
+  if (testState.subjectLoading) return;
+  const result = UNECTests.status(testState.selectedSubject)?.result;
+  const box = document.getElementById('testSources');
+  if (!result || !box) return;
+  const status = document.getElementById('testSourceStatus');
+  const omitted = result.rejected + result.conflicts;
+  status.textContent = result.questions.length ? t('testAutoReady') : t('testAutoEmpty');
+  if (omitted) status.textContent += ' ' + _tTr('testOmitted', { n: omitted });
+  if (result.failed) status.textContent += ' ' + _tTr('testFilesFailed', { n: result.failed });
+  document.getElementById('testSourceRetry').hidden = !result.failed;
+  box.innerHTML = `<details><summary>${_tEsc(_tTr('testSourceList', { n: result.files.length }))}</summary><ul>` + result.files.map(f =>
+    `<li><a href="${_tEsc(f.source.url)}" target="_blank" rel="noopener">${_tEsc(f.source.name)}</a><span>${_tEsc(f.error ? t('testSourceFailed') : f.questions.length ? _tTr('testQuestionsCount', { n: f.questions.length }) : t('testSourceEmpty'))}</span></li>`).join('') + '</ul></details>';
 }
 
 function selectCount(btn) {
@@ -606,7 +648,7 @@ function selectCount(btn) {
 // ── Testi Başlat ──────────────────────────────────────────────
 function startTest() {
   const subject = testState.selectedSubject;
-  if (!subject) return;
+  if (!subject || testState.subjectLoading) return;
 
   const pool  = QUESTION_BANK[subject];
   const count = Math.min(testState.selectedCount, pool.length);
@@ -622,7 +664,8 @@ function startTest() {
     return {
       question: q.question,
       options:  optionsWithIndex.map(o => o.opt),
-      answer:   optionsWithIndex.findIndex(o => o.i === q.answer)
+      answer:   optionsWithIndex.findIndex(o => o.i === q.answer),
+      sources: q.sources
     };
   });
 
@@ -870,6 +913,14 @@ function renderReview() {
       </div>
       <div class="ri-question">${_tEsc(q.question)}</div>
       <div class="ri-options">${optHtml}</div>`;
+    const source = q.sources?.[0];
+    if (source) {
+      const link = document.createElement('a');
+      link.className = 'test-question-source'; link.target = '_blank'; link.rel = 'noopener';
+      link.href = source.url + '#page=' + (source.page || 1);
+      link.textContent = t('testQuestionSource') + ': ' + source.name + (source.number ? ' · ' + t('testQuestionWord') + ' ' + source.number : '');
+      card.appendChild(link);
+    }
     list.appendChild(card);
   });
 
@@ -916,6 +967,7 @@ window.addEventListener('unec:langchange', () => {
   if (!document.getElementById('testSubjectGrid')) return;
   renderTestSubjects();
   if (testState.selectedSubject) _renderTestConfig();
+  _renderTestSources();
   if (document.getElementById('test-quiz').style.display === '' && testState.currentQuiz.length) {
     document.getElementById('testQNumber').textContent = `${t('testQuestionWord')} ${testState.currentIndex + 1}`;
     updateAnsweredInfo();

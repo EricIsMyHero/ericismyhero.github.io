@@ -1070,3 +1070,14 @@ body.in-quiz[data-route="tests"] #ai-button { opacity: 0; visibility: hidden; po
 #accountDeleteForm { display: grid; gap: 16px; }
 #accountPassword { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--text); }
 @media print { .offline-status { display: none !important; } }
+
+/* Catalogue-driven test sources and extraction feedback. */
+.test-source-status { color:var(--muted);font-size:13px;line-height:1.6;margin:12px 0; }
+.test-sources { margin:14px 0 20px;min-width:0; }
+.test-sources details { background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:12px 14px; }
+.test-sources summary { cursor:pointer;font-weight:600;font-size:14px; }
+.test-sources ul { list-style:none;padding:0;margin:8px 0 0; }
+.test-sources li { display:flex;flex-wrap:wrap;gap:4px 14px;justify-content:space-between;padding:10px 0;border-top:1px solid var(--border);font-size:13px;line-height:1.5; }
+.test-sources a,.test-question-source { color:var(--accent2);overflow-wrap:anywhere; }
+.test-sources li span { color:var(--muted); }
+.test-question-source { display:block;font-size:12px;line-height:1.6;margin-top:14px; }

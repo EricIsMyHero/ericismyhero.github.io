@@ -4,7 +4,7 @@ An open-source student platform built for the UNEC community.
 
 UNEC Students Hub is a modern web platform designed to centralize academic resources, productivity tools, and student services in one place. The project aims to enhance the daily university experience by providing fast, accessible, and community-driven solutions.
 
-**Live site:** [unecstudentshub.com](https://unecstudentshub.com) · **Latest release:** [v1.1.22](https://github.com/EricIsMyHero/ericismyhero.github.io/releases/latest)
+**Live site:** [unecstudentshub.com](https://unecstudentshub.com) · **Latest release:** [v1.1.23](https://github.com/EricIsMyHero/ericismyhero.github.io/releases/latest)
 
 This platform is independently developed and is not affiliated with UNEC or any official institution.
 
@@ -36,7 +36,8 @@ ericismyhero.github.io/
 │   ├── data-utils.js
 │   ├── ui.js
 │   ├── features.js
-│   ├── pdf-loader.js
+│   ├── test-bank.js            ← Automatic electronic-test catalogue, parsing and deduplication
+│   ├── pdf-loader.js           ← On-demand PDF extraction and local question cache
 │   ├── curriculum.js           ← Curriculum data, navigation and completion UI
 │   ├── curriculum-progress.js  ← Profile-year inference and explicit completion overrides
 │   ├── compass.js              ← Student/applicant guidance, filters, reading and local bookmarks
@@ -102,8 +103,7 @@ ericismyhero.github.io/
 │   ├── REQUESTS-SETUP.md       ← Material request threads & file attachments setup guide (Azerbaijani)
 │   └── README.md
 │
-└── data/
-    └── subjects.json           ← Subject database
+└── data/                       ← Material history and Student Compass article catalogues
 ```
 
 Exam materials (PDFs) are hosted on Cloudflare R2 and are not stored in this repository.
@@ -114,7 +114,7 @@ Exam materials (PDFs) are hosted on Cloudflare R2 and are not stored in this rep
 
 * 📚 Exam Materials Library — newest-first ordering, search, course chips, filters, favorites, clear links to each material's information page, and related PDFs grouped by subject and semester
 * 🎓 Major Filter — select one or several majors to see the exam materials of their subjects
-* 📝 Practice Tests — questions are read from the PDFs in the background (subjects appear as they load), 10–50 questions, timer, answer review with *All / Wrong / Skipped* filters
+* 📝 Practice Tests — automatically discovers all electronic-test PDFs from the material catalogue, merges and caches questions on subject selection, with a timer and answer review linking back to source PDFs. No separate subject/PDF list is maintained.
 * 📊 GPA Calculator
 * 📅 Curriculum Planner — 15 majors with subjects, subject codes, credits, hours, and absence limits; year filters, subject search, matching material links, and printable PDF views
 * 📥 Material Request System — sign in and turn on notifications to post a request; anyone signed in can reply in a public thread under it, attaching files (PDF, Word, PowerPoint, Excel, TXT, images — no video, up to 3 files × 10 MB); the requester gets a push notification for every reply, and the other participants when the requester answers
@@ -396,3 +396,14 @@ After a verified restore and real sign-in tests, save the destination public Web
 Only after an operator has enabled backend maintenance, deployed deny-all source client rules and temporarily blocked the original source web API key with a website-referrer restriction, run `--check-pause`. This verifies live deployed rules, backend/source deployment identity and the Auth API-key block, then records a six-minute propagation/drain deadline locally. After that deadline, take distinct `auth-final.json` and `firestore-final.json` exports without replacing original files. `--apply --latest-auth auth-final.json --latest-firestore firestore-final.json` requires the matching pause marker and fresh export times, backs up the destination locally, journals exact inputs and copies guarded source deltas with Firestore version preconditions. Account overwrites are limited to reviewed source changes; login timestamps never move backwards. No source writes or automatic deletions occur. Keep maintenance active until target environment deployment and verification complete. Never publish the private backups, keys or cutover journals.
 
 Push subscription metadata now includes Firebase project/app IDs so a project migration bypasses the normal seven-day refresh window. Already opted-in browsers rotate subscriptions when the public VAPID key changes and link their new token before removing the obsolete backend token. A concurrent opt-out cancels/cleans up an in-flight subscription. Notification permissions are never requested by background synchronization.
+
+
+### Automatic practice-test import
+
+`pdfs.js` is the only catalogue: every PDF belonging to a subject with `type: "test"` is discovered automatically. Written subjects and extra materials are excluded. Add a material normally; no test-specific list or admin import is required. Students still choose the subject and question count. Only that subject's PDFs are fetched, with at most two downloads/extractions in flight, so opening Tests does not download the entire library.
+
+`scripts/test-bank.js` parses numbered questions, multiline bullet/check and lettered options, detached answer marks and explicit letter answer keys. A scored question must have readable text, distinct options and exactly one marked answer; the importer never assumes that option A is correct. Exact duplicates with reordered options are merged and retain their sources. Conflicting answer keys are excluded. Image-based formulas/diagrams, scans without readable text and unmarked materials require additional preparation and are not guessed or sent to an AI/OCR service. The source list distinguishes failed downloads from files with no eligible questions.
+
+Public parsed questions are cached in IndexedDB on the student's device for seven days, keyed by parser version, PDF URL and catalogue `addedAt`. Storage failures fall back to memory. A new PDF or parser revision gets a fresh entry; when replacing a PDF at the same URL, update its catalogue timestamp or allow the cache to expire. Failed downloads are retried when selecting the subject again; the retry control refreshes all sources. Neither raw PDFs nor private account data are stored in this cache. No Firebase writes or additional serverless endpoint are required.
+
+Parser and loading regression checks: `node --test tests/test-bank.test.cjs`.

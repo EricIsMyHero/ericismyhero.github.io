@@ -137,7 +137,7 @@
   <link rel="stylesheet" href="styles/tokens.css?v=20261106-3">
   <link rel="stylesheet" href="styles/shell.css?v=20261106-3">
   <link rel="stylesheet" href="styles/screens.css?v=20261110">
-  <link rel="stylesheet" href="styles/tools.css?v=20261106-5">
+  <link rel="stylesheet" href="styles/tools.css?v=20261113-tests">
   <link rel="stylesheet" href="styles/support.css?v=20261106-3">
   <link rel="stylesheet" href="styles/legacy.css?v=20261106-3">
   <link rel="stylesheet" href="styles/compass.css?v=20261109-2">
@@ -764,7 +764,10 @@
                 </div>
               </div>
               <p class="test-time-hint"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-clock"/></svg><span id="testTimeHint"></span></p>
-              <button class="btn btn--primary btn--block test-start-btn" type="button" onclick="startTest()">
+              <p id="testSourceStatus" class="test-source-status" role="status" aria-live="polite"></p>
+              <button id="testSourceRetry" class="btn btn--secondary btn--sm" type="button" onclick="selectSubject(testState.selectedSubject,null,true)" hidden><span data-i18n="appRetry">Yenidən cəhd et</span></button>
+              <div id="testSources" class="test-sources"></div>
+              <button id="testStartBtn" class="btn btn--primary btn--block test-start-btn" type="button" onclick="startTest()" disabled>
                 <svg class="ic"><use href="#i-play"/></svg>
                 <span data-i18n="testStartBtn">Testi Başlat</span>
               </button>
@@ -2227,12 +2230,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
 <script src="pdfs.js?v=20261109"></script>
 <script src="scripts/i18n.js?v=20261106-5"></script>
-<script src="scripts/i18n-app.js?v=20261112-auth"></script>
+<script src="scripts/i18n-app.js?v=20261113-tests"></script>
 <script src="scripts/data-utils.js?v=20261106-3"></script>
 <script src="scripts/study-data.js?v=20261111"></script>
 <script src="scripts/ui.js?v=20261111"></script>
-<script src="scripts/features.js?v=20261106-3"></script>
-<script src="scripts/pdf-loader.js?v=20261106-3"></script>
+<script src="scripts/features.js?v=20261113-tests"></script>
+<script src="scripts/test-bank.js?v=20261113"></script>
+<script src="scripts/pdf-loader.js?v=20261113"></script>
 <script src="scripts/gpa.js?v=20261111"></script>
 <script src="scripts/firebase.js?v=20261112-auth"></script>
 <script src="scripts/chat.js?v=20261106-3"></script>
