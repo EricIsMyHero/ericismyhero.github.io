@@ -137,7 +137,7 @@
   <link rel="stylesheet" href="styles/tokens.css?v=20261106-3">
   <link rel="stylesheet" href="styles/shell.css?v=20261106-3">
   <link rel="stylesheet" href="styles/screens.css?v=20261114-semesters">
-  <link rel="stylesheet" href="styles/tools.css?v=20261114-curriculum-clean">
+  <link rel="stylesheet" href="styles/tools.css?v=20261114-profile-choices">
   <link rel="stylesheet" href="styles/written.css?v=20261114-practice">
   <link rel="stylesheet" href="styles/support.css?v=20261106-3">
   <link rel="stylesheet" href="styles/legacy.css?v=20261106-3">
@@ -985,10 +985,14 @@
                 <!-- Redaktə rejimi -->
                 <div class="dash-profile-edit hidden" id="dash-profile-edit">
                   <label class="dash-edit-label" for="dash-faculty-input" data-i18n="dashFactFaculty">Fakültə</label>
-                  <input class="dash-edit-input" id="dash-faculty-input" placeholder="məs. İqtisadiyyat" data-i18n-placeholder="dashEditFacultyPlaceholder" autocomplete="off">
+                  <select class="dash-edit-input" id="dash-faculty-input">
+                    <option value="" data-i18n="dashEditFacultySelect">Fakültəni seç...</option>
+                  </select>
 
                   <label class="dash-edit-label" for="dash-major-input" data-i18n="dashFactMajor">İxtisas</label>
-                  <input class="dash-edit-input" id="dash-major-input" placeholder="məs. Maliyyə" data-i18n-placeholder="dashEditMajorPlaceholder" autocomplete="off">
+                  <select class="dash-edit-input" id="dash-major-input">
+                    <option value="" data-i18n="dashEditMajorSelect">İxtisası seç...</option>
+                  </select>
 
                   <label class="dash-edit-label" for="dash-year-input" data-i18n="dashFactYear">Kurs</label>
                   <select class="dash-edit-input" id="dash-year-input">
@@ -2260,7 +2264,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
 <script src="data/material-identities.js?v=20261114-catalog"></script>
 <script src="pdfs.js?v=20261114-majors"></script>
-<script src="scripts/i18n.js?v=20261114-curriculum-stats"></script>
+<script src="scripts/i18n.js?v=20261114-profile-choices"></script>
 <script src="scripts/i18n-app.js?v=20261114-curriculum-clean"></script>
 <script src="scripts/data-utils.js?v=20261113-subjects"></script>
 <script src="scripts/study-data.js?v=20261111"></script>
@@ -2273,7 +2277,7 @@
 <script src="scripts/chat.js?v=20261106-3"></script>
 <script src="scripts/ratings.js?v=20261113-subjects"></script>
 <script src="scripts/requests.js?v=20261106-3"></script>
-<script src="scripts/dashboard.js?v=20261114-personal"></script>
+<script src="scripts/dashboard.js?v=20261114-profile-choices"></script>
 <script src="scripts/payments.js?v=20261106-3"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="scripts/curriculum-progress.js?v=20261106-4"></script>

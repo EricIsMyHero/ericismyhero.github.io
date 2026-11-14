@@ -2,6 +2,48 @@
 // DASHBOARD.JS  —  Dashboard + Gamification render
 // ============================================================
 
+// Faculty/school names follow the UNEC registration notice cited in Student Compass.
+const DASH_FACULTIES = [
+  { az: 'Maliyyə və mühasibat fakültəsi', en: 'Faculty of Finance and Accounting' },
+  { az: 'Beynəlxalq İqtisadiyyat Məktəbi (ISE)', en: 'International School of Economics (ISE)' },
+  { az: 'İqtisadiyyat və idarəetmə fakültəsi', en: 'Faculty of Economics and Management' },
+  { az: 'Türk Dünyası İqtisad fakültəsi (TUDİFAK)', en: 'Turkish World Faculty of Economics (TUDIFAK)' },
+  { az: 'Rus İqtisad Məktəbi (RİM)', en: 'Russian School of Economics (RSE)' },
+  { az: 'Rəqəmsal İqtisadiyyat fakültəsi', en: 'Faculty of Digital Economy' },
+  { az: 'Mühəndislik fakültəsi', en: 'Faculty of Engineering' },
+  { az: 'UNEC Dizayn Məktəbi', en: 'UNEC Design School' },
+  { az: 'Biznes və menecment fakültəsi', en: 'Faculty of Business and Management' },
+];
+
+function _profileFacultyOptions() {
+  return DASH_FACULTIES.map(item => ({ value: item.az, label: item[lang] || item.az }));
+}
+
+function _profileMajorOptions() {
+  return Object.entries(CURRICULUM_DATA).map(([key, plan]) => ({ value: plan.name, label: _currSpecName(key, plan) }));
+}
+
+function _profileChoiceLabel(value, choices) {
+  return choices.find(item => item.value === value)?.label || value || '—';
+}
+
+function renderProfileChoices(profile) {
+  const fill = (id, choices, value, placeholder) => {
+    const select = document.getElementById(id);
+    if (!select) return;
+    const normalize = text => String(text || '').trim().toLocaleLowerCase('az-AZ');
+    const known = choices.find(item => normalize(item.value) === normalize(value) || normalize(item.label) === normalize(value));
+    const selected = known?.value || value || '';
+    // A previous free-text value stays selectable until the user replaces it.
+    const options = [...choices].sort((a, b) => a.label.localeCompare(b.label, lang === 'en' ? 'en' : 'az'));
+    if (selected && !known) options.unshift({ value: selected, label: selected + ' (' + t('dashPreviouslySaved') + ')' });
+    select.innerHTML = `<option value="">${_dashEsc(t(placeholder))}</option>` + options.map(item => `<option value="${_dashEsc(item.value)}">${_dashEsc(item.label)}</option>`).join('');
+    select.value = selected;
+  };
+  fill('dash-faculty-input', _profileFacultyOptions(), profile?.faculty, 'dashEditFacultySelect');
+  fill('dash-major-input', _profileMajorOptions(), profile?.major, 'dashEditMajorSelect');
+}
+
 // ── Dashboard tab render ──────────────────────────────────────
 function renderDashboard() {
   const profile  = getProfile();
@@ -69,8 +111,8 @@ function _renderProfileCard(profile, rankInfo, solved) {
     const el = document.getElementById(id);
     if (el) el.textContent = val;
   };
-  setFact('dash-fact-faculty', profile?.faculty || '—');
-  setFact('dash-fact-major',   profile?.major    || '—');
+  setFact('dash-fact-faculty', _profileChoiceLabel(profile?.faculty, _profileFacultyOptions()));
+  setFact('dash-fact-major',   _profileChoiceLabel(profile?.major, _profileMajorOptions()));
   setFact('dash-fact-year',    _yearLabel(profile?.year) || '—');
   setFact('dash-fact-rank',    rankInfo.rank.name);
   setFact('dash-fact-solved',  String(solved));
@@ -86,11 +128,8 @@ function toggleProfileEdit(forceShow) {
 
   if (opening) {
     const p = getProfile();
-    const fEl = document.getElementById('dash-faculty-input');
-    const mEl = document.getElementById('dash-major-input');
     const yEl = document.getElementById('dash-year-input');
-    if (fEl) fEl.value = p?.faculty || '';
-    if (mEl) mEl.value = p?.major   || '';
+    renderProfileChoices(p);
     if (yEl) yEl.value = p?.year    || '';
     facts.classList.add('hidden');
     edit.classList.remove('hidden');
@@ -356,5 +395,8 @@ function closeQuizResultsModal() {
 // Dil dəyişəndə dinamik mətnləri (salam, tarix, streak, rank, badgelər) yenilə
 window.addEventListener('unec:langchange', () => {
   if (document.body.getAttribute('data-route') !== 'dashboard') return;
+  if (!document.getElementById('dash-profile-edit')?.classList.contains('hidden')) {
+    renderProfileChoices({ faculty: document.getElementById('dash-faculty-input')?.value, major: document.getElementById('dash-major-input')?.value });
+  }
   if (typeof isLoggedIn === 'function' && isLoggedIn() && typeof renderDashboard === 'function') renderDashboard();
 });

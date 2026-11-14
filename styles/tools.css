@@ -1034,7 +1034,8 @@ body.in-quiz[data-route="tests"] #ai-button { opacity: 0; visibility: hidden; po
   .curr-change-btn { padding-inline: 10px; font-size: var(--fs-xs); }
   .curr-table, .curr-table tbody { display: block; }
   .curr-table thead { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  .curr-table tr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 6px; padding: 14px 12px; border-bottom: 1px solid var(--border); }
+  .curr-table tr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 6px; padding: 14px 12px; border-bottom: 1px solid var(--border); }
+  .curr-complete-control { min-height: 28px; }
   .curr-table tbody tr:last-child { border-bottom: 0; }
   .curr-table td { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 0; border: 0; }
   .curr-table td.curr-td-name { display: block; grid-column: 1 / -1; }
