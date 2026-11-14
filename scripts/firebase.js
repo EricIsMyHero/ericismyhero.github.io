@@ -218,7 +218,7 @@ async function saveQuizResult(subject, score, total, mistakes, options = {}) {
   await _addXP(uid, xpGain);
   await _incrementSolvedTests(uid);
   await _updateStreak(uid, 'quiz');
-  _logEvent('quiz_complete', { subject, score: pct });
+  _logEvent('quiz_complete', { subject:options.personal?'private_pdf':subject, score: pct });
 
   const updatedProfile = await _getUserProfile(uid);
   if(currentUser?.uid!==uid)return xpGain;
