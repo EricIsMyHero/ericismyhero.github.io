@@ -53,6 +53,17 @@ for (const m of ordered) {
 outputs.set('materials/index.html', page('Dərs materialları', 'UNEC tələbələri üçün fənlər üzrə PDF dərs və imtahan materialları.', '/materials/', '<h1>Dərs materialları</h1><p>Ən yeni materiallar əvvəl göstərilir. Fənn üzrə axtarış və filtrlər üçün <a href="/#/materials/all">material kataloqunu aç</a>.</p><ul class="catalog">' + ordered.map(m => `<li><a href="${href(m)}">${esc(m.name)}</a><small>${esc(m.subject)}</small></li>`).join('') + '</ul>'));
 const compass = compassOutputs(root);
 for (const [file, content] of compass.outputs) outputs.set(file, content);
+// Keep the native app's public, offline-capable catalog in step with the site.
+const mobileData = { window: { addEventListener() {} } };
+vm.createContext(mobileData);
+vm.runInContext(read('scripts/curriculum.js') + '\nthis.result = { CURRICULUM_DATA, CURRICULUM_CODES };', mobileData);
+vm.runInContext(read('data/material-identities.js') + '\nthis.identities = MATERIAL_IDENTITIES;', mobileData);
+outputs.set('data/mobile-catalog.json', JSON.stringify({
+  version: 1,
+  materials: { BASE, EXTRAS_BASE, PDF_TYPES, data, extrasData, MATERIAL_IDENTITIES: mobileData.identities },
+  curriculum: mobileData.result,
+  compass: compass.articles
+}) + '\n');
 outputs.set('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ['/', '/materials/', ...ordered.map(href), '/compass/', ...compass.articles.map(a => '/compass/' + a.id + '/')].map(p => `  <url><loc>${esc(origin + p)}</loc></url>`).join('\n') + '\n</urlset>\n');
 const html = read('index.html'), assets = new Set(['/', '/index.html', '/manifest.json']);
 for (const match of html.matchAll(/<(?:script|link)\b[^>]*(?:src|href)="([^"#]+)"/g)) {
