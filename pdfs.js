@@ -209,7 +209,8 @@ const data = {
           { name: "Mikroiqtisadiyyat", file: "mikroiqt1.pdf", pdfType: "old", addedAt: "2026-04-11T13:20:30+04:00"},
           { name: "Mikroiqtisadiyyat ", file: "mikroiqt2.pdf", pdfType: "old", addedAt: "2026-04-11T13:20:30+04:00"},
           { name: "Mikroiqtisadiyyat", file: "mikroiqt3.pdf", pdfType: "old", addedAt: "2026-04-11T13:20:30+04:00"},
-          { name: "Mikroiqtisadiyyat", file: "mikroiqt4.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:30+04:00"},
+          { name: "Mikroiqtisadiyyat", file: "mikroiqtkollek1.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:30+04:00"},
+          { name: "Mikroiqtisadiyyat", file: "mikroiqtkollek2.pdf", pdfType: "midterm", addedAt: "2026-11-14T12:50:30+04:00"},
           { name: "Mikroiqtisadiyyat", file: "mikroiqtmesele1.pdf", pdfType: "task", addedAt: "2026-04-11T13:20:30+04:00"},
           { name: "Mikroiqtisadiyyat", file: "mikroiqtmesele2.pdf", pdfType: "task", addedAt: "2026-04-11T13:20:30+04:00"}
         ]
@@ -218,6 +219,11 @@ const data = {
         type: "yazili", semester: 1, code: "00710", pdfs: [
           { name: "Qiymət Siyasəti", file: "qiymet1.pdf", pdfType: "semester", addedAt: "2026-04-11T23:04:48+04:00"},
           { name: "Qiymət Siyasəti", file: "qiymetkollek1.pdf", pdfType: "midterm", addedAt: "2026-04-11T23:06:15+04:00"}
+        ]
+      },
+      "Tətbiqi statistika": {
+        type: "yazili", semester: 1, code: "00893", pdfs: [
+          { name: "Tətbiqi Statistika", file: "tetbiqistatistika1.pdf", pdfType: "midterm", addedAt: "2026-11-14T12:50:48+04:00"}
         ]
       },
       "Əməyin iqtisadiyyatı": {
