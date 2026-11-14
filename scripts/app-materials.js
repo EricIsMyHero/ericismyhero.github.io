@@ -94,10 +94,9 @@
     if (subjects) return subjects;
     subjects = {};
     for (const [course, entry] of Object.entries(data)) for (const [name, subj] of Object.entries(entry.subjects)) {
-      if (!subjects[name]) subjects[name] = { ...subj, legacyCourse: course, pdfs: [], entries: [] };
+      if (!subjects[name]) subjects[name] = { ...subj, legacyCourse: typeof MATERIAL_IDENTITIES==='undefined'?course:(Object.values(MATERIAL_IDENTITIES).flat().find(old=>old.subject===name)?.course||course), pdfs: [], entries: [] };
       for (const pdf of subj.pdfs) if (!subjects[name].pdfs.some(p => p.file === pdf.file)) {
         subjects[name].pdfs.push(pdf); subjects[name].entries.push(makeEntry(course, name, subj, pdf));
-        subjects[name].legacyCourse=subjects[name].entries[0].course;
       }
     }
     return subjects;
