@@ -5163,7 +5163,7 @@
             "01138",
             "01139"
           ],
-          "name": "1. Avropanın xarici siyasəti 2. Türkiyənin Xarici Siyasəti 3. Diplomatik və konsul xidməti",
+          "name": "1. Avropanın xar ici siyasəti 2. Türkiyənin Xarici Siyasəti 3. Diplomatik və konsul xidməti",
           "credit": 4,
           "hours": 45,
           "weekly": 3,
@@ -9683,6 +9683,6352 @@
           "page": 2
         }
       ]
+    },
+    "computerScience": {
+      "specialtyCode": "6005009",
+      "file": "6005009-Kompüter-elmləri.pdf",
+      "url": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6005009-Komp%C3%BCter-elml%C9%99ri.pdf",
+      "sha256": "8ac17591f3ad8a8e6ea69ed235785ac726efb517f672a56330dec4fbcf63b848",
+      "rows": [
+        {
+          "section": "general",
+          "ordinal": 1,
+          "codes": [
+            "00004"
+          ],
+          "name": "Azərbaycan dilində işgüzar və akademik kommunikasiya",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 2,
+          "codes": [
+            "00005"
+          ],
+          "name": "Azərbaycanın tarixi",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 3,
+          "codes": [
+            "01222"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-1",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 4,
+          "codes": [
+            "00073"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-2",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 2,
+          "prereq": [
+            "01222"
+          ],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 5,
+          "codes": [
+            "00932"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-3",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [
+            "00073"
+          ],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 6,
+          "codes": [
+            "01080"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-4",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [
+            "00932"
+          ],
+          "page": 1
+        },
+        {
+          "section": "generalElectives",
+          "ordinal": 7,
+          "codes": [
+            "00341",
+            "00830",
+            "00149",
+            "00574",
+            "00317",
+            "00632"
+          ],
+          "name": "Fəlsəfə Sosiologiya AR Konstitusiyası və hüququn əsasları Məntiq Etika və estetika Multikulturalizmə giriş",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 5,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "generalElectives",
+          "ordinal": 8,
+          "codes": [
+            "00402",
+            "00404",
+            "00758",
+            "00671"
+          ],
+          "name": "İnformasiya texnologiyaları İnformasiyanın idarə edilməsi Sahibkarlığın əsasları və biznesə giriş Politologiya",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 4,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 9,
+          "codes": [
+            "00041"
+          ],
+          "name": "Riyazi analiz-1",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 10,
+          "codes": [
+            "00107"
+          ],
+          "name": "Riyazi analiz-2",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [
+            "00041"
+          ],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 11,
+          "codes": [
+            "00476"
+          ],
+          "name": "Kompleks analiz",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 3,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 12,
+          "codes": [
+            "00002"
+          ],
+          "name": "Analitik həndəsə",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 13,
+          "codes": [
+            "00116"
+          ],
+          "name": "Xətti cəbr",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 2,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 14,
+          "codes": [
+            "00235"
+          ],
+          "name": "Diskret riyaziyyat",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 15,
+          "codes": [
+            "00231"
+          ],
+          "name": "Differensial tənliklər",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 16,
+          "codes": [
+            "00070"
+          ],
+          "name": "Ehtimal nəzəriyyəsi və riyazi statistika",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 17,
+          "codes": [
+            "00253"
+          ],
+          "name": "Ədədi üsullar",
+          "credit": 9,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 18,
+          "codes": [
+            "00652"
+          ],
+          "name": "Optimallaşdırma üsulları",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 19,
+          "codes": [
+            "00037"
+          ],
+          "name": "Proqramlaşdırmanın əsasları-1",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 20,
+          "codes": [
+            "00096"
+          ],
+          "name": "Proqramlaşdırmanın əsasları-2",
+          "credit": 8,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [
+            "00037"
+          ],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 21,
+          "codes": [
+            "00136"
+          ],
+          "name": "Alqoritmin analizi və hazırlanması üsulları",
+          "credit": 8,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 22,
+          "codes": [
+            "00677"
+          ],
+          "name": "Proqramlaşdırma texnologiyaları",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 23,
+          "codes": [
+            "00918"
+          ],
+          "name": "Verilənlər bazası",
+          "credit": 5,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 24,
+          "codes": [
+            "00030"
+          ],
+          "name": "Kompüterin arxitekturası",
+          "credit": 5,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 1,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 25,
+          "codes": [
+            "00488"
+          ],
+          "name": "Kompüter şəbəkələri",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 26,
+          "codes": [
+            "00930"
+          ],
+          "name": "Web texnologiyaları",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 27,
+          "codes": [
+            "00659"
+          ],
+          "name": "Paralel və paylanmış hesablamalar",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 28,
+          "codes": [
+            "00849"
+          ],
+          "name": "Süni intellekt",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 29,
+          "codes": [
+            "00081"
+          ],
+          "name": "Əməliyyat sistemləri",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 30,
+          "codes": [
+            "00346"
+          ],
+          "name": "Fizika",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 3,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 31,
+          "codes": [
+            "00034"
+          ],
+          "name": "Mülki müdafiə",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 32,
+          "codes": [
+            "00896",
+            "00732",
+            "00676"
+          ],
+          "name": "1.Texnologiya, cəmiyyət və mədəniyyətə giriş 2.Rəqəmsal elektronika 3.Proqramlaşdırma dilləri və kompilyatorlar",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 33,
+          "codes": [
+            "00648",
+            "00427",
+            "00492"
+          ],
+          "name": "1.Obyektyönlü sistemlərin dizaynı 2.İnsan-kompüter interfeysinin dizaynına giriş 3.Kompüter sistemlərinin prinsipləri",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 34,
+          "codes": [
+            "00188",
+            "00128",
+            "00183"
+          ],
+          "name": "1.Bioinformatikaya giriş 2.Akademik və mühəndislik etikası 3.Bilik və mühakimələrin təqdimatı",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 35,
+          "codes": [
+            "00493",
+            "00596",
+            "00770",
+            "01296"
+          ],
+          "name": "1.Kompüter təhlükəsizliyi 2.Mobil işlənilmə 3.Şəbəkənin təhlükəsizliyi 4.İnformasiya təhlükəsizliyinə giriş",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 36,
+          "codes": [
+            "00351",
+            "00868",
+            "00541"
+          ],
+          "name": "1.Genişləndirilmiş Web işlənilmə 2.Təhlükəsiz proqramlaşdırma 3.Maşın təlimi və neyron şəbəkələr",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 37,
+          "codes": [
+            "00921",
+            "00645",
+            "00486"
+          ],
+          "name": "1.Verilənlər bazası və verilənlərin genişləndirilmiş emal üsulları 2.Neyron şəbəkələrin dizaynı və vizuallaşdırılması 3.Kompüter qrafikası",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 38,
+          "codes": [
+            "00512",
+            "00153",
+            "00801"
+          ],
+          "name": "1.Kvant kompüter elmləri 2.Avtomatika, məntiq və oyunlar 3.Sistem simulyasiyası",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 39,
+          "codes": [
+            "00208",
+            "00926",
+            "00313"
+          ],
+          "name": "1.Bulud texnologiyaları 2.Virtual reallıq 3.Əşyalar interneti",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 40,
+          "codes": [
+            "00508",
+            "00280",
+            "00494"
+          ],
+          "name": "1.Kriptoqrafiya 2.E-kommersiya 3.Kompüter texnologiyasının sosial təsirləri",
+          "credit": 8,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 41,
+          "codes": [
+            "00600",
+            "00929",
+            "00752"
+          ],
+          "name": "1.Mobil və sensor sistemlər 2.Vizuallaşdırma 3.Robot texnikası",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "practice",
+          "ordinal": 42,
+          "codes": [
+            "00862"
+          ],
+          "name": "Təcrübə",
+          "credit": 30,
+          "hours": 0,
+          "weekly": 0,
+          "semester": 8,
+          "prereq": [],
+          "page": 2
+        }
+      ],
+      "name": "Kompüter elmləri",
+      "icon": "computer"
+    },
+    "informationTechnology": {
+      "specialtyCode": "6006016",
+      "file": "6006016-İnformasiya-texnologiyaları.pdf",
+      "url": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6006016-%C4%B0nformasiya-texnologiyalar%C4%B1.pdf",
+      "sha256": "00b9a33ad34b020b1b505b1af3c25b42325b09d4a2523b94e810783c143baac1",
+      "rows": [
+        {
+          "section": "general",
+          "ordinal": 1,
+          "codes": [
+            "00004"
+          ],
+          "name": "Azərbaycan dilində işgüzar və akademik kommunikasiya",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 2,
+          "codes": [
+            "00005"
+          ],
+          "name": "Azərbaycan tarixi",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 3,
+          "codes": [
+            "01222"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-1",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 4,
+          "codes": [
+            "00073"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-2",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 2,
+          "prereq": [
+            "01222"
+          ],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 5,
+          "codes": [
+            "00932"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-3",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [
+            "00073"
+          ],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 6,
+          "codes": [
+            "01080"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-4",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [
+            "00932"
+          ],
+          "page": 1
+        },
+        {
+          "section": "generalElectives",
+          "ordinal": 7,
+          "codes": [
+            "00341",
+            "00830",
+            "00149",
+            "00574",
+            "00317",
+            "00632"
+          ],
+          "name": "1.Fəlsəfə 2.Sosiologiya 3.AR Konstitusiyası və hüququn əsasları 4.Məntiq 5.Etika və estetika 6.Multikulturalizmə giriş",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 5,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "generalElectives",
+          "ordinal": 8,
+          "codes": [
+            "00402",
+            "00404",
+            "00758",
+            "00671"
+          ],
+          "name": "1.İnformasiya texnologiyaları 2.İnformasiyanın idarə edilməsi 3.Sahibkarlığın əsasları və biznesə giriş 4.Politologiya",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 4,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 9,
+          "codes": [
+            "00054"
+          ],
+          "name": "Xətti cəbr və analitik həndəsə",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 10,
+          "codes": [
+            "00105"
+          ],
+          "name": "Riyazi analiz",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 11,
+          "codes": [
+            "00230"
+          ],
+          "name": "Differensial tənliklər",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 4,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 12,
+          "codes": [
+            "00234"
+          ],
+          "name": "Diskret riyaziyyat",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 5,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 13,
+          "codes": [
+            "00072"
+          ],
+          "name": "Ehtimal nəzəriyyəsi və riyazi statistika",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 2,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 14,
+          "codes": [
+            "00010"
+          ],
+          "name": "Fizika",
+          "credit": 5,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 15,
+          "codes": [
+            "00018"
+          ],
+          "name": "İnformasiya texnologiyalarının əsasları",
+          "credit": 8,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 16,
+          "codes": [
+            "00035"
+          ],
+          "name": "Proqramlaşdırmanın əsasları",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 17,
+          "codes": [
+            "00092"
+          ],
+          "name": "Müasir proqramlaşdırma dilləri",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 18,
+          "codes": [
+            "00089"
+          ],
+          "name": "Kompüter arxitekturası",
+          "credit": 8,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 19,
+          "codes": [
+            "00924"
+          ],
+          "name": "Verilənlərin strukturu və alqoritmlər",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 20,
+          "codes": [
+            "00919"
+          ],
+          "name": "Verilənlər bazası sistemləri",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 21,
+          "codes": [
+            "00303"
+          ],
+          "name": "Əməliyyat sistemləri",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 22,
+          "codes": [
+            "00634"
+          ],
+          "name": "Multimediya texnologiyaları",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 23,
+          "codes": [
+            "00396"
+          ],
+          "name": "İnformasiya təhlükəsizliyi",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 24,
+          "codes": [
+            "00426"
+          ],
+          "name": "İnsan-kompüter interfeysi",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 25,
+          "codes": [
+            "00490"
+          ],
+          "name": "Kompüter şəbəkələri",
+          "credit": 8,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 26,
+          "codes": [
+            "00850"
+          ],
+          "name": "Süni intellekt",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 27,
+          "codes": [
+            "00914"
+          ],
+          "name": "Veb sistemləri və texnologiyaları",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 27,
+          "codes": [
+            "00461"
+          ],
+          "name": "İT layihələrin idarə edilməsi",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 29,
+          "codes": [
+            "00034"
+          ],
+          "name": "Mülki müdafiə",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 2,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 30,
+          "codes": [
+            "00457",
+            "00475",
+            "00678",
+            "01294"
+          ],
+          "name": "1.İstifadəçi interfeysinin dizaynı 2.Kompilyatorlar və interpretatorlar 3.Proqramlaşdırma və problemlərin həlli 4.Alqoritmin analizi və hazırlanması üsulları",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 31,
+          "codes": [
+            "00196",
+            "00393",
+            "00395"
+          ],
+          "name": "1.Biznes informasiya sistemləri 2.İnformasiya sistemlərinin işlənilməsi 3.İnformasiya sistemlərinin strateji idarə edilməsi",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 32,
+          "codes": [
+            "00868",
+            "00675",
+            "00647"
+          ],
+          "name": "1.Təhlükəsiz proqramlaşdırma 2.Proqram təminatının keyfiyyəti və testləşdirmə 3.Obyektyönlü proqramlaşdırma",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 33,
+          "codes": [
+            "00615",
+            "00658",
+            "00674"
+          ],
+          "name": "1.Müəssisə üçün mobil əlavələrin işlənilməsi 2.Paralel proqramlaşdırma 3.Professionallar üçün kiçik biznes",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 34,
+          "codes": [
+            "00734",
+            "00739",
+            "00737"
+          ],
+          "name": "1.Rəqəmsal iqtisadiyyat 2.Rəqəmsal kommunikasiya 3.Rəqəmsal kartoqrafiya və coğrafi informasiya sistemləri",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 35,
+          "codes": [
+            "00540",
+            "00925",
+            "00740"
+          ],
+          "name": "1.Maşın təlimi 2.Verilənlərin təhlükəsizliyi və mühafizəsi 3.Rəqəmsal kriminalistika",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 36,
+          "codes": [
+            "00199",
+            "00913",
+            "00791"
+          ],
+          "name": "1.Biznesdə hesablama tətbiqləri 2.Veb – saytların işlənilməsinə giriş 3.Simsiz şəbəkələr",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 37,
+          "codes": [
+            "00922",
+            "00208",
+            "00801",
+            "00762"
+          ],
+          "name": "1.Verilənlər elmi: prinsiplər və praktika 2.Bulud texnologiyaları 3.Sistem simulyasiyası 4.Şəbəkə mühəndisliyi",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 38,
+          "codes": [
+            "00874",
+            "00597",
+            "00945"
+          ],
+          "name": "1.Telekommunikasiya şəbəkələri və sistemlər 2.Mobil robot sistemləri 3.Yeni nəsil simsiz şəbəkələr və xidmətlər",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 39,
+          "codes": [
+            "00926",
+            "00124",
+            "00313"
+          ],
+          "name": "1.Virtual reallıq 2.3D qrafika və animasiya 3.Əşyalar interneti",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "practice",
+          "ordinal": 40,
+          "codes": [
+            "00862"
+          ],
+          "name": "Təcrübə",
+          "credit": 30,
+          "hours": 0,
+          "weekly": 0,
+          "semester": 8,
+          "prereq": [],
+          "page": 2
+        }
+      ],
+      "name": "İnformasiya texnologiyaları",
+      "icon": "computer"
+    },
+    "informationSecurity": {
+      "specialtyCode": "6006017",
+      "file": "6006017-İnformasiya-təhlükəsizliyi.pdf",
+      "url": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6006017-%C4%B0nformasiya-t%C9%99hl%C3%BCk%C9%99sizliyi.pdf",
+      "sha256": "c9a1585b1579b70ef58d0036157fc9520e1c55d841078964784b2684e05a4ecf",
+      "rows": [
+        {
+          "section": "general",
+          "ordinal": 1,
+          "codes": [
+            "00004"
+          ],
+          "name": "Azərbaycan dilində işgüzar və akademik kommunikasiya",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 2,
+          "codes": [
+            "00005"
+          ],
+          "name": "Azərbaycan tarixi",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 3,
+          "codes": [
+            "01222"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-1",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 4,
+          "codes": [
+            "00073"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-2",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 2,
+          "prereq": [
+            "01222"
+          ],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 5,
+          "codes": [
+            "00932"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-3",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [
+            "00073"
+          ],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 6,
+          "codes": [
+            "01080"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-4",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [
+            "00932"
+          ],
+          "page": 1
+        },
+        {
+          "section": "generalElectives",
+          "ordinal": 1,
+          "codes": [
+            "00980_1",
+            "00830",
+            "00982"
+          ],
+          "name": "1.Hüququn əsasları 2. Sosiologiya 3. Psixologiya",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 2,
+          "semester": 5,
+          "prereq": [],
+          "page": 1,
+          "warnings": [
+            "inconsistent-hours-in-source"
+          ]
+        },
+        {
+          "section": "generalElectives",
+          "ordinal": 2,
+          "codes": [
+            "00983",
+            "00984",
+            "00758",
+            "00986"
+          ],
+          "name": "1.Kritik düşünmə 2. Mühəndis etikası 3. Sahibkarlığın əsasları və biznesə giriş 4. Təhsil və karyera planlanması",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 2,
+          "semester": 4,
+          "prereq": [],
+          "page": 1,
+          "warnings": [
+            "inconsistent-hours-in-source"
+          ]
+        },
+        {
+          "section": "major",
+          "ordinal": 1,
+          "codes": [
+            "00104"
+          ],
+          "name": "Riyazi analiz",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 2,
+          "codes": [
+            "00987"
+          ],
+          "name": "İnformasiya təhlükəsizliyinin əsasları",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 3,
+          "codes": [
+            "00988"
+          ],
+          "name": "Proqramlaşdırmanın əsasları",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 4,
+          "codes": [
+            "00989"
+          ],
+          "name": "Xətti cəbr",
+          "credit": 6,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 2,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 5,
+          "codes": [
+            "00990"
+          ],
+          "name": "Şəbəkənin əsasları",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 6,
+          "codes": [
+            "00991"
+          ],
+          "name": "Kibertəhlükəsizliyin əsasları",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 7,
+          "codes": [
+            "00992"
+          ],
+          "name": "Diskret riyaziyyat",
+          "credit": 5,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 3,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 8,
+          "codes": [
+            "00081"
+          ],
+          "name": "Əməliyyat sistemləri",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 9,
+          "codes": [
+            "00993"
+          ],
+          "name": "Şəbəkələrin təhlükəsizliyi",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 10,
+          "codes": [
+            "00994"
+          ],
+          "name": "Web təhlükəsizlik",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 11,
+          "codes": [
+            "00995"
+          ],
+          "name": "İnformasiya təhlükəsizliyi və kibertəhlükəsizliyin hüquqi əsasları",
+          "credit": 5,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 4,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 12,
+          "codes": [
+            "00996"
+          ],
+          "name": "Ehtimal nəzəriyyəsi",
+          "credit": 5,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 13,
+          "codes": [
+            "00997"
+          ],
+          "name": "İnformasiya təhlükəsizliyinin idarəedilməsi sistemləri",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 14,
+          "codes": [
+            "00998"
+          ],
+          "name": "Verilənlər bazalarının təhlükəsizliyi",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 15,
+          "codes": [
+            "00999"
+          ],
+          "name": "Bulud təhlükəsizliyi",
+          "credit": 5,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 16,
+          "codes": [
+            "00034"
+          ],
+          "name": "Mülki müdafiə",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 1,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 17,
+          "codes": [
+            "01000"
+          ],
+          "name": "Kriptoqrafiyanın əsasları",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 18,
+          "codes": [
+            "01001"
+          ],
+          "name": "Nüfuzetmə sınaqlarının əsasları",
+          "credit": 8,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 19,
+          "codes": [
+            "01002"
+          ],
+          "name": "Elektraonika və IoT cihazların təhlükəsizliyi",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 20,
+          "codes": [
+            "01003"
+          ],
+          "name": "Təhlükəsiz proqramlaşdırma",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 21,
+          "codes": [
+            "01004"
+          ],
+          "name": "Rəqəmsal kriminalistikanın əsasları",
+          "credit": 8,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 22,
+          "codes": [
+            "01005"
+          ],
+          "name": "Sənaye idarəetmə sistemlərinin təhlükəsizliyi",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 1,
+          "codes": [
+            "01006",
+            "01007",
+            "01008"
+          ],
+          "name": "1. Alqoritmin qurulması və analizi 2. Proqram mühəndisliyi 3. C proqramlaşdırma dili",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 2,
+          "codes": [
+            "01009",
+            "01010",
+            "01011"
+          ],
+          "name": "1.Veb proqramlaşdırma 2. Sosial şəbəkə analizi 3. Sosial mühəndislik",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 3,
+          "codes": [
+            "01012",
+            "01013",
+            "01014"
+          ],
+          "name": "1. Mobil qurğular üçün proqramlaşdırma 2. Mobil qurğularda tədqiqatlar 3. Sistem proqramlaşdırılması",
+          "credit": 8,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 4,
+          "codes": [
+            "01015",
+            "00208",
+            "01016"
+          ],
+          "name": "1. Blokçeyn texnologiyaları 2. Bulud texnologiyalar 3. Rəqəmsal transformasiya",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 5,
+          "codes": [
+            "01017",
+            "01018",
+            "01019"
+          ],
+          "name": "1. Sistem dizaynı 2. Proqram təminatı üzrə layihə menecmenti 3. Paralel və paylanmış hesablamalar",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 6,
+          "codes": [
+            "01020",
+            "01021",
+            "01022"
+          ],
+          "name": "1. Tətbiqi statistika və data analitikası 2. Data-mərkəzi əməliyyatlarının əsasları 3. Data mədənçiliyi(Data mining)",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 7,
+          "codes": [
+            "01023",
+            "01024",
+            "01025",
+            "01026"
+          ],
+          "name": "1. Təhlükəsizlik avadanlıqları 2. Mobil və simsiz avadanlıqların təhlükəsizliyi 3. VoIP sistemlərinin təhlükəsizliyi 4. Korporativ şəbəkə(informasiya) sistemlərinin təhlükəsizliyi",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 8,
+          "codes": [
+            "01027",
+            "01028",
+            "01029"
+          ],
+          "name": "1.Maşın öyrənməsi 2.Süni intellekt 3.Rəqəmsal təsvir və video emalının əsasları",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 9,
+          "codes": [
+            "00751",
+            "01030",
+            "01031"
+          ],
+          "name": "1. Risklərin və insidentlərin idarə edilməsi 2. Konfidensiallıq və informasiya texnologiyaları 3. İnformasiyaın mühafizəsi üsul və vasitələri (təşkilati və hüquqi)",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 10,
+          "codes": [
+            "01032",
+            "01033",
+            "01034"
+          ],
+          "name": "1.Qraflar nəzəriyyəsi 2.Ədədi üsullar 3.Diferensial tənliklər",
+          "credit": 5,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 3,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "practice",
+          "ordinal": 1,
+          "codes": [
+            "00862"
+          ],
+          "name": "Təcrübə",
+          "credit": 30,
+          "hours": 0,
+          "weekly": 0,
+          "semester": 8,
+          "prereq": [],
+          "page": 2
+        }
+      ],
+      "name": "İnformasiya təhlükəsizliyi",
+      "icon": "security"
+    },
+    "electricalEngineering": {
+      "specialtyCode": "6006008",
+      "file": "6006008-Elektrik-və-elektronika-mühəndisliyi.pdf",
+      "url": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6006008-Elektrik-v%C9%99-elektronika-m%C3%BCh%C9%99ndisliyi.pdf",
+      "sha256": "9766da998c8481163a8da24788f66894b16b667fa9c7122b8de090c293d77298",
+      "rows": [
+        {
+          "section": "general",
+          "ordinal": 1,
+          "codes": [
+            "00004"
+          ],
+          "name": "Azərbaycan dilində işgüzar və akademik kommunikasiya",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 2,
+          "codes": [
+            "00005"
+          ],
+          "name": "Azərbaycan tarixi",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 3,
+          "codes": [
+            "01222"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-1",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 4,
+          "codes": [
+            "00073"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-2",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 2,
+          "prereq": [
+            "01222"
+          ],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 5,
+          "codes": [
+            "00932"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-3",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [
+            "00073"
+          ],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 6,
+          "codes": [
+            "00933"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-4",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [
+            "00932"
+          ],
+          "page": 1
+        },
+        {
+          "section": "generalElectives",
+          "ordinal": 7,
+          "codes": [
+            "00341",
+            "00830",
+            "00149",
+            "00574",
+            "00317",
+            "00632"
+          ],
+          "name": "1.Fəlsəfə 2.Sosiologiya 3.AR Konstitusiyası və hüququn əsasları 4.Məntiq 5.Etika və estetika 6.Multikulturalizmə giriş",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 3,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "generalElectives",
+          "ordinal": 8,
+          "codes": [
+            "00402",
+            "00404",
+            "00758",
+            "00671"
+          ],
+          "name": "1.İnformasiya texnologiyaları (ixtisas üzrə) 2.İnformasiyanın idarə edilməsi 3.Sahibkarlığın əsasları və biznesə giriş 4.Politologiya",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 5,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 9,
+          "codes": [
+            "00055"
+          ],
+          "name": "Xətti cəbr və analitik həndəsə",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 2,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 10,
+          "codes": [
+            "00040"
+          ],
+          "name": "Riyazi analiz",
+          "credit": 8,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 11,
+          "codes": [
+            "00891"
+          ],
+          "name": "Tətbiqi riyaziyyat",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 3,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 12,
+          "codes": [
+            "00015"
+          ],
+          "name": "Fizikanın əsasları",
+          "credit": 6,
+          "hours": 75,
+          "weekly": 5,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 13,
+          "codes": [
+            "00121"
+          ],
+          "name": "Tətbiqi fizika",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 14,
+          "codes": [
+            "00027"
+          ],
+          "name": "Kimya",
+          "credit": 6,
+          "hours": 75,
+          "weekly": 5,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 15,
+          "codes": [
+            "01245"
+          ],
+          "name": "Elektrik dövrələri nəzəriyyəsi-1",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 16,
+          "codes": [
+            "01246"
+          ],
+          "name": "Elektrik dövrələri nəzəriyyəsi-2",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [
+            "01245"
+          ],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 17,
+          "codes": [
+            "00093"
+          ],
+          "name": "Mühəndis mexanikası",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 18,
+          "codes": [
+            "00094"
+          ],
+          "name": "Mühəndis və kompüter qrafikası",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 19,
+          "codes": [
+            "00291"
+          ],
+          "name": "Elektrik ölçmələri və vasitələri",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 20,
+          "codes": [
+            "00289"
+          ],
+          "name": "Elektrik maşınları",
+          "credit": 6,
+          "hours": 75,
+          "weekly": 5,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 21,
+          "codes": [
+            "00144"
+          ],
+          "name": "Analoq elektronika",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 22,
+          "codes": [
+            "00292"
+          ],
+          "name": "Elektrik və elektron texnikasının materialları",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 23,
+          "codes": [
+            "00733"
+          ],
+          "name": "Rəqəmsal elektronika və proqramlaşdırılan inteqral sxemlər",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 24,
+          "codes": [
+            "00380"
+          ],
+          "name": "İdarəetmə nəzəriyyəsi",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 25,
+          "codes": [
+            "00029"
+          ],
+          "name": "Kompüter texnologiyaları və proqramlaşdırma",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 26,
+          "codes": [
+            "01247"
+          ],
+          "name": "Güc elektronikası və elektrik intiqalı",
+          "credit": 5,
+          "hours": 75,
+          "weekly": 5,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 27,
+          "codes": [
+            "00793"
+          ],
+          "name": "Siqnallar və sistemlər",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 28,
+          "codes": [
+            "00757"
+          ],
+          "name": "Sahə texnologiyasının əsasları",
+          "credit": 6,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 3,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 29,
+          "codes": [
+            "00034"
+          ],
+          "name": "Mülki müdafiə",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 30,
+          "codes": [
+            "00592",
+            "00488",
+            "00303",
+            "00496"
+          ],
+          "name": "1.Mikroprosessor texnikası 2.Kompüter şəbəkələri 3.Əməliyyat sistemləri 4.Kompüter sistemlərinin arxitekturası",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 31,
+          "codes": [
+            "00146",
+            "00288",
+            "00589"
+          ],
+          "name": "1.Antena, radiolokasiya əlaqələri 2.Elektrik enerjisinin naqilsiz ötürülmə üsulları və mənbələri 3.Mikrodalğa texnikası",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 32,
+          "codes": [
+            "01250",
+            "01248",
+            "01249"
+          ],
+          "name": "1.Nanoelektronikanın əsasları 2.Bioelektronikanın əsasları 3.Mikro- və nanoelektronikanın materialları",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 33,
+          "codes": [
+            "00296",
+            "00361",
+            "00290"
+          ],
+          "name": "1.Elektron qurğuların layihələndirilməsi 2.Güc kabelləri və kabel xətləri 3.Elektrik maşınlarının layihələndirilməsi",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 34,
+          "codes": [
+            "00942",
+            "00409",
+            "00753",
+            "00151"
+          ],
+          "name": "1.Yarımkeçirici cihazlar və modelləşmə 2.İnfraqırmızı cihazlar və sistemlər 3.Robototexnikaya giriş 4.Avtomatlaşdırılmış elektrotexniki qurğular",
+          "credit": 7,
+          "hours": 75,
+          "weekly": 5,
+          "semester": 3,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 35,
+          "codes": [
+            "00387",
+            "00785",
+            "00853"
+          ],
+          "name": "1.İfratkeçirici inteqral mikrosxemlər 2.Sensor sistemlər 3.Sxemotexnikanın əsasları",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 36,
+          "codes": [
+            "01254",
+            "01252",
+            "01251",
+            "01253"
+          ],
+          "name": "1.Sənaye elektron qurğuları 2.Elektron qurğuların və elektrik avadanlıqlarının mühafizəsi 3.Elektron qurğuların və elektrik avadanlıqlarının istismarı, diaqnostikası və təmiri 4.Güc sistemlərinin mühafizəsi",
+          "credit": 6,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 37,
+          "codes": [
+            "01255",
+            "01256",
+            "01257",
+            "01258"
+          ],
+          "name": "1.Elektrik enerjisi və çevrilmələr 2.Elektrik enerjisinin istehsalı, ötürülməsi və paylanması 3.Bərpa olunan enerji mənbələri və ondan istifadə 4.Yüksək gərginliklər texnikası",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 38,
+          "codes": [
+            "00794",
+            "00805",
+            "01259",
+            "01260"
+          ],
+          "name": "1.Siqnalların rəqəmli emalı 2.SMART sistemlər 3. Fotovoltaik materiallar və dövrələr 4. Ağıllı nəzarət sistemləri",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 39,
+          "codes": [
+            "00511",
+            "00408",
+            "00653",
+            "00651"
+          ],
+          "name": "1.Kvant elektronikası və optoelektronika 2.İnformasiyanın ötürülməsinin və emalının optoelektron vasitələri 3.Optoelektron cihazlar 4.Optik əlaqə sistemləri",
+          "credit": 6,
+          "hours": 75,
+          "weekly": 5,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "practice",
+          "ordinal": 40,
+          "codes": [
+            "00861"
+          ],
+          "name": "Təcrübə",
+          "credit": 21,
+          "hours": 0,
+          "weekly": 0,
+          "semester": 8,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "practice",
+          "ordinal": 41,
+          "codes": [
+            "00210"
+          ],
+          "name": "Buraxılış işi",
+          "credit": 9,
+          "hours": 0,
+          "weekly": 0,
+          "semester": 8,
+          "prereq": [],
+          "page": 2
+        }
+      ],
+      "name": "Elektrik və elektronika mühəndisliyi",
+      "icon": "bolt"
+    },
+    "communicationEngineering": {
+      "specialtyCode": "6006021",
+      "file": "6006021-Kommunikasiya-sistemləri-mühəndisliyi.pdf",
+      "url": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6006021-Kommunikasiya-sisteml%C9%99ri-m%C3%BCh%C9%99ndisliyi.pdf",
+      "sha256": "2755d9aa47eee3fa139c88da8ff573f6a58e77b2bc288572abddf8f8785e618f",
+      "rows": [
+        {
+          "section": "general",
+          "ordinal": 1,
+          "codes": [
+            "00004"
+          ],
+          "name": "Azərbaycan dilində işgüzar və akademik kommunikasiya",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 2,
+          "codes": [
+            "00005"
+          ],
+          "name": "Azərbaycanın tarixi",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 3,
+          "codes": [
+            "01222"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-1",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 4,
+          "codes": [
+            "00073"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-2",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 2,
+          "prereq": [
+            "01222"
+          ],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 5,
+          "codes": [
+            "00932"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-3",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [
+            "00073"
+          ],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 6,
+          "codes": [
+            "01080"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-4",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [
+            "00932"
+          ],
+          "page": 1
+        },
+        {
+          "section": "generalElectives",
+          "ordinal": 7,
+          "codes": [
+            "00341",
+            "00830",
+            "00149",
+            "00574",
+            "00317",
+            "00632"
+          ],
+          "name": "1.Fəlsəfə 2.Sosiologiya 3.AR Konstitusiyası və hüququn əsasları 4.Məntiq 5.Etika və estetika 6.Multikulturalizmə giriş",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 3,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "generalElectives",
+          "ordinal": 8,
+          "codes": [
+            "00402",
+            "00404",
+            "00758",
+            "00671"
+          ],
+          "name": "1.İnformasiya texnologiyaları 2.İnformasiyanın idarə edilməsi 3.Sahibkarlığın əsasları və biznesə giriş 4.Politologiya",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 4,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 9,
+          "codes": [
+            "00053"
+          ],
+          "name": "Xətti cəbr və analitik həndəsə",
+          "credit": 5,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 10,
+          "codes": [
+            "00104"
+          ],
+          "name": "Riyazi analiz",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 11,
+          "codes": [
+            "00622"
+          ],
+          "name": "Mühəndis riyaziyyatı",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 12,
+          "codes": [
+            "00011"
+          ],
+          "name": "Fizika",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 13,
+          "codes": [
+            "00889"
+          ],
+          "name": "Tətbiqi fizika",
+          "credit": 8,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 14,
+          "codes": [
+            "00025"
+          ],
+          "name": "Kimya",
+          "credit": 5,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 15,
+          "codes": [
+            "00033"
+          ],
+          "name": "Mühəndis və kompüter qrafikası",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 16,
+          "codes": [
+            "00019"
+          ],
+          "name": "İnformatika",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 17,
+          "codes": [
+            "00620"
+          ],
+          "name": "Mühəndis mexanikası - 1",
+          "credit": 5,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 3,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 18,
+          "codes": [
+            "00621"
+          ],
+          "name": "Mühəndis mexanikası - 2",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [
+            "00620"
+          ],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 19,
+          "codes": [
+            "00473"
+          ],
+          "name": "Kommunikasiya sistemləri materialları",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 20,
+          "codes": [
+            "00375"
+          ],
+          "name": "Hidrologiya, hidravlika və hidravlik maşınlar",
+          "credit": 9,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 21,
+          "codes": [
+            "00257"
+          ],
+          "name": "Ekologiya",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 22,
+          "codes": [
+            "00582"
+          ],
+          "name": "Metrologiya, standartlaşdırma və sertifikasiya",
+          "credit": 5,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 23,
+          "codes": [
+            "00087"
+          ],
+          "name": "Kommunikasiya sistemləri avadanlığı",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 24,
+          "codes": [
+            "00576"
+          ],
+          "name": "Məsafədən zondlama",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 25,
+          "codes": [
+            "00088"
+          ],
+          "name": "Kommunikasiya sistemlərinin arxitekturası",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 26,
+          "codes": [
+            "00140"
+          ],
+          "name": "Alternativ və bərpa olunan enerji mənbələri",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 27,
+          "codes": [
+            "00474"
+          ],
+          "name": "Kommunikasiya sistemlərinin qidalanma mənbələri",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 28,
+          "codes": [
+            "00080"
+          ],
+          "name": "Elektrotexnika və elektronikanın əsasları",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 29,
+          "codes": [
+            "00034"
+          ],
+          "name": "Mülki müdafiə",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 2,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 30,
+          "codes": [
+            "00391",
+            "00303",
+            "00352"
+          ],
+          "name": "1.İnformasiya nəzəriyyəsi və kodlaşdırma 2.Əməliyyat sistemləri 3.Genişlənmiş verilənlər bazası sistemləri",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 31,
+          "codes": [
+            "00484",
+            "00692",
+            "00192"
+          ],
+          "name": "1.Kompüter proqramlaşdırmasının əsasları 2.Java proqramlaşdırma 3.Biznes analitika, verilənlər anbarı və hesabatlılıq",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 32,
+          "codes": [
+            "00483",
+            "00768",
+            "01295"
+          ],
+          "name": "1.Kompüter kommunikasiyaları və şəbəkələri 2.Şəbəkə və protokol təhlili 3.Simsiz lokal şəbəkələr və mobil tətbiqlər",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 33,
+          "codes": [
+            "00744",
+            "00571",
+            "00738"
+          ],
+          "name": "1. Rəqəmsal sistemlərin əsasları 2.Məlumatın ötürülməsi və qəbulu üçün rəqəmsal sistemlər 3.Rəqəmsal kommunikasiya",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 34,
+          "codes": [
+            "00613",
+            "00928",
+            "00536"
+          ],
+          "name": "1.Müasir proqramlaşdırma dilləri və texnologiyaları 2.Visual Design – ın əsas elementlərinə giriş 3.Marşrutlaşdırmanın əsasları və WAN protokolları",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 35,
+          "codes": [
+            "00734",
+            "00468",
+            "00491"
+          ],
+          "name": "1. Rəqəmsal iqtisadiyyat 2.Kibertəhlükəsizlik və kriminalistika 3.Kompüter şəbəkəsinin təhlükəsizliyi",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 36,
+          "codes": [
+            "00944",
+            "00208",
+            "00762"
+          ],
+          "name": "1.Yeni nəsil simsiz şəbəkələr və xidmətlər 2.Bulud texnologiyaları 3.Şəbəkə mühəndisliyi",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 37,
+          "codes": [
+            "00792",
+            "00429",
+            "00789"
+          ],
+          "name": "1.Simsiz sistemlərin quruluş prinsipləri 2.İnternet protokolları 3.Simsiz kommunikasiya kanalları",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 38,
+          "codes": [
+            "00803",
+            "00460",
+            "00383"
+          ],
+          "name": "1.Sistemlər və şəbəkə inzibatçılığı 2.İT əməliyyatların idarə olunması 3.İdarəetmənin informasiya sistemləri",
+          "credit": 7,
+          "hours": 75,
+          "weekly": 5,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 39,
+          "codes": [
+            "00742",
+            "00665",
+            "00599"
+          ],
+          "name": "1.Rəqəmsal media 2.Peyk rabitəsi 3.Mobil tətbiqlərin işlənilməsi",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "practice",
+          "ordinal": 40,
+          "codes": [
+            "00861"
+          ],
+          "name": "Təcrübə",
+          "credit": 21,
+          "hours": 0,
+          "weekly": 0,
+          "semester": 8,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "practice",
+          "ordinal": 41,
+          "codes": [
+            "00210"
+          ],
+          "name": "Buraxılış işi",
+          "credit": 9,
+          "hours": 0,
+          "weekly": 0,
+          "semester": 8,
+          "prereq": [],
+          "page": 2
+        }
+      ],
+      "name": "Kommunikasiya sistemləri mühəndisliyi",
+      "icon": "cell_tower"
+    },
+    "computerEngineering": {
+      "specialtyCode": "6006022",
+      "file": "6006022-Kompüter-mühəndisliyi.pdf",
+      "url": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6006022-Komp%C3%BCter-m%C3%BCh%C9%99ndisliyi.pdf",
+      "sha256": "c2ffa70ea1579ee2534a3030b1f3d81ad60ff780a52e76541a02f60c3aeba127",
+      "rows": [
+        {
+          "section": "general",
+          "ordinal": 1,
+          "codes": [
+            "00004"
+          ],
+          "name": "Azərbaycan dilində işgüzar və akademik kommunikasiya",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 2,
+          "codes": [
+            "00005"
+          ],
+          "name": "Azərbaycan tarixi",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 3,
+          "codes": [
+            "01222"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-1",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 4,
+          "codes": [
+            "00073"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-2",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 2,
+          "prereq": [
+            "01222"
+          ],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 5,
+          "codes": [
+            "00932"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-3",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [
+            "00073"
+          ],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 6,
+          "codes": [
+            "01080"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-4",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [
+            "00932"
+          ],
+          "page": 1
+        },
+        {
+          "section": "generalElectives",
+          "ordinal": 1,
+          "codes": [
+            "00341",
+            "00830",
+            "00149",
+            "00632",
+            "00574",
+            "00317"
+          ],
+          "name": "1. Fəlsəfə 2. Sosiologiya 3. AR Konstitusiyası və hüququn əsasları 4. Multikulturalizma giriş 5. Məntiq 6. Etika və estetika",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 5,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "generalElectives",
+          "ordinal": 2,
+          "codes": [
+            "00671",
+            "00404",
+            "00758",
+            "00402"
+          ],
+          "name": "1. Politologiya 2. İnformasiyanın idarə edilməsi 3. Sahibkarlığın əsasları və biznesə giriş 4. İnformasiya texnologiyaları (İxtisas üzrə)",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 4,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 1,
+          "codes": [
+            "00105"
+          ],
+          "name": "Riyazi analiz",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 2,
+          "codes": [
+            "01054"
+          ],
+          "name": "Kompüter mühəndisliyinin əsasları",
+          "credit": 8,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 3,
+          "codes": [
+            "01052"
+          ],
+          "name": "Kompüter arxitekturası",
+          "credit": 8,
+          "hours": 90,
+          "weekly": 6,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 4,
+          "codes": [
+            "00054"
+          ],
+          "name": "Xətti cəbr və analitik həndəsə",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 2,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 5,
+          "codes": [
+            "01066"
+          ],
+          "name": "Proqramlaşdırmanın əsasları",
+          "credit": 8,
+          "hours": 75,
+          "weekly": 6,
+          "semester": 2,
+          "prereq": [],
+          "page": 1,
+          "warnings": [
+            "inconsistent-hours-in-source"
+          ]
+        },
+        {
+          "section": "major",
+          "ordinal": 6,
+          "codes": [
+            "00010"
+          ],
+          "name": "Fizika",
+          "credit": 5,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 2,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 7,
+          "codes": [
+            "00072"
+          ],
+          "name": "Ehtimal nəzəriyyəsi və riyazi statistika",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 3,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 8,
+          "codes": [
+            "01048"
+          ],
+          "name": "Əməliyyat sistemləri",
+          "credit": 8,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 9,
+          "codes": [
+            "01047"
+          ],
+          "name": "Elektronikanın əsasları",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 10,
+          "codes": [
+            "00230"
+          ],
+          "name": "Differensial tənliklər",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 11,
+          "codes": [
+            "01077"
+          ],
+          "name": "Verilənlərin strukturu və alqoritmlər",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 12,
+          "codes": [
+            "01046"
+          ],
+          "name": "Dövrlər nəzəriyyəsi",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 13,
+          "codes": [
+            "00919"
+          ],
+          "name": "Verilənlər bazası sistemləri",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 14,
+          "codes": [
+            "01053"
+          ],
+          "name": "Kompüter qrafikası",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 15,
+          "codes": [
+            "00234"
+          ],
+          "name": "Diskret riyaziyyat",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 16,
+          "codes": [
+            "00490"
+          ],
+          "name": "Kompüter şəbəkələri",
+          "credit": 8,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 17,
+          "codes": [
+            "00034"
+          ],
+          "name": "Mülki müdafiə",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 1,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 18,
+          "codes": [
+            "01055"
+          ],
+          "name": "Kompüter sistemlərinin təhlükəsizliyi",
+          "credit": 8,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 19,
+          "codes": [
+            "01068"
+          ],
+          "name": "Rəqəmsal sistemlər",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 20,
+          "codes": [
+            "01056"
+          ],
+          "name": "Kompüterdə modelləşdirmə",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 1,
+          "codes": [
+            "01065",
+            "01064",
+            "01143"
+          ],
+          "name": "1.Proqramlaşdırma dilləri(Java) 2.Proqramlaşdırma dilləri və kompilyatorlar 3.Proqramlaşdırma dilləri(C++)",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 2,
+          "codes": [
+            "01074",
+            "01067",
+            "01063"
+          ],
+          "name": "1.Veb proqramlaşdırma 2.Proqramlaşdırmanın texnologiyaları 3.Proqram mühəndisliyi",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 3,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 3,
+          "codes": [
+            "01059",
+            "00615",
+            "01062"
+          ],
+          "name": "1.Mobil qurğular üçün proqramlaşdırma 2.Müəssisə üçün mobil əlavələrin işlənməsi 3.Oracle PL/SQL proqramlaşdırılması",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 4,
+          "codes": [
+            "01003",
+            "01071",
+            "01069"
+          ],
+          "name": "1.Təhlükəsiz proqramlaşdırma 2.Sosial şəbəkə analizi 3.Sistem proqramlaşdırılması",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 5,
+          "codes": [
+            "00208",
+            "00739",
+            "01149"
+          ],
+          "name": "1.Bulud texnologiyaları 2.Rəqəmsal kommunikasiya 3.İT layihələrin idarə edilməsi",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 6,
+          "codes": [
+            "01020",
+            "01150",
+            "01022"
+          ],
+          "name": "1.Tətbiqi statistika və data analitikası 2.Verilənlərin intellektual analizi 3.Data mədənçiliyi(Data Mining)",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 7,
+          "codes": [
+            "01151",
+            "00648",
+            "00313"
+          ],
+          "name": "1.İnsan-kompüter interfeysi 2.Obyektyönlü sistemlərin dizaynı 3.Əşyalar interneti",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 8,
+          "codes": [
+            "01000",
+            "01152",
+            "01153"
+          ],
+          "name": "1.Kriptoqrafiyanın əsasları 2.Veb təhlükəsizlik 3.İnternetdə müdafiə alətləri",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 9,
+          "codes": [
+            "01028",
+            "01043",
+            "01027"
+          ],
+          "name": "1.Süni intellekt 2.Bilik mühəndisliyi 3.Maşın öyrənməsi",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 10,
+          "codes": [
+            "01017",
+            "01018",
+            "01019"
+          ],
+          "name": "1.Sistem dizaynı 2.Proqram təminatı üzrə layihə menecmenti 3.Paralel və paylanmış hesablamalar",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 11,
+          "codes": [
+            "00762",
+            "01155",
+            "01156"
+          ],
+          "name": "1.Şəbəkə mühəndisliyi 2.Sistemlər və şəbəkə inzibatçılığı 3.Simsiz sistemlərin quruluş prinsipləri",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "practice",
+          "ordinal": 1,
+          "codes": [
+            "00862"
+          ],
+          "name": "Təcrübə",
+          "credit": 30,
+          "hours": 0,
+          "weekly": 0,
+          "semester": 8,
+          "prereq": [],
+          "page": 2
+        }
+      ],
+      "name": "Kompüter mühəndisliyi",
+      "icon": "memory"
+    },
+    "mechanicalEngineering": {
+      "specialtyCode": "6006026",
+      "file": "6006026-Maşın-mühəndisliyi.pdf",
+      "url": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6006026-Ma%C5%9F%C4%B1n-m%C3%BCh%C9%99ndisliyi.pdf",
+      "sha256": "3a4be35c30df65998ae53126b4f9ad8d7b8aed1fbcf17c0b890e708ac13a318e",
+      "rows": [
+        {
+          "section": "general",
+          "ordinal": 1,
+          "codes": [
+            "00004"
+          ],
+          "name": "Azərbaycan dilində işgüzar və akademik kommunikasiya",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 2,
+          "codes": [
+            "00005"
+          ],
+          "name": "Azərbaycan tarixi",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 3,
+          "codes": [
+            "01222"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-1",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 4,
+          "codes": [
+            "00073"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-2",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 2,
+          "prereq": [
+            "01222"
+          ],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 5,
+          "codes": [
+            "00932"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-3",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [
+            "00073"
+          ],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 6,
+          "codes": [
+            "00933"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-4",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [
+            "00932"
+          ],
+          "page": 1
+        },
+        {
+          "section": "generalElectives",
+          "ordinal": 7,
+          "codes": [
+            "00341",
+            "00830",
+            "00149",
+            "00574",
+            "00317",
+            "00632"
+          ],
+          "name": "1.Fəlsəfə 2.Sosiologiya 3.AR Konstitusiyası və hüququn əsasları 4.Məntiq 5.Etika və estetika 6.Multikulturalizmə giriş",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 4,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "generalElectives",
+          "ordinal": 8,
+          "codes": [
+            "00402",
+            "00404",
+            "00758",
+            "00671"
+          ],
+          "name": "1.İnformasiya texnologiyaları 2.İnformasiyanın idarə edilməsi 3.Sahibkarlığın əsasları və biznesə giriş 4.Politologiya",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 5,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 9,
+          "codes": [
+            "00055"
+          ],
+          "name": "Xətti cəbr və analitik həndəsə",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 10,
+          "codes": [
+            "00040"
+          ],
+          "name": "Riyazi analiz",
+          "credit": 8,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 11,
+          "codes": [
+            "00891"
+          ],
+          "name": "Tətbiqi riyaziyyat",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 3,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 12,
+          "codes": [
+            "00009"
+          ],
+          "name": "Fizika",
+          "credit": 8,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 13,
+          "codes": [
+            "00024"
+          ],
+          "name": "Kimya",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 14,
+          "codes": [
+            "00065"
+          ],
+          "name": "İxtisasa giriş",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 15,
+          "codes": [
+            "00680"
+          ],
+          "name": "Proqramlaşdırmanın əsasları",
+          "credit": 5,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 3,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 16,
+          "codes": [
+            "00095"
+          ],
+          "name": "Nəzəri mexanika",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 17,
+          "codes": [
+            "00047"
+          ],
+          "name": "Tərsimi həndəsə və mühəndis qrafikası",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 18,
+          "codes": [
+            "00485"
+          ],
+          "name": "Kompüter qrafikası",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 19,
+          "codes": [
+            "00542"
+          ],
+          "name": "Maşın və mexanizmlər nəzəriyyəsi",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 20,
+          "codes": [
+            "00549"
+          ],
+          "name": "Materiallar müqaviməti",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 21,
+          "codes": [
+            "00560"
+          ],
+          "name": "Materialşünaslıq",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 22,
+          "codes": [
+            "00080"
+          ],
+          "name": "Elektrotexnika və elektronikanın əsasları",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 23,
+          "codes": [
+            "00086"
+          ],
+          "name": "İstilik texnikası",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 2,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 24,
+          "codes": [
+            "00581"
+          ],
+          "name": "Metrologiya, standartlaşdırma və sertifikatlaşdırma",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 25,
+          "codes": [
+            "00538"
+          ],
+          "name": "Maşın istehsalı texnologiyasının əsasları",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 26,
+          "codes": [
+            "00537"
+          ],
+          "name": "Maşın dizaynı",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 27,
+          "codes": [
+            "00619"
+          ],
+          "name": "Mühəndis iqtisadiyyatı",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 28,
+          "codes": [
+            "00543"
+          ],
+          "name": "Maşınqayırmada keyfiyyətin normalaşdırılması",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 29,
+          "codes": [
+            "00301"
+          ],
+          "name": "Emal üsulları və alətlər",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 30,
+          "codes": [
+            "01261"
+          ],
+          "name": "Avtomatlaşdırmanın əsasları",
+          "credit": 3,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 31,
+          "codes": [
+            "00370"
+          ],
+          "name": "Həyat fəaliyyətinin təhlükəsizliyi",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 32,
+          "codes": [
+            "00034"
+          ],
+          "name": "Mülki müdafiə",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 33,
+          "codes": [
+            "00879",
+            "00565",
+            "00876"
+          ],
+          "name": "1.Termodinamika mühəndisliyi 2.Maye mühəndisliyi 3.Termal mühəndisliyi",
+          "credit": 6,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 34,
+          "codes": [
+            "01262",
+            "01263",
+            "01264"
+          ],
+          "name": "1.İstilikötürmə 2.Soyutma texnikası 3.Qurutma texnikası",
+          "credit": 8,
+          "hours": 75,
+          "weekly": 5,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 35,
+          "codes": [
+            "00773",
+            "00283",
+            "00584"
+          ],
+          "name": "1.Sənaye akustikası və mexaniki vibrasiya 2.Elastiklik nəzəriyyəsi 3.Mexaniki sistemlərə nəzarət",
+          "credit": 8,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 36,
+          "codes": [
+            "00211",
+            "00497",
+            "00743",
+            "01265"
+          ],
+          "name": "1.Buxar qazanları 2.Kondensasiya texnikası 3.Rəqəmsal nəzarətli qurğular 4. Toxuma maşın və avadanlıqları",
+          "credit": 8,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 37,
+          "codes": [
+            "00585",
+            "00224",
+            "00753",
+            "00606"
+          ],
+          "name": "1.Mexatronika 2.Daxili yanma və turbo mühərrikləri 3.Robototexnikaya giriş 4.Motorlar",
+          "credit": 7,
+          "hours": 75,
+          "weekly": 5,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 38,
+          "codes": [
+            "00233",
+            "00797",
+            "00688",
+            "00835"
+          ],
+          "name": "1.Dinamika və nəzarət 2.Sistem dinamikası və simulyasiya 3.Qaz dinamikası 4.Statika",
+          "credit": 5,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 39,
+          "codes": [
+            "01266",
+            "01267",
+            "01268",
+            "01269"
+          ],
+          "name": "1.Bərpa olunan enerji mənbələri və ondan istifadə 2.Elektrik enerjisi və çevrilmələr 3.Elmi texnologiyaların əsaslarının istifadəsi 4. Boyaq-bəzək əməliyyatları və basqı maşınları",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 5,
+          "semester": 7,
+          "prereq": [],
+          "page": 2,
+          "warnings": [
+            "inconsistent-hours-in-source"
+          ]
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 40,
+          "codes": [
+            "00639",
+            "00667",
+            "00670",
+            "00656",
+            "01270"
+          ],
+          "name": "1.Nanokompozitlər 2.Plastiklik nəzəriyyəsi 3.Polimer texnologiyası 4.Ovuntu metallurgiyası 5.Pambıq ipliyi istehsalının maşın və avadanlıqları",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 41,
+          "codes": [
+            "00189",
+            "00687",
+            "00539"
+          ],
+          "name": "1.Təmir mühəndisliyi 2.Qaynaq texnikası 3.Maşın mühəndisliyinin sonlu elementlər metodu",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 42,
+          "codes": [
+            "00780",
+            "00623",
+            "00417",
+            "01271"
+          ],
+          "name": "1.Sənaye menecmenti 2.Mühəndislər üçün menecmentin əsasları 3.İnnovasiyalar, texnologiyalar və investisiyalar 4. Qida sənayesi maşın və avadanlıqları",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "practice",
+          "ordinal": 43,
+          "codes": [
+            "00861"
+          ],
+          "name": "Təcrübə",
+          "credit": 21,
+          "hours": 0,
+          "weekly": 0,
+          "semester": 8,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "practice",
+          "ordinal": 44,
+          "codes": [
+            "00210"
+          ],
+          "name": "Buraxılış işi",
+          "credit": 9,
+          "hours": 0,
+          "weekly": 0,
+          "semester": 8,
+          "prereq": [],
+          "page": 2
+        }
+      ],
+      "name": "Maşın mühəndisliyi",
+      "icon": "settings"
+    },
+    "industrialEngineering": {
+      "specialtyCode": "6006041",
+      "file": "6006041-Sənaye-mühəndisliyi.pdf",
+      "url": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6006041-S%C9%99naye-m%C3%BCh%C9%99ndisliyi.pdf",
+      "sha256": "0c053f2f43faf53d7d3b48f5ccfad5adc9192434078e26f42b11706b5ac5ec4a",
+      "rows": [
+        {
+          "section": "general",
+          "ordinal": 1,
+          "codes": [
+            "00004"
+          ],
+          "name": "Azərbaycan dilində işgüzar və akademik kommunikasiya",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 2,
+          "codes": [
+            "00005"
+          ],
+          "name": "Azərbaycan tarixi",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 3,
+          "codes": [
+            "01222"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-1",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 4,
+          "codes": [
+            "00073"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-2",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 2,
+          "prereq": [
+            "01222"
+          ],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 5,
+          "codes": [
+            "00932"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-3",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [
+            "00073"
+          ],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 6,
+          "codes": [
+            "00933"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-4",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [
+            "00932"
+          ],
+          "page": 1
+        },
+        {
+          "section": "generalElectives",
+          "ordinal": 7,
+          "codes": [
+            "00341",
+            "00830",
+            "00149",
+            "00574",
+            "00317",
+            "00632"
+          ],
+          "name": "1.Fəlsəfə 2.Sosiologiya 3.AR Konstitusiyası və hüququn əsasları 4.Məntiq 5.Etika və estetika 6.Multikulturalizmə giriş",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 7,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "generalElectives",
+          "ordinal": 8,
+          "codes": [
+            "00402",
+            "00404",
+            "00758",
+            "00671"
+          ],
+          "name": "1.İnformasiya texnologiyaları (ixtisas üzrə) 2.İnformasiyanın idarə edilməsi 3.Sahibkarlığın əsasları və biznesə giriş 4.Politologiya",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 5,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 9,
+          "codes": [
+            "00055"
+          ],
+          "name": "Xətti cəbr və analitik həndəsə",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 10,
+          "codes": [
+            "00040"
+          ],
+          "name": "Riyazi analiz",
+          "credit": 8,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 11,
+          "codes": [
+            "00891"
+          ],
+          "name": "Tətbiqi riyaziyyat",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 3,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 12,
+          "codes": [
+            "00011"
+          ],
+          "name": "Fizika",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 13,
+          "codes": [
+            "00024"
+          ],
+          "name": "Kimya",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 14,
+          "codes": [
+            "00624"
+          ],
+          "name": "Mühəndislər üçün proqramlaşdırma",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 15,
+          "codes": [
+            "00782"
+          ],
+          "name": "Sənaye təhlükəsizliyi",
+          "credit": 5,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 3,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 16,
+          "codes": [
+            "00033"
+          ],
+          "name": "Mühəndis və kompüter qrafikası",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 17,
+          "codes": [
+            "00894"
+          ],
+          "name": "Texniki mexanika",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 18,
+          "codes": [
+            "00447"
+          ],
+          "name": "İş analizi və qiymətləndirilməsi",
+          "credit": 5,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 19,
+          "codes": [
+            "00561"
+          ],
+          "name": "Materialşünaslıq",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 20,
+          "codes": [
+            "00616"
+          ],
+          "name": "Müəssisələrin layihələndirilməsi",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 21,
+          "codes": [
+            "00022"
+          ],
+          "name": "İxtisasa giriş",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 1,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 22,
+          "codes": [
+            "00465"
+          ],
+          "name": "Keyfiyyətin idarə edilməsi və nəzarət",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 23,
+          "codes": [
+            "00456"
+          ],
+          "name": "İstehsalın planlaşdırılması",
+          "credit": 5,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 24,
+          "codes": [
+            "00082"
+          ],
+          "name": "Erqonomika və texniki dizayn",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 25,
+          "codes": [
+            "00442"
+          ],
+          "name": "İqtisadiyyat",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 26,
+          "codes": [
+            "00091"
+          ],
+          "name": "Metrologiya, standartlaşdırma və sertifikatlaşdırma",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 27,
+          "codes": [
+            "00451"
+          ],
+          "name": "İstehsal proseslərinin texnoloji əsasları",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 28,
+          "codes": [
+            "01285"
+          ],
+          "name": "Sistem analizi və simulyasiya",
+          "credit": 5,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 29,
+          "codes": [
+            "00306"
+          ],
+          "name": "Əməliyyatların tədqiqi",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 30,
+          "codes": [
+            "01286"
+          ],
+          "name": "Avtomatlaşdırma texnologiyası",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 31,
+          "codes": [
+            "00034"
+          ],
+          "name": "Mülki müdafiə",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 2,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 32,
+          "codes": [
+            "00092",
+            "00392",
+            "00403",
+            "01037"
+          ],
+          "name": "1.Müasir proqramlaşdırma dilləri 2.İnformasiya sistemlərinin dizaynı və təhlili 3.İnformasiya və bilik mühəndisliyi 4.Təbii və kimyəvi liflər",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 33,
+          "codes": [
+            "00884",
+            "00557",
+            "00885",
+            "01038"
+          ],
+          "name": "1.Təşkilati dizayn 2.Materialların idarə olunması və obyeklərin planlanması 3.Təşkilati dizayn və idarəetmə 4.İpliyin texnologiyası",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 34,
+          "codes": [
+            "00531",
+            "00625",
+            "00532",
+            "00135",
+            "01039"
+          ],
+          "name": "1.Maliyyə uçotu 2.Mühəndislər üçün statistika 3.Marketinq 4.Layihələrin idarə edilməsi 5.Toxuculuq texnologiyası",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 35,
+          "codes": [
+            "01290",
+            "01292",
+            "01291",
+            "01293"
+          ],
+          "name": "1.Bərpa olunan enerji mənbələri və ondan istifadə 2.Tullantıların idarə edilməsi 3.Sənaye ekologiyası 4.Hörmə texnologiyası",
+          "credit": 5,
+          "hours": 75,
+          "weekly": 5,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 36,
+          "codes": [
+            "01289",
+            "01288",
+            "01287"
+          ],
+          "name": "1.İstehsal sistemləri 2.İstehsal proseslərinin dizaynı 3.Altı Siqma məqsədli dizayn",
+          "credit": 7,
+          "hours": 75,
+          "weekly": 5,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 37,
+          "codes": [
+            "00453",
+            "00690",
+            "00897"
+          ],
+          "name": "1.İstehsalat mühəndisliyinin əsasları 2.Qənaətcil sənaye istehsalı 3.Texnologiyaların idarə edilməsi",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 38,
+          "codes": [
+            "00255",
+            "00863",
+            "00518",
+            "00750",
+            "00553"
+          ],
+          "name": "1.Ehtiyatların idarə edilməsi 2.Tədarük zəncirinin idarə olunması 3.Logistika 4.Risklərin idarə edilməsi 5.Materialların daşınma və saxlanma sistemləri",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 39,
+          "codes": [
+            "00783",
+            "00570",
+            "00799"
+          ],
+          "name": "1.Sənayedə keyfiyyətə nəzarət 2.Məhsulun keyfiyyətinin təmin edilməsi 3.Sistem modelləşdirilməsi və simulyasiya",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 40,
+          "codes": [
+            "00628",
+            "00629",
+            "00626",
+            "01041"
+          ],
+          "name": "1.Mühəndislik psixologiyası və insan fəaliyyəti 2.Mühəndisliyin hüquqi aspekləri 3.Mühəndislik etikası 4.Geyimin texnologiyası",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 41,
+          "codes": [
+            "00481",
+            "00646",
+            "00781"
+          ],
+          "name": "1.Kompüter dəstəkli istehsal sistemləri 2.Nəzarət sistemləri 3.Sənaye robototexnikası",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "practice",
+          "ordinal": 42,
+          "codes": [
+            "00861"
+          ],
+          "name": "Təcrübə",
+          "credit": 21,
+          "hours": 0,
+          "weekly": 0,
+          "semester": 8,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "practice",
+          "ordinal": 43,
+          "codes": [
+            "00210"
+          ],
+          "name": "Buraxılış işi",
+          "credit": 9,
+          "hours": 0,
+          "weekly": 0,
+          "semester": 8,
+          "prereq": [],
+          "page": 2
+        }
+      ],
+      "name": "Sənaye mühəndisliyi",
+      "icon": "factory"
+    },
+    "ecologicalEngineering": {
+      "specialtyCode": "6006007",
+      "file": "6006007-Ekologiya-mühəndisliyi.pdf",
+      "url": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6006007-Ekologiya-m%C3%BCh%C9%99ndisliyi.pdf",
+      "sha256": "0cc99f79de1e4ccf638428914cfbc192b20d9a0db39b4b93bfabea1d6964fe17",
+      "rows": [
+        {
+          "section": "general",
+          "ordinal": 1,
+          "codes": [
+            "00004"
+          ],
+          "name": "Azərbaycan dilində işgüzar və akademik kommunikasiya",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 2,
+          "codes": [
+            "00005"
+          ],
+          "name": "Azərbaycan tarixi",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 3,
+          "codes": [
+            "01222"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-1",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 4,
+          "codes": [
+            "00073"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-2",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 2,
+          "prereq": [
+            "01222"
+          ],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 5,
+          "codes": [
+            "00932"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-3",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [
+            "00073"
+          ],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 6,
+          "codes": [
+            "00933"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-4",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [
+            "00932"
+          ],
+          "page": 1
+        },
+        {
+          "section": "generalElectives",
+          "ordinal": 7,
+          "codes": [
+            "00341",
+            "00830",
+            "00149",
+            "00574",
+            "00317",
+            "00632"
+          ],
+          "name": "1.Fəlsəfə 2.Sosiologiya 3.AR Konstitusiyası və hüququn əsasları 4.Məntiq 5.Etika və estetika 6.Multikulturalizmə giriş",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 3,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "generalElectives",
+          "ordinal": 8,
+          "codes": [
+            "00402",
+            "00404",
+            "00758",
+            "00671"
+          ],
+          "name": "1.İnformasiya texnologiyaları (ixtisas üzrə) 2.İnformasiyanın idarə edilməsi 3.Sahibkarlığın əsasları və biznesə giriş 4.Politologiya",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 7,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 9,
+          "codes": [
+            "00042"
+          ],
+          "name": "Riyaziyyat-1",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 10,
+          "codes": [
+            "00108"
+          ],
+          "name": "Riyaziyyat-2",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [
+            "00042"
+          ],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 11,
+          "codes": [
+            "00892"
+          ],
+          "name": "Tətbiqi riyaziyyat",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 12,
+          "codes": [
+            "00013"
+          ],
+          "name": "Fizikanın əsasları",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 13,
+          "codes": [
+            "00259"
+          ],
+          "name": "Ekologiya mühəndisliyi",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 14,
+          "codes": [
+            "00050"
+          ],
+          "name": "Ümumi kimya",
+          "credit": 8,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 15,
+          "codes": [
+            "00074"
+          ],
+          "name": "Analitik kimya və instrumental analiz",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 2,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 16,
+          "codes": [
+            "00334"
+          ],
+          "name": "Ətraf mühitin kimyası və toksikologiyanın əsasları",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 17,
+          "codes": [
+            "00032"
+          ],
+          "name": "Mühəndis qrafikası",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 18,
+          "codes": [
+            "00577"
+          ],
+          "name": "Məsafədən zondlanmanın fiziki əsasları",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 19,
+          "codes": [
+            "01227"
+          ],
+          "name": "Hidrologiya",
+          "credit": 6,
+          "hours": 90,
+          "weekly": 6,
+          "semester": 1,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 20,
+          "codes": [
+            "00114"
+          ],
+          "name": "Ümumi ekologiya",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 21,
+          "codes": [
+            "00326"
+          ],
+          "name": "Ətraf mühitə təsirin qiymətləndirilməsi",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 22,
+          "codes": [
+            "00274"
+          ],
+          "name": "Ekoloji sistemlərin modelləşdirilməsi",
+          "credit": 5,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 23,
+          "codes": [
+            "00270"
+          ],
+          "name": "Ekoloji monitorinq",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 24,
+          "codes": [
+            "00331"
+          ],
+          "name": "Ətraf mühitin idarə olunması (Ekoloji menecment)",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 25,
+          "codes": [
+            "00907"
+          ],
+          "name": "Tullantısız istehsal prosesləri və tullantıların təkrar emalı",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 26,
+          "codes": [
+            "01228"
+          ],
+          "name": "Su ehtiyatlarının inteqrasiyalı idarə edilməsi",
+          "credit": 6,
+          "hours": 75,
+          "weekly": 5,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 27,
+          "codes": [
+            "00435"
+          ],
+          "name": "İqlim dəyişmələri və qlobal istiləşmə",
+          "credit": 5,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 28,
+          "codes": [
+            "00899"
+          ],
+          "name": "Torpaqların meliorasiyası, rekultivasiyası və ekoloji əsasları",
+          "credit": 6,
+          "hours": 75,
+          "weekly": 5,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 29,
+          "codes": [
+            "00034"
+          ],
+          "name": "Mülki müdafiə",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 30,
+          "codes": [
+            "01231",
+            "01232",
+            "01230",
+            "01229"
+          ],
+          "name": "1.Hava çirklənməsi və nəzarət 2.Hava keyfiyyətinin idarə edilməsi 3.Radioaktiv çirklənmə 4.Atmosfer kimyası",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 31,
+          "codes": [
+            "00320",
+            "00949",
+            "00273",
+            "00566"
+          ],
+          "name": "1.Ətraf mühit elminə giriş 2.Yeraltı suların axını və çirklənməsi 3.Ekoloji qurğular 4.Mədən fəaliyyətinin ekologiyaya təsiri",
+          "credit": 6,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 32,
+          "codes": [
+            "01236",
+            "01235",
+            "01234",
+            "01233"
+          ],
+          "name": "1.Ətraf mühit biologiyası və ekologiya 2.Ekologiya mühəndisliyində bioloji proseslər 3.Ekologiya və mikrobiologiya 4.Biologiya",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 33,
+          "codes": [
+            "00186",
+            "00309",
+            "00858",
+            "00776",
+            "01237"
+          ],
+          "name": "1.Bioekologiya mühəndisliyi 2.Ətraf mühitin iqtisadiyyatı 3.Təbii Resursların İqtisadiyyatı 4.Sənaye ekologiyası 5.Sənaye çirklənməsinə nəzarət",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 3,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 34,
+          "codes": [
+            "01239",
+            "01240",
+            "01238"
+          ],
+          "name": "1.İnnovativ ekoloji layihələr 2.Su resurslarının texnologiyasi 3.Ətraf mühitin enerjisi və enerji mənbələri",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 35,
+          "codes": [
+            "00117",
+            "00265",
+            "00213",
+            "00250"
+          ],
+          "name": "1.Yer elminin əsasları 2.Ekoloji biotexnologiya 3.Canlılar və ətraf mühit 4.Dünya ekosistemləri",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 36,
+          "codes": [
+            "00277",
+            "00338",
+            "00865",
+            "01216"
+          ],
+          "name": "1.Ekoloji təhlükəsizlik 2.Ətraf mühitin mühafizəsi 3.Tədqiqat və layihə bacarıqları 4. Ətraf mühitin dayanaqlılığı",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 37,
+          "codes": [
+            "00327",
+            "00904",
+            "00336"
+          ],
+          "name": "1.Ətraf mühitin analizi üsulları 2.Tullantıların bioloji bərpası 3.Ətraf mühitin planlaşdırılması və tənzimlənməsi",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 38,
+          "codes": [
+            "00260",
+            "00495",
+            "00487",
+            "01241"
+          ],
+          "name": "1.Ekologiya mühəndisliyində kompüter tətbiqləri 2.Kompüterdə proqramlaşdırma 3.Kompüter qrafikası 4.Ekologiya mühəndisliyində informasiya texnologiyaları",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 39,
+          "codes": [
+            "01243",
+            "01242",
+            "01244"
+          ],
+          "name": "1.Ətraf mühit mühəndisliyinin ekologiyası 2.Energetika və ətraf mühit 3.Tətbiqi ekologiya",
+          "credit": 8,
+          "hours": 90,
+          "weekly": 6,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "practice",
+          "ordinal": 40,
+          "codes": [
+            "00861"
+          ],
+          "name": "Təcrübə",
+          "credit": 21,
+          "hours": 0,
+          "weekly": 0,
+          "semester": 8,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "practice",
+          "ordinal": 41,
+          "codes": [
+            "00210"
+          ],
+          "name": "Buraxılış işi",
+          "credit": 9,
+          "hours": 0,
+          "weekly": 0,
+          "semester": 8,
+          "prereq": [],
+          "page": 2
+        }
+      ],
+      "name": "Ekologiya mühəndisliyi",
+      "icon": "eco"
+    },
+    "materialsEngineering": {
+      "specialtyCode": "6006027",
+      "file": "6006027-Materiallar-mühəndisliyi.pdf",
+      "url": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6006027-Materiallar-m%C3%BCh%C9%99ndisliyi.pdf",
+      "sha256": "77b8dffe9f3df934b6d5fafad4e95d9fcbf16916b0e527f5ace569980516bef0",
+      "rows": [
+        {
+          "section": "general",
+          "ordinal": 1,
+          "codes": [
+            "00004"
+          ],
+          "name": "Azərbaycan dilində işgüzar və akademik kommunikasiya",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 2,
+          "codes": [
+            "00005"
+          ],
+          "name": "Azərbaycan tarixi",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 3,
+          "codes": [
+            "01222"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-1",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 4,
+          "codes": [
+            "00073"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-2",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 2,
+          "prereq": [
+            "01222"
+          ],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 5,
+          "codes": [
+            "00932"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-3",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [
+            "00073"
+          ],
+          "page": 1
+        },
+        {
+          "section": "general",
+          "ordinal": 6,
+          "codes": [
+            "00933"
+          ],
+          "name": "Xarici dildə işgüzar və akademik kommunikasiya-4",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [
+            "00932"
+          ],
+          "page": 1
+        },
+        {
+          "section": "generalElectives",
+          "ordinal": 7,
+          "codes": [
+            "00341",
+            "00830",
+            "00149",
+            "00574",
+            "00317",
+            "00632"
+          ],
+          "name": "1.Fəlsəfə 2.Sosiologiya 3.AR Konstitusiyası və hüququn əsasları 4.Məntiq 5.Etika və estetika 6.Multikulturalizmə giriş",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 4,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "generalElectives",
+          "ordinal": 8,
+          "codes": [
+            "00402",
+            "00404",
+            "00758",
+            "00671"
+          ],
+          "name": "1.İnformasiya texnologiyaları (ixtisas üzrə) 2.İnformasiyanın idarə edilməsi 3.Sahibkarlığın əsasları və biznesə giriş 4.Politologiya",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 5,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 9,
+          "codes": [
+            "00055"
+          ],
+          "name": "Xətti cəbr və analitik həndəsə",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 10,
+          "codes": [
+            "00040"
+          ],
+          "name": "Riyazi analiz",
+          "credit": 8,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 11,
+          "codes": [
+            "00891"
+          ],
+          "name": "Tətbiqi riyaziyyat",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 3,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 12,
+          "codes": [
+            "00049"
+          ],
+          "name": "Ümumi kimya",
+          "credit": 5,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 13,
+          "codes": [
+            "00119"
+          ],
+          "name": "Fiziki-kimya",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 2,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 14,
+          "codes": [
+            "00048"
+          ],
+          "name": "Ümumi fizika",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 15,
+          "codes": [
+            "00121"
+          ],
+          "name": "Tətbiqi fizika",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 16,
+          "codes": [
+            "00046"
+          ],
+          "name": "Tərsimi həndəsə və mühəndis qrafikası",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 1,
+          "prereq": [],
+          "page": 1
+        },
+        {
+          "section": "major",
+          "ordinal": 17,
+          "codes": [
+            "00485"
+          ],
+          "name": "Kompüter qrafikası",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 3,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 18,
+          "codes": [
+            "00562"
+          ],
+          "name": "Materialşünaslıq",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 19,
+          "codes": [
+            "00120"
+          ],
+          "name": "Mexanika",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 20,
+          "codes": [
+            "00509"
+          ],
+          "name": "Kristalloqrafiya",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 21,
+          "codes": [
+            "00550"
+          ],
+          "name": "Materiallar texnologiyası",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 22,
+          "codes": [
+            "00067"
+          ],
+          "name": "İxtisasa giriş",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 2,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 23,
+          "codes": [
+            "00559"
+          ],
+          "name": "Materialların təkrar emalı",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 24,
+          "codes": [
+            "00556"
+          ],
+          "name": "Materialların fiziki-kimyəvi tədqiqat üsulları",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 25,
+          "codes": [
+            "00555"
+          ],
+          "name": "Materialların fizikası",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 26,
+          "codes": [
+            "00679"
+          ],
+          "name": "Proqramlaşdırmanın əsasları",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 27,
+          "codes": [
+            "00939"
+          ],
+          "name": "Xüsusi kompüter proqramları əsasında yeni materialların dizaynı",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 28,
+          "codes": [
+            "00581"
+          ],
+          "name": "Metrologiya, standartlaşdırma və sertifikatlaşdırma",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 29,
+          "codes": [
+            "00544"
+          ],
+          "name": "Material istehsalı avadanlıqları",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 3,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 30,
+          "codes": [
+            "00619"
+          ],
+          "name": "Mühəndis iqtisadiyyatı",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 31,
+          "codes": [
+            "00370"
+          ],
+          "name": "Həyat fəaliyyətinin təhlükəsizliyi",
+          "credit": 4,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "major",
+          "ordinal": 32,
+          "codes": [
+            "00034"
+          ],
+          "name": "Mülki müdafiə",
+          "credit": 3,
+          "hours": 45,
+          "weekly": 3,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 33,
+          "codes": [
+            "01272",
+            "01275",
+            "01273",
+            "01274"
+          ],
+          "name": "1.Davamlı kimya metallurgiyası 2.Metalların emalı 3.Kimyəvi metallurgiya 4.Metal tullantıları və onların təkrar emalı",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 34,
+          "codes": [
+            "01276",
+            "01277",
+            "01278",
+            "01279"
+          ],
+          "name": "1.Materialların sənaye ekologiyası 2.Amorf materiallar 3.Nazik təbəqə materiallarının emalı 4.Şüşə materiallarının texnologiyası",
+          "credit": 8,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 4,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 35,
+          "codes": [
+            "00551",
+            "00163",
+            "00311",
+            "00546"
+          ],
+          "name": "1.Materiallar, sosial təsir və sosial innovasiya 2.Mühəndislər üçün davranış elmləri 3.Materiallar mühəndisliyində keyfiyyətin idarə edilməsi 4.Material texnologiyasının innovasiyası və kommersiyalaşdırılması",
+          "credit": 7,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 36,
+          "codes": [
+            "00463",
+            "00462",
+            "00347",
+            "00649"
+          ],
+          "name": "1.Keramikaya giriş 2.Keramika emalı 3.Fotonik materiallar və qurğular 4.Odadavamlı materiallar",
+          "credit": 4,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 5,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 37,
+          "codes": [
+            "00212",
+            "00545",
+            "00479",
+            "01280"
+          ],
+          "name": "1.C++ proqramlaşdırmaya giriş 2.Material mühəndisliyi ixtisası üzrə məlumat elmi və maşın öyrənmə yanaşmaları 3.Kompüter analizi və simulyasiya 4. Yüksək texnologiyalı materiallar",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 38,
+          "codes": [
+            "00295",
+            "00878",
+            "00669",
+            "00547",
+            "01281"
+          ],
+          "name": "1.Elektron materiallar mühəndisliyi 2.Termodinamika mühəndisliyi 3.Polimer mühəndisliyi 4.Material və biomaterialların nanomexanikası 5. Polimerlərin xarakteristikası və analizi",
+          "credit": 5,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 39,
+          "codes": [
+            "00668",
+            "00627",
+            "00563",
+            "00554",
+            "01282"
+          ],
+          "name": "1.Polimer fizikası 2.Mühəndislik materiallarının mexaniki xassələri 3.Maye dinamikası 4.Materialların elektrik və maqnit xassələri 5. Mineral yapışdırıcı materiallar",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 6,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 40,
+          "codes": [
+            "00293",
+            "00229",
+            "00504",
+            "00931",
+            "01283"
+          ],
+          "name": "1.Elektrik, optik və maqnit materialları və cihazları 2.Dielektrik və maqnetik materialların xüsusiyyətləri 3.Korroziya və korroziyadan qorunma 4.Xammal və mineralların emal texnologiyası 5. Əlvan metallar",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 2
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 41,
+          "codes": [
+            "00552",
+            "00605",
+            "00685",
+            "00912",
+            "01284"
+          ],
+          "name": "1.Materialların bioloji göstəriciləri 2.Molekulyar hüceyrə biologiyası 3.Qabaqcıl hüceyrə mühəndisliyi 4.Üzvi və bioloji materiallar 5. Ağac materiallarının texnologiyası",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 3
+        },
+        {
+          "section": "majorElectives",
+          "ordinal": 42,
+          "codes": [
+            "00478",
+            "00499",
+            "00588",
+            "00655"
+          ],
+          "name": "1.Kompozisiya materialların əsasları 2.Konstruksiya materialları və istehsalı 3.Mikro/nano proses texnologiyası 4.Ovuntu materiallarının əsasları",
+          "credit": 6,
+          "hours": 60,
+          "weekly": 4,
+          "semester": 7,
+          "prereq": [],
+          "page": 3
+        },
+        {
+          "section": "practice",
+          "ordinal": 43,
+          "codes": [
+            "00861"
+          ],
+          "name": "Təcrübə",
+          "credit": 21,
+          "hours": 0,
+          "weekly": 0,
+          "semester": 8,
+          "prereq": [],
+          "page": 3
+        },
+        {
+          "section": "practice",
+          "ordinal": 44,
+          "codes": [
+            "00210"
+          ],
+          "name": "Buraxılış işi",
+          "credit": 9,
+          "hours": 0,
+          "weekly": 0,
+          "semester": 8,
+          "prereq": [],
+          "page": 3
+        }
+      ],
+      "name": "Materiallar mühəndisliyi",
+      "icon": "science"
     }
   }
 }

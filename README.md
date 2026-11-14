@@ -116,7 +116,7 @@ Exam materials (PDFs) are hosted on Cloudflare R2 and are not stored in this rep
 * 🎓 Major Filter — select one or several majors to see the exam materials of their subjects
 * 📝 Practice Tests — automatically discovers all electronic-test PDFs from the material catalogue, prepares and caches questions from the most recently added PDF by default, with a PDF selector, a timer and answer review linking back to source PDFs. No separate subject/PDF list is maintained.
 * 📊 GPA Calculator
-* 📅 Curriculum Planner — 15 majors with subjects, subject codes, credits, hours, and absence limits; year filters, subject search, matching material links, and printable PDF views
+* 📅 Curriculum Planner — 25 majors with subjects, subject codes, credits, hours, and absence limits; year filters, subject search, matching material links, and printable PDF views
 * 📥 Material Request System — sign in and turn on notifications to post a request; anyone signed in can reply in a public thread under it, attaching files (PDF, Word, PowerPoint, Excel, TXT, images — no video, up to 3 files × 10 MB); the requester gets a push notification for every reply, and the other participants when the requester answers
 * 🔔 News Panel — the latest 3 posts of the Telegram channel, plus fulfilled material requests
 * 📣 Push Notifications — visitors opt in with one tap and get messages even when the site is closed; admins send them to everyone, to one language, or to one user from the admin panel
@@ -133,7 +133,7 @@ Exam materials (PDFs) are hosted on Cloudflare R2 and are not stored in this rep
 * 🌙 Responsive Interface
 * ⚡ Fast Performance
 
-Currently: **74 subject groups**, **166 catalog material entries** (**159 distinct files**), **15 majors** in the curriculum planner, and **20 Student Compass articles**.
+Currently: **74 subject groups**, **166 catalog material entries** (**159 distinct files**), **25 majors** in the curriculum planner, and **20 Student Compass articles**.
 
 ---
 

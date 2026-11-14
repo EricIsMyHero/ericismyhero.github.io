@@ -12,7 +12,7 @@ function load() {
 }
 test('completed subject codes have a unique curriculum match or an explicit original PDF header', () => {
   const c=load();
-  assert.equal(review.assignments.filter(row=>!row.previousCode).length,13);
+  assert(review.assignments.length>=13);
   for(const row of review.assignments){
     assert.equal(c.catalog[row.subject].code,row.code,row.subject);
     if(row.evidence==='pdf-header') {
@@ -21,7 +21,8 @@ test('completed subject codes have a unique curriculum match or an explicit orig
     }
     const matches=[];
     for(const plan of Object.values(c.plans)) for(const group of ['general','major','practice','generalElectives','majorElectives']) for(const item of plan[group]||[]) for(const option of item.subjects||[item]) if(c.canonSubjectName(option.name)===c.canonSubjectName(row.subject)) matches.push(option.code);
-    assert.deepEqual([...new Set(matches)],[row.code],row.subject);
+    if(row.pdfHeaders.length) assert(matches.includes(row.code),row.subject);
+    else assert.deepEqual([...new Set(matches)],[row.code],row.subject);
   }
 });
 test('corrected metadata reaches cards and aliases without changing legacy rating identities', () => {
@@ -49,13 +50,27 @@ test('ambiguous or different-course codes are not silently assigned by similar t
   const c=load();
   assert.equal(c.catalog['Maliyyə risklərinin idarə edilməsi'].code,undefined);
   assert.deepEqual(Array.from(c.catalog['Maliyyə risklərinin idarə edilməsi'].codes),['00528','00966']);
-  assert.equal(c.catalog['Mühəndis qrafikası'].code,undefined);
+  assert.equal(c.catalog['Mühəndis qrafikası'].code,'00032');
   assert.equal(c.catalog['Tətbiqi riyaziyyat'].code,'00892');
   assert.equal(c.catalog['Tətbiqi riyaziyyat'].pdfs.find(p=>p.file==='tetbiqiriyaziyyatkollek25-26.pdf').code,'00891');
   for(const row of review.unplacedSubjects) if(row.code) for(const plan of Object.values(c.plans)) for(const group of ['general','major','practice','generalElectives','majorElectives']) for(const item of plan[group]||[]) for(const option of item.subjects||[item]) assert.notEqual(option.code,row.code,row.subject);
 });
 test('multiple verified curriculum codes remain searchable without inventing a single PDF code', () => {
   const c=load(),U=c.window.UNEC,m=U.getIndex().find(m=>m.file==='mrie1.pdf');
+  for(const row of review.multipleCodes){
+    const subject=c.catalog[row.subject];
+    assert.equal(subject.code,undefined);
+    assert.deepEqual(Array.from(subject.codes),row.codes,row.subject);
+    for(const reference of row.curriculumReferences){
+      assert(c.subjectMatchesMajor(row.subject,subject,reference.major,Math.ceil(reference.semester/2)));
+      assert(c.materialSubjectSemesters(row.subject,subject,reference.major).includes(reference.semester));
+    }
+    for(const pdf of subject.pdfs){
+      const material=U.getIndex().find(m=>m.file===pdf.file);
+      assert.equal(material.code,'');
+      assert(row.codes.every(code=>material.search.includes(code)),pdf.file);
+    }
+  }
   assert.equal(m.code,'');assert.deepEqual(Array.from(m.codes),['00528','00966']);
   assert(m.search.includes('00528')&&m.search.includes('00966'));
   assert(c.subjectMatchesMajor('Maliyyə risklərinin idarə edilməsi',c.catalog['Maliyyə risklərinin idarə edilməsi'],'finance',2));

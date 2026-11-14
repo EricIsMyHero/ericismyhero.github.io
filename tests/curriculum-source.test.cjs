@@ -13,6 +13,7 @@ const load = () => {
 };
 test('every supported major has a matching Cloudflare source PDF', () => {
   const c = load();
+  Source.apply(c.plans,c.codes,imports);
   assert.deepEqual(Object.keys(manifest.files).sort(), Object.keys(c.plans).sort());
   assert.deepEqual(Object.keys(imports.plans).sort(), Object.keys(c.plans).sort());
   for (const [key, file] of Object.entries(manifest.files)) {
@@ -39,6 +40,21 @@ test('PDF imports supply 240-credit plans and matching material-filter code list
   }
   assert.equal(c.codes.marketing.practice.find(row => row.name.startsWith('Karyera')).code, '00223');
   assert.equal(c.codes.management.practice.find(row => row.name.startsWith('Karyera')).code, '01223');
+});
+test('new majors have selectable, translated plans with named elective alternatives', () => {
+  const c=load(), html=fs.readFileSync('index.html','utf8'), translations=fs.readFileSync('scripts/i18n.js','utf8');
+  Source.apply(c.plans,c.codes,imports);
+  assert.equal(Object.keys(c.plans).length,25);
+  for(const [key,definition] of Object.entries(manifest.majorDefinitions)){
+    assert.equal(c.plans[key].name,definition.name);
+    assert.equal(c.codes[key].specialtyCode,definition.code);
+    assert(html.includes('data-spec="'+key+'"'),key);
+    assert(translations.includes(definition.en),key);
+    for(const section of ['generalElectives','majorElectives'])for(const group of c.codes[key][section])for(const option of group.subjects){
+      assert(option.name.trim().length>3,option.code);
+      assert(!/^\d+\s*\./.test(option.name),option.code);
+    }
+  }
 });
 test('existing elective completion identities survive import and unrelated plans remain intact', () => {
   const c = load(), unrelated = c.plans.design;

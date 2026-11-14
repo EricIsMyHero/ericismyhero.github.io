@@ -3099,6 +3099,16 @@ function clearSavedSpecialty(){ try { localStorage.removeItem(CURR_LS_KEY); }   
 
 /* ── Render helpers ────────────────────────────────────────── */
 const CURR_SPEC_KEYS = {
+  computerScience: 'currSpecComputerScience',
+  ecologicalEngineering: 'currSpecEcologicalEngineering',
+  electricalEngineering: 'currSpecElectricalEngineering',
+  informationTechnology: 'currSpecInformationTechnology',
+  informationSecurity: 'currSpecInformationSecurity',
+  communicationEngineering: 'currSpecCommunicationEngineering',
+  computerEngineering: 'currSpecComputerEngineering',
+  mechanicalEngineering: 'currSpecMechanicalEngineering',
+  materialsEngineering: 'currSpecMaterialsEngineering',
+  industrialEngineering: 'currSpecIndustrialEngineering',
   economics: 'currSpecEconomics', finance: 'currSpecFinance', accounting: 'currSpecAccounting',
   management: 'currSpecManagement', marketing: 'currSpecMarketing', design: 'currSpecDesign',
   foodEngineering: 'currSpecFoodEng', internationalRelations: 'currSpecIntlRelations',

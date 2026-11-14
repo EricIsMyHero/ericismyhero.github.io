@@ -16,6 +16,78 @@
     "publicAdministration": "6004003-Dovlət-və-bələdiyyə-idarəetməsi.pdf",
     "businessManagement": "6004002-Biznesin-idarə-edilməsi.pdf",
     "tourism": "6008008-Turizm-isinin-təskili.pdf",
-    "socialWork": "6008006-Sosial-is.pdf"
+    "socialWork": "6008006-Sosial-is.pdf",
+    "computerScience": "6005009-Kompüter-elmləri.pdf",
+    "informationTechnology": "6006016-İnformasiya-texnologiyaları.pdf",
+    "informationSecurity": "6006017-İnformasiya-təhlükəsizliyi.pdf",
+    "ecologicalEngineering": "6006007-Ekologiya-mühəndisliyi.pdf",
+    "electricalEngineering": "6006008-Elektrik-və-elektronika-mühəndisliyi.pdf",
+    "communicationEngineering": "6006021-Kommunikasiya-sistemləri-mühəndisliyi.pdf",
+    "computerEngineering": "6006022-Kompüter-mühəndisliyi.pdf",
+    "mechanicalEngineering": "6006026-Maşın-mühəndisliyi.pdf",
+    "materialsEngineering": "6006027-Materiallar-mühəndisliyi.pdf",
+    "industrialEngineering": "6006041-Sənaye-mühəndisliyi.pdf"
+  },
+  "majorDefinitions": {
+    "computerScience": {
+      "code": "6005009",
+      "name": "Kompüter elmləri",
+      "en": "Computer Science",
+      "icon": "computer"
+    },
+    "ecologicalEngineering": {
+      "code": "6006007",
+      "name": "Ekologiya mühəndisliyi",
+      "en": "Environmental Engineering",
+      "icon": "eco"
+    },
+    "electricalEngineering": {
+      "code": "6006008",
+      "name": "Elektrik və elektronika mühəndisliyi",
+      "en": "Electrical and Electronics Engineering",
+      "icon": "bolt"
+    },
+    "informationTechnology": {
+      "code": "6006016",
+      "name": "İnformasiya texnologiyaları",
+      "en": "Information Technology",
+      "icon": "computer"
+    },
+    "informationSecurity": {
+      "code": "6006017",
+      "name": "İnformasiya təhlükəsizliyi",
+      "en": "Information Security",
+      "icon": "security"
+    },
+    "communicationEngineering": {
+      "code": "6006021",
+      "name": "Kommunikasiya sistemləri mühəndisliyi",
+      "en": "Communication Systems Engineering",
+      "icon": "cell_tower"
+    },
+    "computerEngineering": {
+      "code": "6006022",
+      "name": "Kompüter mühəndisliyi",
+      "en": "Computer Engineering",
+      "icon": "memory"
+    },
+    "mechanicalEngineering": {
+      "code": "6006026",
+      "name": "Maşın mühəndisliyi",
+      "en": "Mechanical Engineering",
+      "icon": "settings"
+    },
+    "materialsEngineering": {
+      "code": "6006027",
+      "name": "Materiallar mühəndisliyi",
+      "en": "Materials Engineering",
+      "icon": "science"
+    },
+    "industrialEngineering": {
+      "code": "6006041",
+      "name": "Sənaye mühəndisliyi",
+      "en": "Industrial Engineering",
+      "icon": "factory"
+    }
   }
 }

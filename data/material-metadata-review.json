@@ -2,26 +2,6 @@
   "date": "2026-11-14",
   "assignments": [
     {
-      "subject": "Hidrologiya",
-      "previousCode": null,
-      "code": "00374",
-      "evidence": "curriculum",
-      "files": [
-        "hidrologiya1.pdf"
-      ],
-      "curriculumReferences": [
-        {
-          "major": "ecology",
-          "semester": 7,
-          "code": "00374",
-          "name": "Hidrologiya",
-          "sourceFile": "6005004-Ekologiya-1.pdf",
-          "sourceUrl": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6005004-Ekologiya-1.pdf"
-        }
-      ],
-      "pdfHeaders": []
-    },
-    {
       "subject": "Korporativ maliyyə",
       "previousCode": null,
       "code": "00503",
@@ -158,26 +138,6 @@
       "pdfHeaders": []
     },
     {
-      "subject": "Ümumi ekologiya",
-      "previousCode": null,
-      "code": "00908",
-      "evidence": "curriculum",
-      "files": [
-        "umumiekologiya1.pdf"
-      ],
-      "curriculumReferences": [
-        {
-          "major": "ecology",
-          "semester": 4,
-          "code": "00908",
-          "name": "Ümumi ekologiya",
-          "sourceFile": "6005004-Ekologiya-1.pdf",
-          "sourceUrl": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6005004-Ekologiya-1.pdf"
-        }
-      ],
-      "pdfHeaders": []
-    },
-    {
       "subject": "Vergitutma",
       "previousCode": null,
       "code": "00917",
@@ -300,6 +260,26 @@
         }
       ],
       "pdfHeaders": []
+    },
+    {
+      "subject": "Mühəndis qrafikası",
+      "previousCode": null,
+      "code": "00032",
+      "evidence": "curriculum",
+      "files": [
+        "muhendisqrafikasi1.pdf"
+      ],
+      "curriculumReferences": [
+        {
+          "major": "ecologicalEngineering",
+          "semester": 2,
+          "code": "00032",
+          "name": "Mühəndis qrafikası",
+          "sourceFile": "6006007-Ekologiya-mühəndisliyi.pdf",
+          "sourceUrl": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6006007-Ekologiya-m%C3%BCh%C9%99ndisliyi.pdf"
+        }
+      ],
+      "pdfHeaders": []
     }
   ],
   "formatCorrections": [
@@ -318,95 +298,8 @@
       "evidence": "pdf-numbered-questions-with-marked-options"
     }
   ],
-  "unresolved": [
-    {
-      "subject": "Mühəndis qrafikası",
-      "reason": "no-exact-title-or-pdf-code",
-      "note": "The plan has Kompüter əsaslı mühəndis qrafikası (00482), but the shorter PDF title does not establish that they are the same course."
-    }
-  ],
-  "unplacedSubjects": [
-    {
-      "subject": "Alqoritmin qurulması və analizi",
-      "code": "01006",
-      "files": [
-        "alqoritminqurulmasıY25.pdf"
-      ],
-      "reason": "not-present-in-the-15-available-curricula"
-    },
-    {
-      "subject": "Analitik kimya və instrumental analiz",
-      "code": "00074",
-      "files": [
-        "akiakollek1.pdf"
-      ],
-      "reason": "not-present-in-the-15-available-curricula"
-    },
-    {
-      "subject": "Elektrotexnika və elektronikanın əsasları",
-      "code": "00080",
-      "files": [
-        "elektrotexnikaY25.pdf"
-      ],
-      "reason": "not-present-in-the-15-available-curricula"
-    },
-    {
-      "subject": "Həyat fəaliyyətinin təhlükəsizliyi",
-      "code": "00370",
-      "files": [
-        "hft25-26.pdf"
-      ],
-      "reason": "not-present-in-the-15-available-curricula"
-    },
-    {
-      "subject": "Metrologiya, standartlaşdırma və sertifikatlaşdırma",
-      "code": "00581",
-      "files": [
-        "mssQ26.pdf"
-      ],
-      "reason": "not-present-in-the-15-available-curricula"
-    },
-    {
-      "subject": "Mühəndis qrafikası",
-      "code": null,
-      "files": [
-        "muhendisqrafikasi1.pdf"
-      ],
-      "reason": "not-present-in-the-15-available-curricula"
-    },
-    {
-      "subject": "Riyaziyyat-1",
-      "code": "00042",
-      "files": [
-        "riyaziyyat1Q24.pdf"
-      ],
-      "reason": "not-present-in-the-15-available-curricula"
-    },
-    {
-      "subject": "Riyaziyyat-2",
-      "code": "00108",
-      "files": [
-        "riyaziyyat2Y25.pdf"
-      ],
-      "reason": "not-present-in-the-15-available-curricula"
-    },
-    {
-      "subject": "Tədqiqat və layihə bacarıqları",
-      "code": "00865",
-      "files": [
-        "tedqiqatvelayiheY25.pdf"
-      ],
-      "reason": "not-present-in-the-15-available-curricula"
-    },
-    {
-      "subject": "Yeraltı suların axını və çirklənməsi",
-      "code": "00949",
-      "files": [
-        "yeraltisularinaxiniY25.pdf"
-      ],
-      "reason": "not-present-in-the-15-available-curricula"
-    }
-  ],
+  "unresolved": [],
+  "unplacedSubjects": [],
   "multipleCodes": [
     {
       "subject": "Maliyyə risklərinin idarə edilməsi",
@@ -418,15 +311,74 @@
         {
           "major": "finance",
           "semester": 4,
-          "code": "00528"
+          "code": "00528",
+          "name": "Maliyyə risklərinin idarə edilməsi",
+          "sourceFile": "6004005-Maliyyə.pdf",
+          "sourceUrl": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6004005-Maliyy%C9%99.pdf"
         },
         {
           "major": "tourism",
           "semester": 5,
-          "code": "00966"
+          "code": "00966",
+          "name": "Maliyyə risklərinin idarə edilməsi",
+          "sourceFile": "6008008-Turizm-isinin-təskili.pdf",
+          "sourceUrl": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6008008-Turizm-isinin-t%C9%99skili.pdf"
         }
       ],
       "note": "Both confirmed curriculum codes are displayed; neither is asserted to be the unique code of the unlabelled PDF."
+    },
+    {
+      "subject": "Hidrologiya",
+      "codes": [
+        "00374",
+        "01227"
+      ],
+      "note": "The newly added curricula use different codes; the unlabelled PDF is not assigned a single code.",
+      "curriculumReferences": [
+        {
+          "major": "ecology",
+          "semester": 7,
+          "code": "00374",
+          "name": "Hidrologiya",
+          "sourceFile": "6005004-Ekologiya-1.pdf",
+          "sourceUrl": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6005004-Ekologiya-1.pdf"
+        },
+        {
+          "major": "ecologicalEngineering",
+          "semester": 1,
+          "code": "01227",
+          "name": "Hidrologiya",
+          "sourceFile": "6006007-Ekologiya-mühəndisliyi.pdf",
+          "sourceUrl": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6006007-Ekologiya-m%C3%BCh%C9%99ndisliyi.pdf"
+        }
+      ]
+    },
+    {
+      "subject": "Ümumi ekologiya",
+      "codes": [
+        "00908",
+        "00114"
+      ],
+      "note": "The newly added curricula use different codes; the unlabelled PDF is not assigned a single code.",
+      "curriculumReferences": [
+        {
+          "major": "ecology",
+          "semester": 4,
+          "code": "00908",
+          "name": "Ümumi ekologiya",
+          "sourceFile": "6005004-Ekologiya-1.pdf",
+          "sourceUrl": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6005004-Ekologiya-1.pdf"
+        },
+        {
+          "major": "ecologicalEngineering",
+          "semester": 2,
+          "code": "00114",
+          "name": "Ümumi ekologiya",
+          "sourceFile": "6006007-Ekologiya-mühəndisliyi.pdf",
+          "sourceUrl": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6006007-Ekologiya-m%C3%BCh%C9%99ndisliyi.pdf"
+        }
+      ]
     }
-  ]
+  ],
+  "curriculumCount": 25
 }

@@ -265,12 +265,22 @@ const TUDIFAK_SUBJECTS = [
 ];
 
 const MAJOR_I18N_KEYS = {
+  computerScience: 'currSpecComputerScience',
+  ecologicalEngineering: 'currSpecEcologicalEngineering',
+  electricalEngineering: 'currSpecElectricalEngineering',
+  informationTechnology: 'currSpecInformationTechnology',
+  informationSecurity: 'currSpecInformationSecurity',
+  communicationEngineering: 'currSpecCommunicationEngineering',
+  computerEngineering: 'currSpecComputerEngineering',
+  mechanicalEngineering: 'currSpecMechanicalEngineering',
+  materialsEngineering: 'currSpecMaterialsEngineering',
+  industrialEngineering: 'currSpecIndustrialEngineering',
   economics: 'currSpecEconomics', finance: 'currSpecFinance', accounting: 'currSpecAccounting',
   management: 'currSpecManagement', marketing: 'currSpecMarketing', design: 'currSpecDesign',
   foodEngineering: 'currSpecFoodEng', internationalRelations: 'currSpecIntlRelations',
   internationalTradeLogistics: 'currSpecIntlTrade', ecology: 'currSpecEcology',
   statistics: 'currSpecStatistics', publicAdministration: 'currSpecPublicAdmin',
-  businessManagement: 'currSpecBusinessMgmt'
+  businessManagement: 'currSpecBusinessMgmt', tourism: 'currSpecTourism', socialWork: 'currSpecSocialWork'
 };
 
 // Eyni fənnin fərqli yazılışları (pdfs.js adı → curriculum.js adı)

@@ -214,7 +214,7 @@ const data = {
       },
       Hidrologiya: {
         type: "yazili",
-        code: "00374",
+        codes: ["00374","01227"],
         pdfs: [
           { name: "Hidrologiya", file: "hidrologiya1.pdf", pdfType: "semester", addedAt: "2026-04-23T12:15:41+04:00" }
         ]
@@ -424,6 +424,7 @@ const data = {
       },
       "Mühəndis qrafikası": {
         type: "yazili",
+        code: "00032",
         pdfs: [
           { name: "Mühəndis Qrafikası", file: "muhendisqrafikasi1.pdf", pdfType: "semester", addedAt: "2026-04-23T12:15:41+04:00" }
         ]
@@ -574,7 +575,7 @@ const data = {
       },
       "Ümumi ekologiya": {
         type: "yazili",
-        code: "00908",
+        codes: ["00908","00114"],
         pdfs: [
           { name: "Ümumi Ekologiya", file: "umumiekologiya1.pdf", pdfType: "semester", addedAt: "2026-04-23T12:16:36+04:00" }
         ]

@@ -38,6 +38,7 @@
 
   // Köhnə Material Symbols adlarını yeni ikon sisteminə (sprite) çevirir; naməlum ad üçün köhnə şrift ehtiyatda qalır.
   const MI = {
+    computer: 'laptop', security: 'shield-check', cell_tower: 'globe', memory: 'grid', settings: 'settings', science: 'layers', factory: 'settings',
     school: 'graduation-cap', target: 'target', workspace_premium: 'award', military_tech: 'award', menu_book: 'book-open',
     local_fire_department: 'flame', emoji_events: 'trophy', eco: 'leaf', bolt: 'zap', description: 'file-text',
     timer: 'timer', schedule: 'clock', chat_bubble: 'message', star: 'star', psychology: 'clipboard-check',

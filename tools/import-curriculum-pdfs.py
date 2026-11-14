@@ -109,6 +109,41 @@ def parse_tables(pages):
     return rows
 
 
+def page_tables(page):
+    """Read full merged subject cells even when inner borders split their first line."""
+    tables = []
+    for table in page.find_tables():
+        normalized, covered = [], -1
+        for raw, geometry in zip(table.extract(), table.rows):
+            values = [(value, box) for value, box in zip(raw, geometry.cells) if value is not None]
+            if not values:
+                continue
+            top = min(box[1] for value, box in values)
+            if top < covered - 1:
+                continue
+            code_index = next((i for i,(value,box) in enumerate(values) if re.fullmatch(CODE+r'\*?(?:\s+'+CODE+r'\*?)*', clean(re.sub(r'(?m)^\s*\d+\.\s*(?=\d{5})','',value)))), None)
+            credit_index = next((i for i in range((code_index or 0)+1,len(values)-1) if values[i][0].isdigit() and values[i+1][0].isdigit() and 1<=int(values[i][0])<=30 and int(values[i+1][0])==int(values[i][0])*30), None)
+            if code_index is not None and credit_index is not None and len(values)-credit_index==11:
+                code, box = values[code_index]
+                name_box=(box[2],box[1],values[credit_index][1][0],box[3])
+                crop=page.crop(name_box)
+                name=crop.extract_text() or ''
+                codes=re.findall(CODE,re.sub(r'(?m)^\s*\d+\.\s*(?=\d{5})','',code))
+                if len(codes)>1 and not re.match(r'^\s*1\s*\.',name):
+                    lines=crop.extract_text_lines();groups=[]
+                    for line in lines:
+                        if not groups or line['top']-groups[-1][-1]['top']>1.6*(line['bottom']-line['top']):groups.append([])
+                        groups[-1].append(line)
+                    if len(groups)==len(set(codes)):
+                        name='\n'.join(str(i+1)+'.'+clean(' '.join(line['text'] for line in group)) for i,group in enumerate(groups))
+                normalized.append([values[0][0],code,name]+[value for value,box in values[credit_index:]])
+                covered=box[3]
+            else:
+                normalized.append(raw)
+        tables.append(normalized)
+    return tables
+
+
 def extract(path, filename, source_url=None):
     import pdfplumber  # Optional import tool dependency, not a website runtime dependency.
     content = path.read_bytes()
@@ -121,7 +156,7 @@ def extract(path, filename, source_url=None):
         code = re.search(r'\b(600\d{4})\s*[-–]', title)
         if not code or not filename.startswith(code[1] + '-'):
             raise ValueError('The filename and PDF specialty code do not match')
-        rows = parse_tables([page.extract_tables() for page in pdf.pages])
+        rows = parse_tables([page_tables(page) for page in pdf.pages])
     return {
         'specialtyCode': code[1], 'file': filename, 'url': source_url,
         'sha256': hashlib.sha256(content).hexdigest(), 'rows': rows,
@@ -130,7 +165,10 @@ def extract(path, filename, source_url=None):
 
 def major_codes():
     script = "const fs=require('fs'),vm=require('vm'),c={window:{addEventListener(){}}};vm.createContext(c);vm.runInContext(fs.readFileSync('scripts/curriculum.js','utf8')+';this.codes=CURRICULUM_CODES',c);console.log(JSON.stringify(Object.fromEntries(Object.entries(c.codes).map(([k,v])=>[v.specialtyCode,k]))));"
-    return json.loads(subprocess.check_output(['node', '-e', script], cwd=ROOT, text=True))
+    codes = json.loads(subprocess.check_output(['node', '-e', script], cwd=ROOT, text=True))
+    definitions = json.loads((ROOT / 'data/curriculum-sources.json').read_text()).get('majorDefinitions', {})
+    codes.update({value['code']: key for key, value in definitions.items()})
+    return codes
 
 
 def main():
@@ -171,6 +209,9 @@ def main():
             if not key or key in pending or (url in expected and expected[url] != key):
                 raise ValueError('Unknown or duplicate specialty')
             pending[key] = plan
+            definition = json.loads((ROOT / 'data/curriculum-sources.json').read_text()).get('majorDefinitions', {}).get(key)
+            if definition:
+                plan.update({field: definition[field] for field in ('name', 'icon')})
             print(f'{key}: {len(plan["rows"])} curriculum rows, 8 semesters, 240 credits verified')
     output = json.loads(args.output.read_text()) if args.output.exists() else {'version': 1, 'plans': {}}
     if output.get('version') != 1:
