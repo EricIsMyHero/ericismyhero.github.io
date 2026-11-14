@@ -1,6 +1,7 @@
 // Main PDFs and extra materials are edited separately, in Azerbaijani A–Z order.
 // Course placement comes from the selected major’s curriculum, not this catalogue.
 // type: "test" or "yazili". Keep addedAt when moving or renaming an entry.
+// A PDF may override its subject's type/code when a subject has multiple formats or codes.
 
 const R2_BASE = "https://pub-2179773f096a4b76a772ec1317daec99.r2.dev/";
 const BASE = R2_BASE;
@@ -21,6 +22,13 @@ const PDF_TYPES = {
 const data = {
   Materiallar: {
     subjects: {
+      "Alqoritmin qurulması və analizi": {
+        type: "test",
+        code: "01006",
+        pdfs: [
+          { name: "Alqoritmin qurulması və analizi Y25", file: "alqoritminqurulmasıY25.pdf", pdfType: "semester", addedAt: "2026-11-14T22:00:19+04:00" }
+        ]
+      },
       "Analitik kimya və instrumental analiz": {
         type: "yazili",
         pdfs: [
@@ -94,7 +102,16 @@ const data = {
           { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqt2.pdf", pdfType: "semester", addedAt: "2026-10-08T21:54:53+04:00" },
           { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqt3.pdf", pdfType: "semester", addedAt: "2026-10-08T21:54:53+04:00" },
           { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqtkollek1.pdf", pdfType: "midterm", addedAt: "2026-10-08T21:54:53+04:00" },
-          { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqtkollek2.pdf", pdfType: "midterm", addedAt: "2026-10-31T14:48:50+04:00" }
+          { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqtkollek2.pdf", pdfType: "midterm", addedAt: "2026-10-31T14:48:50+04:00" },
+          { name: "Beynəlxalq iqtisadiyyat — kollekvium 1 (test)", file: "beynelxalqiqtkollectest1.pdf", pdfType: "midterm", addedAt: "2026-11-14T22:00:19+04:00", type: "test" },
+          { name: "Beynəlxalq iqtisadiyyat — kollekvium 2 (test)", file: "beynelxalqiqtkollectest2.pdf", pdfType: "midterm", addedAt: "2026-11-14T22:00:19+04:00", type: "test" }
+        ]
+      },
+      "Beynəlxalq marketinq": {
+        type: "test",
+        code: "00173",
+        pdfs: [
+          { name: "Beynəlxalq marketinq Y25", file: "beynelxalqmarketinqY25.pdf", pdfType: "semester", addedAt: "2026-11-14T22:00:19+04:00" }
         ]
       },
       "Bilgi işlem teknolojileri": {
@@ -112,6 +129,20 @@ const data = {
           { name: "Biznes Hüququ", file: "bizneshuququkollek1.pdf", pdfType: "midterm", addedAt: "2026-11-09T18:10:41+04:00" }
         ]
       },
+      "Dövlət maliyyəsi": {
+        type: "test",
+        code: "00246",
+        pdfs: [
+          { name: "Dövlət maliyyəsi Y25", file: "dövletmaliyyeY25.pdf", pdfType: "semester", addedAt: "2026-11-14T22:00:19+04:00" }
+        ]
+      },
+      "Dünya iqtisadiyyatı": {
+        type: "test",
+        code: "01126",
+        pdfs: [
+          { name: "Dünya iqtisadiyyatı Y25", file: "dunyaiqtY25.pdf", pdfType: "semester", addedAt: "2026-11-14T22:00:19+04:00" }
+        ]
+      },
       "Ehtimal nəzəriyyəsi və riyazi statistika": {
         type: "test",
         code: "00071",
@@ -127,6 +158,13 @@ const data = {
         pdfs: [
           { name: "Ekonometrika", file: "ekonometrika1.pdf", pdfType: "semester", addedAt: "2026-10-08T15:58:46+04:00" },
           { name: "Ekonometrika", file: "ekonometrikakollek1.pdf", pdfType: "midterm", addedAt: "2026-10-08T15:58:46+04:00" }
+        ]
+      },
+      "Elektrotexnika və elektronikanın əsasları": {
+        type: "test",
+        code: "00080",
+        pdfs: [
+          { name: "Elektrotexnika və elektronikanın əsasları Y25", file: "elektrotexnikaY25.pdf", pdfType: "semester", addedAt: "2026-11-14T22:00:19+04:00" }
         ]
       },
       "Əməyin iqtisadiyyatı": {
@@ -155,7 +193,8 @@ const data = {
         type: "test",
         code: "00345",
         pdfs: [
-          { name: "Firmanın iqtisadiyyatı", file: "firmaiqtQ26.pdf", pdfType: "semester", addedAt: "2026-10-08T22:20:41+04:00" }
+          { name: "Firmanın iqtisadiyyatı", file: "firmaiqtQ26.pdf", pdfType: "semester", addedAt: "2026-10-08T22:20:41+04:00" },
+          { name: "Firmanın iqtisadiyyatı — kollekvium 1", file: "firmaiqtkollektest1.pdf", pdfType: "midterm", addedAt: "2026-11-14T22:00:19+04:00" }
         ]
       },
       "Fizikanın əsasları": {
@@ -163,6 +202,13 @@ const data = {
         code: "00014",
         pdfs: [
           { name: "Fizikanın Əsasları", file: "fizikaninesaslarikollek1.pdf", pdfType: "midterm", addedAt: "2026-04-23T12:15:41+04:00" }
+        ]
+      },
+      "Həyat fəaliyyətinin təhlükəsizliyi": {
+        type: "test",
+        code: "00370",
+        pdfs: [
+          { name: "Həyat fəaliyyətinin təhlükəsizliyi 2025–2026", file: "hft25-26.pdf", pdfType: "semester", addedAt: "2026-11-14T22:00:19+04:00" }
         ]
       },
       Hidrologiya: {
@@ -211,7 +257,8 @@ const data = {
         type: "test",
         code: "00936",
         pdfs: [
-          { name: "Xərclərin İdarə Edilməsi Y24", file: "xerclerY24.pdf", pdfType: "semester", addedAt: "2026-04-22T11:24:59+04:00" }
+          { name: "Xərclərin İdarə Edilməsi Y24", file: "xerclerY24.pdf", pdfType: "semester", addedAt: "2026-04-22T11:24:59+04:00" },
+          { name: "Xərclərin idarə edilməsi Y25", file: "xerclerY25.pdf", pdfType: "semester", addedAt: "2026-11-14T22:00:19+04:00" }
         ]
       },
       "Xətti cəbr və riyazi analiz": {
@@ -233,7 +280,8 @@ const data = {
         code: "00016",
         pdfs: [
           { name: "İKT - Baza Kompüter Bilikləri Q25", file: "iktQ25.pdf", pdfType: "semester", addedAt: "2026-04-22T11:24:59+04:00" },
-          { name: "İKT - Baza Kompüter Bilikləri Q26", file: "iktQ26.pdf", pdfType: "semester", addedAt: "2026-04-10T22:09:52+04:00" }
+          { name: "İKT - Baza Kompüter Bilikləri Q26", file: "iktQ26.pdf", pdfType: "semester", addedAt: "2026-04-10T22:09:52+04:00" },
+          { name: "İKT — kollekvium 2025–2026", file: "iktmidterm25-26.pdf", pdfType: "midterm", addedAt: "2026-11-14T22:00:19+04:00" }
         ]
       },
       "İqtisadi fikir tarixi": {
@@ -318,6 +366,7 @@ const data = {
         code: "00531",
         pdfs: [
           { name: "Maliyyə Uçotu", file: "maliyyekollek1.pdf", pdfType: "midterm", addedAt: "2026-04-30T13:52:44+04:00" },
+          { name: "Maliyyə uçotu — kollekvium 1, 2026–2027", file: "maliyyekollek26-27.pdf", pdfType: "midterm", addedAt: "2026-11-14T22:00:19+04:00" },
           { name: "Maliyyə Uçotu Q26", file: "maliyyeQ26.pdf", pdfType: "semester", addedAt: "2026-04-11T13:34:34+04:00" },
           { name: "Maliyyə Uçotu Y26", file: "maliyyeY26.pdf", pdfType: "semester", addedAt: "2026-06-27T18:54:40+04:00" }
         ]
@@ -329,6 +378,13 @@ const data = {
           { name: "Marketinq Y26", file: "marketingY26.pdf", pdfType: "semester", addedAt: "2026-06-29T22:05:53+04:00" }
         ]
       },
+      "Maye mexanikası": {
+        type: "test",
+        code: "00564",
+        pdfs: [
+          { name: "Maye mexanikası Y25", file: "mayemexanikasiY25.pdf", pdfType: "semester", addedAt: "2026-11-14T22:00:19+04:00" }
+        ]
+      },
       Menecment: {
         type: "test",
         code: "00031",
@@ -338,7 +394,15 @@ const data = {
           { name: "Menecment", file: "menecment3.pdf", pdfType: "old", addedAt: "2026-10-08T21:54:53+04:00" },
           { name: "Menecment", file: "menecment4.pdf", pdfType: "old", addedAt: "2026-10-08T21:54:53+04:00" },
           { name: "Menecment", file: "menecmentkollek1.pdf", pdfType: "old", addedAt: "2026-10-08T21:54:53+04:00" },
-          { name: "Menecment", file: "menecmentY26.pdf", pdfType: "semester", addedAt: "2026-11-13T19:30:46+04:00" }
+          { name: "Menecment", file: "menecmentY26.pdf", pdfType: "semester", addedAt: "2026-11-13T19:30:46+04:00" },
+          { name: "Menecment — kollekvium 1 (test)", file: "menecmentkollectest1.pdf", pdfType: "midterm", addedAt: "2026-11-14T22:00:19+04:00" }
+        ]
+      },
+      "Metrologiya, standartlaşdırma və sertifikatlaşdırma": {
+        type: "test",
+        code: "00581",
+        pdfs: [
+          { name: "Metrologiya, standartlaşdırma və sertifikatlaşdırma — kollekvium 1 Q26", file: "mssQ26.pdf", pdfType: "midterm", addedAt: "2026-11-14T22:00:19+04:00" }
         ]
       },
       Mikroiqtisadiyyat: {
@@ -406,6 +470,13 @@ const data = {
           { name: "Riyaziyyat-2 Y25", file: "riyaziyyat2Y25.pdf", pdfType: "semester", addedAt: "2026-04-23T12:16:36+04:00" }
         ]
       },
+      "Sahibkarlığın əsasları və biznesə giriş": {
+        type: "test",
+        code: "00758",
+        pdfs: [
+          { name: "Sahibkarlığın əsasları və biznesə giriş 2025", file: "sahibakarlıqınesaslari25.pdf", pdfType: "practice", addedAt: "2026-11-14T22:00:19+04:00" }
+        ]
+      },
       "Sosial iş təcrübəsində etik prinsiplər": {
         type: "yazili",
         pdfs: [
@@ -447,7 +518,8 @@ const data = {
         type: "test",
         code: "00823",
         pdfs: [
-          { name: "Sosial Sahibkarlıq", file: "sosialsahibkarlıgQ26.pdf", pdfType: "semester", addedAt: "2026-06-30T16:53:31+04:00" }
+          { name: "Sosial Sahibkarlıq", file: "sosialsahibkarlıgQ26.pdf", pdfType: "semester", addedAt: "2026-06-30T16:53:31+04:00" },
+          { name: "Sosial sahibkarlıq Y25", file: "sosialsahibkarliqY25.pdf", pdfType: "semester", addedAt: "2026-11-14T22:00:19+04:00" }
         ]
       },
       Statistika: {
@@ -456,13 +528,22 @@ const data = {
         pdfs: [
           { name: "Statistika", file: "statistika1.pdf", pdfType: "semester", addedAt: "2026-10-08T15:52:26+04:00" },
           { name: "Statistika", file: "statistikakollek1.pdf", pdfType: "midterm", addedAt: "2026-11-09T18:10:41+04:00" },
-          { name: "Statistika", file: "statistikamesele1.pdf", pdfType: "task", addedAt: "2026-10-08T15:52:26+04:00" }
+          { name: "Statistika", file: "statistikamesele1.pdf", pdfType: "task", addedAt: "2026-10-08T15:52:26+04:00" },
+          { name: "Statistika — Zaqatala Y26", file: "statistikazaqatalaY26.pdf", pdfType: "semester", addedAt: "2026-11-14T22:00:19+04:00", type: "test" }
+        ]
+      },
+      "Tədqiqat və layihə bacarıqları": {
+        type: "test",
+        code: "00865",
+        pdfs: [
+          { name: "Tədqiqat və layihə bacarıqları Y25", file: "tedqiqatvelayiheY25.pdf", pdfType: "semester", addedAt: "2026-11-14T22:00:19+04:00" }
         ]
       },
       "Tətbiqi riyaziyyat": {
         type: "test",
         code: "00892",
         pdfs: [
+          { name: "Tətbiqi riyaziyyat — kollekvium 2025–2026", file: "tetbiqiriyaziyyatkollek25-26.pdf", pdfType: "midterm", addedAt: "2026-11-14T22:00:19+04:00", code: "00891" },
           { name: "Tətbiqi Riyaziyyat Q25", file: "tetbiqiriyaziyyatQ25.pdf", pdfType: "semester", addedAt: "2026-11-13T19:30:46+04:00" }
         ]
       },
@@ -471,6 +552,13 @@ const data = {
         code: "00893",
         pdfs: [
           { name: "Tətbiqi Statistika", file: "tetbiqistatistika1.pdf", pdfType: "midterm", addedAt: "2026-11-14T12:50:48+04:00" }
+        ]
+      },
+      "Türk xalqlarının müasir tarixi": {
+        type: "test",
+        code: "01085",
+        pdfs: [
+          { name: "Türk xalqlarının müasir tarixi Y25", file: "txmtY25.pdf", pdfType: "semester", addedAt: "2026-11-14T22:00:19+04:00" }
         ]
       },
       "Ümumi ekologiya": {
@@ -487,10 +575,24 @@ const data = {
           { name: "Ümumi Kimya - 36-75", file: "umumikimya36-75.pdf", pdfType: "semester", addedAt: "2026-04-23T12:17:49+04:00" }
         ]
       },
+      "Üzvi kimya": {
+        type: "test",
+        code: "00115",
+        pdfs: [
+          { name: "Üzvi kimya Y25", file: "uzvikimyaY25.pdf", pdfType: "semester", addedAt: "2026-11-14T22:00:19+04:00" }
+        ]
+      },
       Vergitutma: {
         type: "yazili",
         pdfs: [
           { name: "Vergitutma", file: "vergitutma1.pdf", pdfType: "semester", addedAt: "2026-06-30T16:53:31+04:00" }
+        ]
+      },
+      "Yeraltı suların axını və çirklənməsi": {
+        type: "test",
+        code: "00949",
+        pdfs: [
+          { name: "Yeraltı suların axını və çirklənməsi Y25", file: "yeraltisularinaxiniY25.pdf", pdfType: "semester", addedAt: "2026-11-14T22:00:19+04:00" }
         ]
       },
       "Yönetim ve organizasyon": {
@@ -511,7 +613,6 @@ const data = {
   }
 };
 
-// Extra materials (A–Z), independent of courses.
 const extrasData = {
   Materiallar: [
     { name: "Azərbaycan dilində işgüzar və akademik kommunikasiya - Test", file: "adiaktest1.pdf", desc: "ADİAK fənninə aid test", pdfType: "optional", addedAt: "2026-04-22T11:25:29+04:00" },

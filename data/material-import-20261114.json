@@ -1,0 +1,236 @@
+{
+  "addedAt": "2026-11-14T22:00:19+04:00",
+  "base": "https://pub-2179773f096a4b76a772ec1317daec99.r2.dev/pdf/",
+  "materials": [
+    {
+      "file": "beynelxalqiqtkollectest1.pdf",
+      "subject": "Beynəlxalq iqtisadiyyat",
+      "code": "00171",
+      "codeSource": "subject-title",
+      "type": "test",
+      "pdfType": "midterm",
+      "sha256": "b2faf773b3174e706287af097540bdce67a3f2f51caebdb51b81d50631686ee8",
+      "size": 443293
+    },
+    {
+      "file": "beynelxalqiqtkollectest2.pdf",
+      "subject": "Beynəlxalq iqtisadiyyat",
+      "code": "00171",
+      "codeSource": "subject-title",
+      "type": "test",
+      "pdfType": "midterm",
+      "sha256": "b58f27e616aebabf8995b657d6e9aaa0285d16f104f85113e3af391643cdca71",
+      "size": 477984
+    },
+    {
+      "file": "beynelxalqmarketinqY25.pdf",
+      "subject": "Beynəlxalq marketinq",
+      "code": "00173",
+      "codeSource": "pdf-code",
+      "type": "test",
+      "pdfType": "semester",
+      "sha256": "0a72d031f5b4dceadfa4a69f1d18c2944813142272fa63b79f6605979054de29",
+      "size": 1586228
+    },
+    {
+      "file": "dunyaiqtY25.pdf",
+      "subject": "Dünya iqtisadiyyatı",
+      "code": "01126",
+      "codeSource": "pdf-code",
+      "type": "test",
+      "pdfType": "semester",
+      "sha256": "f652809a7546a625697723fe6c7d3ac5e918480704bdfdb0d170773db23e5c53",
+      "size": 1103590
+    },
+    {
+      "file": "elektrotexnikaY25.pdf",
+      "subject": "Elektrotexnika və elektronikanın əsasları",
+      "code": "00080",
+      "codeSource": "pdf-code",
+      "type": "test",
+      "pdfType": "semester",
+      "sha256": "7fcd971703f168a6ac131831f7f0b1856893696fa5875ad73fb1f36161288404",
+      "size": 7304321
+    },
+    {
+      "file": "iktmidterm25-26.pdf",
+      "subject": "İKT - Baza kompüter bilikləri",
+      "code": "00016",
+      "codeSource": "subject-title",
+      "type": "test",
+      "pdfType": "midterm",
+      "sha256": "dbb42ef9b58dd2dbda2fe2ef3aed3e033a325fa992fc9f5466bab4d9e763035c",
+      "size": 805129
+    },
+    {
+      "file": "maliyyekollek26-27.pdf",
+      "subject": "Maliyyə uçotu",
+      "code": "00531",
+      "codeSource": "pdf-code",
+      "type": "test",
+      "pdfType": "midterm",
+      "sha256": "35eebd206104d6d1095bb59acf9ede0616d43a181f60a7b9ab0096149f3f2209",
+      "size": 804976
+    },
+    {
+      "file": "mayemexanikasiY25.pdf",
+      "subject": "Maye mexanikası",
+      "code": "00564",
+      "codeSource": "pdf-code",
+      "type": "test",
+      "pdfType": "semester",
+      "sha256": "5c43ecee2bd969062c1491f8b316ac9fcff1cb3a694ab96d570be539ab53529a",
+      "size": 7983161
+    },
+    {
+      "file": "menecmentkollectest1.pdf",
+      "subject": "Menecment",
+      "code": "00031",
+      "codeSource": "subject-title",
+      "type": "test",
+      "pdfType": "midterm",
+      "sha256": "d7110ca5f3881de72d5a4c8e474a3384df936ebc3f30eb0826805b55402acd28",
+      "size": 1406405
+    },
+    {
+      "file": "mssQ26.pdf",
+      "subject": "Metrologiya, standartlaşdırma və sertifikatlaşdırma",
+      "code": "00581",
+      "codeSource": "pdf-code",
+      "type": "test",
+      "pdfType": "midterm",
+      "sha256": "29d28c03e759abd1c30db66795065d9ba3486a96e61807a8fc4caf9b2ef8bbd5",
+      "size": 449354
+    },
+    {
+      "file": "alqoritminqurulmasıY25.pdf",
+      "subject": "Alqoritmin qurulması və analizi",
+      "code": "01006",
+      "codeSource": "pdf-code",
+      "type": "test",
+      "pdfType": "semester",
+      "sha256": "d2445b7496a0907a90cece3ece05926fbcc9c0c72ce6d5914a2ce3d956093a10",
+      "size": 940946
+    },
+    {
+      "file": "dövletmaliyyeY25.pdf",
+      "subject": "Dövlət maliyyəsi",
+      "code": "00246",
+      "codeSource": "curriculum-title",
+      "type": "test",
+      "pdfType": "semester",
+      "sha256": "a50952508e346d75da16bdc4d35c7eb54185b6d7d60a1833b93e8cd4cbd08571",
+      "size": 664959
+    },
+    {
+      "file": "firmaiqtkollektest1.pdf",
+      "subject": "Firmanın iqtisadiyyatı",
+      "code": "00345",
+      "codeSource": "subject-title",
+      "type": "test",
+      "pdfType": "midterm",
+      "sha256": "8c019f22664eba6cec69ed96d16fc018e54419ca7e48722cf7e927985cec9fb3",
+      "size": 129007
+    },
+    {
+      "file": "hft25-26.pdf",
+      "subject": "Həyat fəaliyyətinin təhlükəsizliyi",
+      "code": "00370",
+      "codeSource": "pdf-code",
+      "type": "test",
+      "pdfType": "semester",
+      "sha256": "2bac25ee6c5f9afb690c7d198bbd32d368f3957618a5540ba9abc488251bee2b",
+      "size": 446727
+    },
+    {
+      "file": "sahibakarlıqınesaslari25.pdf",
+      "subject": "Sahibkarlığın əsasları və biznesə giriş",
+      "code": "00758",
+      "codeSource": "user-confirmed",
+      "type": "test",
+      "pdfType": "practice",
+      "sha256": "0028ac776f5e444f9e819431198d029eae5300473d87879844a52c25fd82ccf4",
+      "size": 123680
+    },
+    {
+      "file": "sosialsahibkarliqY25.pdf",
+      "subject": "Sosial sahibkarlıq",
+      "code": "00823",
+      "codeSource": "pdf-code",
+      "type": "test",
+      "pdfType": "semester",
+      "sha256": "991f8dc26ee1881a4f528c00b4e1d294a20dfbc9e6d6af7286f83617365d3e92",
+      "size": 1465946
+    },
+    {
+      "file": "statistikazaqatalaY26.pdf",
+      "subject": "Statistika",
+      "code": "00837",
+      "codeSource": "pdf-code",
+      "type": "test",
+      "pdfType": "semester",
+      "sha256": "7d30b32b55f517e16d757a4249fcd01cab51ec3423b7a48d1bf4487b98f3c3e7",
+      "size": 1191238
+    },
+    {
+      "file": "tedqiqatvelayiheY25.pdf",
+      "subject": "Tədqiqat və layihə bacarıqları",
+      "code": "00865",
+      "codeSource": "pdf-code",
+      "type": "test",
+      "pdfType": "semester",
+      "sha256": "2afed338dea74d71fe8b93c054f1deacf06de491ff58b6751918b5271fe6c558",
+      "size": 1569251
+    },
+    {
+      "file": "tetbiqiriyaziyyatkollek25-26.pdf",
+      "subject": "Tətbiqi riyaziyyat",
+      "code": "00891",
+      "codeSource": "pdf-code",
+      "type": "test",
+      "pdfType": "midterm",
+      "sha256": "80ae15d13be2a97a1aabb625326ff02463e60037911b30f80287a6d5adba5669",
+      "size": 2742868
+    },
+    {
+      "file": "txmtY25.pdf",
+      "subject": "Türk xalqlarının müasir tarixi",
+      "code": "01085",
+      "codeSource": "pdf-code",
+      "type": "test",
+      "pdfType": "semester",
+      "sha256": "ada9e0666659549707bbc360029a9685ff71654b5c19cbb5fbc80b70090da5b9",
+      "size": 1444134
+    },
+    {
+      "file": "uzvikimyaY25.pdf",
+      "subject": "Üzvi kimya",
+      "code": "00115",
+      "codeSource": "pdf-code",
+      "type": "test",
+      "pdfType": "semester",
+      "sha256": "2b6616971a65b84299e68a2f2cb2e7d19d622424582f02859f8d6fd9aba4c01a",
+      "size": 6856174
+    },
+    {
+      "file": "xerclerY25.pdf",
+      "subject": "Xərclərin idarə edilməsi",
+      "code": "00936",
+      "codeSource": "pdf-code",
+      "type": "test",
+      "pdfType": "semester",
+      "sha256": "854c7e3f7d6a349d4f9e95f0a3d11b4618d4599a19a2114366749e6406615969",
+      "size": 1556590
+    },
+    {
+      "file": "yeraltisularinaxiniY25.pdf",
+      "subject": "Yeraltı suların axını və çirklənməsi",
+      "code": "00949",
+      "codeSource": "pdf-code",
+      "type": "test",
+      "pdfType": "semester",
+      "sha256": "d84245b2d0c8271d5e0eda1072cc3d39018317337bb703b3b2b914ab2b1449e6",
+      "size": 1568544
+    }
+  ]
+}

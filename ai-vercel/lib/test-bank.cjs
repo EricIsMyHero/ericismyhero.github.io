@@ -2,7 +2,7 @@
 // Pure catalogue, question parsing and merge rules, shared by the browser and tests.
 (function (root) {
   'use strict';
-  const VERSION = '20261113-2';
+  const VERSION = '20261114-3';
   const IMAGE = '[UNEC_PDF_IMAGE]';
   const clean = s => String(s || '').normalize('NFC').replace(/\u00ad/g, '').replace(/\s+/g, ' ').trim();
   const CHECK = /^[✓✔√☑]/u;
@@ -13,8 +13,8 @@
     const subjects = new Map();
     for (const [course, entry] of Object.entries(data || {})) {
       for (const [subject, value] of Object.entries(entry.subjects || {})) {
-        if (value.type !== 'test') continue;
         for (const pdf of value.pdfs || []) {
+          if ((pdf.type || value.type) !== 'test') continue;
           if (!pdf.file || !/\.pdf$/i.test(pdf.file) || /[\\/]/.test(pdf.file)) continue;
           if (!subjects.has(subject)) subjects.set(subject, new Map());
           const files = subjects.get(subject), url = base + 'pdf/' + encodeURIComponent(pdf.file);

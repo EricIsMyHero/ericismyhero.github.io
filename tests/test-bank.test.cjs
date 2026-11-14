@@ -30,6 +30,14 @@ test('UNEC bullet/check format preserves the marked answer and question numbers'
   assert.equal(result.questions[0].options[result.questions[0].answer], 'print(x)');
   assert.equal(result.questions[1].number, 2);
 });
+test('mixed subjects select practice PDFs by each file’s format override', () => {
+  const catalog = B.catalog({ All: { subjects: {
+    MixedWritten: { type: 'yazili', pdfs: [{ file: 'written.pdf' }, { file: 'closed.pdf', type: 'test' }] },
+    MixedClosed: { type: 'test', pdfs: [{ file: 'test.pdf' }, { file: 'notes.pdf', type: 'yazili' }] }
+  } } }, 'https://example.invalid/');
+  assert.deepEqual(catalog.MixedWritten.map(p=>p.file), ['closed.pdf']);
+  assert.deepEqual(catalog.MixedClosed.map(p=>p.file), ['test.pdf']);
+});
 test('page boundaries, repeated headers, detached markers and multiline options do not change answers', () => {
   const text = `1. Hansı izah doğrudur?\n•\nYanlış izah\n√\nDüzgün izahın\n\f\n00001_Az_Q26_Əyani_Yekun imtahan testinin sualları\ndavamı\n•\nDigər izah\n2. İkinci səhifənin sualı?\n√ Birinci\n• İkinci`;
   const result = B.parse(text);
@@ -70,7 +78,7 @@ test('the live catalogue exposes all electronic-test PDFs without a separate sub
   vm.runInContext(fs.readFileSync('pdfs.js', 'utf8') + ';this.catalog=UNECTestBank.catalog(data,BASE)', Object.assign(context, { UNECTestBank: B }));
   vm.runInContext('this.sourceData=data', context);
   for (const course of Object.values(context.sourceData)) for (const [name, subject] of Object.entries(course.subjects)) {
-    if (subject.type === 'test') for (const pdf of subject.pdfs) assert.ok(context.catalog[name].some(p => p.file === pdf.file), name + ': ' + pdf.file);
+    for (const pdf of subject.pdfs) if ((pdf.type || subject.type) === 'test') assert.ok(context.catalog[name].some(p => p.file === pdf.file), name + ': ' + pdf.file);
   }
   assert.ok(Object.keys(context.catalog).length > 0);
 });

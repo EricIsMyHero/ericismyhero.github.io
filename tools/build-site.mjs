@@ -25,8 +25,8 @@ for (const [key, source] of Object.entries(curriculumImports.plans)) {
 outputs.set('ai-vercel/lib/test-bank.cjs', '// Generated from scripts/test-bank.js by tools/build-site.mjs.\n' + read('scripts/test-bank.js'));
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 for (const [course, d] of Object.entries(data)) for (const [subject, s] of Object.entries(d.subjects)) for (const p of s.pdfs) {
-  if(s.type==='test')closed.add(BASE+'pdf/'+encodeURIComponent(p.file));
-  if (s.type === 'yazili' && !written.has(p.file)) written.set(p.file, { id: p.file, file: p.file, name: p.name, subject, addedAt: p.addedAt, url: BASE + 'pdf/' + encodeURIComponent(p.file) });
+  if((p.type||s.type)==='test')closed.add(BASE+'pdf/'+encodeURIComponent(p.file));
+  if ((p.type || s.type) === 'yazili' && !written.has(p.file)) written.set(p.file, { id: p.file, file: p.file, name: p.name, subject, addedAt: p.addedAt, url: BASE + 'pdf/' + encodeURIComponent(p.file) });
   entries.set('pdf/' + p.file, entries.get('pdf/' + p.file) || { ...p, course, subject, code: p.code || s.code, kind: 'pdf', url: BASE + 'pdf/' + p.file });
 }
 for (const [course, list] of Object.entries(extrasData)) for (const p of list) entries.set('pdf-extra/' + p.file, { ...p, course, kind: 'extra', subject: 'Əlavə material', url: EXTRAS_BASE + p.file });

@@ -133,7 +133,7 @@ Exam materials (PDFs) are hosted on Cloudflare R2 and are not stored in this rep
 * 🌙 Responsive Interface
 * ⚡ Fast Performance
 
-Currently: **60 subject groups**, **142 catalog material entries** (**132 distinct files**), **15 majors** in the curriculum planner, and **20 Student Compass articles**.
+Currently: **74 subject groups**, **166 catalog material entries** (**159 distinct files**), **15 majors** in the curriculum planner, and **20 Student Compass articles**.
 
 ---
 
@@ -418,9 +418,9 @@ Push subscription metadata now includes Firebase project/app IDs so a project mi
 
 ### Automatic practice-test import
 
-`pdfs.js` is the only catalogue: every PDF belonging to a subject with `type: "test"` is discovered automatically. Written subjects and extra materials are excluded. Add a material normally; no test-specific list or admin import is required. Students still choose the subject and question count. The most recently uploaded PDF (catalogue `addedAt`, rather than the year in its title) is selected by default. Students can choose a different PDF from the question-source selector. Only the selected PDF is fetched, with at most two downloads/extractions in flight across the app, so opening Tests does not download the entire library.
+`pdfs.js` is the only catalogue: every PDF with effective `type: "test"` is discovered automatically. A PDF's optional `type` overrides the subject default, so closed and written materials can share one subject. Written PDFs and extra materials are excluded. Add a material normally; no test-specific list or admin import is required. Students still choose the subject and question count. The most recently uploaded PDF (catalogue `addedAt`, rather than the year in its title) is selected by default. Students can choose a different PDF from the question-source selector. Only the selected PDF is fetched, with at most two downloads/extractions in flight across the app, so opening Tests does not download the entire library.
 
-`scripts/test-bank.js` parses numbered questions, multiline bullet/check and lettered options, detached answer marks and explicit letter answer keys. A scored question must have readable text, distinct options and exactly one marked answer; the importer never assumes that option A is correct. Exact duplicates within the selected PDF are merged and retain their sources. Conflicting answer keys within that PDF are excluded; questions from different selected PDFs are never mixed. Image-based formulas/diagrams, scans without readable text and unmarked materials require additional preparation and are not guessed or sent to an AI/OCR service. The source list distinguishes failed downloads from files with no eligible questions.
+`scripts/test-bank.js` parses numbered questions, multiline bullet/check and lettered options, detached answer marks and explicit letter answer keys. `scripts/pdf-loader.js` also reads vector radio controls from exported PDFs, using the actual selected dot and preserving numeric answer text. A scored question must have readable text, distinct options and exactly one marked answer; the importer never assumes that option A is correct. Exact duplicates within the selected PDF are merged and retain their sources. Conflicting answer keys within that PDF are excluded; questions from different selected PDFs are never mixed. Image-based formulas/diagrams, scans without readable text and unmarked materials require additional preparation and are not guessed or sent to an AI/OCR service. The source list distinguishes failed downloads from files with no eligible questions.
 
 Public parsed questions are cached in IndexedDB on the student's device for seven days, keyed by parser version, PDF URL and catalogue `addedAt`. Storage failures fall back to memory. A new PDF or parser revision gets a fresh entry; when replacing a PDF at the same URL, update its catalogue timestamp or allow the cache to expire. Failed downloads are retried when selecting the subject again; the retry control refreshes the selected PDF. Neither raw PDFs nor private account data are stored in this cache. No Firebase writes or additional serverless endpoint are required.
 
@@ -480,6 +480,12 @@ remain unchanged, and material lists retain their existing newest-first ordering
 identities. It is compatibility data, not a second editable catalogue; new files
 need no legacy identity. Preserve it when editing materials. Run the material-date
 sync and site build after changing the catalogue, and commit their outputs.
+
+A PDF may set its own `code` and `type` when they differ from the subject default.
+For example, a closed midterm PDF in a written subject sets `type: "test"`.
+Keep the original Cloudflare filename. `data/material-import-20261114.json` records
+the verified archive filenames, PDF hashes and whether each code came from the
+PDF, a title/curriculum match or explicit owner confirmation.
 
 Course browsing groups material subjects into Fall and Spring semesters from the
 selected major’s curriculum. Exact subject names take precedence over reused

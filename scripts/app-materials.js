@@ -26,6 +26,7 @@
     const rows=identities('pdf',p.file).filter(x=>x.subject===subject);
     const old=rows.find(x=>x.course===course)||rows[0];
     if(old){course=old.course;subj={...subj,type:old.type,semester:old.semester,code:old.code||subj.code};}
+    if(p.type||p.code)subj={...subj,type:p.type||subj.type,code:p.code||subj.code};
     return {
       id: `${course}|${subject}|${p.file}`,
       kind: 'pdf',
@@ -74,7 +75,7 @@
       Object.entries(cd.subjects).forEach(([subject, subj]) => {
         subj.pdfs.forEach(p => {
           const k = 'pdf/' + p.file;
-          const alias = { course, subject, subjObj: subj, code: p.code || getSubjectCode(subj), format: subj.type };
+          const alias = { course, subject, subjObj: { ...subj, type: p.type || subj.type, code: p.code || getSubjectCode(subj) }, code: p.code || getSubjectCode(subj), format: p.type || subj.type };
           const oldAliases=identities('pdf',p.file).map(old=>({...old,subjObj:{...subj,code:old.code||subj.code,type:old.type,semester:old.semester},format:old.type}));
           if (seen.has(k)) { if(!oldAliases.length)seen.get(k).aliases.push(alias); return; }
           const primary=oldAliases[0];
@@ -247,16 +248,18 @@
 
   // Fənn səhifəsinin yuxarı kartı
   function subjectHeroHTML(course, subject, subj, entries) {
-    const code = getSubjectCode(subj);
+    const code = [...new Set(entries.map(m=>m.code).filter(Boolean))].join(' · ') || getSubjectCode(subj);
+    const formats = [...new Set(entries.map(m=>m.format).filter(Boolean))];
+    if (!formats.length && subj.type) formats.push(subj.type);
     const desc = code ? t('mdCode') + ': ' + code : t('materialSubjectIntro');
     return `
     <section class="subject-hero" aria-labelledby="subjHeroTitle">
-      ${subj.type ? `<span class="badge ${subj.type === 'test' ? 'badge--green' : 'badge--orange'}">${esc(formatLabel(subj.type))}</span>` : ''}
+      ${formats.map(format=>`<span class="badge ${format === 'test' ? 'badge--green' : 'badge--orange'}">${esc(formatLabel(format))}</span>`).join(' ')}
       <h1 id="subjHeroTitle">${esc(subject)}</h1>
       <p>${esc(desc)}</p>
       <div class="hero-stats" id="subjHeroStats">
         <div class="hero-stat">${ic('file-text')}<div><b>${entries.length}</b><small>${esc(t('heroStatMaterials'))}</small></div></div>
-        <div class="hero-stat">${ic('clipboard-check')}<div><b>${esc(subj.type === 'test' ? 'Test' : (subj.type === 'yazili' ? 'Yazılı' : '—'))}</b><small>${esc(t('heroStatFormat'))}</small></div></div>
+        <div class="hero-stat">${ic('clipboard-check')}<div><b>${esc(formats.map(formatLabel).join(' / ') || '—')}</b><small>${esc(t('heroStatFormat'))}</small></div></div>
       </div>
     </section>`;
   }

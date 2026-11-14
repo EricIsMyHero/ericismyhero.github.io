@@ -370,9 +370,9 @@ function subjectMatchesMajor(subjectName, subj, majorKey, courseNo) {
   if (Array.isArray(subj.majors) && subj.majors.includes(majorKey)) return true;
   const idx     = getMajorIndex(majorKey);
   const courses = courseNo ? [courseNo] : [1, 2, 3, 4];
-  const code    = getSubjectCode(subj);
+  const codes   = [getSubjectCode(subj), ...(subj.pdfs || []).map(pdf => pdf.code)].filter(Boolean).map(String);
   const name    = canonSubjectName(subjectName);
-  return courses.some(c => (code && idx.codes[c].has(code)) || idx.names[c].has(name));
+  return courses.some(c => codes.some(code => idx.codes[c].has(code)) || idx.names[c].has(name));
 }
 
 function codeBadgeHTML(code) {
@@ -507,16 +507,16 @@ function renderSubjects(courseName) {
       const a = document.createElement('a');
       a.className = 'subject-card animate-in';
       a.href = '#/courses/subjects/'+encodeURIComponent(currentCourse)+'/'+encodeURIComponent(subjectName);
-      const subjCode = getSubjectCode(subj);
-      a.dataset.code = subjCode;
+      const subjCodes = [...new Set([getSubjectCode(subj), ...subj.pdfs.map(p=>p.code)].filter(Boolean))];
+      a.dataset.code = subjCodes.join(' ');
       const safeName = String(subjectName).replace(/&/g, '&amp;').replace(/</g, '&lt;');
       a.innerHTML = `
         <div class="subject-icon">${IC_SVG(SUBJECT_ICONS[iconIndex % SUBJECT_ICONS.length])}</div>
         <div class="subject-info">
           <h4>${safeName}</h4>
           <div class="pdf-count">
-            ${codeBadgeHTML(subjCode)}
-            ${getTypeBadgeHTML(subj.type)}
+            ${subjCodes.map(codeBadgeHTML).join('')}
+            ${[...new Set(subj.pdfs.map(p=>p.type||subj.type))].map(getTypeBadgeHTML).join('')}
             <span class="pdf-badge">PDF ${UNEC.entriesForSubject(currentCourse,subjectName).length}</span>
           </div>
         </div>
