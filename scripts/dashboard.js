@@ -16,7 +16,7 @@ const DASH_FACULTIES = [
 ];
 
 function _profileFacultyOptions() {
-  return DASH_FACULTIES.map(item => ({ value: item.az, label: item[lang] || item.az }));
+  return DASH_FACULTIES.map(item => ({ value: item.az, label: (item[lang] || item.az).replace(/\s+fakültəsi(?=\s|$)/giu, '').replace(/^Faculty of\s+/i, '') }));
 }
 
 function _profileMajorOptions() {
