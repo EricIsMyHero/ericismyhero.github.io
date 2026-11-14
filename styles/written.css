@@ -2,3 +2,4 @@
 
 .wp a{color:var(--accent2,#6eb2ff)}.wp ul{padding-inline-start:22px}
 #personal-pdf-file{display:block;max-width:100%;min-width:0;font:inherit}#test-personal-pdf summary{cursor:pointer;font-weight:600;line-height:1.6}
+#personal-pdf-file{color:inherit}#personal-pdf-file::file-selector-button{font:inherit;color:inherit;background:var(--surface2,#102b50);border:1px solid var(--border,#29425e);border-radius:8px;padding:10px;margin-right:10px;cursor:pointer}#personal-pdf-file:disabled{opacity:.55}
