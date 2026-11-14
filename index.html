@@ -138,7 +138,7 @@
   <link rel="stylesheet" href="styles/shell.css?v=20261106-3">
   <link rel="stylesheet" href="styles/screens.css?v=20261110">
   <link rel="stylesheet" href="styles/tools.css?v=20261113-test-source">
-  <link rel="stylesheet" href="styles/written.css?v=20261114-personal">
+  <link rel="stylesheet" href="styles/written.css?v=20261114-practice">
   <link rel="stylesheet" href="styles/support.css?v=20261106-3">
   <link rel="stylesheet" href="styles/legacy.css?v=20261106-3">
   <link rel="stylesheet" href="styles/compass.css?v=20261109-2">
@@ -699,88 +699,63 @@
         <div class="container screen tools tools--tests">
           <div class="page-head">
             <button class="icon-btn" type="button" data-back aria-label="Geri" data-i18n-aria="appBack"><svg class="ic"><use href="#i-arrow-left"/></svg></button>
-            <h1 data-i18n="navTests">Testlər</h1>
+            <h1 data-i18n="navTests">Sınaq</h1>
           </div>
 
           <div id="test-auth-gate" class="wp" hidden></div>
           <div id="test-authenticated-content">
-          <section id="test-personal-pdf" class="wp"></section>
-          <div class="wp-tabs" role="group" aria-label="Test formatı / Exam format">
-            <button type="button" id="wp-tab-mcq" aria-pressed="true" onclick="WrittenPractice.setMode('mcq')">Test</button>
+          <div class="wp-tabs" role="group" aria-label="Sınaq formatı / Practice format">
+            <button type="button" id="wp-tab-mcq" aria-pressed="true" onclick="WrittenPractice.setMode('mcq')">Qapalı</button>
             <button type="button" id="wp-tab-written" aria-pressed="false" onclick="WrittenPractice.setMode('written')">Yazılı · AI</button>
           </div>
-          <div id="test-mcq-pane">
+          <div id="test-mcq-pane" class="wp">
           <!-- Fənn seçimi -->
           <div id="test-landing">
-            <section class="tl-intro" aria-labelledby="test-hero-title">
-              <span class="tl-intro-icon" aria-hidden="true"><svg class="ic"><use href="#i-clipboard-check"/></svg></span>
-              <div class="tl-intro-text">
-                <h2 id="test-hero-title"><span data-i18n="testIntroTitle">Test sistemi</span> <span class="badge badge--orange">beta</span></h2>
-                <p class="test-hero-desc" data-i18n="testHeroDesc">Bu sistem beta versiyada olduğu üçün cavabların səhv olma ehtimalı vardır.</p>
+            <section class="wp-card" aria-labelledby="test-hero-title">
+              <h2 id="test-hero-title"><span data-i18n="testIntroTitle">Qapalı tipli sınaq</span> <span class="badge badge--orange">beta</span></h2>
+              <p data-i18n="testHeroDesc">PDF-dəki sualları cavablandır, nəticəni Dashboard-da izlə.</p>
+              <p class="wp-muted" data-i18n="closedPracticeHint">Hər suala 1 dəqiqə verilir. Başladılmış və yarımçıq saxlanılmış sınaqlar gündəlik limitə daxildir.</p>
+              <p id="testClosedUsage" class="wp-message" role="status" aria-live="polite"></p>
+              <p id="testClosedMessage" role="status"></p>
+              <button class="btn btn--secondary btn--sm" type="button" onclick="TestAccess.refreshClosed()" data-i18n="closedRefresh">Limiti yenilə</button>
+              <section id="testSubjectSection">
+                <label for="testSubjectSelect" data-i18n="testSelectorLabel">Fənn</label>
+                <select id="testSubjectSelect" onchange="selectSubject(this.value)"></select>
+              </section>
+              <div id="testEmptyState" class="wp-message" hidden role="status">
+                <p data-i18n="testEmptyTitle">Suallar yüklənə bilmədi</p>
+                <button class="btn btn--secondary" type="button" onclick="retryTests()" data-i18n="appRetry">Yenidən cəhd et</button>
               </div>
-            </section>
-
-            <!-- PDF-lərdən suallar yüklənərkən (ekranı bloklamır) -->
-            <div class="tl-loading" id="testLoadState" role="status" aria-live="polite" hidden>
-              <div class="tl-loading-top">
-                <span class="tl-spin" aria-hidden="true"></span>
-                <div class="tl-loading-text">
-                  <p class="tl-loading-title" id="testLoadTitle" data-i18n="testLoadingTitle">Suallar yüklənir…</p>
-                  <p class="tl-loading-sub" id="testLoadSub"></p>
-                </div>
-                <span class="tl-loading-count" id="testLoadCount"></span>
-              </div>
-              <div class="progress-bar"><i id="testLoadFill" style="width:4%"></i></div>
-            </div>
-
-            <!-- Fənn siyahısı boş qalarsa -->
-            <div class="state-box state-box--error" id="testEmptyState" hidden>
-              <svg class="ic"><use href="#i-file-text"/></svg>
-              <h3 data-i18n="testEmptyTitle">Suallar yüklənə bilmədi</h3>
-              <p data-i18n="testEmptyDesc">İnternet bağlantısını yoxla və yenidən cəhd et.</p>
-              <button class="btn btn--secondary btn--sm" type="button" onclick="retryTests()"><svg class="ic"><use href="#i-rotate"/></svg><span data-i18n="appRetry">Yenidən cəhd et</span></button>
-            </div>
-
-            <section class="tl-section" id="testSubjectSection" aria-labelledby="testSelectorLabel">
-              <div class="section-head">
-                <h2 id="testSelectorLabel" data-i18n="testSelectorLabel">Fənn seçin</h2>
-                <span class="tl-sub-count" id="testSubjectTotal"></span>
-              </div>
-              <div class="test-subject-grid" id="testSubjectGrid"></div>
-            </section>
-
-            <!-- Seçimdən sonra görünür -->
-            <section class="test-config-section" id="testConfigSection" style="display:none;" aria-labelledby="testCountLabel">
-              <div class="test-selected-info" id="testSelectedInfo"></div>
-              <div class="test-pdf-picker">
+              <div id="testConfigSection" style="display:none;">
                 <label for="testPdfSelect" data-i18n="testPdfLabel">Sual mənbəyi</label>
                 <select id="testPdfSelect" aria-describedby="testPdfHint" onchange="selectTestPdf(this.value)"></select>
-                <p id="testPdfHint" data-i18n="testPdfHint">Standart olaraq ən son əlavə olunmuş PDF seçilir. İstəsən başqa material seç.</p>
-              </div>
-              <div class="test-count-row">
-                <p class="test-count-label" id="testCountLabel" data-i18n="testCountLabel">Sual sayı</p>
-                <div class="test-count-btns" role="group" aria-labelledby="testCountLabel">
+                <small id="testPdfHint" class="wp-muted" data-i18n="testPdfHint">Ən yeni PDF əvvəl seçilir. İstəsən başqa material seç.</small>
+                <div id="testLoadState" class="wp-message" role="status" aria-live="polite" hidden>
+                  <p id="testLoadTitle" data-i18n="testLoadingTitle">Suallar yüklənir…</p>
+                  <span id="testLoadSub"></span> <span id="testLoadCount"></span>
+                  <div class="progress-bar"><i id="testLoadFill" style="width:0%"></i></div>
+                </div>
+                <p id="testCountLabel" class="closed-count-label" data-i18n="testCountLabel">Sual sayı</p>
+                <div class="closed-counts" role="group" aria-labelledby="testCountLabel">
                   <button class="test-count-btn active" data-count="10" aria-pressed="true" onclick="selectCount(this)" type="button">10</button>
                   <button class="test-count-btn" data-count="20" aria-pressed="false" onclick="selectCount(this)" type="button">20</button>
                   <button class="test-count-btn" data-count="30" aria-pressed="false" onclick="selectCount(this)" type="button">30</button>
                   <button class="test-count-btn" data-count="50" aria-pressed="false" onclick="selectCount(this)" type="button">50</button>
+                  <button class="test-count-btn" id="testAllCount" data-count="1" aria-pressed="false" onclick="selectCount(this)" type="button" hidden></button>
                 </div>
+                <p id="testTimeHint" class="wp-muted"></p>
+                <p id="testSourceStatus" class="wp-muted" role="status" aria-live="polite"></p>
+                <button id="testSourceRetry" class="btn btn--secondary btn--sm" type="button" onclick="selectSubject(testState.selectedSubject,null,true)" hidden data-i18n="appRetry">Yenidən cəhd et</button>
+                <div id="testSources" class="test-sources"></div>
+                <div class="wp-actions"><button id="testStartBtn" class="btn btn--primary btn--block" type="button" onclick="startTest()" disabled><span data-i18n="testStartBtn">Sınağa başla</span></button></div>
               </div>
-              <p class="test-time-hint"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-clock"/></svg><span id="testTimeHint"></span></p>
-              <p id="testSourceStatus" class="test-source-status" role="status" aria-live="polite"></p>
-              <button id="testSourceRetry" class="btn btn--secondary btn--sm" type="button" onclick="selectSubject(testState.selectedSubject,null,true)" hidden><span data-i18n="appRetry">Yenidən cəhd et</span></button>
-              <div id="testSources" class="test-sources"></div>
-              <button id="testStartBtn" class="btn btn--primary btn--block test-start-btn" type="button" onclick="startTest()" disabled>
-                <svg class="ic"><use href="#i-play"/></svg>
-                <span data-i18n="testStartBtn">Testi Başlat</span>
-              </button>
             </section>
           </div>
 
           <!-- Sual ekranı -->
           <div id="test-quiz" style="display:none;">
             <div class="test-quiz-header">
-              <button class="icon-btn test-exit-btn" type="button" onclick="exitTest()" aria-label="Testdən çıx" data-i18n-aria="testExitAria"><svg class="ic"><use href="#i-x"/></svg></button>
+              <button class="icon-btn test-exit-btn" type="button" onclick="exitTest()" aria-label="Sınaqdan çıx" data-i18n-aria="testExitAria"><svg class="ic"><use href="#i-x"/></svg></button>
               <div class="test-quiz-progress-text">
                 <span data-i18n="testQuestionWord">Sual</span> <b id="qCurrentNum">1</b> / <span id="qTotalNum">30</span>
               </div>
@@ -789,7 +764,7 @@
                 <span id="timerDisplay">--:--</span>
               </div>
             </div>
-            <div class="test-progress-bar-wrap" id="testProgressBar" role="progressbar" aria-valuemin="1" aria-valuenow="1" aria-valuemax="10" aria-label="Test" data-i18n-aria="navTests">
+            <div class="test-progress-bar-wrap" id="testProgressBar" role="progressbar" aria-valuemin="1" aria-valuenow="1" aria-valuemax="10" aria-label="Sınaq" data-i18n-aria="navTests">
               <div class="test-progress-bar-fill" id="testProgressFill"></div>
             </div>
 
@@ -845,6 +820,7 @@
 
           </div>
           <section id="test-written-pane" class="wp" hidden aria-label="Yazılı sınaq / Written practice"></section>
+          <section id="test-personal-pdf" class="wp"></section>
           </div>
 
         </div>
@@ -1102,7 +1078,7 @@
               <!-- Son testlər -->
               <section aria-labelledby="dash-recent-title">
                 <div class="section-head">
-                  <h2 id="dash-recent-title" data-i18n="dashRecentResults">Son test nəticələri</h2>
+                  <h2 id="dash-recent-title" data-i18n="dashRecentResults">Son sınaq nəticələri</h2>
                   <button class="link-more" type="button" onclick="openQuizResultsModal()"><span data-i18n="dashSeeAll">Hamısı</span><svg class="ic"><use href="#i-chevron-right"/></svg></button>
                 </div>
                 <div id="dash-recent-quizzes" class="dash-quiz-list"></div>
@@ -2214,7 +2190,7 @@
 <div id="quizResultsOverlay" class="quiz-results-overlay hidden" onclick="if(event.target===this)closeQuizResultsModal()">
   <div class="quiz-results-modal">
     <div class="quiz-results-header">
-      <div class="quiz-results-title" data-i18n="quizResultsTitle">Son Test Nəticələri</div>
+      <div class="quiz-results-title" data-i18n="quizResultsTitle">Son sınaq nəticələri</div>
       <button class="quiz-results-close" onclick="closeQuizResultsModal()">✕</button>
     </div>
     <div id="quiz-results-body" class="quiz-results-body">
@@ -2235,11 +2211,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
 <script src="pdfs.js?v=20261113-subjects"></script>
 <script src="scripts/i18n.js?v=20261106-5"></script>
-<script src="scripts/i18n-app.js?v=20261113-subjects"></script>
+<script src="scripts/i18n-app.js?v=20261114-practice"></script>
 <script src="scripts/data-utils.js?v=20261113-subjects"></script>
 <script src="scripts/study-data.js?v=20261111"></script>
 <script src="scripts/ui.js?v=20261113-subjects"></script>
-<script src="scripts/features.js?v=20261114-personal"></script>
+<script src="scripts/features.js?v=20261114-practice"></script>
 <script src="scripts/test-bank.js?v=20261113"></script>
 <script src="scripts/pdf-loader.js?v=20261114-personal"></script>
 <script src="scripts/gpa.js?v=20261111"></script>
@@ -2262,9 +2238,9 @@
 <script src="scripts/push.js?v=20261112-project"></script>
 <script src="scripts/auth-dialog.js?v=20261112"></script>
 <script src="scripts/site-enhancements.js?v=20261112-auth"></script>
-<script src="scripts/policies.js?v=20261114-personal"></script>
-<script src="scripts/written-practice.js?v=20261114-personal"></script>
-<script src="scripts/test-access.js?v=20261114-personal"></script>
+<script src="scripts/policies.js?v=20261114-practice"></script>
+<script src="scripts/written-practice.js?v=20261114-practice"></script>
+<script src="scripts/test-access.js?v=20261114-practice"></script>
 <script src="scripts/account.js?v=20261111"></script>
 <section class="sheet" id="sheet-account-delete" role="dialog" aria-modal="true" aria-labelledby="accountDeleteTitle" inert>
   <div class="sheet-head"><h2 id="accountDeleteTitle">Hesabımı sil</h2><button class="icon-btn" type="button" data-sheet-close aria-label="Bağla" data-i18n-aria="btnClose">✕</button></div>

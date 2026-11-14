@@ -75,7 +75,7 @@
   const button = (action, title, primary = false, unavailable = false) => `<button type="button" class="btn btn--${primary ? 'primary' : 'secondary'}" data-wp="${action}" ${unavailable ? 'disabled data-unavailable="true"' : ''}>${esc(title)}</button>`;
   function render() {
     const root = $('test-written-pane'); if (!root) return;
-    $('wp-tab-mcq').textContent = text('Test', 'Multiple choice'); $('wp-tab-written').textContent = text('Yazılı · AI', 'Written · AI');
+    $('wp-tab-mcq').textContent = text('Qapalı', 'Multiple choice'); $('wp-tab-written').textContent = text('Yazılı · AI', 'Written · AI');
     let body = '';
     const quota = usage ? `${text('Bu gün', 'Today')}: ${usage.used} / ${usage.limit} · ${text('Qalıb', 'Remaining')}: ${usage.remaining}` : '';
     if (!uid) body = `<div class="wp-card"><h2>${text('Yazılı sınaq', 'Written practice')}</h2><p>${text('Midterm: 3 sual, 30 bal. Semestr: 5 sual, 50 bal. Hər suala 20 dəqiqə.', 'Midterm: 3 questions, 30 points. Semester: 5 questions, 50 points. 20 minutes per question.')}</p>${button('login', text('Daxil ol', 'Sign in'), true)}</div>`;
@@ -86,7 +86,7 @@
       if (!pdfs.some(p => p.file === source)) source = pdfs[0]?.file || '';
       body = `<div class="wp-card"><h2>${text('Yazılı sınaq', 'Written practice')} <span class="badge badge--orange">beta</span></h2><p>${text('Elektron-yazılı PDF-dən təsadüfi suallar. Cavabların həmin PDF-dəki izahlarla AI tərəfindən müqayisə olunur.', 'Random questions from a written-format PDF. AI compares your answers with the explanations in that PDF.')}</p><p class="wp-muted">${text('Bu, məşq üçündür; bal rəsmi qiymət deyil. Yoxlama zamanı cavabların və PDF-dən uyğun izah AI xidmətinə göndərilir. Şəxsi məlumat yazma.', 'This is practice; the score is not an official grade. Grading sends your answers and relevant PDF reference text to the AI service. Do not include personal information.')}</p>
       <label for="wp-subject">${text('Fənn', 'Subject')}</label><select id="wp-subject">${options(rows, subject, s=>s.name, s=>s.name)}</select>
-      <label for="wp-source">${text('Sual mənbəyi', 'Question source')}</label><select id="wp-source">${options(pdfs, source, p=>p.file, p=>p.name + ' · ' + p.file)}</select><small class="wp-muted">${text('Ən yeni PDF əvvəl seçilir. Mətn, nömrələnmiş suallar və izahlı cavablar olmalıdır.', 'The newest PDF is selected first. It must contain text, numbered questions and reference answers.')}</small>
+      <label for="wp-source">${text('Sual mənbəyi', 'Question source')}</label><select id="wp-source">${options(pdfs, source, p=>p.file, p=>p.private?p.name:p.name + ' · ' + p.file)}</select><small class="wp-muted">${text('Ən yeni PDF əvvəl seçilir. Mətn, nömrələnmiş suallar və izahlı cavablar olmalıdır.', 'The newest PDF is selected first. It must contain text, numbered questions and reference answers.')}</small>
       <div class="wp-modes" role="group" aria-label="${text('Sınaq rejimi', 'Exam mode')}">${['midterm','semester'].map(m=>`<button type="button" data-mode="${m}" aria-pressed="${mode===m}"><strong>${m==='midterm'?'Midterm':text('Semestr','Semester')}</strong><span>${m==='midterm'?'3':'5'} ${text('sual','questions')} · ${m==='midterm'?'30':'50'} ${text('bal','points')}</span><small>${m==='midterm'?'60':'100'} ${text('dəqiqə','minutes')}</small></button>`).join('')}</div>
       <p>${text('Hər suala 20 dəqiqə. Növbəti suala keçdikdə cavab kilidlənir. Səhifəni bağlamaq vaxtı dayandırmır. Başlanmış və ləğv edilmiş sınaqlar ortaq gündəlik 3 sınaq limitinə daxildir.', '20 minutes per question. Moving on locks your answer. Closing the page does not pause the timer. Started and abandoned exams count toward the shared daily limit of 3.')}</p><p class="wp-muted">${text('Pulsuz AI xidmətinin ümumi kvotası dolduqda yoxlamada fasilə ola bilər.', 'Grading may pause when the free AI service reaches its shared quota.')}</p>
       ${!enabled ? `<p>${text('AI xidməti hazırda aktiv deyil.', 'The AI service is currently unavailable.')}</p>` : ''}<div class="wp-actions">${button('start',text('Sınağa başla','Start practice'),true,!enabled||!source||!usage?.remaining)}</div></div>`;
@@ -166,7 +166,7 @@
   }
   function route(){
     const written=visible();if(!$('test-mcq-pane'))return;
-    $('wp-tab-mcq').textContent=text('Test','Multiple choice');$('wp-tab-written').textContent=text('Yazılı · AI','Written · AI');
+    $('wp-tab-mcq').textContent=text('Qapalı','Multiple choice');$('wp-tab-written').textContent=text('Yazılı · AI','Written · AI');
     $('test-mcq-pane').hidden=written;$('test-written-pane').hidden=!written;
     $('wp-tab-mcq').setAttribute('aria-pressed',String(!written));$('wp-tab-written').setAttribute('aria-pressed',String(written));
     if(written){render();if(uid&&!loaded)refresh();else if(exam&&['ready','grading'].includes(exam.status))queueGrade(100);}

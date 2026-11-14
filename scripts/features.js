@@ -463,57 +463,13 @@ function retryTests() {
 }
 
 function renderTestSubjects() {
-  const grid = document.getElementById('testSubjectGrid');
-  if (!grid) return;
-
-  // sualı olan fənlər əvvəl, yüklənə bilməyənlər (0 sual) sonda
-  const names = Object.keys(window.TEST_CATALOG || {});
-  const empty   = document.getElementById('testEmptyState');
-  const section = document.getElementById('testSubjectSection');
-  const total   = document.getElementById('testSubjectTotal');
-  const focused = grid.contains(document.activeElement) ? document.activeElement?.dataset.subject : null;
-  grid.innerHTML = '';
-
-  if (total) total.textContent = names.length ? _tTr('testCatalogSubjects', { n: names.length }) : '';
-
-  if (!names.length) {
-    if (testState.loading) {
-      // fənlər gələnə qədər sönük yer tutucular
-      for (let i = 0; i < 6; i++) {
-        const sk = document.createElement('div');
-        sk.className = 'test-subject-skel skeleton';
-        sk.setAttribute('aria-hidden', 'true');
-        grid.appendChild(sk);
-      }
-    }
-    if (empty) empty.hidden = testState.loading;
-    if (section) section.hidden = !testState.loading;
-    return;
-  }
-  if (empty) empty.hidden = true;
-  if (section) section.hidden = false;
-
-  names.forEach(subject => {
-    const count = QUESTION_BANK[subject].length;
-    const status = UNECTests.status(subject);
-    const description = status?.pending ? t('testLoadingTitle') : count ? _tTr('testQuestionsCount', { n: count }) : status?.result ? t(status.result.failed ? 'testSourceFailed' : 'testNoQuestions') : _tTr('testPdfCount', { n: UNECTests.sources(subject).length });
-    const btn   = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'test-subject-btn';
-    btn.setAttribute('data-subject', subject);
-    btn.title = subject;
-    const isActive = testState.selectedSubject === subject;
-    if (isActive) btn.classList.add('active');
-    btn.setAttribute('aria-pressed', String(isActive));
-    btn.innerHTML = `
-      <span class="tsb-icon">${_tIc(subjectIconName(subject))}</span>
-      <span class="tsb-name">${_tEsc(subject)}</span>
-      <span class="tsb-count">${_tEsc(description)}</span>
-      <span class="tsb-check" aria-hidden="true">${_tIc('check')}</span>`;
-    btn.onclick = () => selectSubject(subject, btn);
-    grid.appendChild(btn);
-  });
-  if (focused) [...grid.children].find(b => b.dataset.subject === focused)?.focus({ preventScroll: true });
+  const select=document.getElementById('testSubjectSelect');if(!select)return;
+  const names=Object.keys(window.TEST_CATALOG||{}).sort((a,b)=>a.localeCompare(b,'az'));
+  select.innerHTML=names.map(name=>`<option value="${_tEsc(name)}" ${name===testState.selectedSubject?'selected':''}>${_tEsc(name)}</option>`).join('');
+  select.disabled=!names.length||!!testState.starting;
+  document.getElementById('testEmptyState').hidden=!!names.length;
+  document.getElementById('testSubjectSection').hidden=!names.length;
+  if(!testState.selectedSubject&&names.length&&typeof getCurrentUser==='function'&&getCurrentUser()&&window.UNEC?.route?.tab==='tests'&&window.UNEC.route.query?.mode!=='written')selectSubject(names[0]);
 }
 
 // Seçilmiş fənnin məlumat sətri, sual sayı düymələri və vaxt qeydi
@@ -522,7 +478,9 @@ function _renderTestConfig() {
   if (!subject || !QUESTION_BANK[subject]) return;
   const total = QUESTION_BANK[subject].length;
   const start = document.getElementById('testStartBtn');
-  if (start) start.disabled = testState.subjectLoading || !total;
+  if (start) start.disabled = !!testState.starting || testState.subjectLoading || !total || !window.TestAccess?.canStartClosed();
+  const picker=document.getElementById('testSubjectSelect');if(picker)picker.disabled=!!testState.starting;
+  const all=document.getElementById('testAllCount');if(all){all.hidden=total>=10||!total;all.dataset.count=String(total);all.textContent=_tTr('closedAllQuestions',{n:total});}
 
   const info = document.getElementById('testSelectedInfo');
   if (info) {
@@ -530,15 +488,16 @@ function _renderTestConfig() {
       `<span class="tsi-text"><span class="tsi-label">${_tEsc(t('testSelected'))}</span><strong>${_tEsc(subject)}</strong>` +
       `<span class="tsi-count">${_tEsc(testState.subjectLoading ? t('testLoadingTitle') : _tTr('testAvailable', { n: total }))}</span></span>`;
   }
-  if (testState.subjectLoading) {
+  if (testState.subjectLoading || testState.starting) {
     document.querySelectorAll('.test-count-btn').forEach(b => { b.disabled = true; });
     return;
   }
 
+  document.querySelectorAll('.test-count-btn:not(#testAllCount)').forEach(b=>{b.hidden=total>0&&total<10;});
   let anyEnabled = false;
   document.querySelectorAll('.test-count-btn').forEach(b => {
     const n = parseInt(b.dataset.count, 10);
-    const off = n > total;
+    const off = n > total || b.hidden;
     b.disabled = off;
     b.classList.toggle('disabled', off);
     if (off) { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); }
@@ -572,7 +531,7 @@ function _renderTestHint() {
 }
 
 async function selectSubject(subject, btn, refresh = false, sourceUrl) {
-  if (!window.TEST_CATALOG?.[subject]) return;
+  if (testState.starting || !window.TEST_CATALOG?.[subject]) return;
   const sources = UNECTests.sources(subject);
   const source = sources.find(s => s.url === sourceUrl) || (testState.selectedSubject === subject && sources.find(s => s.url === testState.selectedFile)) || sources[0];
   if (!source) return;
@@ -583,6 +542,7 @@ async function selectSubject(subject, btn, refresh = false, sourceUrl) {
   });
   if (btn) { btn.classList.add('active'); btn.setAttribute('aria-pressed', 'true'); }
   testState.selectedSubject = subject;
+  const picker=document.getElementById('testSubjectSelect');if(picker)picker.value=subject;
   testState.selectedFile = source.url;
   _renderTestPdfPicker();
   const request = ++testState.subjectRequest;
@@ -600,7 +560,6 @@ async function selectSubject(subject, btn, refresh = false, sourceUrl) {
   document.getElementById('testLoadFill').style.width = '0%';
   document.getElementById('testSourceStatus').textContent = t('testLoadingTitle');
   document.getElementById('testSourceRetry').hidden = true;
-  config.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   const task = UNECTests.load(subject, { sourceUrl: source.url, refresh, onProgress: (done, total) => {
     if (request !== testState.subjectRequest) return;
     document.getElementById('testLoadCount').textContent = `${done}/${total}`;
@@ -622,7 +581,7 @@ function _renderTestPdfPicker() {
   if (!select || !testState.selectedSubject) return;
   select.replaceChildren();
   const sources = UNECTests.sources(testState.selectedSubject);
-  select.disabled = sources.length < 2;
+  select.disabled = sources.length < 2 || !!testState.starting;
   sources.forEach((source, index) => {
     const option = document.createElement('option');
     option.value = source.url;
@@ -653,6 +612,7 @@ function _renderTestSources() {
 }
 
 function selectCount(btn) {
+  if(testState.starting||btn.disabled)return;
   document.querySelectorAll('.test-count-btn').forEach(b => {
     b.classList.remove('active');
     b.setAttribute('aria-pressed', 'false');
@@ -664,10 +624,10 @@ function selectCount(btn) {
 }
 
 // ── Testi Başlat ──────────────────────────────────────────────
-function startTest() {
+async function startTest() {
   const owner=typeof getCurrentUser==='function'?getCurrentUser():null;
   if(!owner){openAuthModal('login');return;}
-  testState.ownerUid=owner.uid;testState.resultId=crypto.randomUUID();
+  if(testState.starting||testState.currentQuiz.length&&!testState.result)return;
   const subject = testState.selectedSubject;
   if (!subject || testState.subjectLoading) return;
 
@@ -675,6 +635,12 @@ function startTest() {
   if(!Array.isArray(pool))return;
   const count = Math.min(testState.selectedCount, pool.length);
   if (!count) return;
+  const file=testState.selectedFile,request=testState.startRequest=(testState.startRequest||0)+1;testState.starting=true;_renderTestConfig();_renderTestPdfPicker();
+  try{
+    const reservation=await window.TestAccess.reserveClosed(file,count);
+    if(request!==testState.startRequest||getCurrentUser()?.uid!==owner.uid||window.UNEC?.route?.tab!=='tests'||window.UNEC.route.query?.mode==='written')return;
+    testState.ownerUid=owner.uid;testState.resultId=reservation.id;
+    window.TestAccess.closedStarted();
 
   // Sualları qarışdır və dilim
   const shuffled = [...pool].sort(() => Math.random() - 0.5).slice(0, count);
@@ -705,6 +671,8 @@ function startTest() {
   renderQuizQuestion();
   startTimer();
   window.scrollTo({ top: 0, behavior: 'auto' });
+  }catch(error){if(request===testState.startRequest&&getCurrentUser()?.uid===owner.uid)window.TestAccess?.closedError(error);}
+  finally{if(request===testState.startRequest){testState.starting=false;_renderTestConfig();_renderTestPdfPicker();}}
 }
 
 // Testdən çıxış (nəticə yazılmır)
@@ -988,7 +956,7 @@ function resetTest() {
 
 // Dil dəyişəndə dinamik mətnləri yenilə
 window.addEventListener('unec:langchange', () => {
-  if (!document.getElementById('testSubjectGrid')) return;
+  if (!document.getElementById('testSubjectSelect')) return;
   renderTestSubjects();
   if (testState.selectedSubject) _renderTestConfig();
   _renderTestPdfPicker();

@@ -419,7 +419,7 @@ Add new subjects under the neutral `data["Materiallar"].subjects` container in `
 
 ### AI written practice (beta)
 
-**Tests → Written · AI** offers Midterm (3 questions / 30 points) and Semester
+**Practice → Written · AI** offers Midterm (3 questions / 30 points) and Semester
 (5 questions / 50 points), with 20 minutes per question and 3 started exams per
 signed-in user per Baku day. The newest written PDF is selected by default; users
 can change the source. The server extracts numbered questions with reference
@@ -435,9 +435,15 @@ provider quotas, private records and deployment details. After changing `pdfs.js
 run `node tools/build-site.mjs` to refresh the trusted written-source list.
 
 All practice now requires sign-in, and both multiple-choice and written outcomes
-appear in Dashboard history. Under **Tests → Practice with my PDF**, each account
+appear in Dashboard history. Under **Practice → Practice with my PDF**, each account
 can import one private PDF per Baku day (up to 3 MB). The server imports marked
 MCQs or written questions with reference answers. Original PDF bytes are not
 retained, and private sources never enter the public material catalogue. Written
 practice retains its shared three-exam daily limit. Unsupported files do not
 consume a successful daily import. See service setup for retention and rules.
+
+The navigation entry is now **Practice** (**Sınaq** in Azerbaijani). Closed and
+written practice use matching subject/PDF selection forms. Closed practice allows
+5 started exams per authenticated account per Baku calendar day, shared by public
+and private PDF sources. Started/abandoned exams count; selecting or parsing a PDF
+does not. The existing 3 written exams and 1 private PDF import per day are separate.

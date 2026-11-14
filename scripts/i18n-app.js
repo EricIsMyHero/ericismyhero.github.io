@@ -1101,3 +1101,29 @@ Object.assign(I18N.en, {
   subjectSearchCount: '{n} subjects found',
   noMajorSubjects: 'No matching subject materials were found for this major.'
 });
+
+// Unified practice terminology and compact closed-exam setup.
+Object.assign(I18N.az, {
+  navTests:'Sınaq',testIntroTitle:'Qapalı tipli sınaq',testSelectorLabel:'Fənn',
+  testHeroDesc:'PDF-dəki sualları cavablandır, nəticəni Dashboard-da izlə. Cavablar mənbə PDF-dəki işarələrə əsaslanır.',
+  testStartBtn:'Sınağa başla',testRestartBtn:'Yeni sınaq',testExitAria:'Sınaqdan çıx',
+  testExitConfirm:'Sınaqdan çıxmaq istəyirsən? Nəticə saxlanılmayacaq. Bu sınaq gündəlik limitə daxildir.',
+  closedPracticeHint:'Hər suala 1 dəqiqə verilir. Başladılmış və yarımçıq saxlanılmış sınaqlar gündəlik limitə daxildir.',
+  closedRefresh:'Limiti yenilə',closedAllQuestions:'Hamısı ({n})',
+  dashFactSolved:'Tamamlanmış sınaq',dashTestUnit:'sınaq',dashRecentResults:'Son sınaq nəticələri',
+  dashNoTests:'Hələ heç bir sınaq tamamlanmayıb.',quizResultsTitle:'Son sınaq nəticələri',
+  dashXpQuizDone:'Sınaq tamamlandı',streakQuiz:'Sınaq tamamla',streakQuizDesc:'hər gün ən azı 1 sınaq',
+  aboutItem2:'Onlayn sınaqlar və bilik yoxlama sistemi'
+});
+Object.assign(I18N.en, {
+  navTests:'Practice',testIntroTitle:'Multiple-choice practice',testSelectorLabel:'Subject',
+  testHeroDesc:'Answer questions from a PDF and track your result in Dashboard. Correct answers follow the markings in the source PDF.',
+  testStartBtn:'Start practice',testRestartBtn:'New practice',testExitAria:'Leave practice',
+  testExitConfirm:'Leave this practice exam? Your result will not be saved. This exam still counts toward the daily limit.',
+  closedPracticeHint:'Each question allows 1 minute. Started and abandoned exams count toward the daily allowance.',
+  closedRefresh:'Refresh allowance',closedAllQuestions:'All ({n})',
+  dashFactSolved:'Practice completed',dashTestUnit:'exams',dashRecentResults:'Recent practice results',
+  dashNoTests:'No practice exams completed yet.',quizResultsTitle:'Recent practice results',
+  dashXpQuizDone:'Practice completed',streakQuiz:'Complete practice',streakQuizDesc:'at least 1 practice exam per day',
+  aboutItem2:'Online practice exams and knowledge checks'
+});

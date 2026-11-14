@@ -96,6 +96,7 @@ export async function accountAction(action, b, env = process.env, services = {})
       schemaVersion: 1, exportedAt: new Date().toISOString(),
       account: user, scope: 'Account profile and private study records; public discussions are not included.',
       records: await exportProfile(user.uid, db, env),
+      closedPractice: (await db.getDoc(usagePath(user.uid), env))?.data.closedPractice || null,
       writtenPractice: (await db.getDoc(usagePath(user.uid), env))?.data.written || null,
       privatePdfSources: (await db.listDocs(usagePath(user.uid)+'/practice_sources', {pageSize:2}, env)).docs.map(d=>d.data),
     } };

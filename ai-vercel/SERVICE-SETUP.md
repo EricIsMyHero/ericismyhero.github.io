@@ -128,3 +128,25 @@ avoid scoring questions with missing visual formulas. Written extraction needs
 reference explanations; scans and unsupported layouts may not import. The UI
 shows the extracted counts before starting. `lib/test-bank.cjs` is generated
 from the browser's pure `scripts/test-bank.js` parser by `tools/build-site.mjs`.
+
+## Closed practice daily allowance
+
+`closed-status` and `closed-start` actions share `/api/ask` and require verified
+Firebase authentication. Each account gets five start reservations per Baku day,
+shared by catalogue and private-PDF multiple-choice practice. The private server
+record is `ai_usage/{uidHash}.closedPractice`; it stores the current day and at
+most five IDs, source IDs, question counts and start times. Firestore update-time
+preconditions make concurrent reservations safe. Repeating a start request ID
+with the same settings returns the existing reservation instead of charging
+again; changing settings under an existing ID is rejected. The client retains
+a pending ID through network retries until the runner actually opens. Selecting
+a subject, loading questions and changing PDF sources do not spend an allowance.
+An abandoned runner still counts. The quota is independent of chat, written
+practice and private import limits, and uses no AI provider requests.
+
+Catalogue sources are generated in `lib/closed-sources.js` by
+`tools/build-site.mjs`. Private sources are resolved only under the authenticated
+UID, with question counts bounded by the imported MCQ pool. Closed practice is a
+formative browser runner; public PDF contents remain publicly readable. Account
+exports include the reservation record, and account deletion removes it with
+the existing usage subtree. No new collection permissions or secrets are needed.

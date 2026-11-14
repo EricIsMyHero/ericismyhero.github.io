@@ -2,25 +2,25 @@
 (function(){
   'use strict';
   const $=id=>document.getElementById(id),tr=(az,en)=>lang==='en'?en:az,esc=s=>UNEC.esc(s);
-  let uid='',epoch=0,source=null,usage=null,busy=false,message='',pending=null;
+  let uid='',epoch=0,source=null,usage=null,busy=false,message='',pending=null,closedUsage=null,closedLoading=false,closedAgain=false,closedMessage='';
   const endpoint='https://ericismyhero-github-io.vercel.app/api/ask';
   const account=()=>typeof getCurrentUser==='function'?getCurrentUser():null;
   const errors={pdf_quota:['Bu gün 1 PDF yükləmə limitindən istifadə etmisən.','You have used today’s 1 PDF upload.'],pdf_busy:['PDF hazırda işlənir. Bir az sonra yenidən yoxla.','A PDF is being processed. Check again shortly.'],pdf_too_large:['PDF maksimum 3 MB olmalıdır.','The PDF must be no larger than 3 MB.'],invalid_pdf:['Düzgün PDF faylı seç.','Choose a valid PDF file.'],pdf_no_questions:['Uyğun suallar tapılmadı. Test üçün düzgün cavablar işarələnməli, yazılı üçün izahlı cavablar olmalıdır. Şəkilli test səhifələri və skanlar dəstəklənmir. Limit istifadə olunmadı.','No usable questions found. MCQ needs marked correct answers; written practice needs reference explanations. Image-containing MCQ pages and scans are unsupported. Your daily slot was not used.']};
-  async function api(action,data={}){
+  async function api(action,data={},prefix='practice-pdf-'){
     const user=account(),generation=epoch;if(!user||user.uid!==uid)throw new Error('login_required');
     const idToken=await user.getIdToken();if(generation!==epoch)throw new Error('auth_changed');
-    const response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},signal:AbortSignal.timeout(55000),body:JSON.stringify({action:'practice-pdf-'+action,...data,idToken})});
+    const response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},signal:AbortSignal.timeout(55000),body:JSON.stringify({action:prefix+action,...data,idToken})});
     const result=await response.json();if(generation!==epoch||account()?.uid!==uid)throw new Error('auth_changed');
     if(!response.ok)throw Object.assign(new Error(result.error),result);return result;
   }
   function gate(){
     if(!$('test-authenticated-content'))return;
     $('test-authenticated-content').hidden=!uid;$('test-auth-gate').hidden=!!uid;
-    $('test-auth-gate').innerHTML=`<div class="wp-card"><h2>${tr('Sınağa başlamaq üçün daxil ol','Sign in to practice')}</h2><p>${tr('Test və yazılı sınaq nəticələrin Dashboard-da saxlanılacaq.','Your multiple-choice and written results will be saved to your Dashboard.')}</p><button type="button" class="btn btn--primary" onclick="openAuthModal('login')">${tr('Daxil ol','Sign in')}</button></div>`;
+    $('test-auth-gate').innerHTML=`<div class="wp-card"><h2>${tr('Sınağa başlamaq üçün daxil ol','Sign in to practice')}</h2><p>${tr('Qapalı və yazılı sınaq nəticələrin Dashboard-da saxlanılacaq.','Your multiple-choice and written results will be saved to your Dashboard.')}</p><button type="button" class="btn btn--primary" onclick="openAuthModal('login')">${tr('Daxil ol','Sign in')}</button></div>`;
   }
   function render(){
     gate();const root=$('test-personal-pdf');if(!root)return;
-    root.innerHTML=`<details class="wp-card" ${source||message?'open':''}><summary>${tr('Öz PDF-imdən sınaq','Practice with my PDF')} · ${tr('gündə 1 fayl','1 file per day')}</summary><p class="wp-muted">${tr('Fayl yalnız hesabına aid olacaq. Orijinal PDF saxlanılmır; oxunan suallar və izahlar saxlanılır. Maksimum 3 MB. Limit Bakı vaxtı ilə yenilənir. Yazılı sınaqlarda gündəlik 3 sınaq limiti də keçərlidir.','The file is private to your account. Original PDF bytes are not stored; extracted questions and explanations are stored. Maximum 3 MB. The limit resets at midnight in Baku. Written practice also uses the existing 3-exam daily limit.')}</p>${usage?`<p>${tr('Bu gün yüklənib','Uploaded today')}: ${usage.used} / 1</p>`:''}<label for="personal-pdf-file">${tr('PDF seç','Choose PDF')}</label><input id="personal-pdf-file" type="file" accept="application/pdf,.pdf" ${busy||usage?.remaining===0?'disabled':''}><div class="wp-actions"><button data-upload type="button" class="btn btn--secondary" ${busy?'disabled':''}>${tr('Limiti və faylı yenilə','Refresh upload status')}</button></div><p id="personal-pdf-message" role="status">${esc(message)}</p>${source?`<h3>${esc(source.file)}</h3><p>${tr('Test sualları','MCQ questions')}: ${source.mcq} · ${tr('Yazılı suallar','Written questions')}: ${source.written}</p><div class="wp-actions">${source.mcq?`<button data-personal-mode="mcq" type="button" class="btn btn--primary" ${busy?'disabled':''}>${tr('Bu PDF ilə test','Multiple-choice practice')}</button>`:''}${source.written>=3?`<button data-personal-mode="written" type="button" class="btn btn--primary" ${busy?'disabled':''}>${tr('Bu PDF ilə yazılı sınaq','Written practice')}</button>`:''}</div>`:''}</details>`;
+    root.innerHTML=`<details class="wp-card" ${source||message?'open':''}><summary>${tr('Öz PDF-imdən sınaq','Practice with my PDF')} · ${tr('gündə 1 fayl','1 file per day')}</summary><p class="wp-muted">${tr('Fayl yalnız hesabına aid olacaq. Orijinal PDF saxlanılmır; oxunan suallar və izahlar saxlanılır. Maksimum 3 MB. Limit Bakı vaxtı ilə yenilənir. Qapalı sınaqlarda gündəlik 5, yazılı sınaqlarda 3 sınaq limiti də keçərlidir.','The file is private to your account. Original PDF bytes are not stored; extracted questions and explanations are stored. Maximum 3 MB. The limit resets at midnight in Baku. The daily practice limits also apply: 5 multiple-choice exams and 3 written exams.')}</p>${usage?`<p>${tr('Bu gün yüklənib','Uploaded today')}: ${usage.used} / 1</p>`:''}<label for="personal-pdf-file">${tr('PDF seç','Choose PDF')}</label><input id="personal-pdf-file" type="file" accept="application/pdf,.pdf" ${busy||usage?.remaining===0?'disabled':''}><div class="wp-actions"><button data-upload type="button" class="btn btn--secondary" ${busy?'disabled':''}>${tr('Limiti və faylı yenilə','Refresh upload status')}</button></div><p id="personal-pdf-message" role="status">${esc(message)}</p>${source?`<h3>${esc(source.file)}</h3><p>${tr('Qapalı suallar','MCQ questions')}: ${source.mcq} · ${tr('Yazılı suallar','Written questions')}: ${source.written}</p><div class="wp-actions">${source.mcq?`<button data-personal-mode="mcq" type="button" class="btn btn--primary" ${busy?'disabled':''}>${tr('Bu PDF ilə qapalı sınaq','Multiple-choice practice')}</button>`:''}${source.written>=3?`<button data-personal-mode="written" type="button" class="btn btn--primary" ${busy?'disabled':''}>${tr('Bu PDF ilə yazılı sınaq','Written practice')}</button>`:''}</div>`:''}</details>`;
     root.querySelector('[data-upload]')?.addEventListener('click',refresh);
     $('personal-pdf-file')?.addEventListener('change',upload);
     root.querySelectorAll('[data-personal-mode]').forEach(b=>b.onclick=()=>use(b.dataset.personalMode));
@@ -69,11 +69,37 @@
     }}catch{if(generation===epoch)resultMessage(tr('Nəticə hələ saxlanılmayıb. Bağlantı bərpa olunanda yenidən cəhd ediləcək.','Result not yet saved. It will retry when connectivity returns.'));}
     finally{saving=false;if(uid&&uid!==owner)flush();}
   }
+  function acceptClosed(value){if(!closedUsage||value.day>closedUsage.day||value.day===closedUsage.day&&value.used>=closedUsage.used)closedUsage=value;}
+  function renderClosed(){
+    const box=$('testClosedUsage');if(box)box.textContent=closedUsage?tr('Bu gün: ','Today: ')+closedUsage.used+' / '+closedUsage.limit+' · '+tr('Qalıb: ','Remaining: ')+closedUsage.remaining:tr('Gündəlik limit yoxlanılır…','Checking your daily allowance…');
+    if($('testClosedMessage'))$('testClosedMessage').textContent=closedMessage;
+    if(typeof _renderTestConfig==='function')_renderTestConfig();
+  }
+  function closedError(error){
+    if(error?.usage)acceptClosed(error.usage);
+    closedMessage=error?.error==='closed_quota'?tr('Gündəlik 5 qapalı sınaq limitinə çatmısan. Limit Bakı vaxtı ilə gecə yarısı yenilənir.','You have reached the daily limit of 5 multiple-choice exams. It resets at midnight in Baku.'):tr('Sınaq başlana bilmədi. Bağlantını yoxlayıb yenidən cəhd et.','Could not start practice. Check your connection and try again.');
+    renderClosed();
+  }
+  async function refreshClosed(){
+    if(!uid)return;if(closedLoading){closedAgain=true;return;}const generation=epoch;closedLoading=true;
+    try{const result=await api('status',{},'closed-');acceptClosed(result.usage);closedMessage='';renderClosed();}
+    catch(error){if(generation===epoch){closedMessage=tr('Limiti yoxlamaq mümkün olmadı. “Limiti yenilə” düyməsinə bas.','Could not check the limit. Choose “Refresh allowance”.');renderClosed();}}
+    finally{if(generation===epoch){closedLoading=false;if(closedAgain){closedAgain=false;refreshClosed();}}}
+  }
+  const startKey=()=> 'closed-start:'+uid;
+  async function reserveClosed(sourceId,count){
+    let request;try{request=JSON.parse(sessionStorage.getItem(startKey()));}catch{}
+    if(!request||request.sourceId!==sourceId||request.count!==count)request={sourceId,count,requestId:crypto.randomUUID()};
+    try{sessionStorage.setItem(startKey(),JSON.stringify(request));}catch{}
+    const result=await api('start',request,'closed-');acceptClosed(result.usage);closedMessage='';renderClosed();return result;
+  }
   function auth(){
     const next=account()?.uid||'';
-    if(next!==uid){uid=next;epoch++;source=null;usage=null;busy=false;message='';pending=null;UNECTests.clearPrivate();if(typeof testState!=='undefined'){if(testState.currentQuiz.length)resetTest();testState.selectedSubject=null;testState.selectedFile=null;testState.subjectLoading=false;testState.subjectRequest++;if($('testConfigSection'))$('testConfigSection').style.display='none';if($('testLoadState'))$('testLoadState').hidden=true;}render();if(uid){refresh();flush();}}
+    if(next!==uid){uid=next;epoch++;closedUsage=null;closedLoading=false;closedAgain=false;closedMessage='';source=null;usage=null;busy=false;message='';pending=null;UNECTests.clearPrivate();if(typeof testState!=='undefined'){if(testState.currentQuiz.length)resetTest();testState.starting=false;testState.startRequest=(testState.startRequest||0)+1;testState.selectedSubject=null;testState.selectedFile=null;testState.subjectLoading=false;testState.subjectRequest++;if($('testConfigSection'))$('testConfigSection').style.display='none';if($('testLoadState'))$('testLoadState').hidden=true;}render();if(uid){refresh();refreshClosed();flush();}renderClosed();renderTestSubjects();}
     gate();
   }
-  window.TestAccess={sources:()=>source,record(row){if(row.uid!==uid)return;const rows=queued(uid);if(!rows.some(r=>r.id===row.id))store(uid,[...rows,row]);resultMessage(tr('Nəticə saxlanılır…','Saving result…'));flush();}};
-  document.addEventListener('DOMContentLoaded',auth);window.addEventListener('unec:authchange',auth);window.addEventListener('unec:routechange',gate);window.addEventListener('unec:langchange',render);window.addEventListener('online',flush);
+  window.TestAccess={refreshClosed,reserveClosed,closedError,canStartClosed:()=>!!closedUsage?.remaining,closedStarted(){try{sessionStorage.removeItem(startKey());}catch{}},sources:()=>source,record(row){if(row.uid!==uid)return;const rows=queued(uid);if(!rows.some(r=>r.id===row.id))store(uid,[...rows,row]);resultMessage(tr('Nəticə saxlanılır…','Saving result…'));flush();}};
+  document.addEventListener('DOMContentLoaded',auth);window.addEventListener('unec:authchange',auth);window.addEventListener('unec:routechange',()=>{gate();if(window.UNEC?.route?.tab==='tests'&&window.UNEC.route.query?.mode!=='written'){renderTestSubjects();refreshClosed();}});window.addEventListener('unec:langchange',()=>{render();renderClosed();});window.addEventListener('online',()=>{flush();refreshClosed();});
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden&&window.UNEC?.route?.tab==='tests')refreshClosed();});
+  setInterval(()=>{if(uid&&closedUsage&&window.UNEC?.route?.tab==='tests'&&closedUsage.day!==new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Baku',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date()))refreshClosed();},60000);
 })();
