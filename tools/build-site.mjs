@@ -12,6 +12,16 @@ const sandbox = {}; vm.createContext(sandbox);
 vm.runInContext(read('pdfs.js') + '\nthis.catalog = {data, extrasData, BASE, EXTRAS_BASE, PDF_TYPES};', sandbox);
 const { data, extrasData, BASE, EXTRAS_BASE, PDF_TYPES } = sandbox.catalog;
 const entries = new Map(), outputs = new Map(), written = new Map(), closed = new Set();
+const curriculumImports = JSON.parse(read('data/curriculum-pdf.json'));
+outputs.set('data/curriculum-pdf.js', '// Generated from verified Forma 1 PDF imports. See tools/import-curriculum-pdfs.py.\nwindow.UNEC_CURRICULUM_PDFS = ' + JSON.stringify(curriculumImports).replace(/</g, '\\u003c') + ';\n');
+const curriculumCheck = { window: { addEventListener() {} } };
+vm.createContext(curriculumCheck);
+vm.runInContext(read('scripts/curriculum-source.js'), curriculumCheck);
+vm.runInContext(outputs.get('data/curriculum-pdf.js'), curriculumCheck);
+vm.runInContext(read('scripts/curriculum.js') + '\nthis.plans = CURRICULUM_DATA;', curriculumCheck);
+for (const [key, source] of Object.entries(curriculumImports.plans)) {
+  if (curriculumCheck.plans[key]?.source?.sha256 !== source.sha256) throw new Error('Invalid curriculum PDF import: ' + key);
+}
 outputs.set('ai-vercel/lib/test-bank.cjs', '// Generated from scripts/test-bank.js by tools/build-site.mjs.\n' + read('scripts/test-bank.js'));
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 for (const [course, d] of Object.entries(data)) for (const [subject, s] of Object.entries(d.subjects)) for (const p of s.pdfs) {

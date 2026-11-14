@@ -1027,6 +1027,9 @@ body.in-quiz[data-route="tests"] #ai-button { opacity: 0; visibility: hidden; po
 .curr-plan-panel:not(.curr-show-details) .curr-codes { display: none; }
 .curr-plan-source { margin: 20px 0 0; padding: 0 4px; color: var(--color-text-secondary); }
 .curr-gpa-tip-text { margin: 0 0 12px; font-size: var(--fs-xs); line-height: 1.6; }
+.curr-source-file { margin: 0 0 12px; overflow-wrap: anywhere; font-size: var(--fs-xs); }
+.curr-source-link { margin-bottom: 12px; }
+.curr-source-file[hidden], .curr-source-link[hidden] { display: none; }
 .curr-print-root { display: none; }
 @media (max-width: 719px) {
   .curr-plan-header { align-items: flex-start; }

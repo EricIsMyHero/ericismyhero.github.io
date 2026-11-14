@@ -254,6 +254,24 @@ Review and commit both `pdfs.js` and `data/material-history.json` after syncing.
 5. Map the major to its translation key in `MAJOR_I18N_KEYS` in `scripts/ui.js`, so the Courses filter shows the translated name.
 6. Map the major to its translation key in `CURR_SPEC_KEYS` in `scripts/curriculum.js`, so the plan heading is translated too.
 
+### Importing official curriculum PDFs
+
+`data/curriculum-sources.json` maps each major to its public Cloudflare PDF. The website uses a verified snapshot of those tables, including subject codes, credits, classroom hours and semester placement. Elective alternatives count as one group. Absence limits are calculated as 25% of classroom hours in two-hour sessions; they are not a field extracted from the PDF.
+
+To refresh the plans from Cloudflare:
+
+```sh
+python3 -m pip install -r tools/requirements-curriculum.txt
+python3 tools/import-curriculum-pdfs.py --all
+node tools/build-site.mjs
+node --test tests/curriculum-source.test.cjs
+python3 -m unittest discover -s tests -p '*_test.py'
+```
+
+You can also import a local original with `--file path/to/6004007-Menecment-1.pdf` or a public HTTPS PDF with `--url URL`. Imports record the source filename, URL (when downloaded) and SHA-256. The command checks specialty codes, all eight semesters and the 240-credit total before replacing the saved snapshot. Failed imports leave the previous snapshot intact. Ambiguous elective names require review against the existing code list. Inconsistencies already present in a source PDF are retained and flagged in the plan's source section.
+
+Commit the updated `data/curriculum-pdf.json`, generated `data/curriculum-pdf.js` and `offline-assets.js`. The browser reads these lightweight tables and opens the original Cloudflare PDF through “About this plan”; it does not need to download and parse every PDF on each visit.
+
 ---
 
 ## Roadmap

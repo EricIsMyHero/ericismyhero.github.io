@@ -39,6 +39,8 @@ def check(url):
 
 if __name__ == '__main__':
     urls = json.loads(subprocess.check_output(['node', '-e', script], cwd=ROOT, text=True))
+    plans = json.loads((ROOT / 'data/curriculum-sources.json').read_text())
+    urls.extend(plans['baseUrl'].rstrip('/') + '/' + urllib.parse.quote(file) for file in plans['files'].values())
     with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:
         results = list(pool.map(check, urls))
     failures = [(url, error) for url, error in results if error]

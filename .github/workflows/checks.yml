@@ -20,6 +20,7 @@ jobs:
           python-version: '3.12'
       - run: npm ci --prefix ai-vercel --ignore-scripts
       - run: node --test tests/*.test.cjs tests/*.test.mjs
+      - run: python3 -m unittest discover -s tests -p '*_test.py'
       - run: python3 tools/sync-material-dates.py --check
       - run: node tools/build-site.mjs --check
       - name: JavaScript syntax

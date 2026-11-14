@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "baseUrl": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/",
+  "files": {
+    "economics": "6004004-Iqtisadiyyat.pdf",
+    "finance": "6004005-Maliyyə.pdf",
+    "accounting": "6004008-Muhasibat.pdf",
+    "management": "6004007-Menecment-1.pdf",
+    "marketing": "6004006-Marketinq-1.pdf",
+    "design": "6003005-Dizayn.pdf",
+    "foodEngineering": "6006023-Qida-muhəndisliyi.pdf",
+    "internationalRelations": "6002001-Beynəlxalq-munasibətlər.pdf",
+    "internationalTradeLogistics": "6004001-Beynəlxalq-ticarət-və-logistika.pdf",
+    "ecology": "6005004-Ekologiya-1.pdf",
+    "statistics": "6005012-Statistika.pdf",
+    "publicAdministration": "6004003-Dovlət-və-bələdiyyə-idarəetməsi.pdf",
+    "businessManagement": "6004002-Biznesin-idarə-edilməsi.pdf",
+    "tourism": "6008008-Turizm-isinin-təskili.pdf",
+    "socialWork": "6008006-Sosial-is.pdf"
+  }
+}

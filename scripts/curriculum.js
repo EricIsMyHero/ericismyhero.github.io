@@ -3083,6 +3083,14 @@ const CURRICULUM_CODES = {
   },
 };
 
+// A validated PDF import replaces only the corresponding majors. If a new
+// source is incomplete, retain the last bundled plans rather than partial data.
+try {
+  window.CurriculumSource?.apply(CURRICULUM_DATA, CURRICULUM_CODES, window.UNEC_CURRICULUM_PDFS);
+} catch (error) {
+  console.warn('Curriculum PDF import could not be applied:', error.message);
+}
+
 /* ── localStorage ──────────────────────────────────────────── */
 const CURR_LS_KEY = 'unec_selected_specialty';
 function getSavedSpecialty()  { try { return localStorage.getItem(CURR_LS_KEY) || null; } catch { return null; } }
@@ -3115,6 +3123,33 @@ function _currSpecName(spec, data) {
 
 function _currIcon(materialName) {
   return (window.UNEC && UNEC.mi) ? UNEC.mi(materialName) : '';
+}
+
+function renderCurriculumSource(spec) {
+  const source = CURRICULUM_DATA[spec]?.source;
+  const note = document.getElementById('currPlanSourceText');
+  if (note) {
+    const key = source ? 'currPdfSourceHint' : 'currGpaTip';
+    note.dataset.i18n = key;
+    note.textContent = t(key);
+  }
+  const filename = document.getElementById('currSourceFilename');
+  if (filename) { filename.hidden = !source; filename.textContent = source ? t('currSourceFile').replace('{file}', source.file) : ''; }
+  const warning = document.getElementById('currSourceWarning');
+  if (warning) warning.hidden = !source?.warnings;
+  const link = document.getElementById('currSourcePdf');
+  if (!link) return;
+  link.hidden = true;
+  link.removeAttribute('href');
+  if (source?.url) {
+    try {
+      const url = new URL(source.url);
+      if (url.protocol !== 'https:' || url.username || url.password) return;
+      link.href = url.href;
+      link.hidden = false;
+      link.setAttribute('aria-label', t('currSourceOpen') + ': ' + _currSpecName(spec, CURRICULUM_DATA[spec]));
+    } catch (_) {}
+  }
 }
 
 function curriculumProgressState() {
@@ -3183,6 +3218,7 @@ function selectSpecialty(spec, opts) {
   });
   document.getElementById('currSpecBadge').innerHTML =
     `<span class="curr-spec-badge-icon">${_currIcon(plan.icon)}</span><span>${_currEsc(_currSpecName(spec, plan))}</span>`;
+  renderCurriculumSource(spec);
 
   const years = [1, 2, 3, 4].filter(year => [year * 2 - 1, year * 2].some(i => plan['semester' + i]?.length));
   const nav = document.getElementById('currSemNav');
