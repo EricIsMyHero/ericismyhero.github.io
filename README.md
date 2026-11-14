@@ -462,3 +462,10 @@ remain unchanged, and material lists retain their existing newest-first ordering
 identities. It is compatibility data, not a second editable catalogue; new files
 need no legacy identity. Preserve it when editing materials. Run the material-date
 sync and site build after changing the catalogue, and commit their outputs.
+
+Course browsing groups material subjects into Fall and Spring semesters from the
+selected major’s curriculum. Exact subject names take precedence over reused
+codes, so language levels do not get assigned to both semesters accidentally.
+The four course controls use the site’s shared theme colours, display their
+semester ranges, and preserve keyboard focus when changing course. Search keeps
+the semester headings for groups containing matching subjects.

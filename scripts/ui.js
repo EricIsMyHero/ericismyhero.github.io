@@ -162,7 +162,9 @@ function filterSubjects(query) {
   });
 
   semesterHeaders.forEach(header => {
-    header.style.display = query ? 'none' : '';
+    let next=header.nextElementSibling,visible=false;
+    while(next&&!next.classList.contains('semester-header')){if(next.classList.contains('subject-card')&&next.style.display!=='none')visible=true;next=next.nextElementSibling;}
+    header.style.display=visible?'':'none';
   });
 
   if (searchResultsInfo) {
@@ -438,6 +440,29 @@ function renderMajorFilter() {
 const SUBJECT_ICONS = ['book-open', 'calculator', 'chart', 'layers', 'graduation-cap', 'target', 'file-text',
   'globe', 'sparkles', 'users', 'clipboard-check', 'calendar-days', 'lightbulb', 'zap', 'palette', 'settings'];
 
+// Prefer the plan's subject name over shared codes (e.g. language levels A1/A2).
+function materialSubjectSemesters(name,subj,majorKey) {
+  const keys=majorKey==='all'?(typeof CURRICULUM_DATA==='undefined'?[]:Object.keys(CURRICULUM_DATA)):[majorKey];
+  const result=new Set(),normalized=canonSubjectName(name);
+  const codes=new Set([getSubjectCode(subj),...(subj.pdfs||[]).map(p=>p.code)].filter(Boolean).map(String));
+  for(const key of keys){
+    const rows=[],plan=typeof CURRICULUM_DATA==='undefined'?null:CURRICULUM_DATA[key];
+    for(let sem=1;sem<=8;sem++)for(const row of plan?.['semester'+sem]||[])rows.push({...row,semester:sem});
+    const index=typeof CURRICULUM_CODES==='undefined'?null:CURRICULUM_CODES[key];
+    if(index){
+      for(const group of ['general','major','practice'])rows.push(...(index[group]||[]));
+      for(const group of ['generalElectives','majorElectives'])for(const block of index[group]||[])for(const row of block.subjects||[])rows.push({...row,semester:block.semester});
+    }
+    const exact=rows.filter(row=>canonSubjectName(row.name)===normalized);
+    const matches=exact.length?exact:rows.filter(row=>[row.code,...(row.codes||[])].some(code=>codes.has(String(code||''))));
+    for(const row of matches)if(row.semester>=1&&row.semester<=8)result.add(row.semester);
+  }
+  if(!result.size&&(majorKey==='all'||majorKey===TUDIFAK_KEY)&&typeof MATERIAL_IDENTITIES!=='undefined'){
+    for(const pdf of subj.pdfs||[])for(const old of MATERIAL_IDENTITIES['pdf/'+pdf.file]||[]){const year=parseInt(old.course,10);if(year&&old.semester)result.add((year-1)*2+old.semester);}
+  }
+  return [...result].sort((a,b)=>a-b);
+}
+
 function renderSubjects(courseName) {
   const t    = translations[lang];
   const grid = document.getElementById('subjects-grid');
@@ -445,9 +470,15 @@ function renderSubjects(courseName) {
   renderMajorFilter();
 
   const majorKey   = getSelectedMajor(),year=parseInt(currentCourse||courseName||'1',10);
+  const yearFocused=document.activeElement?.closest?.('#materials-year-picker');
   let years=document.getElementById('materials-year-picker');
-  if(!years){years=document.createElement('div');years.id='materials-year-picker';years.className='wp-tabs';document.getElementById('major-filter')?.after(years);}
-  years.innerHTML=[1,2,3,4].map(n=>`<button type="button" aria-pressed="${n===year}" onclick="openSubjects('${n}')">${lang==='en'?'Year '+n:n+(n===1?'-ci':n===2?'-ci':n===3?'-cü':'-cü')+' kurs'}</button>`).join('');
+  if(!years){years=document.createElement('section');years.id='materials-year-picker';years.className='material-year-picker';document.getElementById('major-filter')?.after(years);}
+  years.innerHTML=`<div class="major-filter-label" id="materials-year-label">${lang==='en'?'Study year':'Kurs seçimi'}</div><div class="material-year-options" role="group" aria-labelledby="materials-year-label">`+[1,2,3,4].map(n=>{
+    const label=lang==='en'?'Year '+n:n+(n<3?'-ci':'-cü')+' kurs';
+    return `<button type="button" aria-pressed="${n===year}" onclick="openSubjects('${n}')"><strong>${label}</strong><small>${lang==='en'?'Semesters':'Semestr'} ${(n-1)*2+1}–${n*2}</small></button>`;
+  }).join('')+'</div>';
+
+  if(yearFocused)years.querySelector('[aria-pressed="true"]')?.focus({preventScroll:true});
   const allEntries = Object.entries(UNEC.getSubjectCatalog())
     .filter(([name, subj]) => UNEC.entriesForSubject(currentCourse,name).length>0)
     .filter(([name, subj]) => {
@@ -457,6 +488,7 @@ function renderSubjects(courseName) {
       if(majors.length)return majors.some(key=>subjectMatchesMajor(name,subj,key,year));
       return subj.pdfs.some(p=>!(MATERIAL_IDENTITIES['pdf/'+p.file]||[]).length||(MATERIAL_IDENTITIES['pdf/'+p.file]||[]).some(old=>parseInt(old.course,10)===year));
     })
+    .filter(([name,subj])=>{const sems=materialSubjectSemesters(name,subj,majorKey);return !sems.length||sems.some(sem=>Math.ceil(sem/2)===year);})
     .sort(([a], [b]) => a.localeCompare(b, 'az'));
 
   if (allEntries.length === 0) {
@@ -469,6 +501,7 @@ function renderSubjects(courseName) {
 
   function renderGroup(entries, labelText) {
     if (entries.length === 0) return;
+    const heading=document.createElement('h2');heading.className='semester-header material-semester-header';heading.innerHTML=`<span>${IC_SVG(labelText===t.semesterFall?'sun':'book-open')}${UNEC.esc(labelText)}</span><small>${entries.length} ${lang==='en'?'subjects':'fənn'}</small>`;grid.appendChild(heading);
 
     entries.forEach(([subjectName, subj]) => {
       const a = document.createElement('a');
@@ -494,7 +527,10 @@ function renderSubjects(courseName) {
     });
   }
 
-  renderGroup(allEntries);
+  const semesters=new Map(allEntries.map(([name,subj])=>[name,materialSubjectSemesters(name,subj,majorKey)]));
+  renderGroup(allEntries.filter(([name])=>semesters.get(name).includes(year*2-1)),t.semesterFall);
+  renderGroup(allEntries.filter(([name])=>semesters.get(name).includes(year*2)),t.semesterSpring);
+  renderGroup(allEntries.filter(([name])=>!semesters.get(name).length),lang==='en'?'Semester not specified':'Semestr məlumatı yoxdur');
 }
 
 // ── PDF Səhifəsi ─────────────────────────────────────────────
