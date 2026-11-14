@@ -370,7 +370,7 @@ function subjectMatchesMajor(subjectName, subj, majorKey, courseNo) {
   if (Array.isArray(subj.majors) && subj.majors.includes(majorKey)) return true;
   const idx     = getMajorIndex(majorKey);
   const courses = courseNo ? [courseNo] : [1, 2, 3, 4];
-  const codes   = [getSubjectCode(subj), ...(subj.pdfs || []).map(pdf => pdf.code)].filter(Boolean).map(String);
+  const codes   = [getSubjectCode(subj), ...(subj.codes || []), ...(subj.pdfs || []).map(pdf => pdf.code)].filter(Boolean).map(String);
   const name    = canonSubjectName(subjectName);
   return courses.some(c => codes.some(code => idx.codes[c].has(code)) || idx.names[c].has(name));
 }
@@ -444,7 +444,7 @@ const SUBJECT_ICONS = ['book-open', 'calculator', 'chart', 'layers', 'graduation
 function materialSubjectSemesters(name,subj,majorKey) {
   const keys=majorKey==='all'?(typeof CURRICULUM_DATA==='undefined'?[]:Object.keys(CURRICULUM_DATA)):[majorKey];
   const result=new Set(),normalized=canonSubjectName(name);
-  const codes=new Set([getSubjectCode(subj),...(subj.pdfs||[]).map(p=>p.code)].filter(Boolean).map(String));
+  const codes=new Set([getSubjectCode(subj),...(subj.codes||[]),...(subj.pdfs||[]).map(p=>p.code)].filter(Boolean).map(String));
   for(const key of keys){
     const rows=[],plan=typeof CURRICULUM_DATA==='undefined'?null:CURRICULUM_DATA[key];
     for(let sem=1;sem<=8;sem++)for(const row of plan?.['semester'+sem]||[])rows.push({...row,semester:sem});
@@ -507,7 +507,7 @@ function renderSubjects(courseName) {
       const a = document.createElement('a');
       a.className = 'subject-card animate-in';
       a.href = '#/courses/subjects/'+encodeURIComponent(currentCourse)+'/'+encodeURIComponent(subjectName);
-      const subjCodes = [...new Set([getSubjectCode(subj), ...subj.pdfs.map(p=>p.code)].filter(Boolean))];
+      const subjCodes = [...new Set([getSubjectCode(subj), ...(subj.codes || []), ...subj.pdfs.map(p=>p.code)].filter(Boolean))];
       a.dataset.code = subjCodes.join(' ');
       const safeName = String(subjectName).replace(/&/g, '&amp;').replace(/</g, '&lt;');
       a.innerHTML = `

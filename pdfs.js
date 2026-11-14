@@ -30,9 +30,10 @@ const data = {
         ]
       },
       "Analitik kimya və instrumental analiz": {
-        type: "yazili",
+        type: "test",
+        code: "00074",
         pdfs: [
-          { name: "Analitik Kimya və İnstrumental Analiz", file: "akiakollek1.pdf", pdfType: "midterm", addedAt: "2026-04-23T12:15:41+04:00" }
+          { name: "Analitik Kimya və İnstrumental Analiz", file: "akiakollek1.pdf", pdfType: "midterm", addedAt: "2026-04-23T12:15:41+04:00", type: "test" }
         ]
       },
       "AR Konstitusiyası və hüququn əsasları": {
@@ -213,6 +214,7 @@ const data = {
       },
       Hidrologiya: {
         type: "yazili",
+        code: "00374",
         pdfs: [
           { name: "Hidrologiya", file: "hidrologiya1.pdf", pdfType: "semester", addedAt: "2026-04-23T12:15:41+04:00" }
         ]
@@ -270,9 +272,9 @@ const data = {
       },
       "İdarəetmə uçotu": {
         type: "yazili",
-        code: "00741",
+        code: "00382",
         pdfs: [
-          { name: "İdarəetmə Uçotu", file: "idareetme1.pdf", pdfType: "semester", addedAt: "2026-11-09T18:10:52+04:00" }
+          { name: "İdarəetmə Uçotu", file: "idareetme1.pdf", pdfType: "semester", addedAt: "2026-11-09T18:10:52+04:00", code: "00382" }
         ]
       },
       "İKT - Baza kompüter bilikləri": {
@@ -326,6 +328,7 @@ const data = {
       },
       "Korporativ maliyyə": {
         type: "yazili",
+        code: "00503",
         pdfs: [
           { name: "Korporativ Maliyyə", file: "korporativmaliyye1.pdf", pdfType: "semester", addedAt: "2026-06-30T16:53:31+04:00" }
         ]
@@ -357,6 +360,7 @@ const data = {
       },
       "Maliyyə risklərinin idarə edilməsi": {
         type: "yazili",
+        codes: ["00528", "00966"],
         pdfs: [
           { name: "Maliyyə Risklərinin İdarə Edilməsi", file: "mrie1.pdf", pdfType: "semester", addedAt: "2026-06-30T16:53:31+04:00" }
         ]
@@ -443,6 +447,7 @@ const data = {
       },
       Psixologiya: {
         type: "test",
+        code: "00097",
         pdfs: [
           { name: "Psixologiya", file: "psixologiyakollek1.pdf", pdfType: "midterm", addedAt: "2026-04-24T17:54:10+04:00" },
           { name: "Psixologiya Y23", file: "psixologiyaY23.pdf", pdfType: "semester", addedAt: "2026-04-24T17:54:10+04:00" }
@@ -460,14 +465,16 @@ const data = {
       },
       "Riyaziyyat-1": {
         type: "test",
+        code: "00042",
         pdfs: [
           { name: "Riyaziyyat-1 Q24", file: "riyaziyyat1Q24.pdf", pdfType: "semester", addedAt: "2026-04-23T12:16:36+04:00" }
         ]
       },
       "Riyaziyyat-2": {
-        type: "yazili",
+        type: "test",
+        code: "00108",
         pdfs: [
-          { name: "Riyaziyyat-2 Y25", file: "riyaziyyat2Y25.pdf", pdfType: "semester", addedAt: "2026-04-23T12:16:36+04:00" }
+          { name: "Riyaziyyat-2 Y25", file: "riyaziyyat2Y25.pdf", pdfType: "semester", addedAt: "2026-04-23T12:16:36+04:00", type: "test" }
         ]
       },
       "Sahibkarlığın əsasları və biznesə giriş": {
@@ -479,6 +486,7 @@ const data = {
       },
       "Sosial iş təcrübəsində etik prinsiplər": {
         type: "yazili",
+        code: "00109",
         pdfs: [
           { name: "Sosial İş Təcrübəsində Etik Prinsiplər", file: "sitep1.pdf", pdfType: "semester", addedAt: "2026-06-04T21:43:14+04:00" },
           { name: "Sosial İş Təcrübəsində Etik Prinsiplər", file: "sitepkollek1.pdf", pdfType: "midterm", addedAt: "2026-04-24T17:55:19+04:00" },
@@ -487,18 +495,21 @@ const data = {
       },
       "Sosial işdə idarəetmə": {
         type: "yazili",
+        code: "00110",
         pdfs: [
           { name: "Sosial İşdə İdarəetmə", file: "sosialisdeidareetmekollek1.pdf", pdfType: "midterm", addedAt: "2026-04-24T17:55:19+04:00" }
         ]
       },
       "Sosial işdə riyazi metodlar": {
         type: "test",
+        code: "00111",
         pdfs: [
           { name: "Sosial İşdə Riyazi Metodlar", file: "sirmkollek1.pdf", pdfType: "midterm", addedAt: "2026-04-24T17:55:19+04:00" }
         ]
       },
       "Sosial işin nəzəriyyəsi və təcrübəsi-2": {
         type: "yazili",
+        code: "00112",
         pdfs: [
           { name: "Sosial işin nəzəriyyəsi və təcrübəsi-2", file: "sint1.pdf", pdfType: "semester", addedAt: "2026-04-24T17:54:10+04:00" },
           { name: "Sosial işin nəzəriyyəsi və təcrübəsi-2", file: "sintkollek1.pdf", pdfType: "midterm", addedAt: "2026-04-24T17:54:10+04:00" }
@@ -563,6 +574,7 @@ const data = {
       },
       "Ümumi ekologiya": {
         type: "yazili",
+        code: "00908",
         pdfs: [
           { name: "Ümumi Ekologiya", file: "umumiekologiya1.pdf", pdfType: "semester", addedAt: "2026-04-23T12:16:36+04:00" }
         ]
@@ -584,6 +596,7 @@ const data = {
       },
       Vergitutma: {
         type: "yazili",
+        code: "00917",
         pdfs: [
           { name: "Vergitutma", file: "vergitutma1.pdf", pdfType: "semester", addedAt: "2026-06-30T16:53:31+04:00" }
         ]
@@ -597,6 +610,7 @@ const data = {
       },
       "Yönetim ve organizasyon": {
         type: "test",
+        code: "00031",
         pdfs: [
           { name: "Yönetim ve Organizasyon Q25", file: "yonetimorganizasyonQ25.pdf", pdfType: "semester", addedAt: "2026-04-10T23:17:50+04:00" }
         ]

@@ -1,0 +1,432 @@
+{
+  "date": "2026-11-14",
+  "assignments": [
+    {
+      "subject": "Hidrologiya",
+      "previousCode": null,
+      "code": "00374",
+      "evidence": "curriculum",
+      "files": [
+        "hidrologiya1.pdf"
+      ],
+      "curriculumReferences": [
+        {
+          "major": "ecology",
+          "semester": 7,
+          "code": "00374",
+          "name": "Hidrologiya",
+          "sourceFile": "6005004-Ekologiya-1.pdf",
+          "sourceUrl": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6005004-Ekologiya-1.pdf"
+        }
+      ],
+      "pdfHeaders": []
+    },
+    {
+      "subject": "Korporativ maliyyə",
+      "previousCode": null,
+      "code": "00503",
+      "evidence": "curriculum",
+      "files": [
+        "korporativmaliyye1.pdf"
+      ],
+      "curriculumReferences": [
+        {
+          "major": "finance",
+          "semester": 3,
+          "code": "00503",
+          "name": "Korporativ maliyyə",
+          "sourceFile": "6004005-Maliyyə.pdf",
+          "sourceUrl": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6004005-Maliyy%C9%99.pdf"
+        }
+      ],
+      "pdfHeaders": []
+    },
+    {
+      "subject": "Psixologiya",
+      "previousCode": null,
+      "code": "00097",
+      "evidence": "curriculum-and-pdf-header",
+      "files": [
+        "psixologiyakollek1.pdf",
+        "psixologiyaY23.pdf"
+      ],
+      "curriculumReferences": [
+        {
+          "major": "socialWork",
+          "semester": 2,
+          "code": "00097",
+          "name": "Psixologiya",
+          "sourceFile": "6008006-Sosial-is.pdf",
+          "sourceUrl": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6008006-Sosial-is.pdf"
+        }
+      ],
+      "pdfHeaders": [
+        {
+          "file": "psixologiyaY23.pdf",
+          "sha256": "e80a24b62439ef98e75e6f2292173ccb54d72eeb7ac4e5d1acb063f673d40117",
+          "header": "00097_Az_Y23_Əyani_Yekun imtahan_HUM testinin sualları Fənn : 00097 Psixologiya"
+        }
+      ]
+    },
+    {
+      "subject": "Sosial iş təcrübəsində etik prinsiplər",
+      "previousCode": null,
+      "code": "00109",
+      "evidence": "curriculum",
+      "files": [
+        "sitep1.pdf",
+        "sitepkollek1.pdf",
+        "sitepkollek2.pdf"
+      ],
+      "curriculumReferences": [
+        {
+          "major": "socialWork",
+          "semester": 2,
+          "code": "00109",
+          "name": "Sosial iş təcrübəsində etik prinsiplər",
+          "sourceFile": "6008006-Sosial-is.pdf",
+          "sourceUrl": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6008006-Sosial-is.pdf"
+        }
+      ],
+      "pdfHeaders": []
+    },
+    {
+      "subject": "Sosial işdə idarəetmə",
+      "previousCode": null,
+      "code": "00110",
+      "evidence": "curriculum",
+      "files": [
+        "sosialisdeidareetmekollek1.pdf"
+      ],
+      "curriculumReferences": [
+        {
+          "major": "socialWork",
+          "semester": 2,
+          "code": "00110",
+          "name": "Sosial işdə idarəetmə",
+          "sourceFile": "6008006-Sosial-is.pdf",
+          "sourceUrl": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6008006-Sosial-is.pdf"
+        }
+      ],
+      "pdfHeaders": []
+    },
+    {
+      "subject": "Sosial işdə riyazi metodlar",
+      "previousCode": null,
+      "code": "00111",
+      "evidence": "curriculum-and-pdf-header",
+      "files": [
+        "sirmkollek1.pdf"
+      ],
+      "curriculumReferences": [
+        {
+          "major": "socialWork",
+          "semester": 2,
+          "code": "00111",
+          "name": "Sosial işdə riyazi metodlar",
+          "sourceFile": "6008006-Sosial-is.pdf",
+          "sourceUrl": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6008006-Sosial-is.pdf"
+        }
+      ],
+      "pdfHeaders": [
+        {
+          "file": "sirmkollek1.pdf",
+          "sha256": "c76ff58c7bc19839abb303d9a3ae0f6cb416d164261e779911a8f4897b265a88",
+          "header": "00111_Y24_Az_Əyani_Yekun imtahan testinin sualları Fənn : 00111 Sosial işdə riyazi metodlar"
+        }
+      ]
+    },
+    {
+      "subject": "Sosial işin nəzəriyyəsi və təcrübəsi-2",
+      "previousCode": null,
+      "code": "00112",
+      "evidence": "curriculum",
+      "files": [
+        "sint1.pdf",
+        "sintkollek1.pdf"
+      ],
+      "curriculumReferences": [
+        {
+          "major": "socialWork",
+          "semester": 2,
+          "code": "00112",
+          "name": "Sosial işin nəzəriyyəsi və təcrübəsi-2",
+          "sourceFile": "6008006-Sosial-is.pdf",
+          "sourceUrl": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6008006-Sosial-is.pdf"
+        }
+      ],
+      "pdfHeaders": []
+    },
+    {
+      "subject": "Ümumi ekologiya",
+      "previousCode": null,
+      "code": "00908",
+      "evidence": "curriculum",
+      "files": [
+        "umumiekologiya1.pdf"
+      ],
+      "curriculumReferences": [
+        {
+          "major": "ecology",
+          "semester": 4,
+          "code": "00908",
+          "name": "Ümumi ekologiya",
+          "sourceFile": "6005004-Ekologiya-1.pdf",
+          "sourceUrl": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6005004-Ekologiya-1.pdf"
+        }
+      ],
+      "pdfHeaders": []
+    },
+    {
+      "subject": "Vergitutma",
+      "previousCode": null,
+      "code": "00917",
+      "evidence": "curriculum",
+      "files": [
+        "vergitutma1.pdf"
+      ],
+      "curriculumReferences": [
+        {
+          "major": "finance",
+          "semester": 7,
+          "code": "00917",
+          "name": "Vergitutma",
+          "sourceFile": "6004005-Maliyyə.pdf",
+          "sourceUrl": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6004005-Maliyy%C9%99.pdf"
+        },
+        {
+          "major": "accounting",
+          "semester": 4,
+          "code": "00917",
+          "name": "Vergitutma",
+          "sourceFile": "6004008-Muhasibat.pdf",
+          "sourceUrl": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6004008-Muhasibat.pdf"
+        }
+      ],
+      "pdfHeaders": []
+    },
+    {
+      "subject": "Analitik kimya və instrumental analiz",
+      "previousCode": null,
+      "code": "00074",
+      "evidence": "pdf-header",
+      "files": [
+        "akiakollek1.pdf"
+      ],
+      "curriculumReferences": [],
+      "pdfHeaders": [
+        {
+          "file": "akiakollek1.pdf",
+          "sha256": "f2b53cee7980401e054c01530f69fa4001a76fddd3ac02dd3be50149474f5f3c",
+          "header": "2025 - 2026_II semestr 00074_Az_Əyani_Ara imtahan 1 testinin sualları Fənn : 00074 Analitik kimya və instrumental analiz"
+        }
+      ]
+    },
+    {
+      "subject": "Riyaziyyat-1",
+      "previousCode": null,
+      "code": "00042",
+      "evidence": "pdf-header",
+      "files": [
+        "riyaziyyat1Q24.pdf"
+      ],
+      "curriculumReferences": [],
+      "pdfHeaders": [
+        {
+          "file": "riyaziyyat1Q24.pdf",
+          "sha256": "c1b6e87e036645ff2320607616055357a51619ca98d422a0e4b73ed55d6c7c75",
+          "header": "00042_Q24_Az_Əyani_Yekun imtahan"
+        }
+      ]
+    },
+    {
+      "subject": "Riyaziyyat-2",
+      "previousCode": null,
+      "code": "00108",
+      "evidence": "pdf-header",
+      "files": [
+        "riyaziyyat2Y25.pdf"
+      ],
+      "curriculumReferences": [],
+      "pdfHeaders": [
+        {
+          "file": "riyaziyyat2Y25.pdf",
+          "sha256": "32f72b8a8b3bf515ae25a6c31f83a922a708a956b59bf2cf80dfadf406222c63",
+          "header": "00108_Az_Y25_Əyani_Yekun imtahan"
+        }
+      ]
+    },
+    {
+      "subject": "Yönetim ve organizasyon",
+      "previousCode": null,
+      "code": "00031",
+      "evidence": "pdf-header",
+      "files": [
+        "yonetimorganizasyonQ25.pdf"
+      ],
+      "curriculumReferences": [],
+      "pdfHeaders": [
+        {
+          "file": "yonetimorganizasyonQ25.pdf",
+          "sha256": "43665dee54c41421aaf905cfbe1441a68b47559ec548b22f7d5728cf0aeffa47",
+          "header": "00031_Tr_Q25_Əyani_Yekun imtahan testinin sualları Fənn : 00031 Yönetim ve organizasyon"
+        }
+      ]
+    },
+    {
+      "subject": "İdarəetmə uçotu",
+      "previousCode": "00741",
+      "code": "00382",
+      "evidence": "curriculum-correction",
+      "files": [
+        "idareetme1.pdf"
+      ],
+      "curriculumReferences": [
+        {
+          "major": "accounting",
+          "semester": 5,
+          "code": "00382",
+          "name": "İdarəetmə uçotu",
+          "sourceFile": "6004008-Muhasibat.pdf",
+          "sourceUrl": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6004008-Muhasibat.pdf"
+        },
+        {
+          "major": "businessManagement",
+          "semester": 7,
+          "code": "00382",
+          "name": "İdarəetmə uçotu",
+          "sourceFile": "6004002-Biznesin-idarə-edilməsi.pdf",
+          "sourceUrl": "https://pub-de81b2f17bb2483e804a66c1f520793b.r2.dev/6004002-Biznesin-idar%C9%99-edilm%C9%99si.pdf"
+        }
+      ],
+      "pdfHeaders": []
+    }
+  ],
+  "formatCorrections": [
+    {
+      "subject": "Analitik kimya və instrumental analiz",
+      "file": "akiakollek1.pdf",
+      "previousType": "yazili",
+      "type": "test",
+      "evidence": "pdf-numbered-questions-with-marked-options"
+    },
+    {
+      "subject": "Riyaziyyat-2",
+      "file": "riyaziyyat2Y25.pdf",
+      "previousType": "yazili",
+      "type": "test",
+      "evidence": "pdf-numbered-questions-with-marked-options"
+    }
+  ],
+  "unresolved": [
+    {
+      "subject": "Mühəndis qrafikası",
+      "reason": "no-exact-title-or-pdf-code",
+      "note": "The plan has Kompüter əsaslı mühəndis qrafikası (00482), but the shorter PDF title does not establish that they are the same course."
+    }
+  ],
+  "unplacedSubjects": [
+    {
+      "subject": "Alqoritmin qurulması və analizi",
+      "code": "01006",
+      "files": [
+        "alqoritminqurulmasıY25.pdf"
+      ],
+      "reason": "not-present-in-the-15-available-curricula"
+    },
+    {
+      "subject": "Analitik kimya və instrumental analiz",
+      "code": "00074",
+      "files": [
+        "akiakollek1.pdf"
+      ],
+      "reason": "not-present-in-the-15-available-curricula"
+    },
+    {
+      "subject": "Elektrotexnika və elektronikanın əsasları",
+      "code": "00080",
+      "files": [
+        "elektrotexnikaY25.pdf"
+      ],
+      "reason": "not-present-in-the-15-available-curricula"
+    },
+    {
+      "subject": "Həyat fəaliyyətinin təhlükəsizliyi",
+      "code": "00370",
+      "files": [
+        "hft25-26.pdf"
+      ],
+      "reason": "not-present-in-the-15-available-curricula"
+    },
+    {
+      "subject": "Metrologiya, standartlaşdırma və sertifikatlaşdırma",
+      "code": "00581",
+      "files": [
+        "mssQ26.pdf"
+      ],
+      "reason": "not-present-in-the-15-available-curricula"
+    },
+    {
+      "subject": "Mühəndis qrafikası",
+      "code": null,
+      "files": [
+        "muhendisqrafikasi1.pdf"
+      ],
+      "reason": "not-present-in-the-15-available-curricula"
+    },
+    {
+      "subject": "Riyaziyyat-1",
+      "code": "00042",
+      "files": [
+        "riyaziyyat1Q24.pdf"
+      ],
+      "reason": "not-present-in-the-15-available-curricula"
+    },
+    {
+      "subject": "Riyaziyyat-2",
+      "code": "00108",
+      "files": [
+        "riyaziyyat2Y25.pdf"
+      ],
+      "reason": "not-present-in-the-15-available-curricula"
+    },
+    {
+      "subject": "Tədqiqat və layihə bacarıqları",
+      "code": "00865",
+      "files": [
+        "tedqiqatvelayiheY25.pdf"
+      ],
+      "reason": "not-present-in-the-15-available-curricula"
+    },
+    {
+      "subject": "Yeraltı suların axını və çirklənməsi",
+      "code": "00949",
+      "files": [
+        "yeraltisularinaxiniY25.pdf"
+      ],
+      "reason": "not-present-in-the-15-available-curricula"
+    }
+  ],
+  "multipleCodes": [
+    {
+      "subject": "Maliyyə risklərinin idarə edilməsi",
+      "codes": [
+        "00528",
+        "00966"
+      ],
+      "curriculumReferences": [
+        {
+          "major": "finance",
+          "semester": 4,
+          "code": "00528"
+        },
+        {
+          "major": "tourism",
+          "semester": 5,
+          "code": "00966"
+        }
+      ],
+      "note": "Both confirmed curriculum codes are displayed; neither is asserted to be the unique code of the unlabelled PDF."
+    }
+  ]
+}

@@ -487,6 +487,12 @@ Keep the original Cloudflare filename. `data/material-import-20261114.json` reco
 the verified archive filenames, PDF hashes and whether each code came from the
 PDF, a title/curriculum match or explicit owner confirmation.
 
+If an unlabelled PDF's subject has different verified codes across majors, a
+subject-level `codes` array can list them without asserting a single PDF code.
+The material page labels these as curriculum codes. The source evidence and
+remaining unmatched subjects are recorded in `data/material-metadata-review.json`
+and `reports/material-metadata-review.md`.
+
 Course browsing groups material subjects into Fall and Spring semesters from the
 selected major’s curriculum. Exact subject names take precedence over reused
 codes, so language levels do not get assigned to both semesters accidentally.

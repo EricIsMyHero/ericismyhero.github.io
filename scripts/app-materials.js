@@ -40,6 +40,7 @@
       semester: subj.semester,
       pdfType: p.pdfType,
       code: p.code ? String(p.code).trim() : getSubjectCode(subj),
+      codes: p.code ? [] : (subj.codes || []),
       category: 'PDF',
       subjObj: subj
     };
@@ -62,7 +63,7 @@
   }
   function withSearch(m) {
     const typeLabel = (PDF_TYPES[m.pdfType] || {}).label || '';
-    m.search = normAz([m.name, m.subject, m.file, m.code, m.desc, typeLabel, ...(m.aliases || []).flatMap(a => [a.subject, a.code])].join(' '));
+    m.search = normAz([m.name, m.subject, m.file, m.code, ...(m.codes || []), m.desc, typeLabel, ...(m.aliases || []).flatMap(a => [a.subject, a.code])].join(' '));
     return m;
   }
 
@@ -76,7 +77,11 @@
         subj.pdfs.forEach(p => {
           const k = 'pdf/' + p.file;
           const alias = { course, subject, subjObj: { ...subj, type: p.type || subj.type, code: p.code || getSubjectCode(subj) }, code: p.code || getSubjectCode(subj), format: p.type || subj.type };
-          const oldAliases=identities('pdf',p.file).map(old=>({...old,subjObj:{...subj,code:old.code||subj.code,type:old.type,semester:old.semester},format:old.type}));
+          const oldAliases=identities('pdf',p.file).map(old=>{
+            // Keep legacy rating/discussion paths while applying verified metadata corrections.
+            const code=p.code||old.code||getSubjectCode(subj),format=p.type||old.type||subj.type;
+            return {...old,code,type:format,subjObj:{...subj,code,type:format,semester:old.semester},format};
+          });
           if (seen.has(k)) { if(!oldAliases.length)seen.get(k).aliases.push(alias); return; }
           const primary=oldAliases[0];
           const entry = makeEntry(primary?.course||course, primary?.subject||subject, primary?.subjObj||subj, p);
@@ -189,7 +194,7 @@
     if (m.pdfType && PDF_TYPES[m.pdfType]) out.push(getPdfTypeBadgeHTML(m.pdfType));
     if (m.kind === 'extra') out.push(`<span class="badge badge--purple">${esc(t('extraMaterial'))}</span>`);
     else if (m.format) out.push(getTypeBadgeHTML(m.format));
-    if (withCode && m.code) out.push(codeBadgeHTML(m.code));
+    if (withCode) out.push(...(m.code ? [m.code] : (m.codes || [])).map(codeBadgeHTML));
     return out.join('');
   }
 
@@ -248,10 +253,10 @@
 
   // Fənn səhifəsinin yuxarı kartı
   function subjectHeroHTML(course, subject, subj, entries) {
-    const code = [...new Set(entries.map(m=>m.code).filter(Boolean))].join(' · ') || getSubjectCode(subj);
+    const code = [...new Set(entries.flatMap(m=>[m.code,...(m.codes||[])]).filter(Boolean))].join(' · ') || getSubjectCode(subj);
     const formats = [...new Set(entries.map(m=>m.format).filter(Boolean))];
     if (!formats.length && subj.type) formats.push(subj.type);
-    const desc = code ? t('mdCode') + ': ' + code : t('materialSubjectIntro');
+    const desc = code ? t(entries.some(m=>!m.code&&m.codes?.length) ? 'mdCurriculumCodes' : 'mdCode') + ': ' + code : t('materialSubjectIntro');
     return `
     <section class="subject-hero" aria-labelledby="subjHeroTitle">
       ${formats.map(format=>`<span class="badge ${format === 'test' ? 'badge--green' : 'badge--orange'}">${esc(formatLabel(format))}</span>`).join(' ')}
@@ -510,7 +515,7 @@
     const facts = [
       m.kind === 'pdf' ? [t('mdSubject'), m.subject] : null,
       m.kind === 'pdf' && m.format ? [t('mdFormat'), formatLabel(m.format)] : null,
-      m.code ? [t('mdCode'), m.code] : null,
+      m.code ? [t('mdCode'), m.code] : m.codes?.length ? [t('mdCurriculumCodes'), m.codes.join(' · ')] : null,
       [t('mdFile'), m.file]
     ].filter(Boolean);
     currentRelated = relatedFor(m);
