@@ -649,7 +649,7 @@ function _renderTestSources() {
   if (result.failed) status.textContent += ' ' + _tTr('testFilesFailed', { n: result.failed });
   document.getElementById('testSourceRetry').hidden = !result.failed;
   box.innerHTML = `<details><summary>${_tEsc(_tTr('testSourceList', { n: result.files.length }))}</summary><ul>` + result.files.map(f =>
-    `<li><a href="${_tEsc(f.source.url)}" target="_blank" rel="noopener">${_tEsc(f.source.name)}</a><span>${_tEsc(f.error ? t('testSourceFailed') : f.questions.length ? _tTr('testQuestionsCount', { n: f.questions.length }) : t('testSourceEmpty'))}</span></li>`).join('') + '</ul></details>';
+    `<li>${f.source.private?`<span>${_tEsc(f.source.name)}</span>`:`<a href="${_tEsc(f.source.url)}" target="_blank" rel="noopener">${_tEsc(f.source.name)}</a>`}<span>${_tEsc(f.error ? t('testSourceFailed') : f.questions.length ? _tTr('testQuestionsCount', { n: f.questions.length }) : t('testSourceEmpty'))}</span></li>`).join('') + '</ul></details>';
 }
 
 function selectCount(btn) {
@@ -665,10 +665,14 @@ function selectCount(btn) {
 
 // ── Testi Başlat ──────────────────────────────────────────────
 function startTest() {
+  const owner=typeof getCurrentUser==='function'?getCurrentUser():null;
+  if(!owner){openAuthModal('login');return;}
+  testState.ownerUid=owner.uid;testState.resultId=crypto.randomUUID();
   const subject = testState.selectedSubject;
   if (!subject || testState.subjectLoading) return;
 
   const pool  = QUESTION_BANK[subject];
+  if(!Array.isArray(pool))return;
   const count = Math.min(testState.selectedCount, pool.length);
   if (!count) return;
 
@@ -831,6 +835,8 @@ function confirmFinishTest() {
 
 // ── Testi Bitir ───────────────────────────────────────────────
 function finishTest() {
+  if(testState.result||!testState.currentQuiz.length)return;
+  if(getCurrentUser()?.uid!==testState.ownerUid){resetTest();return;}
   clearInterval(testState.timerInterval);
   document.body.classList.remove('in-quiz');
 
@@ -853,9 +859,9 @@ function finishTest() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
   // Firebase — quiz nəticəsini saxla
-  if (typeof onQuizFinished === 'function') {
+  if (window.TestAccess) {
     const _subj = testState.selectedSubject || t('testUnknownSubject');
-    onQuizFinished(_subj, correct, total, wrong);
+    window.TestAccess?.record({subject:_subj,score:correct,total,mistakes:wrong,uid:testState.ownerUid,id:testState.resultId,personal:String(testState.selectedFile).startsWith('private:'),source:testState.selectedFile});
   }
 }
 

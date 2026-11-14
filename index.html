@@ -138,7 +138,7 @@
   <link rel="stylesheet" href="styles/shell.css?v=20261106-3">
   <link rel="stylesheet" href="styles/screens.css?v=20261110">
   <link rel="stylesheet" href="styles/tools.css?v=20261113-test-source">
-  <link rel="stylesheet" href="styles/written.css?v=20261113-written">
+  <link rel="stylesheet" href="styles/written.css?v=20261114-personal">
   <link rel="stylesheet" href="styles/support.css?v=20261106-3">
   <link rel="stylesheet" href="styles/legacy.css?v=20261106-3">
   <link rel="stylesheet" href="styles/compass.css?v=20261109-2">
@@ -702,6 +702,9 @@
             <h1 data-i18n="navTests">Testlər</h1>
           </div>
 
+          <div id="test-auth-gate" class="wp" hidden></div>
+          <div id="test-authenticated-content">
+          <section id="test-personal-pdf" class="wp"></section>
           <div class="wp-tabs" role="group" aria-label="Test formatı / Exam format">
             <button type="button" id="wp-tab-mcq" aria-pressed="true" onclick="WrittenPractice.setMode('mcq')">Test</button>
             <button type="button" id="wp-tab-written" aria-pressed="false" onclick="WrittenPractice.setMode('written')">Yazılı · AI</button>
@@ -842,6 +845,7 @@
 
           </div>
           <section id="test-written-pane" class="wp" hidden aria-label="Yazılı sınaq / Written practice"></section>
+          </div>
 
         </div>
       </div>
@@ -2235,15 +2239,15 @@
 <script src="scripts/data-utils.js?v=20261113-subjects"></script>
 <script src="scripts/study-data.js?v=20261111"></script>
 <script src="scripts/ui.js?v=20261113-subjects"></script>
-<script src="scripts/features.js?v=20261113-subjects"></script>
+<script src="scripts/features.js?v=20261114-personal"></script>
 <script src="scripts/test-bank.js?v=20261113"></script>
-<script src="scripts/pdf-loader.js?v=20261113-source"></script>
+<script src="scripts/pdf-loader.js?v=20261114-personal"></script>
 <script src="scripts/gpa.js?v=20261111"></script>
-<script src="scripts/firebase.js?v=20261112-auth"></script>
+<script src="scripts/firebase.js?v=20261114-personal"></script>
 <script src="scripts/chat.js?v=20261106-3"></script>
 <script src="scripts/ratings.js?v=20261113-subjects"></script>
 <script src="scripts/requests.js?v=20261106-3"></script>
-<script src="scripts/dashboard.js?v=20261106-3"></script>
+<script src="scripts/dashboard.js?v=20261114-personal"></script>
 <script src="scripts/payments.js?v=20261106-3"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="scripts/curriculum-progress.js?v=20261106-4"></script>
@@ -2258,8 +2262,9 @@
 <script src="scripts/push.js?v=20261112-project"></script>
 <script src="scripts/auth-dialog.js?v=20261112"></script>
 <script src="scripts/site-enhancements.js?v=20261112-auth"></script>
-<script src="scripts/policies.js?v=20261113-written"></script>
-<script src="scripts/written-practice.js?v=20261113-written"></script>
+<script src="scripts/policies.js?v=20261114-personal"></script>
+<script src="scripts/written-practice.js?v=20261114-personal"></script>
+<script src="scripts/test-access.js?v=20261114-personal"></script>
 <script src="scripts/account.js?v=20261111"></script>
 <section class="sheet" id="sheet-account-delete" role="dialog" aria-modal="true" aria-labelledby="accountDeleteTitle" inert>
   <div class="sheet-head"><h2 id="accountDeleteTitle">Hesabımı sil</h2><button class="icon-btn" type="button" data-sheet-close aria-label="Bağla" data-i18n-aria="btnClose">✕</button></div>

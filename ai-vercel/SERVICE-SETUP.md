@@ -14,6 +14,7 @@ The service account handles these private collections. Verify that browser secur
 
 ```text
 match /ai_usage/{id} { allow read, write: if false; }
+match /ai_usage/{id}/{document=**} { allow read, write: if false; }
 match /account_deletions/{id} { allow read, write: if false; }
 match /premium_codes/{id} { allow read, write: if false; }
 ```
@@ -93,3 +94,37 @@ policy. The AI key and reference answers are not sent to the browser before grad
 Run `node --test tests/written-exams.test.mjs` from the repository root for isolated
 quota, timer, concurrency, grounding and PDF extraction tests. Live grading also
 requires the existing Firebase service-account configuration and a working Groq key.
+
+## Private PDF imports and result history
+
+All practice screens require sign-in, including the ordinary multiple-choice
+runner. A started multiple-choice quiz is bound to its starting UID and is reset
+on account changes. Results use stable IDs; failed writes remain in a per-account
+session queue for retry on the next sign-in or online event. Written grades are
+created by the server under `users/{uid}/quiz_results/written-{examId}`; retries
+repair a failed history write without invoking the AI again. Incomplete grading
+is recorded explicitly and is never displayed as zero percent.
+
+`practice-pdf-*` actions also share `/api/ask`. The server authenticates the UID,
+accepts at most 3 MiB of base64-encoded original PDF bytes and parses them using
+the same pinned PDF engine. Upload quota is independent of AI/chat quota: one
+successful PDF per UID per Baku day across both formats. A server-side claim
+prevents concurrent uploads from spending the slot twice. Unsupported/failed
+parsing releases the claim; retries of a successful request are idempotent.
+The original bytes are not retained or sent to R2. No new bucket or API key is
+needed. The existing 3 written exams/day limit still applies to private sources.
+
+Extracted data is stored in two alternating private document slots under
+`ai_usage/{uidHash}/practice_sources/{0|1}`. At most 60 written questions and
+200 marked MCQs are retained, with serialized budgets of 400 KB and 200 KB.
+Only the current and previous Baku day may be loaded. This bounds storage but
+is not automatic TTL deletion during inactivity. Account exports include both
+slots and deletion traverses the whole AI usage subtree. Browser access must be
+denied to this subtree as shown above; any broader allow rule must not grant it.
+
+Private MCQ extraction accepts numbered text questions with marked correct
+answers. Pages containing PDF image operators are omitted conservatively to
+avoid scoring questions with missing visual formulas. Written extraction needs
+reference explanations; scans and unsupported layouts may not import. The UI
+shows the extracted counts before starting. `lib/test-bank.cjs` is generated
+from the browser's pure `scripts/test-bank.js` parser by `tools/build-site.mjs`.

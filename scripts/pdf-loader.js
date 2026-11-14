@@ -279,6 +279,8 @@ class PDFParser {
     renderTestSubjects();
   }
   async function load(name, { sourceUrl, refresh = false, onProgress = () => {} } = {}) {
+    const cachedPrivate=subjects.get(name);
+    if(cachedPrivate?.private)return cachedPrivate.result;
     const sources = window.TEST_CATALOG?.[name] || [];
     const source = sourceUrl ? sources.find(s => s.url === sourceUrl) : sources[0];
     if (!source) throw new Error('invalid_test_source');
@@ -305,7 +307,14 @@ class PDFParser {
     subjects.set(name, { sourceUrl: source.url, pending: work });
     try { return await work; } finally { if (subjects.get(name)?.pending === work) subjects.delete(name); }
   }
-  window.UNECTests = { init, load, status: name => subjects.get(name), sources: name => window.TEST_CATALOG?.[name] || [] };
+  function installPrivate(source,questions){
+    init();const name=(typeof lang!=='undefined'&&lang==='en'?'My PDF: ':'Şəxsi PDF: ')+source.file;
+    const origin={...source,url:source.id,subject:name};
+    const result={questions,files:[{source:origin,questions}],failed:0,rejected:0,conflicts:0};
+    TEST_CATALOG[name]=[origin];QUESTION_BANK[name]=questions;subjects.set(name,{private:true,sourceUrl:source.id,result,time:Date.now()});return name;
+  }
+  function clearPrivate(){for(const[name,row]of subjects)if(row.private){subjects.delete(name);delete QUESTION_BANK[name];if(window.TEST_CATALOG)delete TEST_CATALOG[name];}renderTestSubjects();}
+  window.UNECTests = { init, load, installPrivate, clearPrivate, status: name => subjects.get(name), sources: name => window.TEST_CATALOG?.[name] || [] };
 })();
 
 // Compatibility for the console; the production catalogue comes only from pdfs.js.

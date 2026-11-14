@@ -6,6 +6,7 @@
 function renderDashboard() {
   const profile  = getProfile();
   const user     = getCurrentUser();
+  if(!user)return;
   const progress = profile?.progress || {};
 
   const xp      = progress.xp          || 0;
@@ -132,6 +133,7 @@ async function _loadRecentQuizzes(uid) {
                               .orderBy('timestamp', 'desc')
                               .limit(4).get();
 
+    if(getCurrentUser()?.uid!==uid)return;
     const container = document.getElementById('dash-recent-quizzes');
     if (!container) return;
 
@@ -142,15 +144,15 @@ async function _loadRecentQuizzes(uid) {
 
     container.innerHTML = snap.docs.map(doc => {
       const d   = doc.data();
-      const pct = d.percent ?? Math.round((d.score / d.total) * 100);
+      const pct = d.incomplete?null:(d.percent ?? Math.round((d.score / d.total) * 100));
       const cls = pct >= 75 ? 'dash-quiz-good' : pct >= 50 ? 'dash-quiz-mid' : 'dash-quiz-bad';
       const icon = _subjectIcon(d.subject);
       return `
         <div class="dash-quiz-item ${cls}">
           <div class="dash-quiz-icon">${icon}</div>
-          <div class="dash-quiz-subj">${_dashEsc(d.subject || '—')}</div>
-          <div class="dash-quiz-score">${d.score}/${d.total}</div>
-          <div class="dash-quiz-pct">${pct}%</div>
+          <div class="dash-quiz-subj">${_dashEsc(d.subject || '—')}${d.format==='written'?' · '+(d.mode==='midterm'?'Midterm':(lang==='en'?'Semester':'Semestr')):''}</div>
+          <div class="dash-quiz-score">${d.incomplete?(lang==='en'?'Not graded':'Qiymətləndirilmədi'):_dashEsc(d.score)+'/'+_dashEsc(d.total)}</div>
+          <div class="dash-quiz-pct">${pct===null?'—':_dashEsc(pct)+'%'}</div>
         </div>`;
     }).join('');
   } catch (e) {
@@ -305,13 +307,15 @@ async function openQuizResultsModal() {
     return;
   }
 
+  const resultOwner=getCurrentUser().uid;
   try {
     const snap = await getDb()
-      .collection('users').doc(getCurrentUser().uid)
+      .collection('users').doc(resultOwner)
       .collection('quiz_results')
       .orderBy('timestamp', 'desc')
       .limit(20).get();
 
+    if(getCurrentUser()?.uid!==resultOwner)return;
     if (snap.empty) {
       body.innerHTML = `<div class="quiz-results-empty">${t('dashNoTests')}</div>`;
       return;
@@ -319,7 +323,7 @@ async function openQuizResultsModal() {
 
     body.innerHTML = snap.docs.map(doc => {
       const d   = doc.data();
-      const pct = d.percent ?? Math.round((d.score / d.total) * 100);
+      const pct = d.incomplete?null:(d.percent ?? Math.round((d.score / d.total) * 100));
       const cls = pct >= 75 ? 'qr-good' : pct >= 50 ? 'qr-mid' : 'qr-bad';
       const icon = _subjectIcon(d.subject);
       const ts   = d.timestamp?.toDate
@@ -329,12 +333,12 @@ async function openQuizResultsModal() {
         <div class="qr-item">
           <div class="qr-icon">${icon}</div>
           <div class="qr-info">
-            <div class="qr-subj">${_dashEsc(d.subject || '—')}</div>
+            <div class="qr-subj">${_dashEsc(d.subject || '—')}${d.format==='written'?' · '+(d.mode==='midterm'?'Midterm':(lang==='en'?'Semester':'Semestr')):''}</div>
             <div class="qr-date">${ts}</div>
           </div>
           <div class="qr-right">
-            <div class="qr-score">${d.score}/${d.total}</div>
-            <div class="qr-pct ${cls}">${pct}%</div>
+            <div class="qr-score">${d.incomplete?(lang==='en'?'Not graded':'Qiymətləndirilmədi'):_dashEsc(d.score)+'/'+_dashEsc(d.total)}</div>
+            <div class="qr-pct ${cls}">${pct===null?'—':_dashEsc(pct)+'%'}</div>
           </div>
         </div>`;
     }).join('');

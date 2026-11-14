@@ -197,14 +197,16 @@ function _authErrorMessage(code) {
 // FIRESTORE — WRITE HELPERS
 // ============================================================
 
-async function saveQuizResult(subject, score, total, mistakes) {
-  if (!currentUser) return;
+async function saveQuizResult(subject, score, total, mistakes, options = {}) {
+  if (!currentUser || (options.uid && options.uid !== currentUser.uid)) throw new Error('login_required');
   const uid = currentUser.uid;
+  const resultId=options.id||crypto.randomUUID();
+  const record=_db.collection('users').doc(uid).collection('quiz_results').doc(resultId);
+  if((await record.get()).exists)return 0;
   const pct = Math.round((score / total) * 100);
 
-  await _db.collection('users').doc(uid)
-           .collection('quiz_results').add({
-    subject, score, total, mistakes,
+  await record.set({
+    subject, score, total, mistakes, format:'mcq', personal:!!options.personal, source:options.source||'',
     percent:   pct,
     timestamp: firebase.firestore.FieldValue.serverTimestamp()
   });
@@ -218,7 +220,9 @@ async function saveQuizResult(subject, score, total, mistakes) {
   await _updateStreak(uid, 'quiz');
   _logEvent('quiz_complete', { subject, score: pct });
 
-  currentProfile = await _getUserProfile(uid);
+  const updatedProfile = await _getUserProfile(uid);
+  if(currentUser?.uid!==uid)return xpGain;
+  currentProfile=updatedProfile;
   if (typeof renderDashboard === 'function') renderDashboard();
 
   // Badge yoxla

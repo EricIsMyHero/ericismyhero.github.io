@@ -433,3 +433,11 @@ with `npm ci --prefix ai-vercel`; run `node --test tests/*.test.cjs tests/*.test
 See [service setup](ai-vercel/SERVICE-SETUP.md#ai-written-practice) for configuration,
 provider quotas, private records and deployment details. After changing `pdfs.js`,
 run `node tools/build-site.mjs` to refresh the trusted written-source list.
+
+All practice now requires sign-in, and both multiple-choice and written outcomes
+appear in Dashboard history. Under **Tests → Practice with my PDF**, each account
+can import one private PDF per Baku day (up to 3 MB). The server imports marked
+MCQs or written questions with reference answers. Original PDF bytes are not
+retained, and private sources never enter the public material catalogue. Written
+practice retains its shared three-exam daily limit. Unsupported files do not
+consume a successful daily import. See service setup for retention and rules.

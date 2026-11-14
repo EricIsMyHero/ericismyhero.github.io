@@ -169,12 +169,20 @@ export const WRITTEN_SOURCES = [
     "url": "https://pub-2179773f096a4b76a772ec1317daec99.r2.dev/pdf/mikroiqt3.pdf"
   },
   {
-    "id": "mikroiqt4.pdf",
-    "file": "mikroiqt4.pdf",
+    "id": "mikroiqtkollek1.pdf",
+    "file": "mikroiqtkollek1.pdf",
     "name": "Mikroiqtisadiyyat",
     "subject": "Mikroiqtisadiyyat",
     "addedAt": "2026-11-09T17:47:30+04:00",
-    "url": "https://pub-2179773f096a4b76a772ec1317daec99.r2.dev/pdf/mikroiqt4.pdf"
+    "url": "https://pub-2179773f096a4b76a772ec1317daec99.r2.dev/pdf/mikroiqtkollek1.pdf"
+  },
+  {
+    "id": "mikroiqtkollek2.pdf",
+    "file": "mikroiqtkollek2.pdf",
+    "name": "Mikroiqtisadiyyat",
+    "subject": "Mikroiqtisadiyyat",
+    "addedAt": "2026-11-14T12:50:30+04:00",
+    "url": "https://pub-2179773f096a4b76a772ec1317daec99.r2.dev/pdf/mikroiqtkollek2.pdf"
   },
   {
     "id": "mikroiqtmesele1.pdf",
@@ -207,6 +215,14 @@ export const WRITTEN_SOURCES = [
     "subject": "Qiymət siyasəti",
     "addedAt": "2026-04-11T23:06:15+04:00",
     "url": "https://pub-2179773f096a4b76a772ec1317daec99.r2.dev/pdf/qiymetkollek1.pdf"
+  },
+  {
+    "id": "tetbiqistatistika1.pdf",
+    "file": "tetbiqistatistika1.pdf",
+    "name": "Tətbiqi Statistika",
+    "subject": "Tətbiqi statistika",
+    "addedAt": "2026-11-14T12:50:48+04:00",
+    "url": "https://pub-2179773f096a4b76a772ec1317daec99.r2.dev/pdf/tetbiqistatistika1.pdf"
   },
   {
     "id": "emek1.pdf",

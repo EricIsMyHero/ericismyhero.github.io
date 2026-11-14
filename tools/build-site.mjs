@@ -12,6 +12,7 @@ const sandbox = {}; vm.createContext(sandbox);
 vm.runInContext(read('pdfs.js') + '\nthis.catalog = {data, extrasData, BASE, EXTRAS_BASE, PDF_TYPES};', sandbox);
 const { data, extrasData, BASE, EXTRAS_BASE, PDF_TYPES } = sandbox.catalog;
 const entries = new Map(), outputs = new Map(), written = new Map();
+outputs.set('ai-vercel/lib/test-bank.cjs', '// Generated from scripts/test-bank.js by tools/build-site.mjs.\n' + read('scripts/test-bank.js'));
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 for (const [course, d] of Object.entries(data)) for (const [subject, s] of Object.entries(d.subjects)) for (const p of s.pdfs) {
   if (s.type === 'yazili' && !written.has(p.file)) written.set(p.file, { id: p.file, file: p.file, name: p.name, subject, addedAt: p.addedAt, url: BASE + 'pdf/' + encodeURIComponent(p.file) });

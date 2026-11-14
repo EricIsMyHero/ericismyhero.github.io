@@ -6,7 +6,7 @@
   const text = (az, en) => typeof lang !== 'undefined' && lang === 'en' ? en : az;
   let uid = '', epoch = 0, exam = null, usage = null, enabled = false, busy = false, loaded = false;
   let subject = '', source = '', mode = 'midterm', offset = 0, rev = 0, dirty = false, lastAttempt = 0;
-  let pending = null, retryTimer = null, message = '';
+  let pending = null, retryTimer = null, message = '', dashboardSaved=false;
   const user = () => typeof getCurrentUser === 'function' ? getCurrentUser() : null;
   const visible = () => window.UNEC?.route?.tab === 'tests' && window.UNEC.route.query?.mode === 'written';
   const storage = {
@@ -56,6 +56,8 @@
     if (!('exam' in data)) return;
     const previous = exam, localRev = rev, localAnswer = $('wp-answer')?.value;
     exam = data.exam?.status==='abandoned'?null:data.exam;
+    if(previous?.id!==exam?.id)dashboardSaved=false;
+    if(data.dashboardSaved)dashboardSaved=true;
     if (exam) {
       offset = exam.serverNow - Date.now(); rev = exam.rev;
       storage.set(pointerKey(), { examId: exam.id, day: exam.day });
@@ -66,7 +68,8 @@
   }
   function sources() {
     const catalog = window.UNEC?.getSubjectCatalog?.() || {};
-    return Object.entries(catalog).map(([name, value]) => ({ name, pdfs: (value.pdfs || []).filter(p => (p.type || value.type) === 'yazili').sort((a,b) => String(b.addedAt || '').localeCompare(String(a.addedAt || ''))) })).filter(s => s.pdfs.length).sort((a,b) => a.name.localeCompare(b.name, 'az'));
+    const rows=Object.entries(catalog).map(([name, value]) => ({ name, pdfs: (value.pdfs || []).filter(p => (p.type || value.type) === 'yazili').sort((a,b) => String(b.addedAt || '').localeCompare(String(a.addedAt || ''))) })).filter(s => s.pdfs.length).sort((a,b) => a.name.localeCompare(b.name, 'az'));
+    const own=window.TestAccess?.sources();if(own?.written>=3)rows.unshift({name:text('Şəxsi PDF','My PDF'),pdfs:[{...own,file:own.id}]});return rows;
   }
   function options(rows, selected, value, label) { return rows.map(row => `<option value="${esc(value(row))}" ${value(row) === selected ? 'selected' : ''}>${esc(label(row))}</option>`).join(''); }
   const button = (action, title, primary = false, unavailable = false) => `<button type="button" class="btn btn--${primary ? 'primary' : 'secondary'}" data-wp="${action}" ${unavailable ? 'disabled data-unavailable="true"' : ''}>${esc(title)}</button>`;
@@ -93,8 +96,8 @@
       if (draft && draft.rev >= exam.rev && typeof draft.answer === 'string') { answer = draft.answer.slice(0, exam.answerMax); rev = draft.rev; dirty = draft.rev > exam.rev; }
       body = `<div class="wp-top"><strong>${text('Sual','Question')} ${exam.current+1} / ${exam.questions.length} · 10 ${text('bal','points')}</strong><span class="wp-clock" id="wp-clock" role="timer"></span></div><progress max="${exam.questions.length}" value="${exam.current+1}" aria-label="${text('İrəliləyiş','Progress')}"></progress><div class="wp-card"><p class="wp-muted">${esc(exam.source.name)}</p><h2 id="wp-question">${esc(q.title)}</h2><label for="wp-answer">${text('Cavabın','Your answer')}</label><textarea id="wp-answer" maxlength="${exam.answerMax}" aria-describedby="wp-save wp-count" aria-labelledby="wp-question">${esc(answer)}</textarea><div class="wp-top wp-muted"><span id="wp-save" role="status">${text('Cavab hər dəqiqə və sahədən çıxdıqda saxlanılır.','Saved every minute and when you leave the answer field.')}</span><span id="wp-count">${answer.length} / ${exam.answerMax}</span></div><div class="wp-actions">${button('next',exam.current+1===exam.questions.length?text('Bitir və AI ilə yoxla','Finish and grade with AI'):text('Saxla və növbəti suala keç','Save and next question'),true)}${exam.current+1<exam.questions.length?button('finish',text('İndi bitir və AI ilə yoxla','Finish now and grade with AI')):''}${button('save',text('Cavabı saxla','Save answer'))}</div><p class="wp-muted">${text('Vaxt bitdikdə son saxlanmış cavab kilidlənir. İnternet bağlantısını açıq saxla.','When time expires, the last saved answer is locked. Keep your internet connection active.')}</p></div><div class="wp-actions">${button('abandon',text('Sınağı ləğv et','Abandon exam'))}</div>`;
     } else if (exam.status === 'graded') {
-      body = `<div class="wp-card"><h2>${text('Sınaq nəticəsi','Practice results')}</h2><p class="wp-score">${exam.total===null?text('Yoxlama natamamdır','Evaluation incomplete'):esc(exam.total)+' / '+exam.maxScore}</p><p>${text('AI qiymətləndirməsi məşq üçündür və səhv ola bilər. Rəsmi qiymət deyil.','AI grading is for practice and may be incorrect. It is not an official grade.')}</p>${exam.total===null?`<p>${text('Ən azı bir cavab üçün etibarlı bal hesablana bilmədi. Yekun bal göstərilmir.','At least one answer could not be reliably graded. No total is shown.')}</p>`:''}${button('new',text('Yeni sınaq','New practice'),true)}</div>`;
-      body += exam.questions.map((q,i)=>`<article class="wp-card"><p class="wp-muted">${text('Sual','Question')} ${i+1}</p><h3>${esc(q.title)}</h3><strong>${q.result?.score===null?text('Qiymətləndirilmədi','Not graded'):esc(q.result?.score)+' / 10'}</strong><p>${esc(q.result?.feedback)}</p>${q.result?.missing?.length?`<ul>${q.result.missing.map(s=>`<li>${esc(s)}</li>`).join('')}</ul>`:''}<details><summary>${text('Cavabın və mənbə','Your answer and source')}</summary><div class="wp-answer">${esc(q.answer||text('Cavab yazılmayıb.','No answer submitted.'))}</div>${q.result?.quote?`<blockquote>${esc(q.result.quote)}</blockquote>`:''}<a class="wp-source" href="${esc(exam.source.url)}#page=${Number(q.page)||1}" target="_blank" rel="noopener">${esc(exam.source.file)} · ${text('səhifə','page')} ${Number(q.page)||1}</a></details></article>`).join('');
+      body = `<div class="wp-card"><h2>${text('Sınaq nəticəsi','Practice results')}</h2><p class="wp-score">${exam.total===null?text('Yoxlama natamamdır','Evaluation incomplete'):esc(exam.total)+' / '+exam.maxScore}</p><p>${text('AI qiymətləndirməsi məşq üçündür və səhv ola bilər. Rəsmi qiymət deyil.','AI grading is for practice and may be incorrect. It is not an official grade.')}</p>${exam.total===null?`<p>${text('Ən azı bir cavab üçün etibarlı bal hesablana bilmədi. Yekun bal göstərilmir.','At least one answer could not be reliably graded. No total is shown.')}</p>`:''}<p>${dashboardSaved?text('Nəticə Dashboard-da saxlanıldı.','Result saved to Dashboard.'):text('Nəticəni Dashboard-a saxlamaq üçün yenidən cəhd et.','Retry saving this result to Dashboard.')}</p>${!dashboardSaved?button('grade',text('Dashboard-a saxla','Save to Dashboard')):''}${button('new',text('Yeni sınaq','New practice'),true)}</div>`;
+      body += exam.questions.map((q,i)=>`<article class="wp-card"><p class="wp-muted">${text('Sual','Question')} ${i+1}</p><h3>${esc(q.title)}</h3><strong>${q.result?.score===null?text('Qiymətləndirilmədi','Not graded'):esc(q.result?.score)+' / 10'}</strong><p>${esc(q.result?.feedback)}</p>${q.result?.missing?.length?`<ul>${q.result.missing.map(s=>`<li>${esc(s)}</li>`).join('')}</ul>`:''}<details><summary>${text('Cavabın və mənbə','Your answer and source')}</summary><div class="wp-answer">${esc(q.answer||text('Cavab yazılmayıb.','No answer submitted.'))}</div>${q.result?.quote?`<blockquote>${esc(q.result.quote)}</blockquote>`:''}${exam.source.private?`<span class="wp-source">${esc(exam.source.file)} · ${text('səhifə','page')} ${Number(q.page)||1}</span>`:`<a class="wp-source" href="${esc(exam.source.url)}#page=${Number(q.page)||1}" target="_blank" rel="noopener">${esc(exam.source.file)} · ${text('səhifə','page')} ${Number(q.page)||1}</a>`}</details></article>`).join('');
     } else {
       body = `<div class="wp-card"><h2>${text('Cavablar yoxlanılır','Grading your answers')}</h2><p>${exam.graded} / ${exam.questions.length}</p><progress max="${exam.questions.length}" value="${exam.graded}" aria-label="${text('Yoxlama','Grading')}"></progress><p>${text('Hər sual ayrıca yoxlanılır. Bu səhifəni bağlasan, sonra eyni sınağın yoxlamasına davam edə bilərsən.','Questions are graded individually. You can close this page and resume grading the same exam later.')}</p><p id="wp-retry" role="status"></p><div class="wp-actions">${button('grade',text('Yoxlamanı davam etdir','Resume grading'),true)}${button('abandon',text('Sınağı ləğv et','Abandon exam'))}</div></div>`;
     }
@@ -112,7 +115,7 @@
       let data=await api('status',storage.get(pointerKey())||{});
       if([404,410].includes(data.status)){storage.del(pointerKey());data=await api('status');}
       if(data.ok){apply(data);loaded=true;notice('');render();if(exam&&['ready','grading'].includes(exam.status))queueGrade(100);}
-      else notice(errorText(data.error));
+      else{if(data.exam){apply(data);loaded=true;render();}notice(errorText(data.error));}
     } catch(e){if(generation===epoch)notice(errorText(e.code));}
     finally {if(generation===epoch){setBusy(false);if(!loaded)render();}}
   }
@@ -173,13 +176,14 @@
     const next=user()?.uid||'';if(next===uid){route();return;}
     stash();if(uid)clearDrafts(uid);uid=next;epoch++;exam=null;usage=null;enabled=false;loaded=false;busy=false;dirty=false;pending=null;message='';clearTimeout(retryTimer);route();
   }
-  window.WrittenPractice={setMode(value){
+  window.WrittenPractice={choosePrivate(value){subject=text('Şəxsi PDF','My PDF');source=value.id;pending=null;this.setMode('written');render();},setMode(value){
     if(value==='written'&&typeof testState!=='undefined'&&testState.currentQuiz.length&&!testState.result){if(!confirm(t('testExitConfirm')))return;resetTest();}
     stash();window.UNEC.go('/tests'+(value==='written'?'?mode=written':''));
   },refresh};
   window.addEventListener('unec:routechange',route);window.addEventListener('unec:authchange',auth);
   window.addEventListener('unec:langchange',()=>{stash();render();});
   document.addEventListener('DOMContentLoaded',()=>{auth();route();});
+  window.addEventListener('unec:privatepdf',()=>{if(visible()&&!exam)render();});
   document.addEventListener('visibilitychange',()=>{if(document.hidden){stash();if(dirty&&!busy&&exam?.status==='active')act('save');}else if(visible()&&!busy&&uid)refresh();});
   window.addEventListener('pagehide',stash);
   setInterval(tick,1000);setInterval(()=>{if(visible()&&dirty&&!busy&&exam?.status==='active')act('save');},60000);

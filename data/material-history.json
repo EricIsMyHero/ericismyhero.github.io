@@ -1,5 +1,5 @@
 {
-  "assetCount": 134,
+  "assetCount": 136,
   "dateBasis": "Git committer timestamps with timezone; historical upload lineage when verified, otherwise first catalog reference or an explicit maintainer timestamp.",
   "materials": {
     "pdf-extra/adiaktest1.pdf": {
@@ -857,8 +857,15 @@
       "sourceCommit": "eb39703a82a1df23da39e0f14c093f4cac172091",
       "sourcePath": "pdf/mikroiqt3.pdf"
     },
-    "pdf/mikroiqt4.pdf": {
+    "pdf/mikroiqtkollek1.pdf": {
       "addedAt": "2026-11-09T17:47:30+04:00",
+      "note": "Maintainer-supplied timestamp; not inferred from a Git upload.",
+      "source": "explicit",
+      "sourceCommit": null,
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/mikroiqtkollek2.pdf": {
+      "addedAt": "2026-11-14T12:50:30+04:00",
       "note": "Maintainer-supplied timestamp; not inferred from a Git upload.",
       "source": "explicit",
       "sourceCommit": null,
@@ -1268,6 +1275,13 @@
       "sourceCommit": null,
       "sourcePath": "pdfs.js"
     },
+    "pdf/tetbiqistatistika1.pdf": {
+      "addedAt": "2026-11-14T12:50:48+04:00",
+      "note": "Maintainer-supplied timestamp; not inferred from a Git upload.",
+      "source": "explicit",
+      "sourceCommit": null,
+      "sourcePath": "pdfs.js"
+    },
     "pdf/umumiekologiya1.pdf": {
       "addedAt": "2026-04-23T12:16:36+04:00",
       "catalogFirst": {
@@ -1385,6 +1399,6 @@
       "sourcePath": "pdf/yonetimorganizasyonQ25.pdf"
     }
   },
-  "recordCount": 144,
+  "recordCount": 146,
   "schemaVersion": 1
 }

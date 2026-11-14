@@ -9,7 +9,7 @@ const initialTasks = uid => [
   ...['material_requests', 'subject_chats', 'pdf_ratings', 'push_tokens', 'push_log', 'donations', 'premium_codes'].map(path => ({ type: 'scan', path })),
   { type: 'scan', path: 'analytics/pdf_opens/events' },
   { type: 'scan', path: 'analytics/teacher_ratings/reviews' },
-  { type: 'delete', path: usagePath(uid) }, { type: 'tree', path: `users/${uid}` },
+  { type: 'tree', path: usagePath(uid) }, { type: 'tree', path: `users/${uid}` },
 ];
 
 export function recentLogin(token, uid, now = Date.now()) {
@@ -97,6 +97,7 @@ export async function accountAction(action, b, env = process.env, services = {})
       account: user, scope: 'Account profile and private study records; public discussions are not included.',
       records: await exportProfile(user.uid, db, env),
       writtenPractice: (await db.getDoc(usagePath(user.uid), env))?.data.written || null,
+      privatePdfSources: (await db.listDocs(usagePath(user.uid)+'/practice_sources', {pageSize:2}, env)).docs.map(d=>d.data),
     } };
     if (b.confirm !== 'DELETE') return { status: 400, json: { error: 'confirmation_required' } };
     if (!recentLogin(b.idToken, user.uid)) return { status: 403, json: { error: 'recent_login_required' } };

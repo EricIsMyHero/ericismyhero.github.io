@@ -37,10 +37,11 @@ export function writtenQuestions(lines) {
   return {questions,detected:starts.length,skipped};
 }
 
-export async function parseWrittenPdf(bytes) {
-  const {getDocumentProxy}=await import('unpdf');
+export async function parseWrittenPdf(bytes, {includeText=false}={}) {
+  const {getDocumentProxy,getResolvedPDFJS}=await import('unpdf');
+  const ops=includeText?(await getResolvedPDFJS()).OPS:null;
   const pdf=await getDocumentProxy(new Uint8Array(bytes),{isEvalSupported:false,maxImageSize:16_777_216});
-  const lines=[], deadline=Date.now()+25000;
+  const lines=[], textPages=[], deadline=Date.now()+25000;
   try {
     if(pdf.numPages>250)throw new Error('source_too_large');
     for(let n=1;n<=pdf.numPages;n++) {
@@ -61,10 +62,16 @@ export async function parseWrittenPdf(bytes) {
         return {text:normalize(text),page:n,size:Math.round(Math.abs(dominant.transform[3])*10)/10,font:dominant.fontName};
       });
       const toc=pageLines.some(l=>/^(?:mündəricat|sual xəritəsi|contents|table of contents)/iu.test(l.text)) || pageLines.filter(l=>/(?:\.\s*){6,}/.test(l.text)).length>=3;
-      lines.push(...pageLines.map(l=>({...l,toc})));page.cleanup();
+      lines.push(...pageLines.map(l=>({...l,toc})));
+      if(includeText){
+        const operators=await page.getOperatorList();
+        const images=operators.fnArray.some(op=>[ops.paintImageXObject,ops.paintInlineImageXObject,ops.paintImageMaskXObject,ops.paintImageXObjectRepeat,ops.paintInlineImageXObjectGroup].includes(op));
+        textPages.push(images?'[UNEC_PDF_IMAGE]':pageLines.map(l=>l.text).join('\n'));
+      }
+      page.cleanup();
       if(n%5===0)await new Promise(r=>setTimeout(r,0));
     }
-    return {...writtenQuestions(lines),pages:pdf.numPages,sha:crypto.createHash('sha256').update(bytes).digest('hex')};
+    return {...writtenQuestions(lines),...(includeText?{text:textPages.join('\n\f\n')}:{}),pages:pdf.numPages,sha:crypto.createHash('sha256').update(bytes).digest('hex')};
   } finally {await pdf.loadingTask.destroy();}
 }
 const cache=new Map();

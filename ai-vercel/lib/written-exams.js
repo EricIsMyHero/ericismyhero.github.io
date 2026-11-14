@@ -3,6 +3,7 @@ import {getDoc,createDoc,patchDoc} from './firestore.js';
 import {dayKey,usagePath} from './ai.js';
 import {WRITTEN_SOURCES} from './written-sources.js';
 import {loadWrittenPool} from './written-pdf.js';
+import {privateSource,privatePool} from './practice-pdf.js';
 
 export const EXAM_MODES={midterm:{questions:3,maxScore:30},semester:{questions:5,maxScore:50}};
 export const EXAM_LIMIT=3, QUESTION_MS=20*60*1000, ANSWER_MAX=4000;
@@ -10,7 +11,7 @@ const GRACE=5000, validId=/^[a-zA-Z0-9_-]{16,80}$/, validDay=/^\d{4}-\d{2}-\d{2}
 const defaults={get:getDoc,create:createDoc,patch:patchDoc};
 const normalize=s=>String(s||'').normalize('NFC').replace(/\s+/g,' ').trim();
 const err=(error,status=400,extra={})=>Object.assign(new Error(error),{error,status,...extra});
-const publicSource=source=>({id:source.id,name:source.name,subject:source.subject,url:source.url,file:source.file});
+const publicSource=source=>({id:source.id,name:source.name,subject:source.subject,url:source.url,file:source.file,private:!!source.private});
 function recentDays(now){return [dayKey(new Date(now)),dayKey(new Date(now-86400000))];}
 function cloneState(data,now){
   const old=data?.written||{days:{}};
@@ -94,18 +95,26 @@ export async function writtenAction(b,uid,env=process.env,services={}){
   const db=services.db||defaults, now=services.now||Date.now, load=services.load||loadWrittenPool, grade=services.grade||gradeWithGroq;
   try{
     if(!uid)throw err('login_required',401);
+    const resolve=async id=>typeof id==='string'&&id.startsWith('private:')?privateSource(uid,id,env,db,now()):(services.sources||WRITTEN_SOURCES).find(s=>s.id===id);
+    const poolFor=source=>source.private?privatePool(uid,source,env,db,now()):load(source);
+    const persist=async value=>{
+      const exam=value?.exam;if(exam?.status!=='graded')return value;
+      const summary={subject:exam.source.subject,format:'written',mode:exam.mode,source:exam.source.file,personal:!!exam.source.private,score:exam.total,total:exam.maxScore,percent:exam.total===null?null:Math.round(exam.total/exam.maxScore*100),timestamp:new Date(now()),incomplete:exam.total===null};
+      try{await db.create('users/'+uid+'/quiz_results','written-'+exam.id,summary,env);}catch(e){if(e.code!=='exists')throw err('result_save_failed',503,{exam});}
+      return {...value,dashboardSaved:true};
+    };
     if(b.action==='written-status'){
       const doc=await db.get(usagePath(uid),env),state=cloneState(doc?.data,now());let exam=null;
       if(b.examId)exam=examView(findExam(state,b,now()),b.day,now());
       else for(const day of recentDays(now())){const active=state.days[day]?.exams.find(e=>['active','ready','grading'].includes(settleExam(e,now()).status));if(active){exam=examView(active,day,now());break;}}
-      return {status:200,json:{enabled:!!env.GROQ_API_KEY,usage:usage(state,now()),exam}};
+      return {status:200,json:await persist({enabled:!!env.GROQ_API_KEY,usage:usage(state,now()),exam})};
     }
     if(b.action==='written-start'){
       if(!env.GROQ_API_KEY)throw err('grading_unavailable',503);
       if(typeof b.mode!=='string'||!Object.hasOwn(EXAM_MODES,b.mode)||typeof b.requestId!=='string'||!validId.test(b.requestId))throw err('invalid_start');
-      const source=(services.sources||WRITTEN_SOURCES).find(s=>s.id===b.sourceId);if(!source)throw err('invalid_source');
+      const source=await resolve(b.sourceId);if(!source)throw err('invalid_source');
       const previous=await db.get(usagePath(uid),env),same=startCheck(cloneState(previous?.data,now()),b,now());if(same)return {status:200,json:same};
-      const pool=await load(source);
+      const pool=await poolFor(source);
       const count=EXAM_MODES[b.mode].questions;
       if(pool.questions.length<count)throw err('source_not_ready',422,{available:pool.questions.length,required:count});
       const value=await mutate(uid,(state,time)=>{
@@ -148,14 +157,14 @@ export async function writtenAction(b,uid,env=process.env,services={}){
         exam.status='grading';exam.lease={token,until:time+45000,index};
         selected={exam:structuredClone(exam),index};return null;
       },env,db,now);
-      if(reserved)return {status:200,json:reserved};
+      if(reserved)return {status:200,json:await persist(reserved)};
       let result,failure;
       try{
         const answer=selected.exam.answers[selected.index];
         if(!answer.trim())result={score:0,feedback:selected.exam.lang==='en'?'No answer was submitted.':'Cavab yazılmayıb.',missing:[],quote:''};
         else{
-          const source=(services.sources||WRITTEN_SOURCES).find(s=>s.id===selected.exam.source.id);if(!source)throw err('source_changed',422);
-          const pool=await load(source),question=pool.questions.find(q=>q.id===selected.exam.questions[selected.index].id);
+          const source=await resolve(selected.exam.source.id);if(!source)throw err('source_changed',422);
+          const pool=await poolFor(source),question=pool.questions.find(q=>q.id===selected.exam.questions[selected.index].id);
           if(pool.sha!==selected.exam.source.sha||!question)throw err('source_changed',422);
           result=await grade(question,answer,selected.exam.lang,env);
           // Validate mock/provider implementations at the same boundary as production.
@@ -172,7 +181,7 @@ export async function writtenAction(b,uid,env=process.env,services={}){
         exam.retryAt=0;if(exam.results.every(Boolean))exam.status='graded';
         return {exam:examView(exam,b.day,time),usage:usage(state,time)};
       },env,db,now);
-      return {status:value.error?(failure.status||503):200,json:value};
+      return {status:value.error?(failure.status||503):200,json:await persist(value)};
     }
     throw err('invalid_action');
   }catch(e){return {status:e.status||503,json:{error:e.error||'written_unavailable',...(e.retryAfter?{retryAfter:e.retryAfter}:{}),...(e.usage?{usage:e.usage}:{}),...(e.exam?{exam:e.exam}:{}),...(e.available!==undefined?{available:e.available,required:e.required}:{})}};}
