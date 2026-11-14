@@ -3324,7 +3324,7 @@ function renderSemesterTable(semKey, subjects) {
     return `<tr data-curr-index="${index}" role="row" class="${completed ? 'is-complete' : ''}">
       <td role="cell" class="curr-td-name"><div class="curr-subject-main">
         <label class="curr-complete-control"><input type="checkbox" ${completed ? 'checked' : ''} aria-label="${_currEsc(t('currMarkCompleted') + ': ' + s.name)}" onchange="toggleCurriculumCompleted(${semester},${index},this.checked)"></label>
-        <div class="curr-subject-body"><span class="curr-subject-name">${_currEsc(s.name)}</span><small class="curr-complete-state" ${completed ? '' : 'hidden'}>${_currEsc(t('currCompleted'))}</small>${curriculumMaterialsHTML(s, semester, index)}</div>
+        <div class="curr-subject-body"><span class="curr-subject-name">${_currEsc(s.name)}</span><small class="curr-complete-state" ${completed ? '' : 'hidden'}>${_currEsc(t('currCompleted'))}</small></div>
       </div></td>
       <td role="cell" data-label="${_currEsc(lbl.credit)}"><span class="curr-badge curr-badge--credit">${s.credit}</span></td>
       <td role="cell" data-label="${_currEsc(lbl.absence)}"><span class="curr-badge curr-badge--absence${s.absenceLimit <= 1 && s.absenceLimit > 0 ? ' warn' : ''}">${s.absenceLimit || '—'}</span></td>
@@ -3339,44 +3339,6 @@ function curriculumSubjectMatches(subject, query) {
   const normalize = s => window.UNEC.normAz(String(s));
   const hay = normalize([subject.name, subject.code, ...(subject.codes || [])].filter(Boolean).join(' '));
   return normalize(query).split(' ').filter(Boolean).every(token => hay.includes(token));
-}
-
-function curriculumMaterialsFor(subject) {
-  const U = window.UNEC;
-  if (!U?.getIndex) return [];
-  const codes = new Set([subject.code, ...(subject.codes || [])].filter(Boolean).map(c => String(c).trim()));
-  const name = canonSubjectName(subject.name);
-  const seen = new Set();
-  return U.getIndex().flatMap(m => {
-    if (m.kind !== 'pdf' || seen.has(m.favKey)) return [];
-    const match = (m.aliases || [m]).find(a => !isTudifakSubject(a.subject, a.subjObj) &&
-      (codes.has(String(a.code).trim()) || canonSubjectName(a.subject) === name));
-    if (!match) return [];
-    seen.add(m.favKey);
-    return [{ ...m, ...match }];
-  });
-}
-
-function curriculumMaterialsHTML(subject, semester, index) {
-  const entries = curriculumMaterialsFor(subject);
-  if (!entries.length) return `<span class="curr-no-materials">${_currEsc(t('currNoMaterials'))}</span>`;
-  const label = `${t('currMaterials')} (${entries.length})`;
-  const groups = new Set(entries.map(m => m.subject));
-  if (groups.size === 1) {
-    const m = entries[0];
-    return `<a class="curr-material-link" href="${window.UNEC.subjectHref(m.subject)}" aria-label="${_currEsc(t('currMaterials') + ': ' + subject.name)}">${_currEsc(label)} →</a>`;
-  }
-  return `<button type="button" class="curr-material-link" onclick="openCurriculumMaterials(${semester}, ${index}, this)" aria-haspopup="dialog" aria-label="${_currEsc(t('currMaterials') + ': ' + subject.name)}">${_currEsc(label)} →</button>`;
-}
-
-function openCurriculumMaterials(semester, index, opener) {
-  const subject = CURRICULUM_DATA[getSavedSpecialty()]?.[`semester${semester}`]?.[index];
-  if (!subject) return;
-  const entries = curriculumMaterialsFor(subject);
-  document.getElementById('currMaterialsTitle').textContent = subject.name;
-  document.getElementById('currMaterialsList').innerHTML = entries.map(window.UNEC.matCardHTML).join('');
-  window.UNEC.openSheet('sheet-curr-materials', opener);
-  window.UNEC.fetchRatings(entries);
 }
 
 function searchCurriculum(query) {

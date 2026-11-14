@@ -1019,10 +1019,6 @@ body.in-quiz[data-route="tests"] #ai-button { opacity: 0; visibility: hidden; po
 .curr-badge { display: inline-grid; place-items: center; min-width: 34px; height: 28px; padding: 0 8px; border-radius: 9px; background: var(--color-surface-inner); color: var(--color-text-primary); font-size: var(--fs-sm); font-weight: 700; font-variant-numeric: tabular-nums; }
 .curr-badge--credit { background: var(--color-primary-soft); }
 .curr-badge--absence.warn { background: color-mix(in srgb, var(--color-danger) 16%, transparent); }
-.curr-material-link { display: inline-flex; align-items: center; min-height: 36px; margin-top: 6px; padding: 4px 0; border: 0; background: none; color: var(--accent2); font: inherit; font-size: var(--fs-xs); font-weight: 600; text-decoration: none; cursor: pointer; }
-.curr-material-link:hover { text-decoration: underline; }
-.curr-no-materials { display: block; margin-top: 8px; color: var(--color-text-muted); font-size: var(--fs-xs); font-weight: 400; }
-.curr-materials-list { display: grid; gap: 12px; }
 .curr-codes { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
 .curr-td-code .curr-codes { justify-content: center; margin-top: 0; }
 .curr-plan-source { margin: 20px 0 0; padding: 0 4px; color: var(--color-text-secondary); }
