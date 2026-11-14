@@ -1,5 +1,5 @@
 // Public application shell only. Never cache APIs, credentials or remote PDFs.
-importScripts('/offline-assets.js?v=20261114-practice');
+importScripts('/offline-assets.js?v=20261114-flat');
 const CACHE = 'unec-static-' + self.UNEC_OFFLINE.version;
 const PUBLIC_PATHS = new Set(self.UNEC_OFFLINE.assets.map(url => new URL(url, self.location.origin).pathname));
 self.addEventListener('install', event => event.waitUntil((async () => {

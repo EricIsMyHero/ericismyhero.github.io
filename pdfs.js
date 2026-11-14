@@ -1,10 +1,6 @@
-// Historical course containers are retained only for existing rating/chat/link identities.
-// Material navigation uses a unified subject catalogue; curriculum placement comes from curriculum.js.
-// ============================================================
-// Hər fənnə mütləq "type" yazın: "test" və ya "yazili"
-// semester sahələri köhnə identifikator məlumatlarıdır; tədris yeri ixtisas planından gəlir.
-// subjects altında: { type: "test", code: "00016", pdfs: [...] }
-// ============================================================
+// Main PDFs and extra materials are edited separately, in Azerbaijani A–Z order.
+// Course placement comes from the selected major’s curriculum, not this catalogue.
+// type: "test" or "yazili". Keep addedAt when moving or renaming an entry.
 
 const R2_BASE = "https://pub-2179773f096a4b76a772ec1317daec99.r2.dev/";
 const BASE = R2_BASE;
@@ -23,432 +19,508 @@ const PDF_TYPES = {
 };
 
 const data = {
-  "1-ci kurs": {
-    icon: "menu_book",
+  Materiallar: {
     subjects: {
-      "Xətti cəbr və riyazi analiz": {
-        type: "test", semester: 1, code: "00056", pdfs: [
-          { name: "Xətti Cəbr və Riyazi Analiz Q26", file: "xcraQ26.pdf", pdfType: "semester", addedAt: "2026-04-10T22:09:52+04:00"}
-        ]
-      },
-      "İKT - Baza kompüter bilikləri": {
-        type: "test", semester: 1, code: "00016", pdfs: [
-          { name: "İKT - Baza Kompüter Bilikləri Q26", file: "iktQ26.pdf", pdfType: "semester", addedAt: "2026-04-10T22:09:52+04:00"},
-          { name: "İKT - Baza Kompüter Bilikləri Q25", file: "iktQ25.pdf", pdfType: "semester", addedAt: "2026-04-22T11:24:59+04:00"}
-        ]
-      },
-      "Azərbaycanın tarixi": {
-        type: "test", semester: 1, code: "00005", pdfs: [
-          { name: "Azərbaycanın Tarixi Q26", file: "aztarixiQ26.pdf", pdfType: "semester", addedAt: "2026-04-10T22:09:52+04:00"}
-        ]
-      },
-      "Karyera planlaması": {
-        type: "test", semester: 1, code: "01223", pdfs: [
-          { name: "Karyera Planlaması Q26", file: "karyeraQ26.pdf", pdfType: "semester", addedAt: "2026-04-10T22:09:52+04:00"},
-          { name: "Karyera Planlaması Q25", file: "karyeraQ25.pdf", pdfType: "semester", addedAt: "2026-04-22T11:24:59+04:00"}
-        ]
-      },
-      "Xarici dildə işgüzar və akademik kommunikasiya A1": {
-        type: "test", semester: 1, code: "01222", pdfs: [
-          { name: "White Death A1", file: "whitedeathA1.pdf", pdfType: "midterm", addedAt: "2026-04-16T14:12:05+04:00"},
-          { name: "Xdiak Complain Letter", file: "xdiakcomplainletter.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:57+04:00"},
-          { name: "Xdiak Request Letter", file: "xdiakrequestletter.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:57+04:00"}
-        ]
-      },
-      "Riyaziyyat-1": {
-        type: "test", semester: 1, pdfs: [
-          { name: "Riyaziyyat-1 Q24", file: "riyaziyyat1Q24.pdf", pdfType: "semester", addedAt: "2026-04-23T12:16:36+04:00"}
-        ]
-      },
-      "Hidrologiya": {
-        type: "yazili", semester: 1, pdfs: [
-          { name: "Hidrologiya", file: "hidrologiya1.pdf", pdfType: "semester", addedAt: "2026-04-23T12:15:41+04:00"}
-        ]
-      },
-      "Fizikanın əsasları": {
-        type: "yazili", semester: 1, code: "00014", pdfs: [
-          { name: "Fizikanın Əsasları", file: "fizikaninesaslarikollek1.pdf", pdfType: "midterm", addedAt: "2026-04-23T12:15:41+04:00"}
-        ]
-      },
-      "Ümumi kimya": {
-        type: "yazili", semester: 1, code: "00051", pdfs: [
-          { name: "Ümumi Kimya", file: "umumikimyakollek1.pdf", pdfType: "midterm", addedAt: "2026-04-23T12:17:49+04:00"},
-          { name: "Ümumi Kimya - 36-75", file: "umumikimya36-75.pdf", pdfType: "semester", addedAt: "2026-04-23T12:17:49+04:00"}
-        ]
-      },
-      "Ehtimal nəzəriyyəsi və riyazi statistika": {
-        type: "test", semester: 2, code: "00071", pdfs: [
-          { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika Y26", file: "enrsY26.pdf", pdfType: "semester", addedAt: "2026-06-20T20:00:38+04:00"},
-          { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika Y25", file: "enrsY25.pdf", pdfType: "semester", addedAt: "2026-04-10T22:26:33+04:00"},
-          { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika Y23", file: "enrsY23.pdf", pdfType: "semester", addedAt: "2026-04-10T22:26:33+04:00"}
-        ]
-      },
-      "Xarici dildə işgüzar və akademik kommunikasiya A2": {
-        type: "test", semester: 2, code: "00122", pdfs: [
-          { name: "Robinson Crusoe A2", file: "robinsoncrusoeA2.pdf", pdfType: "midterm", addedAt: "2026-04-14T20:38:42+04:00"},
-          { name: "Xdiak Complain Letter", file: "xdiakcomplainletter.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:57+04:00"},
-          { name: "Xdiak Request Letter", file: "xdiakrequestletter.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:57+04:00"}
-        ]
-      },
-      "Azərbaycan dilində işgüzar və akademik kommunikasiya": {
-        type: "test", semester: 2, code: "00004", pdfs: [
-          { name: "ADİAK Y26", file: "adiakY26.pdf", pdfType: "semester", addedAt: "2026-06-20T20:00:38+04:00"},
-          { name: "ADİAK Q26", file: "adiakQ26.pdf", pdfType: "semester", addedAt: "2026-04-10T22:58:41+04:00"},
-          { name: "ADİAK Y25", file: "adiakY25.pdf", pdfType: "semester", addedAt: "2026-04-10T22:58:41+04:00"},
-          { name: "ADİAK Y23", file: "adiakY23.pdf", pdfType: "semester", addedAt: "2026-04-10T22:58:41+04:00"}
-        ]
-      },
-      "Yumşaq bacarıqlar (Soft skills)": {
-        type: "test", semester: 2, code: "01224", pdfs: [
-          { name: "Soft Skills Y26", file: "softskillsY26.pdf", pdfType: "semester", addedAt: "2026-06-20T20:00:38+04:00"},
-          { name: "Soft Skills Y25", file: "softskillsY25.pdf", pdfType: "semester", addedAt: "2026-04-10T22:26:33+04:00"}
-        ]
-      },
-      "İqtisadiyyata giriş": {
-        type: "yazili", semester: 2, code: "00021", pdfs: [
-          { name: "İqtisadiyyata Giriş", file: "iqtisadiyyat1.pdf", pdfType: "semester", addedAt: "2026-04-10T22:43:40+04:00"},
-          { name: "İqtisadiyyata Giriş", file: "iqtisadiyyat2.pdf", pdfType: "semester", addedAt: "2026-05-24T17:26:22+04:00"}
-        ]
-      },
-      "Mülki müdafiə": {
-        type: "test", semester: 2, code: "00034", pdfs: [
-          { name: "Mülki Müdafiə Q26", file: "mulkimudafieQ26.pdf", pdfType: "semester", addedAt: "2026-04-22T11:24:59+04:00"},
-          { name: "Mülki Müdafiə Y24", file: "mulkimudafieY24.pdf", pdfType: "semester", addedAt: "2026-04-22T11:24:59+04:00"},
-          { name: "Mülki Müdafiə Q23", file: "mulkimudafieQ23.pdf", pdfType: "semester", addedAt: "2026-04-22T23:06:04+04:00"}
-        ]
-      },
-      "Mühəndis qrafikası": {
-        type: "yazili", semester: 2, pdfs: [
-          { name: "Mühəndis Qrafikası", file: "muhendisqrafikasi1.pdf", pdfType: "semester", addedAt: "2026-04-23T12:15:41+04:00"}
-        ]
-      },
-      "Ümumi ekologiya": {
-        type: "yazili", semester: 2, pdfs: [
-          { name: "Ümumi Ekologiya", file: "umumiekologiya1.pdf", pdfType: "semester", addedAt: "2026-04-23T12:16:36+04:00"}
-        ]
-      },
-      "Riyaziyyat-2": {
-        type: "yazili", semester: 2, pdfs: [
-          { name: "Riyaziyyat-2 Y25", file: "riyaziyyat2Y25.pdf", pdfType: "semester", addedAt: "2026-04-23T12:16:36+04:00"}
-        ]
-      },
       "Analitik kimya və instrumental analiz": {
-        type: "yazili", semester: 2, pdfs: [
-          { name: "Analitik Kimya və İnstrumental Analiz", file: "akiakollek1.pdf", pdfType: "midterm", addedAt: "2026-04-23T12:15:41+04:00"}
+        type: "yazili",
+        pdfs: [
+          { name: "Analitik Kimya və İnstrumental Analiz", file: "akiakollek1.pdf", pdfType: "midterm", addedAt: "2026-04-23T12:15:41+04:00" }
         ]
       },
-      "Sosial işdə idarəetmə": {
-        type: "yazili", semester: 2, pdfs: [
-          { name: "Sosial İşdə İdarəetmə", file: "sosialisdeidareetmekollek1.pdf", pdfType: "midterm", addedAt: "2026-04-24T17:55:19+04:00"}
+      "AR Konstitusiyası və hüququn əsasları": {
+        type: "test",
+        code: "00149",
+        pdfs: [
+          { name: "AR Konstitusiyası və Hüququn Əsasları", file: "arkonstitusiyaQ23.pdf", pdfType: "semester", addedAt: "2026-10-08T16:12:24+04:00" },
+          { name: "AR Konstitusiyası və Hüququn Əsasları", file: "arkonstitusiyaQ24.pdf", pdfType: "semester", addedAt: "2026-10-08T16:12:24+04:00" }
         ]
       },
-      "Sosial iş təcrübəsində etik prinsiplər": {
-        type: "yazili", semester: 2, pdfs: [
-          { name: "Sosial İş Təcrübəsində Etik Prinsiplər", file: "sitep1.pdf", pdfType: "semester", addedAt: "2026-06-04T21:43:14+04:00"},
-          { name: "Sosial İş Təcrübəsində Etik Prinsiplər", file: "sitepkollek1.pdf", pdfType: "midterm", addedAt: "2026-04-24T17:55:19+04:00"},
-          { name: "Sosial İş Təcrübəsində Etik Prinsiplər", file: "sitepkollek2.pdf", pdfType: "midterm", addedAt: "2026-04-24T17:55:19+04:00"}
-        ]
-      },
-      "Psixologiya": {
-        type: "test", semester: 2, pdfs: [
-          { name: "Psixologiya Y23", file: "psixologiyaY23.pdf", pdfType: "semester", addedAt: "2026-04-24T17:54:10+04:00"},
-          { name: "Psixologiya", file: "psixologiyakollek1.pdf", pdfType: "midterm", addedAt: "2026-04-24T17:54:10+04:00"}
-        ]
-      },
-      "Sosial işin nəzəriyyəsi və təcrübəsi-2": {
-        type: "yazili", semester: 2, pdfs: [
-          { name: "Sosial işin nəzəriyyəsi və təcrübəsi-2", file: "sint1.pdf", pdfType: "semester", addedAt: "2026-04-24T17:54:10+04:00"},
-          { name: "Sosial işin nəzəriyyəsi və təcrübəsi-2", file: "sintkollek1.pdf", pdfType: "midterm", addedAt: "2026-04-24T17:54:10+04:00"}
-        ]
-      },
-      "Sosial işdə riyazi metodlar": {
-        type: "test", semester: 2, pdfs: [
-          { name: "Sosial İşdə Riyazi Metodlar", file: "sirmkollek1.pdf", pdfType: "midterm", addedAt: "2026-04-24T17:55:19+04:00"}
-        ]
-      },
-      "Liner cebir ve matematiksel analiz": {
-        type: "test", semester: 1, code: "00056", pdfs: [
-          { name: "Liner Cebir ve Matematiksel Analiz Q26", file: "lcmaQ26.pdf", pdfType: "semester", addedAt: "2026-04-10T22:43:40+04:00"},
-          { name: "Liner Cebir ve Matematiksel Analiz Q23", file: "lcmaQ23.pdf", pdfType: "semester", addedAt: "2026-04-10T23:14:15+04:00"}
+      Audit: {
+        type: "yazili",
+        code: "00152",
+        pdfs: [
+          { name: "Audit", file: "audit1.pdf", pdfType: "midterm", addedAt: "2026-11-09T18:10:41+04:00" }
         ]
       },
       "Azerbaycanın tarihi": {
-        type: "test", semester: 1, code: "00005", pdfs: [
-          { name: "Azerbaycanın Tarihi Q26", file: "aztarixiQ26.pdf", pdfType: "semester", addedAt: "2026-04-10T22:09:52+04:00"},
-          { name: "Azerbaycanın Tarihi Q25", file: "aztarihiQ25.pdf", pdfType: "semester", addedAt: "2026-04-11T22:48:09+04:00"}
+        type: "test",
+        code: "00005",
+        pdfs: [
+          { name: "Azerbaycanın Tarihi Q25", file: "aztarihiQ25.pdf", pdfType: "semester", addedAt: "2026-04-11T22:48:09+04:00" },
+          { name: "Azerbaycanın Tarihi Q26", file: "aztarixiQ26.pdf", pdfType: "semester", addedAt: "2026-04-10T22:09:52+04:00" }
         ]
       },
-      "Bilgi işlem teknolojileri": {
-        type: "test", semester: 1, code: "00016", pdfs: [
-          { name: "Bilgi İşlem Teknolojileri", file: "bit1.pdf", pdfType: "semester", addedAt: "2026-04-10T23:17:50+04:00"}
-        ]
-      },
-      "Yönetim ve organizasyon": {
-        type: "test", semester: 1, pdfs: [
-          { name: "Yönetim ve Organizasyon Q25", file: "yonetimorganizasyonQ25.pdf", pdfType: "semester", addedAt: "2026-04-10T23:17:50+04:00"}
-        ]
-      },
-      "Olasılık teorisi ve matematiksel istatistik": {
-        type: "test", semester: 2, code: "00071", pdfs: [
-          { name: "Olasılık Teorisi ve Matematiksel İstatistik Y26", file: "otmiY26.pdf", pdfType: "semester", addedAt: "2026-04-22T11:24:59+04:00"}
-        ]
-      }
-    }
-  },
-  "2-ci kurs": {
-    icon: "menu_book",
-    subjects: {
-      "Biznes hüququ": {
-        type: "yazili", semester: 1, code: "00195", pdfs: [
-          { name: "Biznes Hüququ", file: "bizneshuququ1.pdf", pdfType: "semester", addedAt: "2026-11-09T18:10:41+04:00"},
-          { name: "Biznes Hüququ", file: "bizneshuququkollek1.pdf", pdfType: "midterm", addedAt: "2026-11-09T18:10:41+04:00"}
-        ]
-      },
-      "Mikroiqtisadiyyat": {
-        type: "yazili", semester: 1, code: "00591", pdfs: [
-          { name: "Mikroiqtisadiyyat", file: "mikroiqt1.pdf", pdfType: "old", addedAt: "2026-04-11T13:20:30+04:00"},
-          { name: "Mikroiqtisadiyyat ", file: "mikroiqt2.pdf", pdfType: "old", addedAt: "2026-04-11T13:20:30+04:00"},
-          { name: "Mikroiqtisadiyyat", file: "mikroiqt3.pdf", pdfType: "old", addedAt: "2026-04-11T13:20:30+04:00"},
-          { name: "Mikroiqtisadiyyat", file: "mikroiqtkollek1.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:30+04:00"},
-          { name: "Mikroiqtisadiyyat", file: "mikroiqtkollek2.pdf", pdfType: "midterm", addedAt: "2026-11-14T12:50:30+04:00"},
-          { name: "Mikroiqtisadiyyat", file: "mikroiqtmesele1.pdf", pdfType: "task", addedAt: "2026-04-11T13:20:30+04:00"},
-          { name: "Mikroiqtisadiyyat", file: "mikroiqtmesele2.pdf", pdfType: "task", addedAt: "2026-04-11T13:20:30+04:00"}
-        ]
-      },
-      "Qiymət siyasəti": {
-        type: "yazili", semester: 1, code: "00710", pdfs: [
-          { name: "Qiymət Siyasəti", file: "qiymet1.pdf", pdfType: "semester", addedAt: "2026-04-11T23:04:48+04:00"},
-          { name: "Qiymət Siyasəti", file: "qiymetkollek1.pdf", pdfType: "midterm", addedAt: "2026-04-11T23:06:15+04:00"}
-        ]
-      },
-      "Tətbiqi statistika": {
-        type: "yazili", semester: 1, code: "00893", pdfs: [
-          { name: "Tətbiqi Statistika", file: "tetbiqistatistika1.pdf", pdfType: "midterm", addedAt: "2026-11-14T12:50:48+04:00"}
-        ]
-      },
-      "Əməyin iqtisadiyyatı": {
-        type: "yazili", semester: 1, code: "00307", pdfs: [
-          { name: "Əməyin İqtisadiyyatı", file: "emek1.pdf", pdfType: "semester", addedAt: "2026-04-11T23:06:15+04:00"},
-          { name: "Əməyin İqtisadiyyatı", file: "emek2.pdf", pdfType: "semester", addedAt: "2026-10-08T15:48:45+04:00"},
-          { name: "Əməyin İqtisadiyyatı", file: "emekkollek1.pdf", pdfType: "midterm", addedAt: "2026-04-11T23:06:15+04:00"},
-          { name: "Əməyin İqtisadiyyatı", file: "emekkollek2.pdf", pdfType: "midterm", addedAt: "2026-11-02T20:25:10+04:00"},
-          { name: "Əməyin İqtisadiyyatı", file: "emekkollek3.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:10+04:00"}
-        ]
-      },
-      "Xarici dildə işgüzar və akademik kommunikasiya B1": {
-        type: "test", semester: 1, code: "00760", pdfs: [
-          { name: "Forrest Gump B1", file: "forrestgumpB1.pdf", pdfType: "midterm", addedAt: "2026-04-22T22:45:57+04:00"},
-          { name: "Xdiak Complain Letter", file: "xdiakcomplainletter.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:57+04:00"},
-          { name: "Xdiak Request Letter", file: "xdiakrequestletter.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:57+04:00"}
-        ]
-      },
-      "Ətraf mühitin iqtisadiyyatı": {
-        type: "yazili", semester: 1, code: "00332", pdfs: [
-          { name: "Ətraf Mühitin İqtisadiyyatı", file: "emi1.pdf", pdfType: "semester", addedAt: "2026-04-11T13:34:34+04:00"},
-          { name: "Ətraf Mühitin İqtisadiyyatı", file: "emi2.pdf", pdfType: "semester", addedAt: "2026-04-11T13:34:34+04:00"},
-          { name: "Ətraf Mühitin İqtisadiyyatı", file: "emi3.pdf", pdfType: "semester", addedAt: "2026-10-08T15:48:45+04:00"},
-          { name: "Ətraf Mühitin İqtisadiyyatı", file: "emikollek1.pdf", pdfType: "midterm", addedAt: "2026-04-11T13:34:34+04:00"},
-          { name: "Ətraf Mühitin İqtisadiyyatı", file: "emikollek2.pdf", pdfType: "midterm", addedAt: "2026-04-11T13:34:34+04:00"}
-        ]
-      }, 
-      "Sosial sahibkarlıq": {
-        type: "test", semester: 1, code: "00823", pdfs: [
-          { name: "Sosial Sahibkarlıq", file: "sosialsahibkarlıgQ26.pdf", pdfType: "semester", addedAt: "2026-06-30T16:53:31+04:00"}
-        ]
-      },
-      "Vergitutma": {
-        type: "yazili", semester: 1, pdfs: [
-          { name: "Vergitutma", file: "vergitutma1.pdf", pdfType: "semester", addedAt: "2026-06-30T16:53:31+04:00"}
+      "Azərbaycan dilində işgüzar və akademik kommunikasiya": {
+        type: "test",
+        code: "00004",
+        pdfs: [
+          { name: "ADİAK Q26", file: "adiakQ26.pdf", pdfType: "semester", addedAt: "2026-04-10T22:58:41+04:00" },
+          { name: "ADİAK Y23", file: "adiakY23.pdf", pdfType: "semester", addedAt: "2026-04-10T22:58:41+04:00" },
+          { name: "ADİAK Y25", file: "adiakY25.pdf", pdfType: "semester", addedAt: "2026-04-10T22:58:41+04:00" },
+          { name: "ADİAK Y26", file: "adiakY26.pdf", pdfType: "semester", addedAt: "2026-06-20T20:00:38+04:00" }
         ]
       },
       "Azərbaycan iqtisadiyyatı": {
-        type: "yazili", semester: 2, code: "00157", pdfs: [
-          { name: "Azərbaycan İqtisadiyyatı", file: "aziqt1.pdf", pdfType: "semester", addedAt: "2026-04-11T22:58:37+04:00"},
-          { name: "Azərbaycan İqtisadiyyatı", file: "aziqt2.pdf", pdfType: "semester", addedAt: "2026-04-11T22:58:37+04:00"},
-          { name: "Azərbaycan İqtisadiyyatı", file: "aziqt3.pdf", pdfType: "semester", addedAt: "2026-04-11T22:58:37+04:00"}
+        type: "yazili",
+        code: "00157",
+        pdfs: [
+          { name: "Azərbaycan İqtisadiyyatı", file: "aziqt1.pdf", pdfType: "semester", addedAt: "2026-04-11T22:58:37+04:00" },
+          { name: "Azərbaycan İqtisadiyyatı", file: "aziqt2.pdf", pdfType: "semester", addedAt: "2026-04-11T22:58:37+04:00" },
+          { name: "Azərbaycan İqtisadiyyatı", file: "aziqt3.pdf", pdfType: "semester", addedAt: "2026-04-11T22:58:37+04:00" }
         ]
       },
-      "Makroiqtisadiyyat": {
-        type: "yazili", semester: 2, code: "00523", pdfs: [
-          { name: "Makroiqtisadiyyat", file: "makroiqt1.pdf", pdfType: "semester", addedAt: "2026-06-20T20:06:54+04:00"},
-          { name: "Makroiqtisadiyyat", file: "makroiqtkollek1.pdf", pdfType: "midterm", addedAt: "2026-04-11T13:02:58+04:00"},
-          { name: "Makroiqtisadiyyat", file: "makroiqtmesele1.pdf", pdfType: "task", addedAt: "2026-04-11T13:02:58+04:00"}
-        ]
-      },
-      "Maliyyə uçotu": {
-        type: "test", semester: 2, code: "00531", pdfs: [
-          { name: "Maliyyə Uçotu Y26", file: "maliyyeY26.pdf", pdfType: "semester", addedAt: "2026-06-27T18:54:40+04:00"},
-          { name: "Maliyyə Uçotu Q26", file: "maliyyeQ26.pdf", pdfType: "semester", addedAt: "2026-04-11T13:34:34+04:00"},
-          { name: "Maliyyə Uçotu", file: "maliyyekollek1.pdf", pdfType: "midterm", addedAt: "2026-04-30T13:52:44+04:00"}
-        ]
-      },
-      "Xarici dildə işgüzar və akademik kommunikasiya B1+": {
-        type: "test", semester: 2, code: "00934", pdfs: [
-          { name: "Sherlock Holmes B1+", file: "sherlockholmesB1+.pdf", pdfType: "midterm", addedAt: "2026-04-22T22:45:57+04:00"},
-          { name: "Xdiak Complain Letter", file: "xdiakcomplainletter.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:57+04:00"},
-          { name: "Xdiak Request Letter", file: "xdiakrequestletter.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:57+04:00"}
-        ]
-      },
-      "İqtisadi fikir tarixi": {
-        type: "yazili", semester: 2, code: "00438", pdfs: [
-          { name: "İqtisadi Fikir Tarixi", file: "iqtfkrtrx1.pdf", pdfType: "semester", addedAt: "2026-06-20T20:00:38+04:00"},
-          { name: "İqtisadi Fikir Tarixi", file: "iqtfkrtrx2.pdf", pdfType: "semester", addedAt: "2026-04-14T20:38:42+04:00"},
-          { name: "İqtisadi Fikir Tarixi", file: "iqtfkrtrx3.pdf", pdfType: "semester", addedAt: "2026-04-14T20:38:42+04:00"},
-          { name: "İqtisadi Fikir Tarixi", file: "iqtfkrtrx4.pdf", pdfType: "semester", addedAt: "2026-04-14T20:38:42+04:00"}
-        ] 
-      },
-      "Maliyyə risklərinin idarə edilməsi": {
-        type: "yazili", semester: 2, pdfs: [
-          { name: "Maliyyə Risklərinin İdarə Edilməsi", file: "mrie1.pdf", pdfType: "semester", addedAt: "2026-06-30T16:53:31+04:00"}
-        ]
-      },
-      "Korporativ maliyyə": {
-        type: "yazili", semester: 2, pdfs: [
-          { name: "Korporativ Maliyyə", file: "korporativmaliyye1.pdf", pdfType: "semester", addedAt: "2026-06-30T16:53:31+04:00"}
-        ]
-      },
-      "Xərclərin idarə edilməsi": { 
-        type: "test", semester: 2, code: "00936", pdfs: [
-          { name: "Xərclərin İdarə Edilməsi Y24", file: "xerclerY24.pdf", pdfType: "semester", addedAt: "2026-04-22T11:24:59+04:00"}
-        ]
-      },
-      "Marketinq": { 
-        type: "test", semester: 2, code: "00532", pdfs: [
-          { name: "Marketinq Y26", file: "marketingY26.pdf", pdfType: "semester", addedAt: "2026-06-29T22:05:53+04:00"}
-        ]
-      }
-    }
-  },
-  "3-cü kurs": {
-    icon: "menu_book",
-    subjects: {
-      "Mülki müdafiə": {
-        type: "test", semester: 1, code: "00034", pdfs: [
-          { name: "Mülki Müdafiə Q26", file: "mulkimudafieQ26.pdf", pdfType: "semester", addedAt: "2026-04-22T11:24:59+04:00"},
-          { name: "Mülki Müdafiə Y25", file: "mulkimudafieY25.pdf", pdfType: "semester", addedAt: "2026-10-08T15:52:26+04:00"},
-          { name: "Mülki Müdafiə Y24", file: "mulkimudafieY24.pdf", pdfType: "semester", addedAt: "2026-04-22T11:24:59+04:00"},
-          { name: "Mülki Müdafiə Q23", file: "mulkimudafieQ23.pdf", pdfType: "semester", addedAt: "2026-04-22T23:06:04+04:00"}
-        ]
-      },
-      "Statistika": {
-        type: "yazili", semester: 1, code: "00837", pdfs: [
-          { name: "Statistika", file: "statistika1.pdf", pdfType: "semester", addedAt: "2026-10-08T15:52:26+04:00"},
-          { name: "Statistika", file: "statistikakollek1.pdf", pdfType: "midterm", addedAt: "2026-11-09T18:10:41+04:00"},
-          { name: "Statistika", file: "statistikamesele1.pdf", pdfType: "task", addedAt: "2026-10-08T15:52:26+04:00"}
-        ]
-      },
-      "Rəqəmsal iqtisadiyyat (Sahə iqtisadiyyatı)": {
-        type: "yazili", semester: 1, code: "00736", pdfs: [
-          { name: "Rəqəmsal İqtisadiyyat", file: "reqemsaliqt1.pdf", pdfType: "semester", addedAt: "2026-10-08T21:54:53+04:00"},
-          { name: "Rəqəmsal İqtisadiyyat", file: "reqemsaliqtkollek1.pdf", pdfType: "midterm", addedAt: "2026-10-31T14:48:53+04:00"},
-          { name: "Rəqəmsal İqtisadiyyat", file: "reqemsaliqtkollek2.pdf", pdfType: "midterm", addedAt: "2026-10-31T14:48:52+04:00"},
-          { name: "Rəqəmsal İqtisadiyyat", file: "reqemsaliqtkollek3.pdf", pdfType: "midterm", addedAt: "2026-10-31T14:48:51+04:00"}
-        ]
-      },
-      "Firmanın iqtisadiyyatı": {
-        type: "test", semester: 1, code: "00345", pdfs: [
-          { name: "Firmanın iqtisadiyyatı", file: "firmaiqtQ26.pdf", pdfType: "semester", addedAt: "2026-10-08T22:20:41+04:00"}
-        ]
-      },
-      "Audit": {
-        type: "yazili", semester: 1, code: "00152", pdfs: [
-          { name: "Audit", file: "audit1.pdf", pdfType: "midterm", addedAt: "2026-11-09T18:10:41+04:00"}
-        ]
-      },
-      "Menecment": {
-        type: "test", semester: 1, code: "00031", pdfs: [
-          { name: "Menecment", file: "menecmentY26.pdf", pdfType: "semester", addedAt: "2026-11-13T19:30:46+04:00"},
-          { name: "Menecment", file: "menecment1.pdf", pdfType: "old", addedAt: "2026-10-08T15:58:46+04:00"},
-          { name: "Menecment", file: "menecment2.pdf", pdfType: "old", addedAt: "2026-10-08T21:54:53+04:00"},
-          { name: "Menecment", file: "menecment3.pdf", pdfType: "old", addedAt: "2026-10-08T21:54:53+04:00"},
-          { name: "Menecment", file: "menecment4.pdf", pdfType: "old", addedAt: "2026-10-08T21:54:53+04:00"},
-          { name: "Menecment", file: "menecmentkollek1.pdf", pdfType: "old", addedAt: "2026-10-08T21:54:53+04:00"}
-        ]
-      },
-      "Beynəlxalq iqtisadiyyat": {
-        type: "yazili", semester: 1, code: "00171", pdfs: [
-          { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqt1.pdf", pdfType: "semester", addedAt: "2026-10-08T21:54:53+04:00"},
-          { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqt2.pdf", pdfType: "semester", addedAt: "2026-10-08T21:54:53+04:00"},
-          { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqt3.pdf", pdfType: "semester", addedAt: "2026-10-08T21:54:53+04:00"},
-          { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqtkollek1.pdf", pdfType: "midterm", addedAt: "2026-10-08T21:54:53+04:00"},
-          { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqtkollek2.pdf", pdfType: "midterm", addedAt: "2026-10-31T14:48:50+04:00"}
-        ]
-      },
-      "Sosial sahələrin iqtisadiyyatı": {
-        type: "yazili", semester: 2, code: "00821", pdfs: [
-          { name: "Sosial Sahələrin İqtisadiyyatı", file: "sosialiqt1.pdf", pdfType: "semester", addedAt: "2026-10-08T15:58:46+04:00"},
-          { name: "Sosial Sahələrin İqtisadiyyatı", file: "sosialiqt2.pdf", pdfType: "semester", addedAt: "2026-10-08T15:58:46+04:00"},
-          { name: "Sosial Sahələrin İqtisadiyyatı", file: "sosialiqt3.pdf", pdfType: "semester", addedAt: "2026-10-08T15:58:46+04:00"},
-          { name: "Sosial Sahələrin İqtisadiyyatı", file: "sosialiqtkollek1.pdf", pdfType: "midterm", addedAt: "2026-10-08T21:54:53+04:00"}
-        ]
-      }, 
-      "Ekonometrika": {
-        type: "yazili", semester: 2, code: "00282", pdfs: [
-          { name: "Ekonometrika", file: "ekonometrika1.pdf", pdfType: "semester", addedAt: "2026-10-08T15:58:46+04:00"},
-          { name: "Ekonometrika", file: "ekonometrikakollek1.pdf", pdfType: "midterm", addedAt: "2026-10-08T15:58:46+04:00"},
-        ]
-      },
-      "Tətbiqi riyaziyyat": {
-        type: "test", semester: 2, code: "00892", pdfs: [
-          { name: "Tətbiqi Riyaziyyat Q25", file: "tetbiqiriyaziyyatQ25.pdf", pdfType: "semester", addedAt: "2026-11-13T19:30:46+04:00"}
+      "Azərbaycanın tarixi": {
+        type: "test",
+        code: "00005",
+        pdfs: [
+          { name: "Azərbaycanın Tarixi Q26", file: "aztarixiQ26.pdf", pdfType: "semester", addedAt: "2026-04-10T22:09:52+04:00" }
         ]
       },
       "Beynəlxalq biznes iqtisadiyyatı": {
-        type: "yazili", semester: 2, code: "00169", pdfs: [
-          { name: "Beynəlxalq Biznes İqtisadiyyatı", file: "beynelxalqbiznes1.pdf", pdfType: "semester", addedAt: "2026-10-08T21:54:53+04:00"},
-          { name: "Beynəlxalq Biznes İqtisadiyyatı", file: "beynelxalqbiznes2.pdf", pdfType: "semester", addedAt: "2026-10-08T21:54:53+04:00"},
-          { name: "Beynəlxalq Biznes İqtisadiyyatı", file: "beynelxalqbizneskollek1.pdf", pdfType: "midterm", addedAt: "2026-10-08T16:12:24+04:00"},
-          { name: "Beynəlxalq Biznes İqtisadiyyatı", file: "beynelxalqbizneskollek2.pdf", pdfType: "midterm", addedAt: "2026-10-08T21:54:53+04:00"}
-        ]
-      }, 
-      "AR Konstitusiyası və hüququn əsasları": {
-        type: "test", semester: 2, code: "00149", pdfs: [
-          { name: "AR Konstitusiyası və Hüququn Əsasları", file: "arkonstitusiyaQ24.pdf", pdfType: "semester", addedAt: "2026-10-08T16:12:24+04:00"},
-          { name: "AR Konstitusiyası və Hüququn Əsasları", file: "arkonstitusiyaQ23.pdf", pdfType: "semester", addedAt: "2026-10-08T16:12:24+04:00"}
-        ]
-      }
-    }
-  },
-  "4-cü kurs": {
-    icon: "menu_book",
-    subjects: {
-      "İnkişaf iqtisadiyyatı": {
-        type: "yazili", semester: 1, code: "00411", pdfs: [
-          { name: "İnkişaf İqtisadiyyatı", file: "inkisafiqtkollek1.pdf", pdfType: "midterm", addedAt: "2026-10-31T14:53:52+04:00"}
+        type: "yazili",
+        code: "00169",
+        pdfs: [
+          { name: "Beynəlxalq Biznes İqtisadiyyatı", file: "beynelxalqbiznes1.pdf", pdfType: "semester", addedAt: "2026-10-08T21:54:53+04:00" },
+          { name: "Beynəlxalq Biznes İqtisadiyyatı", file: "beynelxalqbiznes2.pdf", pdfType: "semester", addedAt: "2026-10-08T21:54:53+04:00" },
+          { name: "Beynəlxalq Biznes İqtisadiyyatı", file: "beynelxalqbizneskollek1.pdf", pdfType: "midterm", addedAt: "2026-10-08T16:12:24+04:00" },
+          { name: "Beynəlxalq Biznes İqtisadiyyatı", file: "beynelxalqbizneskollek2.pdf", pdfType: "midterm", addedAt: "2026-10-08T21:54:53+04:00" }
         ]
       },
-      "İnkişaf mikroiqtisadiyyatı": {
-        type: "yazili", semester: 1, code: "00412", pdfs: [
-          { name: "İnkişaf Mikroiqtisadiyyatı", file: "inkisafmikroiqtkollek1.pdf", pdfType: "midterm", addedAt: "2026-10-31T14:53:52+04:00"}
+      "Beynəlxalq iqtisadiyyat": {
+        type: "yazili",
+        code: "00171",
+        pdfs: [
+          { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqt1.pdf", pdfType: "semester", addedAt: "2026-10-08T21:54:53+04:00" },
+          { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqt2.pdf", pdfType: "semester", addedAt: "2026-10-08T21:54:53+04:00" },
+          { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqt3.pdf", pdfType: "semester", addedAt: "2026-10-08T21:54:53+04:00" },
+          { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqtkollek1.pdf", pdfType: "midterm", addedAt: "2026-10-08T21:54:53+04:00" },
+          { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqtkollek2.pdf", pdfType: "midterm", addedAt: "2026-10-31T14:48:50+04:00" }
+        ]
+      },
+      "Bilgi işlem teknolojileri": {
+        type: "test",
+        code: "00016",
+        pdfs: [
+          { name: "Bilgi İşlem Teknolojileri", file: "bit1.pdf", pdfType: "semester", addedAt: "2026-04-10T23:17:50+04:00" }
+        ]
+      },
+      "Biznes hüququ": {
+        type: "yazili",
+        code: "00195",
+        pdfs: [
+          { name: "Biznes Hüququ", file: "bizneshuququ1.pdf", pdfType: "semester", addedAt: "2026-11-09T18:10:41+04:00" },
+          { name: "Biznes Hüququ", file: "bizneshuququkollek1.pdf", pdfType: "midterm", addedAt: "2026-11-09T18:10:41+04:00" }
+        ]
+      },
+      "Ehtimal nəzəriyyəsi və riyazi statistika": {
+        type: "test",
+        code: "00071",
+        pdfs: [
+          { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika Y23", file: "enrsY23.pdf", pdfType: "semester", addedAt: "2026-04-10T22:26:33+04:00" },
+          { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika Y25", file: "enrsY25.pdf", pdfType: "semester", addedAt: "2026-04-10T22:26:33+04:00" },
+          { name: "Ehtimal Nəzəriyyəsi və Riyazi Statistika Y26", file: "enrsY26.pdf", pdfType: "semester", addedAt: "2026-06-20T20:00:38+04:00" }
+        ]
+      },
+      Ekonometrika: {
+        type: "yazili",
+        code: "00282",
+        pdfs: [
+          { name: "Ekonometrika", file: "ekonometrika1.pdf", pdfType: "semester", addedAt: "2026-10-08T15:58:46+04:00" },
+          { name: "Ekonometrika", file: "ekonometrikakollek1.pdf", pdfType: "midterm", addedAt: "2026-10-08T15:58:46+04:00" }
+        ]
+      },
+      "Əməyin iqtisadiyyatı": {
+        type: "yazili",
+        code: "00307",
+        pdfs: [
+          { name: "Əməyin İqtisadiyyatı", file: "emek1.pdf", pdfType: "semester", addedAt: "2026-04-11T23:06:15+04:00" },
+          { name: "Əməyin İqtisadiyyatı", file: "emek2.pdf", pdfType: "semester", addedAt: "2026-10-08T15:48:45+04:00" },
+          { name: "Əməyin İqtisadiyyatı", file: "emekkollek1.pdf", pdfType: "midterm", addedAt: "2026-04-11T23:06:15+04:00" },
+          { name: "Əməyin İqtisadiyyatı", file: "emekkollek2.pdf", pdfType: "midterm", addedAt: "2026-11-02T20:25:10+04:00" },
+          { name: "Əməyin İqtisadiyyatı", file: "emekkollek3.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:10+04:00" }
+        ]
+      },
+      "Ətraf mühitin iqtisadiyyatı": {
+        type: "yazili",
+        code: "00332",
+        pdfs: [
+          { name: "Ətraf Mühitin İqtisadiyyatı", file: "emi1.pdf", pdfType: "semester", addedAt: "2026-04-11T13:34:34+04:00" },
+          { name: "Ətraf Mühitin İqtisadiyyatı", file: "emi2.pdf", pdfType: "semester", addedAt: "2026-04-11T13:34:34+04:00" },
+          { name: "Ətraf Mühitin İqtisadiyyatı", file: "emi3.pdf", pdfType: "semester", addedAt: "2026-10-08T15:48:45+04:00" },
+          { name: "Ətraf Mühitin İqtisadiyyatı", file: "emikollek1.pdf", pdfType: "midterm", addedAt: "2026-04-11T13:34:34+04:00" },
+          { name: "Ətraf Mühitin İqtisadiyyatı", file: "emikollek2.pdf", pdfType: "midterm", addedAt: "2026-04-11T13:34:34+04:00" }
+        ]
+      },
+      "Firmanın iqtisadiyyatı": {
+        type: "test",
+        code: "00345",
+        pdfs: [
+          { name: "Firmanın iqtisadiyyatı", file: "firmaiqtQ26.pdf", pdfType: "semester", addedAt: "2026-10-08T22:20:41+04:00" }
+        ]
+      },
+      "Fizikanın əsasları": {
+        type: "yazili",
+        code: "00014",
+        pdfs: [
+          { name: "Fizikanın Əsasları", file: "fizikaninesaslarikollek1.pdf", pdfType: "midterm", addedAt: "2026-04-23T12:15:41+04:00" }
+        ]
+      },
+      Hidrologiya: {
+        type: "yazili",
+        pdfs: [
+          { name: "Hidrologiya", file: "hidrologiya1.pdf", pdfType: "semester", addedAt: "2026-04-23T12:15:41+04:00" }
+        ]
+      },
+      "Xarici dildə işgüzar və akademik kommunikasiya A1": {
+        type: "test",
+        code: "01222",
+        pdfs: [
+          { name: "Xdiak Complain Letter", file: "xdiakcomplainletter.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:57+04:00" },
+          { name: "Xdiak Request Letter", file: "xdiakrequestletter.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:57+04:00" },
+          { name: "White Death A1", file: "whitedeathA1.pdf", pdfType: "midterm", addedAt: "2026-04-16T14:12:05+04:00" }
+        ]
+      },
+      "Xarici dildə işgüzar və akademik kommunikasiya A2": {
+        type: "test",
+        code: "00122",
+        pdfs: [
+          { name: "Xdiak Complain Letter", file: "xdiakcomplainletter.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:57+04:00" },
+          { name: "Xdiak Request Letter", file: "xdiakrequestletter.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:57+04:00" },
+          { name: "Robinson Crusoe A2", file: "robinsoncrusoeA2.pdf", pdfType: "midterm", addedAt: "2026-04-14T20:38:42+04:00" }
+        ]
+      },
+      "Xarici dildə işgüzar və akademik kommunikasiya B1": {
+        type: "test",
+        code: "00760",
+        pdfs: [
+          { name: "Forrest Gump B1", file: "forrestgumpB1.pdf", pdfType: "midterm", addedAt: "2026-04-22T22:45:57+04:00" },
+          { name: "Xdiak Complain Letter", file: "xdiakcomplainletter.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:57+04:00" },
+          { name: "Xdiak Request Letter", file: "xdiakrequestletter.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:57+04:00" }
+        ]
+      },
+      "Xarici dildə işgüzar və akademik kommunikasiya B1+": {
+        type: "test",
+        code: "00934",
+        pdfs: [
+          { name: "Xdiak Complain Letter", file: "xdiakcomplainletter.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:57+04:00" },
+          { name: "Xdiak Request Letter", file: "xdiakrequestletter.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:57+04:00" },
+          { name: "Sherlock Holmes B1+", file: "sherlockholmesB1+.pdf", pdfType: "midterm", addedAt: "2026-04-22T22:45:57+04:00" }
+        ]
+      },
+      "Xərclərin idarə edilməsi": {
+        type: "test",
+        code: "00936",
+        pdfs: [
+          { name: "Xərclərin İdarə Edilməsi Y24", file: "xerclerY24.pdf", pdfType: "semester", addedAt: "2026-04-22T11:24:59+04:00" }
+        ]
+      },
+      "Xətti cəbr və riyazi analiz": {
+        type: "test",
+        code: "00056",
+        pdfs: [
+          { name: "Xətti Cəbr və Riyazi Analiz Q26", file: "xcraQ26.pdf", pdfType: "semester", addedAt: "2026-04-10T22:09:52+04:00" }
         ]
       },
       "İdarəetmə uçotu": {
-        type: "yazili", semester: 1, code: "00741", pdfs: [
-          { name: "İdarəetmə Uçotu", file: "idareetme1.pdf", pdfType: "semester", addedAt: "2026-11-09T18:10:52+04:00"}
+        type: "yazili",
+        code: "00741",
+        pdfs: [
+          { name: "İdarəetmə Uçotu", file: "idareetme1.pdf", pdfType: "semester", addedAt: "2026-11-09T18:10:52+04:00" }
+        ]
+      },
+      "İKT - Baza kompüter bilikləri": {
+        type: "test",
+        code: "00016",
+        pdfs: [
+          { name: "İKT - Baza Kompüter Bilikləri Q25", file: "iktQ25.pdf", pdfType: "semester", addedAt: "2026-04-22T11:24:59+04:00" },
+          { name: "İKT - Baza Kompüter Bilikləri Q26", file: "iktQ26.pdf", pdfType: "semester", addedAt: "2026-04-10T22:09:52+04:00" }
+        ]
+      },
+      "İqtisadi fikir tarixi": {
+        type: "yazili",
+        code: "00438",
+        pdfs: [
+          { name: "İqtisadi Fikir Tarixi", file: "iqtfkrtrx1.pdf", pdfType: "semester", addedAt: "2026-06-20T20:00:38+04:00" },
+          { name: "İqtisadi Fikir Tarixi", file: "iqtfkrtrx2.pdf", pdfType: "semester", addedAt: "2026-04-14T20:38:42+04:00" },
+          { name: "İqtisadi Fikir Tarixi", file: "iqtfkrtrx3.pdf", pdfType: "semester", addedAt: "2026-04-14T20:38:42+04:00" },
+          { name: "İqtisadi Fikir Tarixi", file: "iqtfkrtrx4.pdf", pdfType: "semester", addedAt: "2026-04-14T20:38:42+04:00" }
+        ]
+      },
+      "İqtisadiyyata giriş": {
+        type: "yazili",
+        code: "00021",
+        pdfs: [
+          { name: "İqtisadiyyata Giriş", file: "iqtisadiyyat1.pdf", pdfType: "semester", addedAt: "2026-04-10T22:43:40+04:00" },
+          { name: "İqtisadiyyata Giriş", file: "iqtisadiyyat2.pdf", pdfType: "semester", addedAt: "2026-05-24T17:26:22+04:00" }
+        ]
+      },
+      "İnkişaf iqtisadiyyatı": {
+        type: "yazili",
+        code: "00411",
+        pdfs: [
+          { name: "İnkişaf İqtisadiyyatı", file: "inkisafiqtkollek1.pdf", pdfType: "midterm", addedAt: "2026-10-31T14:53:52+04:00" }
+        ]
+      },
+      "İnkişaf mikroiqtisadiyyatı": {
+        type: "yazili",
+        code: "00412",
+        pdfs: [
+          { name: "İnkişaf Mikroiqtisadiyyatı", file: "inkisafmikroiqtkollek1.pdf", pdfType: "midterm", addedAt: "2026-10-31T14:53:52+04:00" }
+        ]
+      },
+      "Karyera planlaması": {
+        type: "test",
+        code: "01223",
+        pdfs: [
+          { name: "Karyera Planlaması Q25", file: "karyeraQ25.pdf", pdfType: "semester", addedAt: "2026-04-22T11:24:59+04:00" },
+          { name: "Karyera Planlaması Q26", file: "karyeraQ26.pdf", pdfType: "semester", addedAt: "2026-04-10T22:09:52+04:00" }
+        ]
+      },
+      "Korporativ maliyyə": {
+        type: "yazili",
+        pdfs: [
+          { name: "Korporativ Maliyyə", file: "korporativmaliyye1.pdf", pdfType: "semester", addedAt: "2026-06-30T16:53:31+04:00" }
+        ]
+      },
+      "Qiymət siyasəti": {
+        type: "yazili",
+        code: "00710",
+        pdfs: [
+          { name: "Qiymət Siyasəti", file: "qiymet1.pdf", pdfType: "semester", addedAt: "2026-04-11T23:04:48+04:00" },
+          { name: "Qiymət Siyasəti", file: "qiymetkollek1.pdf", pdfType: "midterm", addedAt: "2026-04-11T23:06:15+04:00" }
+        ]
+      },
+      "Liner cebir ve matematiksel analiz": {
+        type: "test",
+        code: "00056",
+        pdfs: [
+          { name: "Liner Cebir ve Matematiksel Analiz Q23", file: "lcmaQ23.pdf", pdfType: "semester", addedAt: "2026-04-10T23:14:15+04:00" },
+          { name: "Liner Cebir ve Matematiksel Analiz Q26", file: "lcmaQ26.pdf", pdfType: "semester", addedAt: "2026-04-10T22:43:40+04:00" }
+        ]
+      },
+      Makroiqtisadiyyat: {
+        type: "yazili",
+        code: "00523",
+        pdfs: [
+          { name: "Makroiqtisadiyyat", file: "makroiqt1.pdf", pdfType: "semester", addedAt: "2026-06-20T20:06:54+04:00" },
+          { name: "Makroiqtisadiyyat", file: "makroiqtkollek1.pdf", pdfType: "midterm", addedAt: "2026-04-11T13:02:58+04:00" },
+          { name: "Makroiqtisadiyyat", file: "makroiqtmesele1.pdf", pdfType: "task", addedAt: "2026-04-11T13:02:58+04:00" }
+        ]
+      },
+      "Maliyyə risklərinin idarə edilməsi": {
+        type: "yazili",
+        pdfs: [
+          { name: "Maliyyə Risklərinin İdarə Edilməsi", file: "mrie1.pdf", pdfType: "semester", addedAt: "2026-06-30T16:53:31+04:00" }
+        ]
+      },
+      "Maliyyə uçotu": {
+        type: "test",
+        code: "00531",
+        pdfs: [
+          { name: "Maliyyə Uçotu", file: "maliyyekollek1.pdf", pdfType: "midterm", addedAt: "2026-04-30T13:52:44+04:00" },
+          { name: "Maliyyə Uçotu Q26", file: "maliyyeQ26.pdf", pdfType: "semester", addedAt: "2026-04-11T13:34:34+04:00" },
+          { name: "Maliyyə Uçotu Y26", file: "maliyyeY26.pdf", pdfType: "semester", addedAt: "2026-06-27T18:54:40+04:00" }
+        ]
+      },
+      Marketinq: {
+        type: "test",
+        code: "00532",
+        pdfs: [
+          { name: "Marketinq Y26", file: "marketingY26.pdf", pdfType: "semester", addedAt: "2026-06-29T22:05:53+04:00" }
+        ]
+      },
+      Menecment: {
+        type: "test",
+        code: "00031",
+        pdfs: [
+          { name: "Menecment", file: "menecment1.pdf", pdfType: "old", addedAt: "2026-10-08T15:58:46+04:00" },
+          { name: "Menecment", file: "menecment2.pdf", pdfType: "old", addedAt: "2026-10-08T21:54:53+04:00" },
+          { name: "Menecment", file: "menecment3.pdf", pdfType: "old", addedAt: "2026-10-08T21:54:53+04:00" },
+          { name: "Menecment", file: "menecment4.pdf", pdfType: "old", addedAt: "2026-10-08T21:54:53+04:00" },
+          { name: "Menecment", file: "menecmentkollek1.pdf", pdfType: "old", addedAt: "2026-10-08T21:54:53+04:00" },
+          { name: "Menecment", file: "menecmentY26.pdf", pdfType: "semester", addedAt: "2026-11-13T19:30:46+04:00" }
+        ]
+      },
+      Mikroiqtisadiyyat: {
+        type: "yazili",
+        code: "00591",
+        pdfs: [
+          { name: "Mikroiqtisadiyyat", file: "mikroiqt1.pdf", pdfType: "old", addedAt: "2026-04-11T13:20:30+04:00" },
+          { name: "Mikroiqtisadiyyat", file: "mikroiqt3.pdf", pdfType: "old", addedAt: "2026-04-11T13:20:30+04:00" },
+          { name: "Mikroiqtisadiyyat", file: "mikroiqtkollek1.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:30+04:00" },
+          { name: "Mikroiqtisadiyyat", file: "mikroiqtkollek2.pdf", pdfType: "midterm", addedAt: "2026-11-14T12:50:30+04:00" },
+          { name: "Mikroiqtisadiyyat", file: "mikroiqtmesele1.pdf", pdfType: "task", addedAt: "2026-04-11T13:20:30+04:00" },
+          { name: "Mikroiqtisadiyyat", file: "mikroiqtmesele2.pdf", pdfType: "task", addedAt: "2026-04-11T13:20:30+04:00" },
+          { name: "Mikroiqtisadiyyat ", file: "mikroiqt2.pdf", pdfType: "old", addedAt: "2026-04-11T13:20:30+04:00" }
+        ]
+      },
+      "Mühəndis qrafikası": {
+        type: "yazili",
+        pdfs: [
+          { name: "Mühəndis Qrafikası", file: "muhendisqrafikasi1.pdf", pdfType: "semester", addedAt: "2026-04-23T12:15:41+04:00" }
+        ]
+      },
+      "Mülki müdafiə": {
+        type: "test",
+        code: "00034",
+        pdfs: [
+          { name: "Mülki Müdafiə Q23", file: "mulkimudafieQ23.pdf", pdfType: "semester", addedAt: "2026-04-22T23:06:04+04:00" },
+          { name: "Mülki Müdafiə Q26", file: "mulkimudafieQ26.pdf", pdfType: "semester", addedAt: "2026-04-22T11:24:59+04:00" },
+          { name: "Mülki Müdafiə Y24", file: "mulkimudafieY24.pdf", pdfType: "semester", addedAt: "2026-04-22T11:24:59+04:00" },
+          { name: "Mülki Müdafiə Y25", file: "mulkimudafieY25.pdf", pdfType: "semester", addedAt: "2026-10-08T15:52:26+04:00" }
+        ]
+      },
+      "Olasılık teorisi ve matematiksel istatistik": {
+        type: "test",
+        code: "00071",
+        pdfs: [
+          { name: "Olasılık Teorisi ve Matematiksel İstatistik Y26", file: "otmiY26.pdf", pdfType: "semester", addedAt: "2026-04-22T11:24:59+04:00" }
+        ]
+      },
+      Psixologiya: {
+        type: "test",
+        pdfs: [
+          { name: "Psixologiya", file: "psixologiyakollek1.pdf", pdfType: "midterm", addedAt: "2026-04-24T17:54:10+04:00" },
+          { name: "Psixologiya Y23", file: "psixologiyaY23.pdf", pdfType: "semester", addedAt: "2026-04-24T17:54:10+04:00" }
+        ]
+      },
+      "Rəqəmsal iqtisadiyyat (Sahə iqtisadiyyatı)": {
+        type: "yazili",
+        code: "00736",
+        pdfs: [
+          { name: "Rəqəmsal İqtisadiyyat", file: "reqemsaliqt1.pdf", pdfType: "semester", addedAt: "2026-10-08T21:54:53+04:00" },
+          { name: "Rəqəmsal İqtisadiyyat", file: "reqemsaliqtkollek1.pdf", pdfType: "midterm", addedAt: "2026-10-31T14:48:53+04:00" },
+          { name: "Rəqəmsal İqtisadiyyat", file: "reqemsaliqtkollek2.pdf", pdfType: "midterm", addedAt: "2026-10-31T14:48:52+04:00" },
+          { name: "Rəqəmsal İqtisadiyyat", file: "reqemsaliqtkollek3.pdf", pdfType: "midterm", addedAt: "2026-10-31T14:48:51+04:00" }
+        ]
+      },
+      "Riyaziyyat-1": {
+        type: "test",
+        pdfs: [
+          { name: "Riyaziyyat-1 Q24", file: "riyaziyyat1Q24.pdf", pdfType: "semester", addedAt: "2026-04-23T12:16:36+04:00" }
+        ]
+      },
+      "Riyaziyyat-2": {
+        type: "yazili",
+        pdfs: [
+          { name: "Riyaziyyat-2 Y25", file: "riyaziyyat2Y25.pdf", pdfType: "semester", addedAt: "2026-04-23T12:16:36+04:00" }
+        ]
+      },
+      "Sosial iş təcrübəsində etik prinsiplər": {
+        type: "yazili",
+        pdfs: [
+          { name: "Sosial İş Təcrübəsində Etik Prinsiplər", file: "sitep1.pdf", pdfType: "semester", addedAt: "2026-06-04T21:43:14+04:00" },
+          { name: "Sosial İş Təcrübəsində Etik Prinsiplər", file: "sitepkollek1.pdf", pdfType: "midterm", addedAt: "2026-04-24T17:55:19+04:00" },
+          { name: "Sosial İş Təcrübəsində Etik Prinsiplər", file: "sitepkollek2.pdf", pdfType: "midterm", addedAt: "2026-04-24T17:55:19+04:00" }
+        ]
+      },
+      "Sosial işdə idarəetmə": {
+        type: "yazili",
+        pdfs: [
+          { name: "Sosial İşdə İdarəetmə", file: "sosialisdeidareetmekollek1.pdf", pdfType: "midterm", addedAt: "2026-04-24T17:55:19+04:00" }
+        ]
+      },
+      "Sosial işdə riyazi metodlar": {
+        type: "test",
+        pdfs: [
+          { name: "Sosial İşdə Riyazi Metodlar", file: "sirmkollek1.pdf", pdfType: "midterm", addedAt: "2026-04-24T17:55:19+04:00" }
+        ]
+      },
+      "Sosial işin nəzəriyyəsi və təcrübəsi-2": {
+        type: "yazili",
+        pdfs: [
+          { name: "Sosial işin nəzəriyyəsi və təcrübəsi-2", file: "sint1.pdf", pdfType: "semester", addedAt: "2026-04-24T17:54:10+04:00" },
+          { name: "Sosial işin nəzəriyyəsi və təcrübəsi-2", file: "sintkollek1.pdf", pdfType: "midterm", addedAt: "2026-04-24T17:54:10+04:00" }
+        ]
+      },
+      "Sosial sahələrin iqtisadiyyatı": {
+        type: "yazili",
+        code: "00821",
+        pdfs: [
+          { name: "Sosial Sahələrin İqtisadiyyatı", file: "sosialiqt1.pdf", pdfType: "semester", addedAt: "2026-10-08T15:58:46+04:00" },
+          { name: "Sosial Sahələrin İqtisadiyyatı", file: "sosialiqt2.pdf", pdfType: "semester", addedAt: "2026-10-08T15:58:46+04:00" },
+          { name: "Sosial Sahələrin İqtisadiyyatı", file: "sosialiqt3.pdf", pdfType: "semester", addedAt: "2026-10-08T15:58:46+04:00" },
+          { name: "Sosial Sahələrin İqtisadiyyatı", file: "sosialiqtkollek1.pdf", pdfType: "midterm", addedAt: "2026-10-08T21:54:53+04:00" }
+        ]
+      },
+      "Sosial sahibkarlıq": {
+        type: "test",
+        code: "00823",
+        pdfs: [
+          { name: "Sosial Sahibkarlıq", file: "sosialsahibkarlıgQ26.pdf", pdfType: "semester", addedAt: "2026-06-30T16:53:31+04:00" }
+        ]
+      },
+      Statistika: {
+        type: "yazili",
+        code: "00837",
+        pdfs: [
+          { name: "Statistika", file: "statistika1.pdf", pdfType: "semester", addedAt: "2026-10-08T15:52:26+04:00" },
+          { name: "Statistika", file: "statistikakollek1.pdf", pdfType: "midterm", addedAt: "2026-11-09T18:10:41+04:00" },
+          { name: "Statistika", file: "statistikamesele1.pdf", pdfType: "task", addedAt: "2026-10-08T15:52:26+04:00" }
+        ]
+      },
+      "Tətbiqi riyaziyyat": {
+        type: "test",
+        code: "00892",
+        pdfs: [
+          { name: "Tətbiqi Riyaziyyat Q25", file: "tetbiqiriyaziyyatQ25.pdf", pdfType: "semester", addedAt: "2026-11-13T19:30:46+04:00" }
+        ]
+      },
+      "Tətbiqi statistika": {
+        type: "yazili",
+        code: "00893",
+        pdfs: [
+          { name: "Tətbiqi Statistika", file: "tetbiqistatistika1.pdf", pdfType: "midterm", addedAt: "2026-11-14T12:50:48+04:00" }
+        ]
+      },
+      "Ümumi ekologiya": {
+        type: "yazili",
+        pdfs: [
+          { name: "Ümumi Ekologiya", file: "umumiekologiya1.pdf", pdfType: "semester", addedAt: "2026-04-23T12:16:36+04:00" }
+        ]
+      },
+      "Ümumi kimya": {
+        type: "yazili",
+        code: "00051",
+        pdfs: [
+          { name: "Ümumi Kimya", file: "umumikimyakollek1.pdf", pdfType: "midterm", addedAt: "2026-04-23T12:17:49+04:00" },
+          { name: "Ümumi Kimya - 36-75", file: "umumikimya36-75.pdf", pdfType: "semester", addedAt: "2026-04-23T12:17:49+04:00" }
+        ]
+      },
+      Vergitutma: {
+        type: "yazili",
+        pdfs: [
+          { name: "Vergitutma", file: "vergitutma1.pdf", pdfType: "semester", addedAt: "2026-06-30T16:53:31+04:00" }
+        ]
+      },
+      "Yönetim ve organizasyon": {
+        type: "test",
+        pdfs: [
+          { name: "Yönetim ve Organizasyon Q25", file: "yonetimorganizasyonQ25.pdf", pdfType: "semester", addedAt: "2026-04-10T23:17:50+04:00" }
+        ]
+      },
+      "Yumşaq bacarıqlar (Soft skills)": {
+        type: "test",
+        code: "01224",
+        pdfs: [
+          { name: "Soft Skills Y25", file: "softskillsY25.pdf", pdfType: "semester", addedAt: "2026-04-10T22:26:33+04:00" },
+          { name: "Soft Skills Y26", file: "softskillsY26.pdf", pdfType: "semester", addedAt: "2026-06-20T20:00:38+04:00" }
         ]
       }
     }
-  },
-  // Add new subjects here without assigning a course or a semester.
-  "Materiallar": { subjects: {} }
+  }
 };
 
+// Extra materials (A–Z), independent of courses.
 const extrasData = {
-  "1-ci kurs": [
-    { name: "Robinson Crusoe - Azərbaycan", file: "robinsonazeA2.pdf", desc: "Robinson Crusoe Azərbaycan dilindəki versiyası", pdfType: "optional", addedAt: "2026-04-14T20:38:10+04:00"},
-    { name: "Ehtimal nəzəriyyəsi və riyazi statistika - Kollekvium", file: "enrskollektaplarla1.pdf", desc: "Bir çox testin yanında həlli yolu var", pdfType: "optional", addedAt: "2026-04-16T14:15:55+04:00"},
-    { name: "Azərbaycan dilində işgüzar və akademik kommunikasiya - Test", file: "adiaktest1.pdf", desc: "ADİAK fənninə aid test", pdfType: "optional", addedAt: "2026-04-22T11:25:29+04:00"},
-    { name: "Ümumi kimya - 20 ballar", file: "umumikimya20ballar.pdf", desc: "Ümumi Kimya fənninin 20 ballıq sualları", pdfType: "optional", addedAt: "2026-04-23T12:18:15+04:00"}
-  ],
-  "2-ci kurs": [
-    { name: "Forrest Gump - Azərbaycan", file: "forrestgumpB1.pdf", desc: "Forrest Gump Azərbaycan dilindəki versiyası", pdfType: "optional", addedAt: "2026-10-20T15:10:58+04:00"}
-  ],
-  "3-cü kurs": [
-    { name: "Sosial sahələrin iqtisadiyyatı", file: "sosialiqtelave1.pdf", desc: "Əlavə qeydlər", pdfType: "optional", addedAt: "2026-10-08T22:01:34+04:00"},
-    { name: "Beynəlxalq biznes iqtisadiyyatı", file: "beynelxalqbizneselave1.pdf", desc: "20 ballıq suallar", pdfType: "optional", addedAt: "2026-10-08T16:12:24+04:00"},
-    { name: "Statistika", file: "statistikaelave1.pdf", desc: "Bəzi bir çox sualın cavabı var", pdfType: "optional", addedAt: "2026-10-08T15:52:26+04:00"}
-  ],
-  "4-cü kurs": [
-  ],
-  "Materiallar": []
+  Materiallar: [
+    { name: "Azərbaycan dilində işgüzar və akademik kommunikasiya - Test", file: "adiaktest1.pdf", desc: "ADİAK fənninə aid test", pdfType: "optional", addedAt: "2026-04-22T11:25:29+04:00" },
+    { name: "Beynəlxalq biznes iqtisadiyyatı", file: "beynelxalqbizneselave1.pdf", desc: "20 ballıq suallar", pdfType: "optional", addedAt: "2026-10-08T16:12:24+04:00" },
+    { name: "Ehtimal nəzəriyyəsi və riyazi statistika - Kollekvium", file: "enrskollektaplarla1.pdf", desc: "Bir çox testin yanında həlli yolu var", pdfType: "optional", addedAt: "2026-04-16T14:15:55+04:00" },
+    { name: "Forrest Gump - Azərbaycan", file: "forrestgumpB1.pdf", desc: "Forrest Gump Azərbaycan dilindəki versiyası", pdfType: "optional", addedAt: "2026-10-20T15:10:58+04:00" },
+    { name: "Robinson Crusoe - Azərbaycan", file: "robinsonazeA2.pdf", desc: "Robinson Crusoe Azərbaycan dilindəki versiyası", pdfType: "optional", addedAt: "2026-04-14T20:38:10+04:00" },
+    { name: "Sosial sahələrin iqtisadiyyatı", file: "sosialiqtelave1.pdf", desc: "Əlavə qeydlər", pdfType: "optional", addedAt: "2026-10-08T22:01:34+04:00" },
+    { name: "Statistika", file: "statistikaelave1.pdf", desc: "Bəzi bir çox sualın cavabı var", pdfType: "optional", addedAt: "2026-10-08T15:52:26+04:00" },
+    { name: "Ümumi kimya - 20 ballar", file: "umumikimya20ballar.pdf", desc: "Ümumi Kimya fənninin 20 ballıq sualları", pdfType: "optional", addedAt: "2026-04-23T12:18:15+04:00" }
+  ]
 };

@@ -177,17 +177,20 @@ function renderCourses() { /* Old entry point retained; the catalogue now opens 
 
 // Köhnə kod adı: kursa keç (router vasitəsilə)
 function openSubjects(courseName) {
-  if (window.UNEC) UNEC.go('/materials');
+  if (window.UNEC) UNEC.go('/courses/subjects/' + encodeURIComponent(courseName));
 }
 
 // Router çağırır: kursun fənlər siyahısını göstər
 function showSubjects(courseName) {
-  currentCourse = null;
+  const year=Number.parseInt(courseName||localStorage.getItem('materials_year')||'1',10);
+  currentCourse=([1,2,3,4].includes(year)?year:1)+'-ci kurs';
+  if(year===3)currentCourse='3-cü kurs';if(year===4)currentCourse='4-cü kurs';
+  localStorage.setItem('materials_year',String(parseInt(currentCourse,10)));
   const bc = document.getElementById('bc-course');
-  if (bc) bc.textContent = t('navCourses');
+  if (bc) bc.textContent = lang==='en'?'Year '+parseInt(currentCourse,10):currentCourse;
   goTo('subjects');
   switchTab('subjects');
-  renderSubjects(courseName);
+  renderSubjects(currentCourse);
 }
 
 function switchTab(tab) {
@@ -441,9 +444,19 @@ function renderSubjects(courseName) {
   grid.innerHTML = '';
   renderMajorFilter();
 
-  const majorKey   = getSelectedMajor();
+  const majorKey   = getSelectedMajor(),year=parseInt(currentCourse||courseName||'1',10);
+  let years=document.getElementById('materials-year-picker');
+  if(!years){years=document.createElement('div');years.id='materials-year-picker';years.className='wp-tabs';document.getElementById('major-filter')?.after(years);}
+  years.innerHTML=[1,2,3,4].map(n=>`<button type="button" aria-pressed="${n===year}" onclick="openSubjects('${n}')">${lang==='en'?'Year '+n:n+(n===1?'-ci':n===2?'-ci':n===3?'-cü':'-cü')+' kurs'}</button>`).join('');
   const allEntries = Object.entries(UNEC.getSubjectCatalog())
-    .filter(([name, subj]) => subjectMatchesMajor(name, subj, majorKey, null))
+    .filter(([name, subj]) => UNEC.entriesForSubject(currentCourse,name).length>0)
+    .filter(([name, subj]) => {
+      if(majorKey!=='all')return subjectMatchesMajor(name,subj,majorKey,year);
+      if(typeof MATERIAL_IDENTITIES==='undefined')return true;
+      const majors=typeof CURRICULUM_DATA==='undefined'?[]:Object.keys(CURRICULUM_DATA).filter(key=>subjectMatchesMajor(name,subj,key,null));
+      if(majors.length)return majors.some(key=>subjectMatchesMajor(name,subj,key,year));
+      return subj.pdfs.some(p=>!(MATERIAL_IDENTITIES['pdf/'+p.file]||[]).length||(MATERIAL_IDENTITIES['pdf/'+p.file]||[]).some(old=>parseInt(old.course,10)===year));
+    })
     .sort(([a], [b]) => a.localeCompare(b, 'az'));
 
   if (allEntries.length === 0) {
@@ -460,7 +473,7 @@ function renderSubjects(courseName) {
     entries.forEach(([subjectName, subj]) => {
       const a = document.createElement('a');
       a.className = 'subject-card animate-in';
-      a.href = UNEC.subjectHref(subjectName);
+      a.href = '#/courses/subjects/'+encodeURIComponent(currentCourse)+'/'+encodeURIComponent(subjectName);
       const subjCode = getSubjectCode(subj);
       a.dataset.code = subjCode;
       const safeName = String(subjectName).replace(/&/g, '&amp;').replace(/</g, '&lt;');
@@ -471,7 +484,7 @@ function renderSubjects(courseName) {
           <div class="pdf-count">
             ${codeBadgeHTML(subjCode)}
             ${getTypeBadgeHTML(subj.type)}
-            <span class="pdf-badge">PDF ${subj.pdfs.length}</span>
+            <span class="pdf-badge">PDF ${UNEC.entriesForSubject(currentCourse,subjectName).length}</span>
           </div>
         </div>
         ${IC_SVG('chevron-right')}

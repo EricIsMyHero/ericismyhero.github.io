@@ -447,3 +447,18 @@ written practice use matching subject/PDF selection forms. Closed practice allow
 5 started exams per authenticated account per Baku calendar day, shared by public
 and private PDF sources. Started/abandoned exams count; selecting or parsing a PDF
 does not. The existing 3 written exams and 1 private PDF import per day are separate.
+
+### Course-free catalogue editing
+
+`pdfs.js` now contains one `data.Materiallar.subjects` catalogue in Azerbaijani
+A–Z order and a separate `extrasData.Materiallar` A–Z list. PDF entries within
+subjects are also sorted by name, then filename. Do not create course containers
+or duplicate a PDF to place it in another year. Use the subject code/name and the
+major's curriculum to determine its course placement. The browsing screen has
+major and Year 1–4 selectors; PDF lists respect that selection. Addition dates
+remain unchanged, and material lists retain their existing newest-first ordering.
+
+`data/material-identities.js` freezes old rating, discussion and deep-link
+identities. It is compatibility data, not a second editable catalogue; new files
+need no legacy identity. Preserve it when editing materials. Run the material-date
+sync and site build after changing the catalogue, and commit their outputs.

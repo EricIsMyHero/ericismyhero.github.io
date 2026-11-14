@@ -1127,3 +1127,6 @@ Object.assign(I18N.en, {
   dashXpQuizDone:'Practice completed',streakQuiz:'Complete practice',streakQuizDesc:'at least 1 practice exam per day',
   aboutItem2:'Online practice exams and knowledge checks'
 });
+
+Object.assign(I18N.az,{navCourses:'Kurslar',coursesTitle:'Kurslar',navCoursesHeading:'Kurslar',courseModeSubjects:'Kurslar üzrə'});
+Object.assign(I18N.en,{navCourses:'Courses',coursesTitle:'Courses',navCoursesHeading:'Courses',courseModeSubjects:'By course'});

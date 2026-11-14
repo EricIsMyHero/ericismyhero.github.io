@@ -19,8 +19,13 @@
   const newestFirst = entries => entries.slice().sort((a, b) =>
     (Date.parse(b.addedAt) || 0) - (Date.parse(a.addedAt) || 0));
 
+  const identities=(kind,file)=>typeof MATERIAL_IDENTITIES!=='undefined'?(MATERIAL_IDENTITIES[kind+'/'+file]||[]):[];
+
   // ── Entry (material) ────────────────────────────────────────
   function makeEntry(course, subject, subj, p) {
+    const rows=identities('pdf',p.file).filter(x=>x.subject===subject);
+    const old=rows.find(x=>x.course===course)||rows[0];
+    if(old){course=old.course;subj={...subj,type:old.type,semester:old.semester,code:old.code||subj.code};}
     return {
       id: `${course}|${subject}|${p.file}`,
       kind: 'pdf',
@@ -39,6 +44,7 @@
     };
   }
   function makeExtra(course, p) {
+    const rows=identities('pdf-extra',p.file);course=(rows.find(x=>x.course===course)||rows[0])?.course||course;
     return {
       id: `${course}||${p.file}`,
       kind: 'extra',
@@ -69,9 +75,11 @@
         subj.pdfs.forEach(p => {
           const k = 'pdf/' + p.file;
           const alias = { course, subject, subjObj: subj, code: p.code || getSubjectCode(subj), format: subj.type };
-          if (seen.has(k)) { seen.get(k).aliases.push(alias); return; }
-          const entry = makeEntry(course, subject, subj, p);
-          entry.aliases = [alias]; seen.set(k, entry); list.push(entry);
+          const oldAliases=identities('pdf',p.file).map(old=>({...old,subjObj:{...subj,code:old.code||subj.code,type:old.type,semester:old.semester},format:old.type}));
+          if (seen.has(k)) { if(!oldAliases.length)seen.get(k).aliases.push(alias); return; }
+          const primary=oldAliases[0];
+          const entry = makeEntry(primary?.course||course, primary?.subject||subject, primary?.subjObj||subj, p);
+          entry.aliases = oldAliases.length?oldAliases:[alias]; seen.set(k, entry); list.push(entry);
         });
       });
     });
@@ -89,6 +97,7 @@
       if (!subjects[name]) subjects[name] = { ...subj, legacyCourse: course, pdfs: [], entries: [] };
       for (const pdf of subj.pdfs) if (!subjects[name].pdfs.some(p => p.file === pdf.file)) {
         subjects[name].pdfs.push(pdf); subjects[name].entries.push(makeEntry(course, name, subj, pdf));
+        subjects[name].legacyCourse=subjects[name].entries[0].course;
       }
     }
     return subjects;
@@ -97,7 +106,7 @@
   function resolveEntry(r) {
     if (r.extra) {
       const p = ((extrasData || {})[r.course] || []).find(x => x.file === r.file);
-      return p ? makeExtra(r.course, p) : getIndex().find(m => m.kind === 'extra' && m.file === r.file) || null;
+      return p ? makeExtra(r.course, p) : (() => {const m=getIndex().find(m=>m.kind==='extra'&&m.file===r.file);return m?makeExtra(r.course||m.course,m):null;})();
     }
     const cd = data[r.course];
     const subj = cd && cd.subjects[r.subject];
@@ -109,14 +118,15 @@
       for (const [s, sj] of Object.entries(cd2.subjects)) {
         if (r.subject && s !== r.subject) continue;
         const p = sj.pdfs.find(x => x.file === r.file);
-        if (p) return makeEntry(c, s, sj, p);
+        if (p) return makeEntry(r.course||c, s, sj, p);
       }
     }
     return null;
   }
 
   function entriesForSubject(course, subject) {
-    return newestFirst(getSubjectCatalog()[subject]?.entries || []);
+    const entries=getSubjectCatalog()[subject]?.entries||[];
+    return newestFirst(entries.filter(m=>typeof getSelectedMajor!=='function'||getSelectedMajor()==='all'||subjectMatchesMajor(m.subject,m.subjObj,getSelectedMajor(),parseInt(course,10)||null)));
   }
   function extraEntries(course) {
     return getIndex().filter(m => m.kind === 'extra');
@@ -272,7 +282,7 @@
   // ═════════════════════════════════════════════════════════════
   // KURSLAR — "Bütün materiallar" siyahısı
   // ═════════════════════════════════════════════════════════════
-  const newState = () => ({ q: '', fav: false, format: new Set(), ptype: new Set(), major: 'all', shown: PAGE });
+  const newState = () => ({ q: '', fav: false, format: new Set(), ptype: new Set(), major: typeof getSelectedMajor==='function'?getSelectedMajor():'all', shown: PAGE });
   const S = (U.matState = newState());
   const resetState = () => Object.assign(S, newState());
 
@@ -611,10 +621,10 @@
         renderMaterialDetail(r);
         break;
       case 'home':
-        showSubjects();
+        showSubjects(r.course);
         break;
       case 'subjects':
-        showSubjects();
+        showSubjects(r.course);
         break;
       case 'pdfs':
         if (!getSubjectCatalog()[r.subject]) { U.go('/materials', { replace: true }); return; }
@@ -630,7 +640,7 @@
     if (!r || r.tab !== 'courses') return;
     if (r.view === 'materials') renderMaterials();
     else if (['home', 'subjects'].includes(r.view)) {
-      const heading = $('#bc-course'); if (heading) heading.textContent = t('navCourses');
+      const heading = $('#bc-course'); if (heading) heading.textContent = currentCourse||t('navCourses');
       renderSubjects();
       if ($('#tab-extras-btn')?.classList.contains('active')) renderExtras();
       if ($('#tab-favorites-btn')?.classList.contains('active')) renderFavorites();
