@@ -987,8 +987,6 @@ body.in-quiz[data-route="tests"] #ai-button { opacity: 0; visibility: hidden; po
 .curr-options > summary::after, .curr-plan-source > summary::after { content: '+'; color: var(--color-text-muted); font-size: 1.25rem; font-weight: 400; }
 .curr-options[open] > summary::after, .curr-plan-source[open] > summary::after { content: '−'; }
 .curr-options-body { padding-bottom: 12px; }
-.curr-detail-toggle { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 4px 0; margin-bottom: 12px; font-size: var(--fs-sm); cursor: pointer; }
-.curr-detail-toggle input { flex-shrink: 0; width: 18px; height: 18px; accent-color: var(--accent); }
 .curr-export-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .curr-export-row label { font-size: var(--fs-sm); }
 #currExportScope { flex: 1; min-width: 120px; min-height: 44px; padding: 8px; border: 1px solid var(--border); border-radius: var(--r-md); color: var(--text); background: var(--color-surface); font: inherit; font-size: var(--fs-sm); }
@@ -1002,7 +1000,9 @@ body.in-quiz[data-route="tests"] #ai-button { opacity: 0; visibility: hidden; po
 .curr-semester-title h3 { flex: 1; min-width: 0; margin: 0; font-size: .9375rem; font-weight: 800; }
 .curr-sem-stats { display: flex; flex-wrap: wrap; gap: 4px; font-size: var(--fs-xs); color: var(--color-text-muted); }
 .curr-table-wrap { overflow: hidden; border-radius: var(--r-lg); }
-.curr-table { width: 100%; border-collapse: collapse; }
+.curr-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.curr-table th:first-child { width: 40%; }
+.curr-table th:last-child { width: 22%; }
 .curr-table th { padding: 10px 12px; text-align: center; background: var(--color-background-alt); border-bottom: 1px solid var(--border); font-size: var(--fs-xs); font-weight: 600; color: var(--color-text-muted); }
 .curr-table th:first-child { text-align: left; }
 .curr-table td { padding: 14px 12px; text-align: center; vertical-align: top; border-bottom: 1px solid var(--border); }
@@ -1024,7 +1024,7 @@ body.in-quiz[data-route="tests"] #ai-button { opacity: 0; visibility: hidden; po
 .curr-no-materials { display: block; margin-top: 8px; color: var(--color-text-muted); font-size: var(--fs-xs); font-weight: 400; }
 .curr-materials-list { display: grid; gap: 12px; }
 .curr-codes { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
-.curr-plan-panel:not(.curr-show-details) .curr-codes { display: none; }
+.curr-td-code .curr-codes { justify-content: center; margin-top: 0; }
 .curr-plan-source { margin: 20px 0 0; padding: 0 4px; color: var(--color-text-secondary); }
 .curr-gpa-tip-text { margin: 0 0 12px; font-size: var(--fs-xs); line-height: 1.6; }
 .curr-source-file { margin: 0 0 12px; overflow-wrap: anywhere; font-size: var(--fs-xs); }
@@ -1060,9 +1060,10 @@ body.in-quiz[data-route="tests"] #ai-button { opacity: 0; visibility: hidden; po
   .curr-print-table th { background: #eee; font-weight: 700; font-size: 9pt; }
   .curr-print-table thead { display: table-header-group; }
   .curr-print-table tr { break-inside: avoid; }
-  .curr-print-table th:first-child { width: 42%; }
-  .curr-print-table th:nth-child(2) { width: 30%; }
-  .curr-print-table th:nth-child(n+3) { width: 14%; white-space: nowrap; }
+  .curr-print-table th:first-child { width: 34%; }
+  .curr-print-table th:nth-child(2) { width: 24%; }
+  .curr-print-table th:nth-child(3), .curr-print-table th:nth-child(4) { width: 12%; }
+  .curr-print-table th:last-child { width: 18%; }
 }
 
 .offline-status { padding: 10px 16px; font-size: .8rem; line-height: 1.5; background: #ffe3a6; color: #352600; }

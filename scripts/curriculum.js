@@ -3205,10 +3205,6 @@ function toggleCurriculumCompleted(semester, index, checked) {
   renderCurriculumProgress(state);
 }
 
-function toggleCurriculumDetails(show) {
-  document.getElementById('currPlanPanel').classList.toggle('curr-show-details', !!show);
-}
-
 function selectSpecialty(spec, opts) {
   const plan = CURRICULUM_DATA[spec];
   if (!plan) return;
@@ -3316,22 +3312,24 @@ function renderSemesterTable(semKey, subjects) {
   // Fənn şifri: adi fənn → 1 şifr; seçmə fənn → qrupun bütün şifrləri
   const codesHTML = s => {
     const list = Array.isArray(s.codes) ? s.codes : (s.code ? [s.code] : []);
-    if (!list.length) return '';
+    if (!list.length) return '—';
     const title = Array.isArray(s.codes) ? t('currCodeGroupTitle') : t('currCodeTitle');
     return `<div class="curr-codes" title="${_currEsc(title)}">${list.map(c => `<span class="code-badge">${_currEsc(c)}</span>`).join('')}</div>`;
   };
 
   // Mobil görünüşdə sətirlər kartlara çevrilir: data-label hər xananın başlığını daşıyır
-  const lbl = { credit: t('currTableCredit'), absence: t('currTableAbsence') };
+  const lbl = { credit: t('currTableCredit'), absence: t('currTableAbsence'), hours: t('currTableContactHours'), code: t('currCodeTitle') };
   tbody.innerHTML = matches.map(({ s, index }) => {
     const completed = CurriculumProgress.isComplete(CurriculumProgress.key(spec, semester, s), semester, state.year, state.saved, state.edits);
     return `<tr data-curr-index="${index}" role="row" class="${completed ? 'is-complete' : ''}">
       <td role="cell" class="curr-td-name"><div class="curr-subject-main">
         <label class="curr-complete-control"><input type="checkbox" ${completed ? 'checked' : ''} aria-label="${_currEsc(t('currMarkCompleted') + ': ' + s.name)}" onchange="toggleCurriculumCompleted(${semester},${index},this.checked)"></label>
-        <div class="curr-subject-body"><span class="curr-subject-name">${_currEsc(s.name)}</span><small class="curr-complete-state" ${completed ? '' : 'hidden'}>${_currEsc(t('currCompleted'))}</small>${codesHTML(s)}${curriculumMaterialsHTML(s, semester, index)}</div>
+        <div class="curr-subject-body"><span class="curr-subject-name">${_currEsc(s.name)}</span><small class="curr-complete-state" ${completed ? '' : 'hidden'}>${_currEsc(t('currCompleted'))}</small>${curriculumMaterialsHTML(s, semester, index)}</div>
       </div></td>
       <td role="cell" data-label="${_currEsc(lbl.credit)}"><span class="curr-badge curr-badge--credit">${s.credit}</span></td>
       <td role="cell" data-label="${_currEsc(lbl.absence)}"><span class="curr-badge curr-badge--absence${s.absenceLimit <= 1 && s.absenceLimit > 0 ? ' warn' : ''}">${s.absenceLimit || '—'}</span></td>
+      <td role="cell" data-label="${_currEsc(lbl.hours)}"><span class="curr-badge curr-badge--hours">${s.hours ?? '—'}</span></td>
+      <td role="cell" class="curr-td-code" data-label="${_currEsc(lbl.code)}">${codesHTML(s)}</td>
     </tr>`;
   }).join('');
   return matches.length;
@@ -3401,11 +3399,11 @@ function printCurriculum() {
   if (currPrintCleanup) currPrintCleanup();
   const root = document.createElement('div');
   root.id = 'currPrintRoot'; root.className = 'curr-print-root';
-  const headers = ['currTableSubject', 'currCodeTitle', 'currTableCredit', 'currTableAbsence'];
+  const headers = ['currTableSubject', 'currCodeTitle', 'currTableCredit', 'currTableAbsence', 'currTableContactHours'];
   root.innerHTML = `<header><p>UNEC Students Hub</p><h1>${_currEsc(_currSpecName(spec, data))}</h1><p>${_currEsc(t(year ? 'currYear' + year : 'currExportAll'))}</p></header>` +
     Array.from({ length: 8 }, (_, i) => i + 1).filter(i => (!year || Math.ceil(i / 2) === year) && data[`semester${i}`]?.length).map(i => `
       <section><h2>${_currEsc(t('currSem' + i))}</h2><p>${_currEsc(curriculumSemesterSummary(data[`semester${i}`]))}</p><table class="curr-print-table"><thead><tr>${headers.map(key => `<th scope="col">${_currEsc(t(key))}</th>`).join('')}</tr></thead><tbody>
-      ${data[`semester${i}`].map(s => `<tr><td>${_currEsc(s.name)}</td><td>${_currEsc((s.codes || (s.code ? [s.code] : [])).join(', '))}</td>${[s.credit, s.absenceLimit].map(n => `<td>${_currEsc(n || '—')}</td>`).join('')}</tr>`).join('')}
+      ${data[`semester${i}`].map(s => `<tr><td>${_currEsc(s.name)}</td><td>${_currEsc((s.codes || (s.code ? [s.code] : [])).join(', '))}</td>${[s.credit, s.absenceLimit || '—', s.hours ?? '—'].map(n => `<td>${_currEsc(n)}</td>`).join('')}</tr>`).join('')}
       </tbody></table></section>`).join('');
   document.body.appendChild(root);
   document.body.classList.add('curr-printing');
