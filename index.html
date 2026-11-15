@@ -138,7 +138,7 @@
   <link rel="stylesheet" href="styles/shell.css?v=20261106-3">
   <link rel="stylesheet" href="styles/screens.css?v=20261114-semesters">
   <link rel="stylesheet" href="styles/tools.css?v=20261114-profile-choices">
-  <link rel="stylesheet" href="styles/written.css?v=20261114-practice">
+  <link rel="stylesheet" href="styles/written.css?v=20261115-design">
   <link rel="stylesheet" href="styles/support.css?v=20261106-3">
   <link rel="stylesheet" href="styles/legacy.css?v=20261106-3">
   <link rel="stylesheet" href="styles/compass.css?v=20261109-2">
@@ -705,14 +705,14 @@
           <div id="test-auth-gate" class="wp" hidden></div>
           <div id="test-authenticated-content">
           <div class="wp-tabs" role="group" aria-label="Sınaq formatı / Practice format">
-            <button type="button" id="wp-tab-mcq" aria-pressed="true" onclick="WrittenPractice.setMode('mcq')">Qapalı</button>
-            <button type="button" id="wp-tab-written" aria-pressed="false" onclick="WrittenPractice.setMode('written')">Yazılı · AI</button>
+            <button type="button" id="wp-tab-mcq" aria-pressed="true" onclick="WrittenPractice.setMode('mcq')">Elektron-Test</button>
+            <button type="button" id="wp-tab-written" aria-pressed="false" onclick="WrittenPractice.setMode('written')">Elektron-Yazılı</button>
           </div>
           <div id="test-mcq-pane" class="wp">
           <!-- Fənn seçimi -->
           <div id="test-landing">
             <section class="wp-card" aria-labelledby="test-hero-title">
-              <h2 id="test-hero-title"><span data-i18n="testIntroTitle">Qapalı tipli sınaq</span> <span class="badge badge--orange">beta</span></h2>
+              <h2 id="test-hero-title"><span data-i18n="testIntroTitle">Elektron-Test tipli Sınaq</span> <span class="badge badge--orange">beta</span></h2>
               <p data-i18n="testHeroDesc">PDF-dəki sualları cavablandır, nəticəni Dashboard-da izlə.</p>
               <p class="wp-muted" data-i18n="closedPracticeHint">Hər suala 1 dəqiqə verilir. Başladılmış və yarımçıq saxlanılmış sınaqlar gündəlik limitə daxildir.</p>
               <p id="testClosedUsage" class="wp-message" role="status" aria-live="polite"></p>
@@ -736,12 +736,12 @@
                   <div class="progress-bar"><i id="testLoadFill" style="width:0%"></i></div>
                 </div>
                 <p id="testCountLabel" class="closed-count-label" data-i18n="testCountLabel">Sual sayı</p>
-                <div class="closed-counts" role="group" aria-labelledby="testCountLabel">
-                  <button class="test-count-btn active" data-count="10" aria-pressed="true" onclick="selectCount(this)" type="button">10</button>
-                  <button class="test-count-btn" data-count="20" aria-pressed="false" onclick="selectCount(this)" type="button">20</button>
-                  <button class="test-count-btn" data-count="30" aria-pressed="false" onclick="selectCount(this)" type="button">30</button>
-                  <button class="test-count-btn" data-count="50" aria-pressed="false" onclick="selectCount(this)" type="button">50</button>
-                  <button class="test-count-btn" id="testAllCount" data-count="1" aria-pressed="false" onclick="selectCount(this)" type="button" hidden></button>
+                <div class="closed-counts practice-options" role="group" aria-labelledby="testCountLabel">
+                  <button class="practice-option-btn test-count-btn active" data-count="10" aria-pressed="true" onclick="selectCount(this)" type="button">10</button>
+                  <button class="practice-option-btn test-count-btn" data-count="20" aria-pressed="false" onclick="selectCount(this)" type="button">20</button>
+                  <button class="practice-option-btn test-count-btn" data-count="30" aria-pressed="false" onclick="selectCount(this)" type="button">30</button>
+                  <button class="practice-option-btn test-count-btn" data-count="50" aria-pressed="false" onclick="selectCount(this)" type="button">50</button>
+                  <button class="practice-option-btn test-count-btn" id="testAllCount" data-count="1" aria-pressed="false" onclick="selectCount(this)" type="button" hidden></button>
                 </div>
                 <p id="testTimeHint" class="wp-muted"></p>
                 <p id="testSourceStatus" class="wp-muted" role="status" aria-live="polite"></p>
@@ -819,7 +819,7 @@
           </div>
 
           </div>
-          <section id="test-written-pane" class="wp" hidden aria-label="Yazılı sınaq / Written practice"></section>
+          <section id="test-written-pane" class="wp" hidden aria-label="Elektron-Yazılı tipli sınaq / Electronic Written practice"></section>
           <section id="test-personal-pdf" class="wp"></section>
           </div>
 
@@ -2265,7 +2265,7 @@
 <script src="data/material-identities.js?v=20261114-catalog"></script>
 <script src="pdfs.js?v=20261114-majors"></script>
 <script src="scripts/i18n.js?v=20261114-profile-choices"></script>
-<script src="scripts/i18n-app.js?v=20261114-curriculum-clean"></script>
+<script src="scripts/i18n-app.js?v=20261115-design"></script>
 <script src="scripts/data-utils.js?v=20261113-subjects"></script>
 <script src="scripts/study-data.js?v=20261111"></script>
 <script src="scripts/ui.js?v=20261114-majors"></script>
@@ -2295,7 +2295,7 @@
 <script src="scripts/auth-dialog.js?v=20261112"></script>
 <script src="scripts/site-enhancements.js?v=20261112-auth"></script>
 <script src="scripts/policies.js?v=20261114-practice"></script>
-<script src="scripts/written-practice.js?v=20261114-practice"></script>
+<script src="scripts/written-practice.js?v=20261115-design"></script>
 <script src="scripts/test-access.js?v=20261114-practice"></script>
 <script src="scripts/account.js?v=20261111"></script>
 <section class="sheet" id="sheet-account-delete" role="dialog" aria-modal="true" aria-labelledby="accountDeleteTitle" inert>

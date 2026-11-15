@@ -462,7 +462,7 @@ practice retains its shared three-exam daily limit. Unsupported files do not
 consume a successful daily import. See service setup for retention and rules.
 
 The navigation entry is now **Practice** (**Sınaq** in Azerbaijani). Closed and
-written practice use matching subject/PDF selection forms. Closed practice allows
+written practice are titled **Elektron-Test tipli Sınaq** and **Elektron-Yazılı tipli sınaq** in Azerbaijani. They share card, allowance, subject/PDF selector, choice-button and start-button styles. Written practice offers Midterm (3 questions, 30 points) and Semester (5 questions, 50 points), with PDF requirements and AI grading information in an expandable section. Closed practice allows
 5 started exams per authenticated account per Baku calendar day, shared by public
 and private PDF sources. Started/abandoned exams count; selecting or parsing a PDF
 does not. The existing 3 written exams and 1 private PDF import per day are separate.

@@ -1108,7 +1108,7 @@ Object.assign(I18N.en, {
 
 // Unified practice terminology and compact closed-exam setup.
 Object.assign(I18N.az, {
-  navTests:'Sınaq',testIntroTitle:'Qapalı tipli sınaq',testSelectorLabel:'Fənn',
+  navTests:'Sınaq',testIntroTitle:'Elektron-Test tipli Sınaq',testSelectorLabel:'Fənn',
   testHeroDesc:'PDF-dəki sualları cavablandır, nəticəni Dashboard-da izlə. Cavablar mənbə PDF-dəki işarələrə əsaslanır.',
   testStartBtn:'Sınağa başla',testRestartBtn:'Yeni sınaq',testExitAria:'Sınaqdan çıx',
   testExitConfirm:'Sınaqdan çıxmaq istəyirsən? Nəticə saxlanılmayacaq. Bu sınaq gündəlik limitə daxildir.',
@@ -1120,7 +1120,7 @@ Object.assign(I18N.az, {
   aboutItem2:'Onlayn sınaqlar və bilik yoxlama sistemi'
 });
 Object.assign(I18N.en, {
-  navTests:'Practice',testIntroTitle:'Multiple-choice practice',testSelectorLabel:'Subject',
+  navTests:'Practice',testIntroTitle:'Electronic Test practice',testSelectorLabel:'Subject',
   testHeroDesc:'Answer questions from a PDF and track your result in Dashboard. Correct answers follow the markings in the source PDF.',
   testStartBtn:'Start practice',testRestartBtn:'New practice',testExitAria:'Leave practice',
   testExitConfirm:'Leave this practice exam? Your result will not be saved. This exam still counts toward the daily limit.',

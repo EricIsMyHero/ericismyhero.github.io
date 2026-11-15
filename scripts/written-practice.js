@@ -72,24 +72,32 @@
     const own=window.TestAccess?.sources();if(own?.written>=3)rows.unshift({name:text('Şəxsi PDF','My PDF'),pdfs:[{...own,file:own.id}]});return rows;
   }
   function options(rows, selected, value, label) { return rows.map(row => `<option value="${esc(value(row))}" ${value(row) === selected ? 'selected' : ''}>${esc(label(row))}</option>`).join(''); }
-  const button = (action, title, primary = false, unavailable = false) => `<button type="button" class="btn btn--${primary ? 'primary' : 'secondary'}" data-wp="${action}" ${unavailable ? 'disabled data-unavailable="true"' : ''}>${esc(title)}</button>`;
+  const button = (action, title, primary = false, unavailable = false, block = false) => `<button type="button" class="btn btn--${primary ? 'primary' : 'secondary'}${block ? ' btn--block' : ''}${action === 'refresh' ? ' btn--sm' : ''}" data-wp="${action}" ${unavailable ? 'disabled data-unavailable="true"' : ''}>${esc(title)}</button>`;
   function render() {
     const root = $('test-written-pane'); if (!root) return;
-    $('wp-tab-mcq').textContent = text('Qapalı', 'Multiple choice'); $('wp-tab-written').textContent = text('Yazılı · AI', 'Written · AI');
+    $('wp-tab-mcq').textContent = text('Elektron-Test', 'Electronic Test'); $('wp-tab-written').textContent = text('Elektron-Yazılı', 'Electronic Written');
     let body = '';
     const quota = usage ? `${text('Bu gün', 'Today')}: ${usage.used} / ${usage.limit} · ${text('Qalıb', 'Remaining')}: ${usage.remaining}` : '';
-    if (!uid) body = `<div class="wp-card"><h2>${text('Yazılı sınaq', 'Written practice')}</h2><p>${text('Midterm: 3 sual, 30 bal. Semestr: 5 sual, 50 bal. Hər suala 20 dəqiqə.', 'Midterm: 3 questions, 30 points. Semester: 5 questions, 50 points. 20 minutes per question.')}</p>${button('login', text('Daxil ol', 'Sign in'), true)}</div>`;
-    else if (!loaded) body = `<p role="status">${text('Sınaqlar yoxlanılır…', 'Loading your exams…')}</p>${button('refresh', text('Yenidən yoxla', 'Retry'))}`;
+    const feedback = `<p class="wp-message" role="status" aria-live="polite">${esc(quota)}</p><p id="wp-message" role="status">${esc(message)}</p>`;
+    const setupHeader = `<h2 id="wp-hero-title"><span>${text('Elektron-Yazılı tipli sınaq', 'Electronic Written practice')}</span> <span class="badge badge--orange">beta</span></h2>
+      <p>${text('PDF-dəki sualları yazılı cavablandır, nəticəni Dashboard-da izlə. AI cavablarını mənbə PDF-dəki izahlarla müqayisə edir.', 'Write answers to PDF questions and track your result in Dashboard. AI compares your answers with explanations in the source PDF.')}</p>
+      <p class="wp-muted">${text('Hər suala 20 dəqiqə verilir. Başladılmış və yarımçıq saxlanılmış sınaqlar gündəlik 3 sınaq limitinə daxildir.', 'Each question allows 20 minutes. Started and abandoned exams count toward the daily allowance of 3 exams.')}</p>${feedback}`;
+    if (!uid) body = `<section class="wp-card" aria-labelledby="wp-hero-title">${setupHeader}${button('login', text('Daxil ol', 'Sign in'), true)}</section>`;
+    else if (!loaded) body = `<section class="wp-card" aria-labelledby="wp-hero-title">${setupHeader}<p role="status">${text('Sınaqlar yoxlanılır…', 'Loading your exams…')}</p>${button('refresh', text('Limiti yenilə', 'Refresh allowance'))}</section>`;
     else if (!exam) {
       const rows = sources(); if (!rows.some(s => s.name === subject)) subject = rows[0]?.name || '';
       const pdfs = rows.find(s => s.name === subject)?.pdfs || [];
       if (!pdfs.some(p => p.file === source)) source = pdfs[0]?.file || '';
-      body = `<div class="wp-card"><h2>${text('Yazılı sınaq', 'Written practice')} <span class="badge badge--orange">beta</span></h2><p>${text('Elektron-yazılı PDF-dən təsadüfi suallar. Cavabların həmin PDF-dəki izahlarla AI tərəfindən müqayisə olunur.', 'Random questions from a written-format PDF. AI compares your answers with the explanations in that PDF.')}</p><p class="wp-muted">${text('Bu, məşq üçündür; bal rəsmi qiymət deyil. Yoxlama zamanı cavabların və PDF-dən uyğun izah AI xidmətinə göndərilir. Şəxsi məlumat yazma.', 'This is practice; the score is not an official grade. Grading sends your answers and relevant PDF reference text to the AI service. Do not include personal information.')}</p>
+      body = `<section class="wp-card" aria-labelledby="wp-hero-title">${setupHeader}
+      ${button('refresh',text('Limiti yenilə','Refresh allowance'))}
       <label for="wp-subject">${text('Fənn', 'Subject')}</label><select id="wp-subject">${options(rows, subject, s=>s.name, s=>s.name)}</select>
-      <label for="wp-source">${text('Sual mənbəyi', 'Question source')}</label><select id="wp-source">${options(pdfs, source, p=>p.file, p=>p.private?p.name:p.name + ' · ' + p.file)}</select><small class="wp-muted">${text('Ən yeni PDF əvvəl seçilir. Mətn, nömrələnmiş suallar və izahlı cavablar olmalıdır.', 'The newest PDF is selected first. It must contain text, numbered questions and reference answers.')}</small>
-      <div class="wp-modes" role="group" aria-label="${text('Sınaq rejimi', 'Exam mode')}">${['midterm','semester'].map(m=>`<button type="button" data-mode="${m}" aria-pressed="${mode===m}"><strong>${m==='midterm'?'Midterm':text('Semestr','Semester')}</strong><span>${m==='midterm'?'3':'5'} ${text('sual','questions')} · ${m==='midterm'?'30':'50'} ${text('bal','points')}</span><small>${m==='midterm'?'60':'100'} ${text('dəqiqə','minutes')}</small></button>`).join('')}</div>
-      <p>${text('Hər suala 20 dəqiqə. Növbəti suala keçdikdə cavab kilidlənir. Səhifəni bağlamaq vaxtı dayandırmır. Başlanmış və ləğv edilmiş sınaqlar ortaq gündəlik 3 sınaq limitinə daxildir.', '20 minutes per question. Moving on locks your answer. Closing the page does not pause the timer. Started and abandoned exams count toward the shared daily limit of 3.')}</p><p class="wp-muted">${text('Pulsuz AI xidmətinin ümumi kvotası dolduqda yoxlamada fasilə ola bilər.', 'Grading may pause when the free AI service reaches its shared quota.')}</p>
-      ${!enabled ? `<p>${text('AI xidməti hazırda aktiv deyil.', 'The AI service is currently unavailable.')}</p>` : ''}<div class="wp-actions">${button('start',text('Sınağa başla','Start practice'),true,!enabled||!source||!usage?.remaining)}</div></div>`;
+      <label for="wp-source">${text('Sual mənbəyi', 'Question source')}</label><select id="wp-source" aria-describedby="wp-source-hint">${options(pdfs, source, p=>p.file, p=>p.private?p.name:p.name + ' · ' + p.file)}</select><small id="wp-source-hint" class="wp-muted">${text('Ən yeni PDF əvvəl seçilir. İstəsən başqa material seç.', 'The newest PDF is selected first. You can choose another material.')}</small>
+      <p class="practice-options-label" id="wp-mode-label">${text('Sınaq növü','Exam type')}</p>
+      <div class="practice-options" role="group" aria-labelledby="wp-mode-label">${['midterm','semester'].map(m=>`<button type="button" class="practice-option-btn" data-mode="${m}" aria-pressed="${mode===m}">${m==='midterm'?'Midterm':text('Semestr','Semester')} · ${m==='midterm'?'3':'5'} ${text('sual','questions')}</button>`).join('')}</div>
+      <p class="wp-muted">${mode==='midterm'?'3':'5'} ${text('sual','questions')} · ${mode==='midterm'?'30':'50'} ${text('bal','points')} · ${mode==='midterm'?'60':'100'} ${text('dəqiqə','minutes')}</p>
+      <p class="wp-muted">${text('Növbəti suala keçdikdə cavab kilidlənir. Səhifəni bağlamaq vaxtı dayandırmır.', 'Moving on locks your answer. Closing the page does not pause the timer.')}</p>
+      <div class="test-sources"><details><summary>${text('PDF tələbləri və AI yoxlaması','PDF requirements and AI grading')}</summary><p>${text('PDF-də mətn, nömrələnmiş suallar və izahlı cavablar olmalıdır.', 'The PDF must contain text, numbered questions and reference answers.')}</p><p>${text('Bu, məşq üçündür; bal rəsmi qiymət deyil. Yoxlama zamanı cavabların və PDF-dən uyğun izah AI xidmətinə göndərilir. Şəxsi məlumat yazma.', 'This is practice; the score is not an official grade. Grading sends your answers and relevant PDF reference text to the AI service. Do not include personal information.')}</p><p>${text('Pulsuz AI xidmətinin ümumi kvotası dolduqda yoxlamada fasilə ola bilər.', 'Grading may pause when the free AI service reaches its shared quota.')}</p></details></div>
+      ${!enabled ? `<p role="status">${text('AI xidməti hazırda aktiv deyil.', 'The AI service is currently unavailable.')}</p>` : ''}<div class="wp-actions">${button('start',text('Sınağa başla','Start practice'),true,!enabled||!source||!usage?.remaining,true)}</div></section>`;
     } else if (exam.status === 'active') {
       const q = exam.questions[exam.current], draft = storage.get(draftKey());
       let answer = q.answer;
@@ -101,7 +109,7 @@
     } else {
       body = `<div class="wp-card"><h2>${text('Cavablar yoxlanılır','Grading your answers')}</h2><p>${exam.graded} / ${exam.questions.length}</p><progress max="${exam.questions.length}" value="${exam.graded}" aria-label="${text('Yoxlama','Grading')}"></progress><p>${text('Hər sual ayrıca yoxlanılır. Bu səhifəni bağlasan, sonra eyni sınağın yoxlamasına davam edə bilərsən.','Questions are graded individually. You can close this page and resume grading the same exam later.')}</p><p id="wp-retry" role="status"></p><div class="wp-actions">${button('grade',text('Yoxlamanı davam etdir','Resume grading'),true)}${button('abandon',text('Sınağı ləğv et','Abandon exam'))}</div></div>`;
     }
-    root.innerHTML = `<p class="wp-muted">${esc(quota)}</p><div id="wp-message" class="wp-message" role="status">${esc(message)}</div>` + body;
+    root.innerHTML = (exam ? feedback : '') + body;
     root.onclick = event => { const target=event.target.closest('[data-wp],[data-mode]'); if(!target||target.disabled)return; if(target.dataset.mode){mode=target.dataset.mode;pending=null;render();}else act(target.dataset.wp); };
     $('wp-subject')?.addEventListener('change',e=>{subject=e.target.value;source='';pending=null;render();});
     $('wp-source')?.addEventListener('change',e=>{source=e.target.value;pending=null;});
@@ -166,7 +174,7 @@
   }
   function route(){
     const written=visible();if(!$('test-mcq-pane'))return;
-    $('wp-tab-mcq').textContent=text('Qapalı','Multiple choice');$('wp-tab-written').textContent=text('Yazılı · AI','Written · AI');
+    $('wp-tab-mcq').textContent=text('Elektron-Test','Electronic Test');$('wp-tab-written').textContent=text('Elektron-Yazılı','Electronic Written');
     $('test-mcq-pane').hidden=written;$('test-written-pane').hidden=!written;
     $('wp-tab-mcq').setAttribute('aria-pressed',String(!written));$('wp-tab-written').setAttribute('aria-pressed',String(written));
     if(written){render();if(uid&&!loaded)refresh();else if(exam&&['ready','grading'].includes(exam.status))queueGrade(100);}
