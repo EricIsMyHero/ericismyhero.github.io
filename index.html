@@ -128,7 +128,7 @@
   <link rel="stylesheet" href="styles/splash.css?v=20261106-3">
   <link rel="stylesheet" href="styles/base.css?v=20261106-3">
   <link rel="stylesheet" href="styles/components.css?v=20261106-3">
-  <link rel="stylesheet" href="styles/features.css?v=20261106-3">
+  <link rel="stylesheet" href="styles/features.css?v=20261115-premium">
   <link rel="stylesheet" href="styles/curriculum.css?v=20261106-3">
   <link rel="stylesheet" href="styles/gpa.css?v=20261106-3">
   <link rel="stylesheet" href="styles/dashboard.css?v=20261106-3">
@@ -2207,10 +2207,23 @@
       </div>
       <button class="qr-pay-modal-close" onclick="closePremiumModal()">✕</button>
     </div>
-    <p class="qr-pay-modal-desc" data-i18n="premiumModalDesc">Günlük sorğu limiti 12-yə, mesaj uzunluğu 400 simvola qədər artır.</p>
-
-    <div class="premium-plans" id="premium-plans"></div>
-
+    <div class="premium-payment-layout">
+      <div class="premium-selection">
+        <p class="qr-pay-modal-desc" data-i18n="premiumModalDesc">Günlük sorğu limiti 12-yə, mesaj uzunluğu 400 simvola qədər artır.</p>
+        <div class="premium-plans" id="premium-plans" role="group" aria-label="Premium plan"></div>
+      </div>
+      <section class="premium-qr-panel" aria-labelledby="premium-method-name">
+        <p id="premium-payment-summary" class="premium-payment-summary" aria-live="polite"></p>
+        <div class="premium-qr-controls">
+          <button type="button" class="icon-btn" data-premium-switch onclick="switchPremiumPayment()"><svg class="ic" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
+          <h3 id="premium-method-name" aria-live="polite">Birbank</h3>
+          <button type="button" class="icon-btn" data-premium-switch onclick="switchPremiumPayment()"><svg class="ic" aria-hidden="true"><use href="#i-chevron-right"/></svg></button>
+        </div>
+        <div class="qr-pay-img-wrap"><img id="premium-qr-img" src="images/birbankqr.png" alt="Birbank QR" class="qr-pay-img" width="220" height="220"></div>
+        <p id="premium-qr-hint"></p>
+        <a id="premium-open-app" class="btn btn--secondary btn--block" target="_blank" rel="noopener noreferrer"></a>
+      </section>
+      <section id="premium-instructions" class="premium-instructions"></section>
     <div class="premium-redeem">
       <div class="premium-redeem-label" data-i18n="premiumRedeemLabel">Artıq kodun var?</div>
       <div class="premium-redeem-row">
@@ -2218,6 +2231,7 @@
         <button onclick="redeemPremiumCode()" data-i18n="premiumActivateBtn">Aktivləşdir</button>
       </div>
       <div class="premium-redeem-msg" id="premium-redeem-msg"></div>
+    </div>
     </div>
   </div>
 </div>
@@ -2269,7 +2283,7 @@
 <script src="scripts/data-utils.js?v=20261113-subjects"></script>
 <script src="scripts/study-data.js?v=20261111"></script>
 <script src="scripts/ui.js?v=20261114-majors"></script>
-<script src="scripts/features.js?v=20261114-practice"></script>
+<script src="scripts/features.js?v=20261115-premium"></script>
 <script src="scripts/test-bank.js?v=20261114-radio"></script>
 <script src="scripts/pdf-loader.js?v=20261114-radio"></script>
 <script src="scripts/gpa.js?v=20261111"></script>

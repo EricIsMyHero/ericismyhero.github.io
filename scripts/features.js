@@ -154,12 +154,9 @@ function openPremiumModal() {
     if (typeof openAuthModal === 'function') openAuthModal('login');
     return;
   }
-  document.getElementById('premium-plans').innerHTML = PREMIUM_PLANS_INFO.map(p => `
-    <button class="premium-plan-btn" onclick="choosePremiumPlan('${p.key}')">
-      <span class="premium-plan-btn-name">${p.name}</span>
-      <span class="premium-plan-btn-price">${p.price}</span>
-    </button>
-  `).join('');
+  premiumPayment.plan = '7d';
+  premiumPayment.method = 'birbank';
+  renderPremiumPayment();
   const msg = document.getElementById('premium-redeem-msg');
   msg.textContent = '';
   document.getElementById('premium-code-input').value = '';
@@ -172,12 +169,105 @@ function closePremiumModal() {
   document.body.style.overflow = '';
 }
 
-function choosePremiumPlan(key) {
-  const plan = PREMIUM_PLANS_INFO.find(p => p.key === key);
-  if (!plan) return;
-  closePremiumModal();
-  openQRModal('birbank', `Seçdiyin plan: ${plan.name} (${plan.price}) — bu məbləği göndər, kodu al və "Yüksəlt" bölməsində aktivləşdir.`);
+const premiumPayment = { plan: '7d', method: 'birbank' };
+const premiumText = (az, en) => lang === 'en' ? en : az;
+function premiumPlanName(plan, full = false) {
+  if (plan.key === 'lifetime') return premiumText(full ? 'Ömürlük Premium planı' : 'Ömürlük', full ? 'Lifetime Premium plan' : 'Lifetime');
+  const days = parseInt(plan.key, 10);
+  return premiumText(days + (full ? ' günlük Premium planı' : ' gün'), days + (full ? '-day Premium plan' : ' days'));
 }
+function premiumMailLink(plan, paid) {
+  const method = premiumPayment.method === 'birbank' ? 'Birbank' : 'm10';
+  const user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
+  const account = user?.email || premiumText('[Saytda istifadə etdiyim e-poçt]', '[My account email]');
+  const name = premiumPlanName(plan, true);
+  const subject = premiumText(paid ? 'Premium ödənişini etdim — ' : 'Premium üçün alternativ ödəniş — ', paid ? 'Premium payment completed — ' : 'Alternative Premium payment — ') + name;
+  const body = paid
+    ? premiumText(`Salam!
+
+${name} üçün ${plan.price} məbləğində ${method} vasitəsilə ödəniş etdim.
+Ödənişi yoxlayıb aktivləşdirmə kodunu mənə göndərməyinizi xahiş edirəm.
+
+Hesabımın e-poçtu: ${account}
+Plan: ${name}
+Məbləğ: ${plan.price}
+Ödəniş üsulu: ${method}
+
+Qeyd: Göndərməzdən əvvəl ödəniş qəbzinin şəklini bu məktuba əlavə edin.`, `Hello!
+
+I paid ${plan.price} for the ${name} using ${method}.
+Please verify my payment and send me the activation code.
+
+Account email: ${account}
+Plan: ${name}
+Amount: ${plan.price}
+Payment method: ${method}
+
+Reminder: Attach an image of the payment receipt before sending this email.`)
+    : premiumText(`Salam!
+
+${name} (${plan.price}) üçün yazıram. Birbank və m10 vasitəsilə ödəniş edə bilmirəm.
+Zəhmət olmasa, alternativ ödəniş üsulu və aktivləşdirmə qaydası barədə məlumat verin.
+
+Hesabımın e-poçtu: ${account}
+Seçdiyim plan: ${name}
+Məbləğ: ${plan.price}
+
+Təşəkkür edirəm!`, `Hello!
+
+I would like the ${name} (${plan.price}), but cannot pay using Birbank or m10.
+Please let me know an alternative payment method and how to activate my plan.
+
+Account email: ${account}
+Selected plan: ${name}
+Amount: ${plan.price}
+
+Thank you!`);
+  return 'mailto:unecstudentshub@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+}
+function renderPremiumPayment() {
+  const plan = PREMIUM_PLANS_INFO.find(p => p.key === premiumPayment.plan);
+  if (!plan) return;
+  const esc = window.UNEC.esc;
+  const method = premiumPayment.method === 'birbank' ? 'Birbank' : 'm10';
+  document.getElementById('premium-plans').innerHTML = PREMIUM_PLANS_INFO.map(p => `
+    <button type="button" class="premium-plan-btn" aria-pressed="${p.key === plan.key}" onclick="choosePremiumPlan('${p.key}')">
+      <span class="premium-plan-btn-name">${esc(premiumPlanName(p))}</span><span class="premium-plan-btn-price">${esc(p.price)}</span>
+    </button>`).join('');
+  document.getElementById('premium-payment-summary').textContent = premiumPlanName(plan, true) + ' · ' + plan.price;
+  document.getElementById('premium-method-name').textContent = method;
+  const image = document.getElementById('premium-qr-img');
+  image.src = premiumPayment.method === 'birbank' ? 'images/birbankqr.png' : 'images/m10qr.png';
+  image.alt = method + ' QR';
+  document.getElementById('premium-qr-hint').textContent = premiumText(`${method} tətbiqində QR-i skan et və ${plan.price} göndər. Bu telefondasan? Aşağıdakı düymə ilə tətbiqi aç.`, `Scan the QR in ${method} and send ${plan.price}. On this phone? Open the app using the button below.`);
+  const app = document.getElementById('premium-open-app');
+  app.href = premiumPayment.method === 'birbank' ? 'https://app.birbank.az/qp?t=2&id=3F12353F2088F167E0634C0214ACD220' : 'https://m10.onelink.me/g54T/cw5bg1gx';
+  app.textContent = premiumText(method + ' tətbiqini aç', 'Open ' + method);
+  document.querySelectorAll('[data-premium-switch]').forEach(button => button.setAttribute('aria-label', premiumText(method === 'Birbank' ? 'm10 QR-ni göstər' : 'Birbank QR-ni göstər', method === 'Birbank' ? 'Show m10 QR' : 'Show Birbank QR')));
+  document.getElementById('premium-instructions').innerHTML = `
+    <h3>${esc(premiumText('Necə aktivləşdirilir?', 'How to activate'))}</h3>
+    <ol><li>${esc(premiumText('Planı seç və göstərilən məbləği Birbank və ya m10 ilə göndər. Oxlarla QR-i dəyişə bilərsən.', 'Choose your plan and send the displayed amount via Birbank or m10. Use the arrows to switch QR codes.'))}</li>
+    <li>${esc(premiumText('“Ödəniş etdim” düyməsini bas. Açılan hazır məktuba ödəniş qəbzinin şəklini əlavə et və göndər.', 'Choose “I have paid”. Attach an image of the payment receipt to the prepared email and send it.'))}</li>
+    <li>${esc(premiumText('Ödəniş təsdiqləndikdən sonra aktivləşdirmə kodu e-poçtla göndəriləcək. Kodu aşağıdakı sahəyə yazıb “Aktivləşdir” düyməsini bas.', 'After payment is verified, an activation code will be emailed to you. Enter it below and choose “Activate”.'))}</li></ol>
+    <p class="premium-manual-note">${esc(premiumText('Kod ödəniş anında avtomatik verilmir. “Ödəniş etdim” məktubunu göndərmək vacibdir.', 'The code is not issued automatically at payment. Please send the “I have paid” email.'))}</p>
+    <a class="btn btn--primary premium-paid" id="premium-paid-mail" href="${esc(premiumMailLink(plan, true))}">${esc(premiumText('Ödəniş etdim', 'I have paid'))}</a>
+    <p>${esc(premiumText('Birbank və m10 ilə ödəyə bilmirsən? Alternativ üsul üçün bizə yaz. Seçdiyin plana uyğun məktub hazır açılacaq.', 'Cannot use Birbank or m10? Email us for an alternative. The draft will include your selected plan.'))}</p>
+    <a class="btn btn--secondary" id="premium-help-mail" href="${esc(premiumMailLink(plan, false))}">${esc(premiumText('Alternativ ödəniş üçün yaz', 'Ask about alternative payment'))}</a>
+    <p class="premium-email-note">${esc(premiumText('Qəbzi məktuba özün əlavə et. E-poçt tətbiqi açılmırsa, unecstudentshub@gmail.com ünvanına seçdiyin planı və hesabının e-poçtunu yaz.', 'Attach the receipt yourself. If your email app does not open, write to unecstudentshub@gmail.com with your selected plan and account email.'))}</p>`;
+}
+function choosePremiumPlan(key) {
+  if (!PREMIUM_PLANS_INFO.some(p => p.key === key)) return;
+  premiumPayment.plan = key;
+  renderPremiumPayment();
+  document.querySelector('.premium-plan-btn[aria-pressed="true"]')?.focus({ preventScroll: true });
+}
+function switchPremiumPayment() {
+  premiumPayment.method = premiumPayment.method === 'birbank' ? 'm10' : 'birbank';
+  renderPremiumPayment();
+}
+window.addEventListener('unec:langchange', () => {
+  if (!document.getElementById('premiumOverlay')?.classList.contains('hidden')) renderPremiumPayment();
+});
 
 async function redeemPremiumCode() {
   const input = document.getElementById('premium-code-input');
