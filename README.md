@@ -456,17 +456,17 @@ run `node tools/build-site.mjs` to refresh the trusted written-source list.
 
 All practice now requires sign-in, and both multiple-choice and written outcomes
 appear in Dashboard history. Under **Practice → Practice with my PDF**, each account
-can import one private PDF per Baku day (up to 3 MB). The server imports marked
+can import one private PDF per Baku day on Free or three on active Premium (up to 3 MB each). The server imports marked
 MCQs or written questions with reference answers. Original PDF bytes are not
 retained, and private sources never enter the public material catalogue. Written
-practice retains its shared three-exam daily limit. Unsupported files do not
+practice shares a daily limit of three exams on Free or five on active Premium. Unsupported files do not
 consume a successful daily import. See service setup for retention and rules.
 
 The navigation entry is now **Practice** (**Sınaq** in Azerbaijani). Closed and
 written practice are titled **Elektron-Test tipli Sınaq** and **Elektron-Yazılı tipli sınaq** in Azerbaijani. They share card, allowance, subject/PDF selector, choice-button and start-button styles. Written practice offers Midterm (3 questions, 30 points) and Semester (5 questions, 50 points), with PDF requirements and AI grading information in an expandable section. Closed practice allows
-5 started exams per authenticated account per Baku calendar day, shared by public
+5 started exams on Free or 10 on active Premium per authenticated account per Baku calendar day, shared by public
 and private PDF sources. Started/abandoned exams count; selecting or parsing a PDF
-does not. The existing 3 written exams and 1 private PDF import per day are separate.
+does not. Written exams (3 Free / 5 Premium) and private PDF imports (1 Free / 3 Premium) have separate daily quotas. Active Premium is derived from redeemed codes on the server; upgrades and expiry preserve the day’s usage. Private PDFs occupy up to six alternating slots so later uploads do not invalidate earlier exams. The upgrade modal compares Free and Premium limits, including AI questions and message length.
 
 ### Course-free catalogue editing
 

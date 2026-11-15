@@ -234,6 +234,18 @@ function renderPremiumPayment() {
     <button type="button" class="premium-plan-btn" aria-pressed="${p.key === plan.key}" onclick="choosePremiumPlan('${p.key}')">
       <span class="premium-plan-btn-name">${esc(premiumPlanName(p))}</span><span class="premium-plan-btn-price">${esc(p.price)}</span>
     </button>`).join('');
+  const daily = premiumText('gün', 'day');
+  const rows = [
+    [premiumText('AI sorğuları', 'AI questions'), '5 / ' + daily, '12 / ' + daily],
+    [premiumText('Mesaj uzunluğu', 'Message length'), '250 ' + premiumText('simvol', 'characters'), '400 ' + premiumText('simvol', 'characters')],
+    [premiumText('Elektron-Test', 'Electronic Test'), '5 / ' + daily, '10 / ' + daily],
+    [premiumText('Elektron-Yazılı', 'Electronic Written'), '3 / ' + daily, '5 / ' + daily],
+    [premiumText('Şəxsi PDF yükləmə', 'Private PDF uploads'), '1 / ' + daily, '3 / ' + daily]
+  ];
+  document.getElementById('premium-comparison').innerHTML = `<h3 id="premium-comparison-title">${esc(premiumText('Sadə və Premium müqayisəsi', 'Free and Premium comparison'))}</h3>
+    <table class="premium-comparison-table" aria-labelledby="premium-comparison-title"><thead><tr><th scope="col">${esc(premiumText('İmkan', 'Feature'))}</th><th scope="col">${esc(premiumText('Sadə', 'Free'))}</th><th scope="col">Premium</th></tr></thead>
+    <tbody>${rows.map(([name,free,premium])=>`<tr><th scope="row">${esc(name)}</th><td>${esc(free)}</td><td>${esc(premium)}</td></tr>`).join('')}</tbody></table>
+    <p class="premium-email-note">${esc(premiumText('Limitlər Bakı vaxtı ilə gecə yarısı yenilənir. Bütün Premium planlarında bu imkanlar eynidir; yalnız planın müddəti fərqlənir.', 'Daily limits reset at midnight in Baku. Every Premium plan has these allowances; only its duration differs.'))}</p>`;
   document.getElementById('premium-payment-summary').textContent = premiumPlanName(plan, true) + ' · ' + plan.price;
   document.getElementById('premium-method-name').textContent = method;
   const image = document.getElementById('premium-qr-img');
@@ -296,6 +308,7 @@ async function redeemPremiumCode() {
     msg.style.color = 'var(--green)';
     msg.textContent = lang === 'en' ? 'Success! Premium is active.' : 'Uğurlu! Premium aktivləşdi.';
     input.value = '';
+    window.dispatchEvent(new CustomEvent('unec:premiumchange'));
     setTimeout(() => { closePremiumModal(); refreshAiAuthState(); }, 1200);
   } catch (e) {
     msg.style.color = 'var(--red)';

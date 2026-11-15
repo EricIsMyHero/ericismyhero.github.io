@@ -360,7 +360,7 @@ const I18N = {
     aiConnError: "Bağlantı xətası.",
     aiLimitReached: "Günlük sorğu limitin bitdi ({n}/{n}). Sabah yenidən cəhd et, ya da Premium-a yüksəl.",
     premiumModalTitle: "Premium-a Yüksəl",
-    premiumModalDesc: "Günlük sorğu limiti 12-yə, mesaj uzunluğu 400 simvola qədər artır.",
+    premiumModalDesc: "Gündə 12 AI sorğusu, 10 Elektron-Test, 5 Elektron-Yazılı sınaq və 3 şəxsi PDF yükləməsi. Mesaj uzunluğu 400 simvola qədər.",
     premiumRedeemLabel: "Artıq kodun var?",
     premiumActivateBtn: "Aktivləşdir",
   },
@@ -708,7 +708,7 @@ const I18N = {
     aiConnError: "Connection error.",
     aiLimitReached: "Your daily question limit is reached ({n}/{n}). Try again tomorrow, or upgrade to Premium.",
     premiumModalTitle: "Upgrade to Premium",
-    premiumModalDesc: "Raises your daily question limit to 12 and message length to 400 characters.",
+    premiumModalDesc: "Daily: 12 AI questions, 10 Electronic Test exams, 5 Electronic Written exams and 3 private PDF uploads. Messages up to 400 characters.",
     premiumRedeemLabel: "Already have a code?",
     premiumActivateBtn: "Activate",
   }

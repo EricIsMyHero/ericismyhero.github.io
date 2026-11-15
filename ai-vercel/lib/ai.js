@@ -8,12 +8,12 @@ export function premiumPolicy(receipts, now = new Date()) {
     (days[d.plan] && Number.isFinite(Date.parse(d.redeemedAt)) && Date.parse(d.redeemedAt) + days[d.plan] * 86400000 > +now)));
   return { isPremium: premium, dailyLimit: premium ? 12 : 5, charLimit: premium ? 400 : 250 };
 }
-export async function getAiPolicy(uid, env = process.env) {
+export async function getAiPolicy(uid, env = process.env, now = new Date()) {
   // Premium is derived from server-controlled redemption receipts, never writable profile fields.
   const receipts = await runQuery({ from: [{ collectionId: 'premium_codes' }], where: { fieldFilter: {
     field: { fieldPath: 'redeemedByUid' }, op: 'EQUAL', value: { stringValue: uid }
   } }, limit: 100 }, env);
-  return premiumPolicy(receipts);
+  return premiumPolicy(receipts, now);
 }
 export function usagePath(uid) { return 'ai_usage/' + crypto.createHash('sha256').update(uid).digest('hex'); }
 const defaults = { get: getDoc, create: createDoc, patch: patchDoc };

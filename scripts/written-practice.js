@@ -21,7 +21,7 @@
   }
   function notice(value) { message = value; if ($('wp-message')) $('wp-message').textContent = value; }
   const errors = {
-    written_quota: ['Bu gün üçün 3 sınaq limitinə çatmısan. Limit Bakı vaxtı ilə gecə yarısı yenilənir.', 'You have used all 3 exams today. The limit resets at midnight in Baku.'],
+    written_quota: ['Bu gün üçün Elektron-Yazılı sınaq limitinə çatmısan. Limit Bakı vaxtı ilə gecə yarısı yenilənir.', 'You have used your daily Electronic Written exam allowance. The limit resets at midnight in Baku.'],
     source_not_ready: ['Bu PDF-də kifayət qədər sual və izahlı cavab tanınmadı. Başqa PDF seç. Skan edilmiş və yalnız suallardan ibarət fayllar uyğun deyil.', 'Not enough questions with reference answers were found. Choose another PDF. Scans and question-only files are not supported.'],
     source_changed: ['PDF dəyişib və əvvəlki mənbəni yoxlamaq mümkün deyil. Cavabların saxlanılıb; bu sınağı ləğv edə bilərsən.', 'The PDF changed and its original reference cannot be verified. Your answers are saved; you can abandon this exam.'],
     question_expired: ['Sualın vaxtı bitdi. Son saxlanmış cavab kilidləndi.', 'Time expired. The last saved answer was locked.'],
@@ -81,7 +81,7 @@
     const feedback = `<p class="wp-message" role="status" aria-live="polite">${esc(quota)}</p><p id="wp-message" role="status">${esc(message)}</p>`;
     const setupHeader = `<h2 id="wp-hero-title"><span>${text('Elektron-Yazılı tipli sınaq', 'Electronic Written practice')}</span> <span class="badge badge--orange">beta</span></h2>
       <p>${text('PDF-dəki sualları yazılı cavablandır, nəticəni Dashboard-da izlə. AI cavablarını mənbə PDF-dəki izahlarla müqayisə edir.', 'Write answers to PDF questions and track your result in Dashboard. AI compares your answers with explanations in the source PDF.')}</p>
-      <p class="wp-muted">${text('Hər suala 20 dəqiqə verilir. Başladılmış və yarımçıq saxlanılmış sınaqlar gündəlik 3 sınaq limitinə daxildir.', 'Each question allows 20 minutes. Started and abandoned exams count toward the daily allowance of 3 exams.')}</p>${feedback}`;
+      <p class="wp-muted">${text('Hər suala 20 dəqiqə verilir. Başladılmış və yarımçıq saxlanılmış sınaqlar planına uyğun gündəlik limitə daxildir.', 'Each question allows 20 minutes. Started and abandoned exams count toward your plan’s daily allowance.')}</p>${feedback}`;
     if (!uid) body = `<section class="wp-card" aria-labelledby="wp-hero-title">${setupHeader}${button('login', text('Daxil ol', 'Sign in'), true)}</section>`;
     else if (!loaded) body = `<section class="wp-card" aria-labelledby="wp-hero-title">${setupHeader}<p role="status">${text('Sınaqlar yoxlanılır…', 'Loading your exams…')}</p>${button('refresh', text('Limiti yenilə', 'Refresh allowance'))}</section>`;
     else if (!exam) {
@@ -191,6 +191,7 @@
   window.addEventListener('unec:routechange',route);window.addEventListener('unec:authchange',auth);
   window.addEventListener('unec:langchange',()=>{stash();render();});
   document.addEventListener('DOMContentLoaded',()=>{auth();route();});
+  window.addEventListener('unec:premiumchange',()=>{if(uid)refresh();});
   window.addEventListener('unec:privatepdf',()=>{if(visible()&&!exam)render();});
   document.addEventListener('visibilitychange',()=>{if(document.hidden){stash();if(dirty&&!busy&&exam?.status==='active')act('save');}else if(visible()&&!busy&&uid)refresh();});
   window.addEventListener('pagehide',stash);

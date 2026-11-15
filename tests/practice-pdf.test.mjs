@@ -6,7 +6,7 @@ function fixture(){
  let version=0,now=Date.parse('2026-11-14T12:00:00Z'),parses=0;const docs=new Map();
  const db={get:async p=>structuredClone(docs.get(p)),create:async(c,id,data)=>{const p=c+'/'+id;if(docs.has(p))throw Object.assign(new Error(),{code:'exists'});docs.set(p,{data:structuredClone(data),updateTime:String(++version)});},patch:async(p,data,o)=>{const doc=docs.get(p);if(o.ifUpdateTime!==doc?.updateTime)throw Object.assign(new Error(),{code:'conflict'});docs.set(p,{data:{...doc.data,...structuredClone(data)},updateTime:String(++version)});}};
  const questions=Array.from({length:6},(_,i)=>({id:'question'+i,number:i+1,page:i+1,title:'Explain this topic '+i,reference:('The reference describes the main facts about this topic in detail. ').repeat(8)}));
- const services={db,now:()=>now,parse:async()=>{parses++;return {questions,text:'1. Choose the correct option\nA) Wrong answer\nB) Correct answer ✓'};},grade:async q=>({score:9,feedback:'Accurate.',quote:q.reference.slice(0,60)})};
+ const services={db,policy:async()=>({isPremium:false}),now:()=>now,parse:async()=>{parses++;return {questions,text:'1. Choose the correct option\nA) Wrong answer\nB) Correct answer ✓'};},grade:async q=>({score:9,feedback:'Accurate.',quote:q.reference.slice(0,60)})};
  const env={GROQ_API_KEY:'fixture'},body={file:'my-notes.pdf',requestId:'upload-request-00001',pdf:Buffer.from('%PDF-1.4 fixture bytes only').toString('base64')};
  const call=(action,b={},uid='alice')=>practicePdfAction({action:'practice-pdf-'+action,...b},uid,env,services);
  const written=(action,b={},uid='alice')=>writtenAction({action:'written-'+action,...b},uid,env,services);
@@ -79,4 +79,64 @@ test('account export includes only the authenticated owner’s private imported 
  const {accountAction}=await import('../ai-vercel/lib/account.js');const f=fixture();await f.call('upload',f.body);let requested='';
  const db={getDoc:async p=>f.db.get(p),listCollections:async()=>[],listDocs:async p=>{requested=p;return {docs:[...f.docs].filter(([key])=>key.startsWith(p+'/')).map(([path,d])=>({path,data:d.data}))};}};
  const r=await accountAction('account-export',{idToken:'fixture'},{},{verify:async()=>({uid:'alice'}),db});assert.equal(r.status,200);assert.equal(requested,usagePath('alice')+'/practice_sources');assert.equal(r.json.privatePdfSources.length,1);assert.equal(r.json.privatePdfSources[0].file,'my-notes.pdf');
+});
+test('Premium imports three independently usable PDFs; old sources survive new uploads and expiry',async()=>{
+ const f=fixture(),first=await f.call('upload',f.body),ids=[first.json.source.id];
+ assert.equal((await f.call('upload',{...f.body,requestId:'forged-premium-upload',isPremium:true,limit:3})).status,429);
+ f.services.policy=async()=>({isPremium:true});
+ assert.equal((await f.call('status')).json.usage.remaining,2);
+ for(let i=1;i<3;i++){
+  const body={...f.body,file:'notes-'+i+'.pdf',requestId:'premium-upload-000'+i};
+  const r=await f.call('upload',body);assert.equal(r.status,200);ids.push(r.json.source.id);
+  assert.equal(r.json.usage.limit,3);assert.equal(r.json.usage.used,i+1);
+  assert.equal((await f.call('upload',body)).json.usage.used,i+1);
+ }
+ assert.equal(new Set(ids).size,3);assert.equal(ids[0],'private:2026-11-14');
+ const status=await f.call('status');assert.equal(status.json.sources.length,3);assert.equal(status.json.usage.remaining,0);
+ assert.equal((await f.call('upload',{...f.body,requestId:'premium-upload-0004'})).status,429);
+ for(const sourceId of ids){assert.equal((await f.call('get',{sourceId})).status,200);assert.equal((await f.call('get',{sourceId},'bob')).status,404);}
+ let exam=(await f.written('start',{mode:'midterm',sourceId:ids[1],requestId:'second-private-exam'})).json.exam;
+ assert.equal(exam.source.file,'notes-1.pdf');
+ f.services.policy=async()=>({isPremium:false});
+ assert.equal((await f.call('status')).json.usage.remaining,0);
+ assert.equal((await f.written('finish',{examId:exam.id,day:exam.day,index:0,rev:1,answer:'Reference response'})).status,200);
+ f.setTime('2026-11-14T20:01:00Z');await f.call('upload',{...f.body,requestId:'next-day-upload-01'});
+ for(const sourceId of ids)assert.equal((await f.call('get',{sourceId})).status,200);
+});
+test('Premium concurrent uploads consume only the last slot and never overwrite earlier PDFs',async()=>{
+ const f=fixture();f.services.policy=async()=>({isPremium:true});
+ const first=await f.call('upload',f.body);await f.call('upload',{...f.body,requestId:'second-upload-001'});
+ const replies=await Promise.all(Array.from({length:10},(_,i)=>f.call('upload',{...f.body,requestId:'last-slot-upload-'+i})));
+ assert.equal(replies.filter(r=>r.status===200).length,1);assert.equal(f.parses,3);
+ assert.equal((await f.call('status')).json.usage.used,3);
+ assert.equal((await f.call('get',{sourceId:first.json.source.id})).json.source.file,f.body.file);
+});
+test('Premium retention stays bounded to six slots and failed parsing does not spend a slot',async()=>{
+ const f=fixture();f.services.policy=async()=>({isPremium:true});
+ const parse=f.services.parse;f.services.parse=async()=>({questions:[],text:''});
+ assert.equal((await f.call('upload',f.body)).status,422);assert.equal((await f.call('status')).json.usage.used,0);f.services.parse=parse;
+ for(let day=14;day<19;day++){
+  f.setTime(`2026-11-${day}T12:00:00Z`);
+  for(let slot=0;slot<3;slot++)assert.equal((await f.call('upload',{...f.body,requestId:`daily-import-${day}-${slot}`})).status,200);
+ }
+ assert.equal([...f.docs.keys()].filter(p=>p.includes('/practice_sources/')).length,6);
+});
+test('a lost final upload response is repaired by retry without another parse or upload charge',async()=>{
+ const f=fixture();f.services.policy=async()=>({isPremium:true});const patch=f.db.patch;let fail=true;
+ f.db.patch=async(...args)=>{if(args[1].practiceUpload?.status==='ready'&&fail){fail=false;throw new Error('network');}return patch(...args);};
+ assert.equal((await f.call('upload',f.body)).status,503);
+ const retry=await f.call('upload',f.body);assert.equal(retry.status,200);assert.equal(retry.json.usage.used,1);assert.equal(f.parses,1);
+ assert.equal((await f.call('upload',{...f.body,requestId:'second-upload-0001'})).status,200);
+});
+test('an expired parser lease cannot overwrite a newer import in the same slot',async()=>{
+ const f=fixture();f.services.policy=async()=>({isPremium:true});const parse=f.services.parse;let release,started;
+ const ready=new Promise(resolve=>started=resolve),gate=new Promise(resolve=>release=resolve);
+ let first=true;f.services.parse=async(...args)=>{if(first){first=false;started();await gate;}return parse(...args);};
+ const slow=f.call('upload',{...f.body,file:'slow.pdf',requestId:'expired-lease-upload'});await ready;
+ const pending=await f.call('status');assert.equal(pending.json.usage.used,1);assert.equal(pending.json.usage.remaining,2);
+ f.advance(120001);
+ const newer=await f.call('upload',{...f.body,file:'new.pdf',requestId:'new-lease-upload-01'});assert.equal(newer.status,200);
+ release();assert.equal((await slow).status,409);
+ const source=(await f.call('get',{sourceId:newer.json.source.id})).json.source;assert.equal(source.file,'new.pdf');
+ assert.equal((await f.call('status')).json.usage.used,1);
 });

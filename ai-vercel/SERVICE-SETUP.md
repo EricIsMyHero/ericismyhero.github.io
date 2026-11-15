@@ -66,7 +66,7 @@ available for retry. This is formative practice, not an official mark.
 
 Midterm draws 3 questions (30 points maximum); Semester draws 5 (50 maximum).
 Each question allows 20 minutes, enforced by server deadlines. Moving forward
-locks the preceding answer. The shared limit is 3 started exams per UID per Baku
+locks the preceding answer. The shared limit is 3 started exams on Free or 5 on active Premium per UID per Baku
 calendar day, including abandoned exams. Start request IDs make retries
 idempotent, and Firestore update-time preconditions protect concurrent quota and
 grading operations. Blank answers receive zero; insufficient or unverifiable
@@ -108,17 +108,17 @@ is recorded explicitly and is never displayed as zero percent.
 `practice-pdf-*` actions also share `/api/ask`. The server authenticates the UID,
 accepts at most 3 MiB of base64-encoded original PDF bytes and parses them using
 the same pinned PDF engine. Upload quota is independent of AI/chat quota: one
-successful PDF per UID per Baku day across both formats. A server-side claim
+successful PDF on Free or three on active Premium per UID per Baku day across both formats. A server-side claim
 prevents concurrent uploads from spending the slot twice. Unsupported/failed
 parsing releases the claim; retries of a successful request are idempotent.
 The original bytes are not retained or sent to R2. No new bucket or API key is
-needed. The existing 3 written exams/day limit still applies to private sources.
+needed. The same plan-based written-exam limit (3 Free / 5 Premium) applies to private sources.
 
-Extracted data is stored in two alternating private document slots under
-`ai_usage/{uidHash}/practice_sources/{0|1}`. At most 60 written questions and
+Extracted data is stored in up to six alternating private document slots under
+`ai_usage/{uidHash}/practice_sources/{0|1}[-1|-2]`. The original `0`/`1` paths and `private:YYYY-MM-DD` IDs remain compatible; extra sources use `private:YYYY-MM-DD:1` or `:2`. Pools are not overwritten within a Baku day, so later uploads preserve earlier exams. At most 60 written questions and
 200 marked MCQs are retained, with serialized budgets of 400 KB and 200 KB.
 Only the current and previous Baku day may be loaded. This bounds storage but
-is not automatic TTL deletion during inactivity. Account exports include both
+is not automatic TTL deletion during inactivity. Account exports include all retained
 slots and deletion traverses the whole AI usage subtree. Browser access must be
 denied to this subtree as shown above; any broader allow rule must not grant it.
 
@@ -132,10 +132,10 @@ from the browser's pure `scripts/test-bank.js` parser by `tools/build-site.mjs`.
 ## Closed practice daily allowance
 
 `closed-status` and `closed-start` actions share `/api/ask` and require verified
-Firebase authentication. Each account gets five start reservations per Baku day,
+Firebase authentication. Each account gets five start reservations on Free or ten on active Premium per Baku day,
 shared by catalogue and private-PDF multiple-choice practice. The private server
 record is `ai_usage/{uidHash}.closedPractice`; it stores the current day and at
-most five IDs, source IDs, question counts and start times. Firestore update-time
+most ten IDs, source IDs, question counts and start times. Firestore update-time
 preconditions make concurrent reservations safe. Repeating a start request ID
 with the same settings returns the existing reservation instead of charging
 again; changing settings under an existing ID is rejected. The client retains
@@ -150,3 +150,5 @@ UID, with question counts bounded by the imported MCQ pool. Closed practice is a
 formative browser runner; public PDF contents remain publicly readable. Account
 exports include the reservation record, and account deletion removes it with
 the existing usage subtree. No new collection permissions or secrets are needed.
+
+All three allowances are resolved by `lib/practice-policy.js` using the same server-controlled redemption receipts as AI access. Browser-supplied Premium flags, limits and profile fields are ignored. Receipt lookup errors fail closed. Upgrades and expiry do not reset daily usage; unused allowance resets only at Baku midnight. No new API keys or Firestore rules are required.

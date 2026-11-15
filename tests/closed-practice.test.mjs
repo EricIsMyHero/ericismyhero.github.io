@@ -6,7 +6,7 @@ import ask from '../ai-vercel/api/ask.js';
 function fixture(){
  let version=0,time=Date.parse('2026-11-14T10:00:00Z');const docs=new Map();
  const db={get:async p=>structuredClone(docs.get(p)),create:async(c,id,data)=>{const p=c+'/'+id;if(docs.has(p))throw Object.assign(new Error(),{code:'exists'});docs.set(p,{data:structuredClone(data),updateTime:String(++version)});},patch:async(p,data,o)=>{const old=docs.get(p);if(old?.updateTime!==o.ifUpdateTime)throw Object.assign(new Error(),{code:'conflict'});docs.set(p,{data:{...old.data,...structuredClone(data)},updateTime:String(++version)});}};
- const source='https://example.test/pdf/ict.pdf',services={db,now:()=>time,sources:[source]};
+ const source='https://example.test/pdf/ict.pdf',services={db,policy:async()=>({isPremium:false}),now:()=>time,sources:[source]};
  const call=(action,b={},uid='alice')=>closedAction({action:'closed-'+action,...b},uid,{},services);
  const start=(i,uid='alice',extra={})=>call('start',{sourceId:source,count:10,requestId:'closed-exam-'+String(i).padStart(8,'0'),...extra},uid);
  return {docs,db,services,source,call,start,setTime:t=>time=Date.parse(t)};
@@ -51,4 +51,25 @@ test('closed start/status require authentication at both action and HTTP boundar
  const f=fixture();assert.equal((await f.call('status',{},'')).status,401);
  const res={setHeader(){},status(n){this.code=n;return this;},json(data){this.data=data;return this;},end(){}};
  await ask({method:'POST',headers:{},body:{action:'closed-start',uid:'victim'}},res);assert.equal(res.code,401);
+});
+test('Premium grants 10 shared daily starts, preserving counts through upgrades and expiry',async()=>{
+ const f=fixture();for(let i=0;i<5;i++)await f.start(i);
+ assert.equal((await f.start(5,'alice',{isPremium:true,limit:10})).status,429);
+ f.services.policy=async()=>({isPremium:true});
+ assert.equal((await f.call('status')).json.usage.remaining,5);
+ for(let i=5;i<10;i++){const r=await f.start(i);assert.equal(r.status,200);assert.equal(r.json.usage.limit,10);}
+ assert.equal((await f.start(10)).status,429);
+ assert.equal((await f.start(0)).json.usage.used,10);
+ f.services.policy=async()=>({isPremium:false});
+ assert.deepEqual((await f.call('status')).json.usage,{day:'2026-11-14',used:10,limit:5,remaining:0});
+ assert.equal((await f.start(11)).status,429);
+ f.setTime('2026-11-14T20:00:00Z');assert.equal((await f.start(11)).json.usage.used,1);
+});
+test('Premium concurrent starts cannot exceed ten; a failed receipt lookup cannot grant access',async()=>{
+ const f=fixture();f.services.policy=async()=>({isPremium:true});for(let i=0;i<9;i++)await f.start(i);
+ const replies=await Promise.all(Array.from({length:12},(_,i)=>f.start(20+i)));
+ assert.equal(replies.filter(r=>r.status===200).length,1);
+ assert.equal((await f.call('status')).json.usage.used,10);
+ f.services.policy=async()=>{throw new Error('receipt lookup unavailable');};
+ assert.equal((await f.call('status')).status,503);assert.equal((await f.start(99)).status,503);
 });

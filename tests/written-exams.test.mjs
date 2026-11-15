@@ -11,7 +11,7 @@ function fixture() {
   const db={get:async path=>structuredClone(docs.get(path)),create:async(collection,id,data)=>{const path=collection+'/'+id;if(docs.has(path))conflict('exists');docs.set(path,{data:structuredClone(data),updateTime:String(++counter)});},patch:async(path,data,options)=>{const doc=docs.get(path);if(doc?.updateTime!==options.ifUpdateTime)conflict('conflict');docs.set(path,{data:{...doc.data,...structuredClone(data)},updateTime:String(++counter)});}};
   const source={id:'written.pdf',name:'Written',subject:'Statistics',file:'written.pdf',url:'https://example.org/written.pdf',addedAt:'2026-11-13'};
   const pool={sha:'trusted-sha',questions:Array.from({length:8},(_,i)=>({id:'q'+i,number:i+1,title:'Explain the definition '+i,page:i+1,reference:'Statistics studies quantitative aspects of mass phenomena in connection with their qualitative characteristics. The population comprises all units relevant to a research question. '+i}))};
-  const services={db,now:()=>time,sources:[source],load:async()=>{loads++;return pool;},grade:async q=>{grades++;return {score:8.5,feedback:'Accurate but incomplete.',missing:['Coverage'],quote:q.reference.slice(0,80)};}};
+  const services={db,policy:async()=>({isPremium:false}),now:()=>time,sources:[source],load:async()=>{loads++;return pool;},grade:async q=>{grades++;return {score:8.5,feedback:'Accurate but incomplete.',missing:['Coverage'],quote:q.reference.slice(0,80)};}};
   const env={GROQ_API_KEY:'fixture-only'},call=(action,b={},uid='owner')=>writtenAction({action:'written-'+action,...b},uid,env,services);
   const start=(mode='midterm',id='exam-000000000001')=>call('start',{mode,requestId:id,sourceId:source.id});
   const pointer=e=>({examId:e.id,day:e.day});
@@ -129,4 +129,22 @@ test('Groq request uses trusted reference data and enforces JSON grades and retr
     globalThis.fetch=async()=>new Response(JSON.stringify({choices:[{message:{content:'not JSON'}}]}),{status:200});
     await assert.rejects(gradeWithGroq(q,'answer','az',{GROQ_API_KEY:'fixture'}),e=>e.error==='invalid_grade');
   }finally{globalThis.fetch=original;}
+});
+test('Premium allows five written starts; downgrades preserve consumed starts and active exams',async()=>{
+ const f=fixture();
+ for(let i=0;i<3;i++){const r=await f.start('midterm','free-limit-exam-'+i);await f.call('abandon',f.pointer(r.json.exam));}
+ assert.equal((await f.start('midterm','blocked-free-exam-01')).status,429);
+ f.services.policy=async()=>({isPremium:true});
+ assert.equal((await f.call('status')).json.usage.remaining,2);
+ const fourth=await f.start('midterm','premium-exam-00004');assert.equal(fourth.json.usage.limit,5);
+ f.services.policy=async()=>({isPremium:false});
+ assert.equal((await f.call('save',f.answer(fourth.json.exam))).status,200);
+ assert.equal((await f.call('status')).json.usage.remaining,0);
+ await f.call('abandon',f.pointer(fourth.json.exam));
+ assert.equal((await f.start('midterm','blocked-expired-exam')).status,429);
+ f.services.policy=async()=>({isPremium:true});
+ const fifth=await f.start('semester','premium-exam-00005');assert.equal(fifth.json.usage.used,5);
+ await f.call('abandon',f.pointer(fifth.json.exam));
+ assert.equal((await f.start('midterm','premium-exam-00006')).status,429);
+ assert.equal((await f.start('semester','premium-exam-00005')).json.usage.used,5);
 });
