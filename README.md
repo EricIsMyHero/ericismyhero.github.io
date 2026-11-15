@@ -4,7 +4,7 @@ An open-source student platform built for the UNEC community.
 
 UNEC Students Hub is a modern web platform designed to centralize academic resources, productivity tools, and student services in one place. The project aims to enhance the daily university experience by providing fast, accessible, and community-driven solutions.
 
-**Live site:** [unecstudentshub.com](https://unecstudentshub.com) · **Latest release:** [v1.1.23](https://github.com/EricIsMyHero/ericismyhero.github.io/releases/latest)
+**Live site:** [unecstudentshub.com](https://unecstudentshub.com) · **Latest release:** [v1.1.25](https://github.com/EricIsMyHero/ericismyhero.github.io/releases/latest)
 
 This platform is independently developed and is not affiliated with UNEC or any official institution.
 
@@ -431,7 +431,7 @@ Parser and loading regression checks: `node --test tests/test-bank.test.cjs`.
 
 ### Unified material catalogue
 
-Materials open at `#/materials` as one alphabetical subject list. Each subject (`#/subject/<name>`) includes all its PDFs, deduplicated by file, regardless of the historical storage course. `#/materials/all` provides the newest-first material list; extras and favourites are global. A PDF shared by several subjects appears once in the global list while remaining available under every relevant subject and curriculum link. Major matching considers all semesters in that major's plan. Material cards, details and public landing pages do not assign one course/semester to a PDF.
+Materials open at `#/materials` as one alphabetical subject list. Each subject (`#/subject/<name>`) includes all its PDFs, deduplicated by file, regardless of the historical storage course. `#/materials/all` provides the newest-first material list; extras and favourites are global. A PDF shared by several subjects appears once in the global list while remaining available under every relevant subject. Major matching considers all semesters in that major's plan. Material cards, details and public landing pages do not assign one course/semester to a PDF.
 
 Course containers in `pdfs.js` remain historical compatibility metadata for existing ratings, chats and old links. They do not determine browsing or curricular placement. Existing `#/courses`, `#/m/<course>/<subject>/<file>` and `#/x/<course>/<file>` links remain supported; old rating document IDs and favourite keys are unchanged. New material links omit the course. The student's year and the major-specific semester schedule remain in their profile/curriculum.
 
@@ -439,9 +439,9 @@ Add new subjects under the neutral `data["Materiallar"].subjects` container in `
 
 ### AI written practice (beta)
 
-**Practice → Written · AI** offers Midterm (3 questions / 30 points) and Semester
-(5 questions / 50 points), with 20 minutes per question and 3 started exams per
-signed-in user per Baku day. The newest written PDF is selected by default; users
+**Practice → Electronic Written** offers Midterm (3 questions / 30 points) and Semester
+(5 questions / 50 points), with 20 minutes per question and a daily limit of
+3 started exams on Free or 5 on active Premium per signed-in user (Baku time). The newest written PDF is selected by default; users
 can change the source. The server extracts numbered questions with reference
 answers from the selected PDF, then Groq evaluates the student's own explanation
 against that reference. Grading supports retries without starting another exam.
