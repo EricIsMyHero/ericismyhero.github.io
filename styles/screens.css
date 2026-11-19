@@ -1,7 +1,7 @@
 /* ================================================================
    SCREENS.CSS — Ekranlar
    İçindəkilər:
-   - Ana səhifə (hero, funksiya kartları, statistika, yeniliklər)
+   - Ana səhifə (hero, statistika, yeniliklər)
    - Kurslar / Materiallar siyahısı + MaterialCard
    - Material detalı
    - Fənn səhifəsi (hero + kartlar)
@@ -47,49 +47,6 @@
 }
 .hero-title em { font-style: normal; color: var(--accent2); }
 .hero-sub { max-width: 28ch; margin: 0; color: var(--color-text-secondary); font-size: var(--fs-base); line-height: 1.45; }
-/* Funksiya kartları */
-.feature-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
-.feature-card {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-height: 76px;
-  padding: 12px;
-  border: 1px solid color-mix(in srgb, var(--fc) 42%, var(--border));
-  border-radius: var(--r-lg);
-  background: linear-gradient(135deg, color-mix(in srgb, var(--fc) 30%, var(--color-surface)) 0%, var(--color-surface) 78%);
-  color: var(--color-text-primary);
-  text-decoration: none;
-  overflow: hidden;
-  transition: transform var(--t-base), border-color var(--t-base), box-shadow var(--t-base);
-}
-.feature-card:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--fc) 75%, var(--border)); box-shadow: 0 12px 28px color-mix(in srgb, var(--fc) 22%, transparent); }
-.feature-card:active { transform: scale(0.985); }
-.feature-icon {
-  display: grid;
-  place-items: center;
-  width: 46px;
-  height: 46px;
-  flex-shrink: 0;
-  border-radius: 14px;
-  color: #fff;
-  font-size: 1.45rem;
-  background: linear-gradient(150deg, color-mix(in srgb, var(--fc) 82%, white), var(--fc) 52%, color-mix(in srgb, var(--fc) 72%, black));
-  box-shadow: 0 6px 16px color-mix(in srgb, var(--fc) 42%, transparent);
-}
-.feature-text { display: flex; flex-direction: column; min-width: 0; gap: 2px; }
-.feature-text b { font-size: var(--fs-base); font-weight: 700; line-height: 1.2; overflow-wrap: break-word; }
-.feature-text small { display: none; color: var(--color-text-secondary); font-size: var(--fs-xs); line-height: 1.35; }
-@media (min-width: 560px) {
-  .feature-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
-  .feature-card { padding: 16px; align-items: flex-start; min-height: 104px; }
-  .feature-text small { display: block; }
-}
-@media (min-width: 1024px) {
-  .feature-card { padding: 18px; }
-}
-
 /* Statistika */
 .stat-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
 .stat-tile {
@@ -671,18 +628,6 @@
   .rating-toggle-btn,
   .qr-pay-btn,
   .ssb-m10-btn { min-height: 44px; }
-}
-
-/* ── Dar ekranlar (≤389px): xüsusiyyət kartları sözü ortadan bölməsin ── */
-@media (max-width: 389px) {
-  .feature-grid { gap: 10px; }
-  .feature-card { padding: 10px; gap: 10px; }
-  .feature-icon { width: 40px; height: 40px; border-radius: 12px; }
-  .feature-text b { font-size: 0.875rem; }
-}
-@media (max-width: 359px) {
-  .feature-card { flex-direction: column; align-items: flex-start; gap: 8px; padding: 12px; }
-  .feature-text b { font-size: 0.9375rem; }
 }
 
 /* Hero başlığı: sətir sonunda tək söz qalmasın */

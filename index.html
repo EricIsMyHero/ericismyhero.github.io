@@ -136,13 +136,14 @@
   <link rel="stylesheet" href="styles/ratings.css?v=20261106-3">
   <link rel="stylesheet" href="styles/tokens.css?v=20261106-3">
   <link rel="stylesheet" href="styles/shell.css?v=20261106-3">
-  <link rel="stylesheet" href="styles/screens.css?v=20261114-semesters">
+  <link rel="stylesheet" href="styles/screens.css?v=20261119-functions">
   <link rel="stylesheet" href="styles/tools.css?v=20261114-profile-choices">
   <link rel="stylesheet" href="styles/written.css?v=20261115-design">
   <link rel="stylesheet" href="styles/support.css?v=20261106-3">
   <link rel="stylesheet" href="styles/legacy.css?v=20261106-3">
-  <link rel="stylesheet" href="styles/compass.css?v=20261109-2">
+  <link rel="stylesheet" href="styles/compass.css?v=20261119-functions">
   <link rel="stylesheet" href="styles/career.css?v=20261119-training">
+  <link rel="stylesheet" href="styles/function-directory.css?v=20261119">
 
   <!-- ═══ Analytics & Ads ═══════════════════════════════════════ -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4095192858738222" crossorigin="anonymous"></script>
@@ -365,13 +366,14 @@
             </div>
             <h1 class="hero-title" id="hero-title" data-i18n-html="homeWhyTitle" onclick="easterEggClick()">Niyə <span>UNEC Students Hub</span>?</h1>
             <p class="hero-sub" data-i18n="homeWhySub">Tələbə həyatını asanlaşdıran bütün resurslar bir yerdə.</p>
+            <a class="btn btn--primary home-functions-link" href="#/functions">
+              <svg class="ic" aria-hidden="true"><use href="#i-grid"/></svg>
+              <span data-i18n="homeBrowseFunctions">Bütün funksiyalara bax</span>
+              <svg class="ic" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+            </a>
           </section>
 
           <div id="homeBody">
-            <a class="compass-home-entry" href="#/compass"><span class="compass-home-icon"><svg class="ic" aria-hidden="true"><use href="#i-compass"/></svg></span><span class="grow"><b data-i18n="navCompass">Tələbə Kompası</b><small data-i18n="featCompassDesc">Tələbələr və abituriyentlər üçün praktik məlumatlar.</small></span><svg class="ic" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
-            <a class="compass-home-entry" href="#/career"><span class="compass-home-icon"><svg class="ic" aria-hidden="true"><use href="#i-briefcase"/></svg></span><span class="grow"><b data-i18n="navCareer">Karyera lövhəsi</b><small data-i18n="careerIntro">UNEC tələbələri üçün təcrübə, könüllülük və təlim elanları.</small></span><svg class="ic" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
-            <div class="feature-grid" id="featureGrid"></div>
-
             <div class="stat-row" aria-label="Statistika">
               <div class="stat-tile"><b id="sc-students">—</b><span data-i18n="statActiveStudents">Aktiv Tələbə</span></div>
               <div class="stat-tile"><b id="sc-materials">0</b><span data-i18n="statMaterialCard">Material</span></div>
@@ -405,6 +407,36 @@
         </div>
       </div>
 
+
+      <div id="main-functions" class="main-tab is-hidden" data-route="functions">
+        <div class="container screen functions-screen">
+          <div class="page-head">
+            <button class="icon-btn" type="button" data-back aria-label="Geri" data-i18n-aria="appBack"><svg class="ic" aria-hidden="true"><use href="#i-arrow-left"/></svg></button>
+            <h1 id="functionsTitle" tabindex="-1" data-i18n="navFunctions">Funksiyalar</h1>
+          </div>
+          <div class="field-search" role="search">
+            <svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>
+            <label class="sr-only" for="functionsSearch" data-i18n="functionsSearch">Funksiya axtar</label>
+            <input id="functionsSearch" type="search" enterkeyhint="search" autocomplete="off" maxlength="100" placeholder="Funksiya axtar" data-i18n-placeholder="functionsSearch">
+          </div>
+          <div class="chips functions-filters" role="group" aria-label="Funksiya kateqoriyaları" data-i18n-aria="functionsCategories">
+            <button class="chip" type="button" data-function-filter="" aria-pressed="true" data-i18n="functionsAll">Hamısı</button>
+            <button class="chip" type="button" data-function-filter="academic" aria-pressed="false" data-i18n="functionsAcademic">Akademik</button>
+            <button class="chip" type="button" data-function-filter="career" aria-pressed="false" data-i18n="functionsCareer">Karyera</button>
+            <button class="chip" type="button" data-function-filter="tools" aria-pressed="false" data-i18n="functionsTools">Alətlər</button>
+            <button class="chip" type="button" data-function-filter="planning" aria-pressed="false" data-i18n="functionsPlanning">Planlaşdırma</button>
+          </div>
+          <section class="functions-section" id="functionsQuick" aria-labelledby="functionsQuickTitle">
+            <h2 id="functionsQuickTitle" data-i18n="functionsQuick">Tez-tez istifadə olunanlar</h2>
+            <div class="functions-quick-list" id="functionsQuickList"></div>
+          </section>
+          <section class="functions-section" aria-labelledby="functionsListTitle">
+            <h2 id="functionsListTitle" data-i18n="functionsList">Bütün funksiyalar</h2>
+            <div id="functionsList"></div>
+            <p id="functionsEmpty" class="functions-empty" role="status"></p>
+          </section>
+        </div>
+      </div>
 
       <!-- ── KURSLAR ────────────────────────────────────────────── -->
       <div id="main-courses" class="main-tab is-hidden" data-route="courses">
@@ -1683,6 +1715,7 @@
           <section class="more-section" aria-labelledby="moreGeneralTitle">
             <h2 class="more-section-title" id="moreGeneralTitle" data-i18n="moreGeneralGroup">Ümumi</h2>
             <div class="menu-group" id="moreGroupMain">
+              <a class="menu-row" href="#/support"><svg class="ic" aria-hidden="true"><use href="#i-heart"/></svg><span class="grow" data-i18n="navSupport">Dəstək</span><svg class="ic chev" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
               <a class="menu-row" href="#/compass"><svg class="ic" aria-hidden="true"><use href="#i-compass"/></svg><span class="grow" data-i18n="navCompass">Tələbə Kompası</span><svg class="ic chev" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
               <button class="menu-row" type="button" onclick="openThanks()"><svg class="ic"><use href="#i-heart"/></svg><span class="grow" data-i18n="sidebarContributors">Töhfəçilər</span><svg class="ic chev"><use href="#i-chevron-right"/></svg></button>
               <button class="menu-row" type="button" id="rowNews"><svg class="ic"><use href="#i-bell"/></svg><span class="grow" data-i18n="moreNotifications">Yeniliklər</span><span class="dot" id="moreNewsDot" hidden></span><svg class="ic chev"><use href="#i-chevron-right"/></svg></button>
@@ -1729,11 +1762,11 @@
   <a class="bn-item" id="btn-home" data-route="home" href="#/home">
     <svg class="ic"><use href="#i-home"/></svg><span class="bn-label" data-i18n="navHome">Ana səhifə</span>
   </a>
+  <a class="bn-item" id="btn-functions" data-route="functions" href="#/functions">
+    <svg class="ic" aria-hidden="true"><use href="#i-grid"/></svg><span class="bn-label" data-i18n="navFunctions">Funksiyalar</span>
+  </a>
   <a class="bn-item" id="btn-courses" data-route="courses" href="#/materials">
     <svg class="ic"><use href="#i-book-open"/></svg><span class="bn-label" data-i18n="navCourses">Materiallar</span>
-  </a>
-  <a class="bn-item" id="btn-support" data-route="support" href="#/support">
-    <svg class="ic"><use href="#i-heart"/></svg><span class="bn-label" data-i18n="navSupport">Dəstək</span>
   </a>
   <a class="bn-item" id="btn-more" data-route="more" href="#/more">
     <svg class="ic"><use href="#i-ellipsis"/></svg><span class="bn-label" data-i18n="navMore">Daha çox</span>
@@ -2321,7 +2354,7 @@
 <script src="data/material-identities.js?v=20261114-catalog"></script>
 <script src="pdfs.js?v=20261114-majors"></script>
 <script src="scripts/i18n.js?v=20261115-premium-clean"></script>
-<script src="scripts/i18n-app.js?v=20261119-training"></script>
+<script src="scripts/i18n-app.js?v=20261119-functions"></script>
 <script src="scripts/data-utils.js?v=20261113-subjects"></script>
 <script src="scripts/study-data.js?v=20261111"></script>
 <script src="scripts/ui.js?v=20261114-majors"></script>
@@ -2342,12 +2375,13 @@
 <script src="scripts/curriculum.js?v=20261114-curriculum-clean"></script>
 <script src="scripts/badges.js?v=20261106-3"></script>
 <script src="scripts/timer.js?v=20261111"></script>
-<script src="scripts/app-core.js?v=20261119"></script>
+<script src="scripts/app-core.js?v=20261119-functions"></script>
 <script src="scripts/app-materials.js?v=20261114-metadata"></script>
 <script src="data/compass-catalog.js?v=20261109-2"></script>
 <script src="scripts/compass.js?v=20261111"></script>
 <script src="scripts/career.js?v=20261119-training"></script>
-<script src="scripts/app-screens.js?v=20261113-subjects"></script>
+<script src="scripts/function-directory.js?v=20261119"></script>
+<script src="scripts/app-screens.js?v=20261119-functions"></script>
 <script src="scripts/push.js?v=20261112-project"></script>
 <script src="scripts/auth-dialog.js?v=20261112"></script>
 <script src="scripts/site-enhancements.js?v=20261112-auth"></script>

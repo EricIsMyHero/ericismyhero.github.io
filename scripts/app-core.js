@@ -56,29 +56,29 @@
 
   Object.assign(U, { $, $$, esc, ic, mi, enc, dec, tr, LS, normAz });
 
-  // ── Naviqasiya tərifi (yan panel + drawer + ana səhifə kartları üçün tək mənbə) ──
+  // ── Naviqasiya tərifi (yan panel + drawer + funksiyalar üçün tək mənbə) ──
   const NAV = [
     { id: 'home',       icon: 'home',            key: 'navHome',     route: '/home' },
-    { id: 'courses',    icon: 'book-open',       key: 'navCourses',  route: '/materials' },
+    { id: 'functions',  icon: 'grid',            key: 'navFunctions', route: '/functions' },
+    { id: 'courses',    icon: 'book-open',       key: 'navCourses',  route: '/materials', desc: 'featCoursesDesc' },
     { id: 'tests',      icon: 'clipboard-check', key: 'navTests',    route: '/tests',      fc: 'tests',    desc: 'featTestsDesc' },
     { id: 'gpa',        icon: 'calculator',      key: 'navGpa',      route: '/gpa',        fc: 'gpa',      desc: 'featGpaDesc' },
     { id: 'curriculum', icon: 'calendar-days',   key: 'navPlan',     route: '/curriculum', fc: 'plan',     desc: 'featPlanDesc' },
     { id: 'compass',    icon: 'compass',         key: 'navCompass',  route: '/compass',    fc: 'compass',  desc: 'featCompassDesc' },
-    { id: 'career',     icon: 'briefcase',       key: 'navCareer',   route: '/career' },
+    { id: 'career',     icon: 'briefcase',       key: 'navCareer',   route: '/career', desc: 'careerIntro' },
     { id: 'requests',   icon: 'folder-open',     key: 'navRequests', route: '/requests',   fc: 'requests', desc: 'featRequestsDesc' },
     { id: 'timer',      icon: 'timer',           key: 'navTimer',    route: '/timer',      fc: 'timer',    desc: 'featTimerDesc' },
     { id: 'dashboard',  icon: 'chart',           key: 'navDashboard',route: '/dashboard',  fc: 'dash',     desc: 'featDashDesc' },
-    { id: 'support',    icon: 'heart',           key: 'navSupport',  route: '/support',    desktopOnly: true },
+    { id: 'support',    icon: 'heart',           key: 'navSupport',  route: '/support',    fc: 'support', desc: 'featSupportDesc', desktopOnly: true },
     { id: 'more',       icon: 'ellipsis',        key: 'navMore',     route: '/more',       desktopOnly: true }
   ];
-  // Ana səhifədəki 6 funksiya kartının sırası (referans dizayna uyğun)
-  const FEATURE_IDS = ['tests', 'gpa', 'requests', 'curriculum', 'timer', 'dashboard'];
-  Object.assign(U, { NAV, FEATURE_IDS });
+  U.NAV = NAV;
 
   // Hansı bölmə hansı aşağı-naviqasiya elementini işıqlandırır
   const TAB_PARENT = {
-    home: 'home', tests: 'home', gpa: 'home', curriculum: 'home', compass: 'home', career: 'home', requests: 'home', timer: 'home',
-    courses: 'courses', support: 'support', more: 'more', dashboard: 'more'
+    home: 'home', functions: 'functions', tests: 'functions', gpa: 'functions', curriculum: 'functions',
+    compass: 'functions', career: 'functions', requests: 'functions', timer: 'functions', dashboard: 'functions',
+    courses: 'courses', support: 'functions', more: 'more'
   };
   const TAB_NAV_ID = { home: 'home', courses: 'courses', tests: 'tests', gpa: 'gpa', curriculum: 'curriculum',
     requests: 'requests', timer: 'timer', dashboard: 'dashboard', support: 'support', more: 'more' };
@@ -190,7 +190,7 @@
   // ── Router ──────────────────────────────────────────────────
   // Public catalogue routes: #/materials, #/materials/all, #/subject/<name>,
   // #/material/<subject>/<file>, #/extra/<file>. Old course-based hashes remain aliases.
-  const TABS = ['home', 'courses', 'support', 'tests', 'gpa', 'dashboard', 'curriculum', 'compass', 'career', 'requests', 'timer', 'more'];
+  const TABS = ['home', 'functions', 'courses', 'support', 'tests', 'gpa', 'dashboard', 'curriculum', 'compass', 'career', 'requests', 'timer', 'more'];
   let route = null;
   let prevRoute = null;
   let depth = (history.state && history.state.i) || 0;
@@ -309,6 +309,10 @@
       case 'gpa':        if (typeof initGPA === 'function') initGPA(); if (U.syncGpaStepper) U.syncGpaStepper(); break;
       case 'compass': if (U.renderCompass) U.renderCompass(r); break;
       case 'career': if (U.loadCareer) U.loadCareer(); break;
+      case 'functions':
+        if (U.renderFunctionDirectory) U.renderFunctionDirectory();
+        if (prevRoute?.tab !== 'functions') $('#functionsTitle')?.focus({ preventScroll: true });
+        break;
       case 'curriculum': if (typeof initCurriculum === 'function') initCurriculum(); break;
       case 'requests':   if (typeof initMaterialRequests === 'function') initMaterialRequests(); break;
       case 'timer':      if (typeof initTimer === 'function') initTimer(); break;

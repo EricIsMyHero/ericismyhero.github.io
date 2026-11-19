@@ -1,5 +1,5 @@
 // ============================================================
-// APP-SCREENS.JS — Ana səhifə (funksiya kartları, yeniliklər),
+// APP-SCREENS.JS — Ana səhifə (yeniliklər),
 // "Daha çox" səhifəsi, tənzimləmələr, GPA addımlayıcı, başlanğıc.
 // app-core.js və app-materials.js-dən sonra yüklənir.
 // ============================================================
@@ -7,7 +7,7 @@
   'use strict';
 
   const U = window.UNEC;
-  const { $, $$, esc, ic, tr, LS, NAV, FEATURE_IDS } = U;
+  const { $, $$, esc, ic, tr, LS } = U;
   const TELEGRAM = 'https://t.me/unecstudentshub';
   const TG_CHANNEL = TELEGRAM.split('/').pop();   // keş və "oxundu" açarları kanala görə ayrılır (kanal dəyişsə köhnə post nömrələri qarışmasın)
 
@@ -16,18 +16,6 @@
   // ═════════════════════════════════════════════════════════════
   // ANA SƏHİFƏ
   // ═════════════════════════════════════════════════════════════
-  function renderFeatures() {
-    const grid = $('#featureGrid');
-    if (!grid) return;
-    grid.innerHTML = FEATURE_IDS.map(id => {
-      const n = NAV.find(x => x.id === id);
-      return `<a class="feature-card" style="--fc:var(--fc-${n.fc})" href="#${n.route}">
-        <span class="feature-icon">${ic(n.icon)}</span>
-        <span class="feature-text"><b>${esc(t(n.key))}</b><small>${esc(t(n.desc))}</small></span>
-      </a>`;
-    }).join('');
-  }
-
   // ── Yeniliklər: Teleqram kanalının son 3 postu + real, yerinə yetirilmiş material istəkləri ──
   // Teleqram postları backend funksiyasından gəlir (ai-vercel/api/telegram-news.js); brauzer t.me-ni birbaşa oxuya bilmir.
   const TG_API = ((typeof BACKEND_URL !== 'undefined' && BACKEND_URL) || 'https://ericismyhero-github-io.vercel.app') + '/api/telegram-news?limit=3';
@@ -150,7 +138,6 @@
   }
 
   U.renderHome = function () {
-    renderFeatures();
     renderNews();
     loadNews();
     loadTelegram();
