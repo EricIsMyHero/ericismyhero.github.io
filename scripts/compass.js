@@ -145,12 +145,19 @@
         return `<section class="compass-topic" aria-labelledby="compass-category-${e(id)}"><h2 id="compass-category-${e(id)}">${icon(category(id).icon)}${e(text(category(id)))}</h2><div class="compass-card-grid">${articles.map(card).join('')}</div></section>`;
       }).join('');
   }
+  function listHero(title, description) {
+    return `<header class="function-hero">
+      <a class="icon-btn icon-btn--filled function-back" href="#/functions" aria-label="${e(t('appBackToFunctions'))}">${icon('arrow-left')}</a>
+      <span class="function-hero-icon">${icon('compass')}</span>
+      <div class="function-hero-copy"><h1 id="compassHeading" tabindex="-1">${e(title)}</h1><p>${e(description)}</p></div>
+    </header>`;
+  }
   function list(root, route) {
     state = normalizeState(route.query); lastList = '/compass' + queryFor(state);
     U.currentCompassTitle = l('title');
     const categoriesPresent = categoryOrder.filter(id => data().some(article => article.category === id));
-    root.innerHTML = `<header class="compass-hero"><span class="compass-hero-icon">${icon('compass')}</span><div><h1 id="compassHeading" tabindex="-1">${e(l('title'))}</h1><p>${e(l('intro'))}</p></div></header>
-      <section class="compass-controls" aria-label="${e(l('listAria'))}">
+    root.innerHTML = `${listHero(l('title'), l('intro'))}
+      <section class="function-panel" aria-label="${e(l('listAria'))}">
         <div class="compass-audience" role="group" aria-label="${e(l('listAria'))}">${[['all', 'all'], ['student', 'students'], ['applicant', 'applicants']].map(([value, label]) => `<button class="chip" type="button" data-compass-audience="${value}" aria-pressed="${value === state.audience}">${e(l(label))}</button>`).join('')}</div>
         <label class="compass-search-label" for="compassSearch">${e(l('search'))}</label>
         <div class="compass-search-row"><div class="compass-search-field">${icon('search')}<input id="compassSearch" type="search" maxlength="200" value="${e(state.q)}" placeholder="${e(l('placeholder'))}" autocomplete="off" aria-controls="compassResults"><button class="icon-btn" type="button" data-compass-clear-search aria-label="${e(l('clearSearch'))}">${icon('x')}</button></div></div>
@@ -195,7 +202,7 @@
     const key = route.view === 'article' ? 'article/' + route.id : 'list';
     if (!data().length) {
       U.currentCompassTitle = l('title');
-      root.innerHTML = `<div class="compass-empty"><h1 id="compassHeading" tabindex="-1">${e(l('loading'))}</h1><p>${e(l('loadingSub'))}</p></div>`;
+      root.innerHTML = listHero(l('loading'), l('loadingSub'));
     } else if (route.view === 'article') articleView(root, route);
     else list(root, route);
     if (key !== lastRender) requestAnimationFrame(() => root.querySelector('#compassHeading')?.focus({ preventScroll: true }));

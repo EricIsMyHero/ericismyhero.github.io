@@ -137,13 +137,14 @@
   <link rel="stylesheet" href="styles/tokens.css?v=20261106-3">
   <link rel="stylesheet" href="styles/shell.css?v=20261106-3">
   <link rel="stylesheet" href="styles/screens.css?v=20261119-functions">
-  <link rel="stylesheet" href="styles/tools.css?v=20261114-profile-choices">
+  <link rel="stylesheet" href="styles/tools.css?v=20261119-function-pages">
   <link rel="stylesheet" href="styles/written.css?v=20261115-design">
-  <link rel="stylesheet" href="styles/support.css?v=20261106-3">
+  <link rel="stylesheet" href="styles/support.css?v=20261119-function-pages">
   <link rel="stylesheet" href="styles/legacy.css?v=20261106-3">
-  <link rel="stylesheet" href="styles/compass.css?v=20261119-functions">
-  <link rel="stylesheet" href="styles/career.css?v=20261119-training">
+  <link rel="stylesheet" href="styles/compass.css?v=20261119-function-pages">
+  <link rel="stylesheet" href="styles/career.css?v=20261119-function-pages">
   <link rel="stylesheet" href="styles/function-directory.css?v=20261119">
+  <link rel="stylesheet" href="styles/function-pages.css?v=20261119">
 
   <!-- ═══ Analytics & Ads ═══════════════════════════════════════ -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4095192858738222" crossorigin="anonymous"></script>
@@ -444,24 +445,30 @@
 
           <!-- Bütün materiallar (düz siyahı) -->
           <div id="view-materials" class="screen">
-            <div class="page-head">
-              <button class="icon-btn" type="button" data-back aria-label="Geri" data-i18n-aria="appBack"><svg class="ic"><use href="#i-arrow-left"/></svg></button>
-              <h1 data-i18n="coursesTitle">Materiallar</h1>
-            </div>
-            <div class="segmented mode-switch" role="group" aria-label="Görünüş">
-              <button type="button" data-mode="all" aria-pressed="true" data-i18n="courseModeAll">Bütün materiallar</button>
-              <button type="button" data-mode="subjects" aria-pressed="false" data-i18n="courseModeSubjects">Fənlər üzrə</button>
-            </div>
-            <div class="search-row">
-              <div class="field-search" id="matSearchBox" role="search">
-                <svg class="ic"><use href="#i-search"/></svg>
-                <label class="sr-only" for="matSearch" data-i18n="matSearchPlaceholder">Material axtar...</label>
-                <input id="matSearch" type="search" inputmode="search" enterkeyhint="search" autocomplete="off" placeholder="Material axtar..." data-i18n-placeholder="matSearchPlaceholder">
-                <button class="clear-btn" type="button" id="matSearchClear" aria-label="Təmizlə" data-i18n-aria="appClear"><svg class="ic"><use href="#i-x"/></svg></button>
+            <header class="function-hero">
+              <a class="icon-btn icon-btn--filled function-back" href="#/functions" aria-label="Funksiyalara qayıt" data-i18n-aria="appBackToFunctions"><svg class="ic" aria-hidden="true"><use href="#i-arrow-left"/></svg></a>
+              <span class="function-hero-icon"><svg class="ic" aria-hidden="true"><use href="#i-book-open"/></svg></span>
+              <div class="function-hero-copy">
+                <h1 data-i18n="coursesTitle">Kurslar</h1>
+                <p data-i18n="featCoursesDesc">Fənlər üzrə PDF materialları.</p>
               </div>
-              <button class="icon-btn icon-btn--filled" id="matFilterBtn" type="button" aria-label="Filtr" data-i18n-aria="matFilterTitle" aria-haspopup="dialog"><svg class="ic"><use href="#i-filter"/></svg></button>
+            </header>
+            <div class="function-panel">
+              <div class="segmented mode-switch" role="group" aria-label="Görünüş">
+                <button type="button" data-mode="all" aria-pressed="true" data-i18n="courseModeAll">Bütün materiallar</button>
+                <button type="button" data-mode="subjects" aria-pressed="false" data-i18n="courseModeSubjects">Fənlər üzrə</button>
+              </div>
+              <div class="search-row">
+                <div class="field-search" id="matSearchBox" role="search">
+                  <svg class="ic"><use href="#i-search"/></svg>
+                  <label class="sr-only" for="matSearch" data-i18n="matSearchPlaceholder">Material axtar...</label>
+                  <input id="matSearch" type="search" inputmode="search" enterkeyhint="search" autocomplete="off" placeholder="Material axtar..." data-i18n-placeholder="matSearchPlaceholder">
+                  <button class="clear-btn" type="button" id="matSearchClear" aria-label="Təmizlə" data-i18n-aria="appClear"><svg class="ic"><use href="#i-x"/></svg></button>
+                </div>
+                <button class="icon-btn icon-btn--filled" id="matFilterBtn" type="button" aria-label="Filtr" data-i18n-aria="matFilterTitle" aria-haspopup="dialog"><svg class="ic"><use href="#i-filter"/></svg></button>
+              </div>
+              <div class="chips chips-row" id="matChips" role="group" aria-label="Material seçimi" data-i18n-aria="materialSelection"></div>
             </div>
-            <div class="chips chips-row" id="matChips" role="group" aria-label="Material seçimi" data-i18n-aria="materialSelection"></div>
             <p class="result-count" id="matCount" aria-live="polite"></p>
             <div class="mat-list" id="matList"></div>
           </div>
@@ -471,10 +478,14 @@
 
           <!-- Fənlər -->
           <div id="view-subjects" class="hidden screen">
-            <div class="page-head">
-              <button class="icon-btn" type="button" data-back aria-label="Geri" data-i18n-aria="appBack"><svg class="ic"><use href="#i-arrow-left"/></svg></button>
-              <h1 id="bc-course" style="font-size:1.25rem"></h1>
-            </div>
+            <header class="function-hero">
+              <a class="icon-btn icon-btn--filled function-back" href="#/functions" aria-label="Funksiyalara qayıt" data-i18n-aria="appBackToFunctions"><svg class="ic" aria-hidden="true"><use href="#i-arrow-left"/></svg></a>
+              <span class="function-hero-icon"><svg class="ic" aria-hidden="true"><use href="#i-book-open"/></svg></span>
+              <div class="function-hero-copy">
+                <h1 id="bc-course">Kurslar</h1>
+                <p data-i18n="featCoursesDesc">Fənlər üzrə PDF materialları.</p>
+              </div>
+            </header>
             <div class="segmented mode-switch" role="group" aria-label="Görünüş" style="margin-bottom:18px">
               <button type="button" data-mode="subjects" aria-pressed="true" data-i18n="courseModeSubjects">Fənlər üzrə</button>
               <button type="button" data-mode="all" aria-pressed="false" data-i18n="courseModeAll">Bütün materiallar</button>
@@ -522,18 +533,14 @@
       <!-- ── DƏSTƏK (ödəniş) ────────────────────────────────────────── -->
       <div id="main-support" class="main-tab is-hidden" data-route="support">
         <div class="container screen sup">
-          <div class="page-head">
-            <button class="icon-btn" type="button" data-back aria-label="Geri" data-i18n-aria="appBack"><svg class="ic"><use href="#i-arrow-left"/></svg></button>
-            <h1 data-i18n="navSupport">Dəstək</h1>
-          </div>
-
-          <section class="sup-hero">
-            <span class="sup-hero-icon" aria-hidden="true"><svg class="ic"><use href="#i-heart"/></svg></span>
-            <div class="sup-hero-text">
-              <h2 data-i18n="supportPageTitle">Layihəyə Dəstək Ol</h2>
-              <p data-i18n="supportPageDesc">Bu sayt tamamilə pulsuz və reklamsızdır. Server xərclərini ödəməyə kömək etsəniz, layihə davam edər.</p>
+          <header class="function-hero">
+            <a class="icon-btn icon-btn--filled function-back" href="#/functions" aria-label="Funksiyalara qayıt" data-i18n-aria="appBackToFunctions"><svg class="ic" aria-hidden="true"><use href="#i-arrow-left"/></svg></a>
+            <span class="function-hero-icon"><svg class="ic" aria-hidden="true"><use href="#i-heart"/></svg></span>
+            <div class="function-hero-copy">
+              <h1 data-i18n="navSupport">Dəstək</h1>
+              <p data-i18n="featSupportDesc">Layihənin davam etməsinə töhfə ver.</p>
             </div>
-          </section>
+          </header>
 
           <div class="sup-grid">
             <div class="sup-main">
@@ -731,10 +738,14 @@
       <!-- ── TESTLƏR ────────────────────────────────────────────────── -->
       <div id="main-tests" class="main-tab is-hidden" data-route="tests">
         <div class="container screen tools tools--tests">
-          <div class="page-head">
-            <button class="icon-btn" type="button" data-back aria-label="Geri" data-i18n-aria="appBack"><svg class="ic"><use href="#i-arrow-left"/></svg></button>
-            <h1 data-i18n="navTests">Sınaq</h1>
-          </div>
+          <header class="function-hero">
+            <a class="icon-btn icon-btn--filled function-back" href="#/functions" aria-label="Funksiyalara qayıt" data-i18n-aria="appBackToFunctions"><svg class="ic" aria-hidden="true"><use href="#i-arrow-left"/></svg></a>
+            <span class="function-hero-icon"><svg class="ic" aria-hidden="true"><use href="#i-clipboard-check"/></svg></span>
+            <div class="function-hero-copy">
+              <h1 data-i18n="navTests">Sınaq</h1>
+              <p data-i18n="featTestsDesc">Öz biliklərini yoxla, imtahanlara hazırlaş.</p>
+            </div>
+          </header>
 
           <div id="test-auth-gate" class="wp" hidden></div>
           <div id="test-authenticated-content">
@@ -864,18 +875,22 @@
       <!-- ── GPA KALKULYATOR ────────────────────────────────────── -->
       <div id="main-gpa" class="main-tab is-hidden" data-route="gpa">
         <div class="container screen">
-          <div class="page-head">
-            <button class="icon-btn" type="button" data-back aria-label="Geri" data-i18n-aria="appBack"><svg class="ic"><use href="#i-arrow-left"/></svg></button>
-            <h1 data-i18n="navGpa">GPA Kalkulyator</h1>
-          </div>
+          <header class="function-hero">
+            <a class="icon-btn icon-btn--filled function-back" href="#/functions" aria-label="Funksiyalara qayıt" data-i18n-aria="appBackToFunctions"><svg class="ic" aria-hidden="true"><use href="#i-arrow-left"/></svg></a>
+            <span class="function-hero-icon"><svg class="ic" aria-hidden="true"><use href="#i-calculator"/></svg></span>
+            <div class="function-hero-copy">
+              <h1 data-i18n="navGpa">GPA Kalkulyator</h1>
+              <p data-i18n="featGpaDesc">Orta göstəricini asanlıqla hesabla.</p>
+            </div>
+          </header>
 
-          <div class="gpa-mode-toggle" style="margin-top:6px">
+          <div class="gpa-mode-toggle">
             <button class="gpa-mode-btn active" id="gpa-mode-calc" onclick="gpaSetMode('calculator')" type="button"><span data-i18n="gpaModeCalc">Kalkulyator</span></button>
             <button class="gpa-mode-btn" id="gpa-mode-pred" onclick="gpaSetMode('predictor')" type="button"><span data-i18n="gpaModePred">Proqnozlaşdırıcı</span></button>
           </div>
 
           <!-- Calculator -->
-          <div id="gpa-calc-view">
+          <div id="gpa-calc-view" class="function-panel">
             <div class="count-stepper">
               <span id="gpa-count-label" data-i18n="gpaSubjectCount">Fənn sayı</span>
               <div class="stepper" role="group" aria-labelledby="gpa-count-label">
@@ -919,7 +934,7 @@
 
           <!-- Predictor -->
           <div id="gpa-pred-view" style="display:none;">
-            <div class="gpa-predictor-card">
+            <div class="gpa-predictor-card function-panel">
               <div class="gpa-predictor-header">
                 <div class="gpa-predictor-icon"><svg class="ic"><use href="#i-target"/></svg></div>
                 <div class="gpa-predictor-title" data-i18n="gpaPredictorTitle">Hədəf GPA Proqnozlaşdırıcı</div>
@@ -952,14 +967,18 @@
       <!-- ── DASHBOARD ──────────────────────────────────────────────── -->
       <div id="main-dashboard" class="main-tab is-hidden" data-route="dashboard">
         <div class="container screen tools tools--dash">
-          <div class="page-head">
-            <button class="icon-btn" type="button" data-back aria-label="Geri" data-i18n-aria="appBack"><svg class="ic"><use href="#i-arrow-left"/></svg></button>
-            <h1 data-i18n="navDashboard">Dashboard</h1>
-          </div>
+          <header class="function-hero">
+            <a class="icon-btn icon-btn--filled function-back" href="#/functions" aria-label="Funksiyalara qayıt" data-i18n-aria="appBackToFunctions"><svg class="ic" aria-hidden="true"><use href="#i-arrow-left"/></svg></a>
+            <span class="function-hero-icon"><svg class="ic" aria-hidden="true"><use href="#i-chart"/></svg></span>
+            <div class="function-hero-copy">
+              <h1 data-i18n="navDashboard">Dashboard</h1>
+              <p data-i18n="featDashDesc">Fərdi statistikanı və irəliləyişini izlə.</p>
+            </div>
+          </header>
 
           <!-- Giriş etməyib -->
           <div id="dash-guest-view">
-            <section class="dash-login-prompt">
+            <section class="dash-login-prompt function-panel">
               <span class="dash-login-prompt-icon" aria-hidden="true"><svg class="ic"><use href="#i-chart"/></svg></span>
               <h2 data-i18n="dashLoginPromptTitle">Öz İrəliləyişini İzlə</h2>
               <p data-i18n="dashLoginPromptDesc">Giriş et — streak, XP, GPA və test nəticələrin burada saxlanır.</p>
@@ -982,7 +1001,7 @@
               </div>
 
               <!-- Tələbə profili -->
-              <section class="dash-profile-card" aria-label="Profil" data-i18n-aria="dashProfile">
+              <section class="dash-profile-card function-panel" aria-label="Profil" data-i18n-aria="dashProfile">
                 <div class="dash-profile-row">
                   <div class="dash-profile-avatar" id="dash-avatar" aria-hidden="true">?</div>
                   <div class="dash-profile-id">
@@ -1140,14 +1159,17 @@
       <!-- ── İXTİSAS PLANI ──────────────────────────────────────────── -->
       <div id="main-curriculum" class="main-tab is-hidden" data-route="curriculum">
         <div class="container screen tools tools--curr">
-          <div class="page-head">
-            <button class="icon-btn" type="button" data-back aria-label="Geri" data-i18n-aria="appBack"><svg class="ic"><use href="#i-arrow-left"/></svg></button>
-            <h1 data-i18n="navPlan">İxtisas Planı</h1>
-          </div>
-          <p class="curr-header-sub" data-i18n="currHeaderSub">İxtisasını seç, fənnlərini, kreditlərini və qayıb limitini öyrən</p>
+          <header class="function-hero">
+            <a class="icon-btn icon-btn--filled function-back" href="#/functions" aria-label="Funksiyalara qayıt" data-i18n-aria="appBackToFunctions"><svg class="ic" aria-hidden="true"><use href="#i-arrow-left"/></svg></a>
+            <span class="function-hero-icon"><svg class="ic" aria-hidden="true"><use href="#i-calendar-days"/></svg></span>
+            <div class="function-hero-copy">
+              <h1 data-i18n="navPlan">İxtisas Planı</h1>
+              <p data-i18n="currHeaderSub">İxtisasını seç, fənnlərini, kreditlərini və qayıb limitini öyrən.</p>
+            </div>
+          </header>
 
           <!-- İxtisas seçici -->
-          <section class="curr-selector-wrap" id="currSelectorWrap" aria-labelledby="currSelectorLabel">
+          <section class="curr-selector-wrap function-panel" id="currSelectorWrap" aria-labelledby="currSelectorLabel">
             <div class="section-head"><h2 class="curr-selector-label" id="currSelectorLabel" data-i18n="currSelectorLabel">İxtisasını seç</h2></div>
             <div class="curr-specialty-grid" id="currSpecialtyGrid">
               <button class="curr-specialty-btn" type="button" data-spec="computerScience" aria-pressed="false" onclick="selectSpecialty('computerScience')">
@@ -1481,23 +1503,19 @@
       <!-- ── MATERİAL İSTƏKLƏRİ ─────────────────────────────────────── -->
       <div id="main-requests" class="main-tab is-hidden" data-route="requests">
         <div class="container screen tools tools--req">
-          <div class="page-head">
-            <button class="icon-btn" type="button" data-back aria-label="Geri" data-i18n-aria="appBack"><svg class="ic"><use href="#i-arrow-left"/></svg></button>
-            <h1 data-i18n="navRequests">Material İstəkləri</h1>
-          </div>
-
           <!-- Siyahı görünüşü -->
           <div id="req-list-view">
-          <section class="req-intro">
-            <span class="req-intro-icon" aria-hidden="true"><svg class="ic"><use href="#i-folder-open"/></svg></span>
-            <div class="req-intro-text">
-              <h2 data-i18n-html="reqPageTitle">Axtardığını <span>tapa bilmirsən?</span></h2>
-              <p class="req-hero-sub" data-i18n="reqHeroSub">İstək yaz — başqa tələbələr kömək etsin.</p>
+          <header class="function-hero">
+            <a class="icon-btn icon-btn--filled function-back" href="#/functions" aria-label="Funksiyalara qayıt" data-i18n-aria="appBackToFunctions"><svg class="ic" aria-hidden="true"><use href="#i-arrow-left"/></svg></a>
+            <span class="function-hero-icon"><svg class="ic" aria-hidden="true"><use href="#i-folder-open"/></svg></span>
+            <div class="function-hero-copy">
+              <h1 data-i18n="navRequests">Material İstəkləri</h1>
+              <p data-i18n="reqHeroSub">İstək yaz — başqa tələbələr kömək etsin.</p>
+              <button class="btn btn--primary function-hero-action" id="req-new-btn" type="button" aria-controls="req-form" aria-expanded="false" onclick="openRequestForm()"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg><span data-i18n="reqNewBtn">Yeni istək yaz</span></button>
             </div>
-            <button class="btn btn--primary req-new-btn" id="req-new-btn" type="button" onclick="openRequestForm()"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg><span data-i18n="reqNewBtn">Yeni istək yaz</span></button>
-          </section>
+          </header>
 
-          <form class="req-form hidden" id="req-form" onsubmit="submitMaterialRequest(); return false;">
+          <form class="req-form function-panel hidden" id="req-form" onsubmit="submitMaterialRequest(); return false;">
             <label class="req-form-label" for="req-text-input" data-i18n="reqTextLabel">İstəyin</label>
             <textarea class="req-form-textarea" id="req-text-input" maxlength="300" rows="3" placeholder="Məs: Maliyyə bazarları final sualları axtarıram" data-i18n-placeholder="reqTextPlaceholder"></textarea>
             <div class="req-form-row">
@@ -1566,10 +1584,14 @@
       <!-- ── TAYMER & İMTAHAN ───────────────────────────────────────── -->
       <div id="main-timer" class="main-tab is-hidden" data-route="timer">
         <div class="container screen tools tools--timer">
-          <div class="page-head">
-            <button class="icon-btn" type="button" data-back aria-label="Geri" data-i18n-aria="appBack"><svg class="ic"><use href="#i-arrow-left"/></svg></button>
-            <h1 data-i18n="navTimer">Taymer &amp; İmtahan</h1>
-          </div>
+          <header class="function-hero">
+            <a class="icon-btn icon-btn--filled function-back" href="#/functions" aria-label="Funksiyalara qayıt" data-i18n-aria="appBackToFunctions"><svg class="ic" aria-hidden="true"><use href="#i-arrow-left"/></svg></a>
+            <span class="function-hero-icon"><svg class="ic" aria-hidden="true"><use href="#i-timer"/></svg></span>
+            <div class="function-hero-copy">
+              <h1 data-i18n="navTimer">Taymer &amp; İmtahan</h1>
+              <p data-i18n="featTimerDesc">Vaxtını idarə et, hazırlığını planlaşdır.</p>
+            </div>
+          </header>
 
           <!-- Bildiriş icazəsi -->
           <div class="timer-notif-banner hidden" id="timer-notif-banner">
@@ -1582,7 +1604,7 @@
             <!-- ── Pomodoro ── -->
             <section class="timer-col" aria-labelledby="timer-pomo-title">
               <div class="section-head"><h2 id="timer-pomo-title" data-i18n="timerPomodoroTitle">Pomodoro Taymer</h2></div>
-              <div class="pomodoro-card">
+              <div class="pomodoro-card function-panel">
 
                 <div class="pomodoro-modes" role="group" aria-label="Pomodoro" data-i18n-aria="timerPomodoroTitle">
                   <button class="pomodoro-mode-btn active" id="pmode-focus" type="button" aria-pressed="true"  onclick="pomodoroSetMode('focus')" data-i18n="timerFocus">Fokus</button>
@@ -1634,7 +1656,7 @@
             <section class="timer-col" aria-labelledby="timer-exam-title">
               <div class="section-head"><h2 id="timer-exam-title" data-i18n="timerExamCountdown">İmtahan Geri Sayımı</h2></div>
 
-              <div class="exam-form hidden" id="exam-form">
+              <div class="exam-form function-panel hidden" id="exam-form">
                 <div class="exam-form-row">
                   <label class="exam-form-label" for="exam-name-input" data-i18n="examNameLabel">Fənn adı</label>
                   <input class="exam-form-input" id="exam-name-input" placeholder="Fənn adı (məs: Makroiqtisadiyyat)" maxlength="60" data-i18n-placeholder="examNamePlaceholder" autocomplete="off">
@@ -1667,15 +1689,16 @@
 
       <div id="main-career" class="main-tab is-hidden" data-route="career">
         <div class="container screen">
-          <header class="compass-hero">
-            <span class="compass-hero-icon"><svg class="ic" aria-hidden="true"><use href="#i-briefcase"/></svg></span>
-            <div>
+          <header class="function-hero">
+            <a class="icon-btn icon-btn--filled function-back" href="#/functions" aria-label="Funksiyalara qayıt" data-i18n-aria="appBackToFunctions"><svg class="ic" aria-hidden="true"><use href="#i-arrow-left"/></svg></a>
+            <span class="function-hero-icon"><svg class="ic" aria-hidden="true"><use href="#i-briefcase"/></svg></span>
+            <div class="function-hero-copy">
               <h1 data-i18n="navCareer">Karyera lövhəsi</h1>
               <p data-i18n="careerIntro">UNEC tələbələri üçün təcrübə, könüllülük və təlim elanları.</p>
               <a href="https://t.me/unecstudentshubcareer" target="_blank" rel="noopener noreferrer" data-i18n="careerChannel">Telegram kanalına qoşul</a>
             </div>
           </header>
-          <section class="compass-controls" aria-label="Elan filtrləri" data-i18n-aria="navCareer">
+          <section class="function-panel" aria-label="Elan filtrləri" data-i18n-aria="navCareer">
             <div class="compass-filter-row">
               <label class="compass-category-select">
                 <span data-i18n="careerType">Proqram növü</span>
@@ -2354,7 +2377,7 @@
 <script src="data/material-identities.js?v=20261114-catalog"></script>
 <script src="pdfs.js?v=20261114-majors"></script>
 <script src="scripts/i18n.js?v=20261115-premium-clean"></script>
-<script src="scripts/i18n-app.js?v=20261119-functions"></script>
+<script src="scripts/i18n-app.js?v=20261119-function-pages"></script>
 <script src="scripts/data-utils.js?v=20261113-subjects"></script>
 <script src="scripts/study-data.js?v=20261111"></script>
 <script src="scripts/ui.js?v=20261114-majors"></script>
@@ -2378,7 +2401,7 @@
 <script src="scripts/app-core.js?v=20261119-functions"></script>
 <script src="scripts/app-materials.js?v=20261114-metadata"></script>
 <script src="data/compass-catalog.js?v=20261109-2"></script>
-<script src="scripts/compass.js?v=20261111"></script>
+<script src="scripts/compass.js?v=20261119-function-pages"></script>
 <script src="scripts/career.js?v=20261119-training"></script>
 <script src="scripts/function-directory.js?v=20261119"></script>
 <script src="scripts/app-screens.js?v=20261119-functions"></script>

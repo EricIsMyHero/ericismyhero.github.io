@@ -7,7 +7,7 @@
   overflow-wrap: anywhere;
 }
 #main-career .compass-card a,
-#main-career .compass-hero a {
+#main-career .function-hero-copy a {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
@@ -26,4 +26,10 @@
 }
 #main-career .career-details p {
   white-space: pre-wrap;
+}
+#main-career .compass-filter-row {
+  margin-top: 0;
+}
+#careerRetry[hidden] {
+  display: none;
 }

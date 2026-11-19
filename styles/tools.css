@@ -14,7 +14,6 @@
 .tools { --tone: var(--accent); }
 .tools [hidden] { display: none !important; }
 .tools h2 { letter-spacing: -0.01em; }
-.tools .page-head { margin-bottom: 2px; }
 
 /* Rəngli fonda mətn: tonu mətn rəngi ilə qarışdır (açıq temada tündləşir, tünddə açılır) */
 .tools { --tone-text: color-mix(in srgb, var(--tone) 70%, var(--text)); }
@@ -60,12 +59,12 @@ body[data-theme="slate"] .tools input[type="date"] { color-scheme: light; }
 /* Ortaq "kart" səthi */
 .tl-intro, .tl-loading, .test-config-section, .test-question-card, .test-result-card,
 .dash-profile-card, .dash-rank-card, .dash-stat-card, .dash-streak-msg, .streak-info-panel,
-.pomodoro-card, .exam-form, .req-intro, .req-form, .req-item, .curr-table-wrap {
+.pomodoro-card, .exam-form, .req-form, .req-item, .curr-table-wrap {
   border: 1px solid var(--border);
   background: var(--color-surface-elevated);
 }
 .tl-intro, .test-question-card, .test-result-card, .dash-profile-card, .dash-rank-card,
-.pomodoro-card, .req-intro {
+.pomodoro-card {
   background:
     radial-gradient(90% 110% at 100% 0%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 60%),
     linear-gradient(165deg, var(--color-surface), var(--color-background-alt));
@@ -740,23 +739,6 @@ body.in-quiz[data-route="tests"] #ai-button { opacity: 0; visibility: hidden; po
    ════════════════════════════════════════════════════════════════ */
 .tools--req { --tone: var(--fc-requests); }
 
-.req-intro { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 14px; align-items: center; margin-top: 8px; padding: 16px; border-radius: var(--r-lg); }
-.req-intro-icon {
-  display: grid; place-items: center;
-  width: 48px; height: 48px; border-radius: 14px;
-  color: var(--tone-text);
-  background: color-mix(in srgb, var(--tone) 18%, transparent);
-  border: 1px solid color-mix(in srgb, var(--tone) 40%, transparent);
-}
-.req-intro-icon .ic { width: 26px; height: 26px; }
-.req-intro h2 { margin: 0 0 2px; font-size: 1.0625rem; line-height: 1.25; }
-.req-hero-sub { margin: 0; font-size: var(--fs-sm); color: var(--color-text-secondary); }
-.req-new-btn { grid-column: 1 / -1; }
-@media (min-width: 720px) {
-  .req-intro { grid-template-columns: auto minmax(0, 1fr) auto; }
-  .req-new-btn { grid-column: auto; }
-}
-
 .req-form { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; padding: 16px; border-radius: var(--r-lg); }
 .req-form-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
 @media (min-width: 520px) { .req-form-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
@@ -929,7 +911,6 @@ body.in-quiz[data-route="tests"] #ai-button { opacity: 0; visibility: hidden; po
    İXTİSAS PLANI
    ════════════════════════════════════════════════════════════════ */
 .tools--curr { --tone: var(--fc-plan); }
-.curr-header-sub { margin: 4px 0 0; font-size: var(--fs-sm); color: var(--color-text-secondary); }
 .curr-selector-wrap .section-head { margin-top: 18px; }
 
 .curr-specialty-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }

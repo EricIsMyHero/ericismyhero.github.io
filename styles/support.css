@@ -14,28 +14,6 @@
 }
 .sup [hidden] { display: none !important; }
 .sup h2 { letter-spacing: -0.01em; }
-.sup .page-head { margin-bottom: 2px; }
-
-/* ── Hero ───────────────────────────────────────────────────────── */
-.sup-hero {
-  display: flex; align-items: flex-start; gap: 14px;
-  margin-top: 8px; padding: 16px;
-  border: 1px solid var(--border); border-radius: var(--r-lg);
-  background:
-    radial-gradient(90% 120% at 100% 0%, color-mix(in srgb, var(--tone) 16%, transparent), transparent 62%),
-    linear-gradient(165deg, var(--color-surface), var(--color-background-alt));
-}
-.sup-hero-icon {
-  flex: 0 0 auto; display: grid; place-items: center;
-  width: 48px; height: 48px; border-radius: 14px;
-  color: var(--tone-text);
-  background: color-mix(in srgb, var(--tone) 18%, transparent);
-  border: 1px solid color-mix(in srgb, var(--tone) 42%, transparent);
-}
-.sup-hero-icon .ic { width: 26px; height: 26px; }
-.sup-hero-text { min-width: 0; }
-.sup-hero h2 { margin: 0 0 4px; font-size: 1.0625rem; }
-.sup-hero p { margin: 0; font-size: var(--fs-sm); line-height: 1.5; color: var(--color-text-secondary); }
 
 /* ── Şəbəkə ─────────────────────────────────────────────────────── */
 .sup-grid { display: grid; gap: 16px; margin-top: 16px; align-items: start; }
