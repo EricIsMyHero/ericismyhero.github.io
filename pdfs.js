@@ -104,6 +104,7 @@ const data = {
           { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqt3.pdf", pdfType: "semester", addedAt: "2026-10-08T21:54:53+04:00" },
           { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqtkollek1.pdf", pdfType: "midterm", addedAt: "2026-10-08T21:54:53+04:00" },
           { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqtkollek2.pdf", pdfType: "midterm", addedAt: "2026-10-31T14:48:50+04:00" },
+          { name: "Beynəlxalq İqtisadiyyat", file: "beynelxalqiqtkollek3.pdf", pdfType: "midterm", addedAt: "2026-11-19T20:05:00+04:00" },
           { name: "Beynəlxalq iqtisadiyyat — kollekvium 1 (test)", file: "beynelxalqiqtkollectest1.pdf", pdfType: "midterm", addedAt: "2026-11-14T22:00:19+04:00", type: "test" },
           { name: "Beynəlxalq iqtisadiyyat — kollekvium 2 (test)", file: "beynelxalqiqtkollectest2.pdf", pdfType: "midterm", addedAt: "2026-11-14T22:00:19+04:00", type: "test" }
         ]
@@ -113,6 +114,13 @@ const data = {
         code: "00173",
         pdfs: [
           { name: "Beynəlxalq marketinq Y25", file: "beynelxalqmarketinqY25.pdf", pdfType: "semester", addedAt: "2026-11-14T22:00:19+04:00" }
+        ]
+      },
+      "Beynəlxalq menecment": {
+        type: "test",
+        code: "00175",
+        pdfs: [
+          { name: "Beynəlxalq menecment Q26", file: "beynelxalqmenecmentQ26.pdf", pdfType: "semester", addedAt: "2026-11-19T20:05:00+04:00" }
         ]
       },
       "Bilgi işlem teknolojileri": {
@@ -176,7 +184,8 @@ const data = {
           { name: "Əməyin İqtisadiyyatı", file: "emek2.pdf", pdfType: "semester", addedAt: "2026-10-08T15:48:45+04:00" },
           { name: "Əməyin İqtisadiyyatı", file: "emekkollek1.pdf", pdfType: "midterm", addedAt: "2026-04-11T23:06:15+04:00" },
           { name: "Əməyin İqtisadiyyatı", file: "emekkollek2.pdf", pdfType: "midterm", addedAt: "2026-11-02T20:25:10+04:00" },
-          { name: "Əməyin İqtisadiyyatı", file: "emekkollek3.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:10+04:00" }
+          { name: "Əməyin İqtisadiyyatı", file: "emekkollek3.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:10+04:00" },
+          { name: "Əməyin İqtisadiyyatı", file: "emekkollek4.pdf", pdfType: "midterm", addedAt: "2026-11-19T20:05:00+04:00" }
         ]
       },
       "Ətraf mühitin iqtisadiyyatı": {
@@ -338,7 +347,9 @@ const data = {
         code: "00710",
         pdfs: [
           { name: "Qiymət Siyasəti", file: "qiymet1.pdf", pdfType: "semester", addedAt: "2026-04-11T23:04:48+04:00" },
-          { name: "Qiymət Siyasəti", file: "qiymetkollek1.pdf", pdfType: "midterm", addedAt: "2026-04-11T23:06:15+04:00" }
+          { name: "Qiymət Siyasəti", file: "qiymetkollek1.pdf", pdfType: "midterm", addedAt: "2026-04-11T23:06:15+04:00" },
+          { name: "Qiymət Siyasəti", file: "qiymetkollek2.pdf", pdfType: "midterm", addedAt: "2026-11-19T20:05:00+04:00" },
+          { name: "Qiymət Siyasəti", file: "qiymetkollek3.pdf", pdfType: "midterm", addedAt: "2026-11-19T20:05:00+04:00" }
         ]
       },
       "Liner cebir ve matematiksel analiz": {
@@ -399,7 +410,8 @@ const data = {
           { name: "Menecment", file: "menecment4.pdf", pdfType: "old", addedAt: "2026-10-08T21:54:53+04:00" },
           { name: "Menecment", file: "menecmentkollek1.pdf", pdfType: "old", addedAt: "2026-10-08T21:54:53+04:00" },
           { name: "Menecment", file: "menecmentY26.pdf", pdfType: "semester", addedAt: "2026-11-13T19:30:46+04:00" },
-          { name: "Menecment — kollekvium 1 (test)", file: "menecmentkollectest1.pdf", pdfType: "midterm", addedAt: "2026-11-14T22:00:19+04:00" }
+          { name: "Menecment — kollekvium 1 (test)", file: "menecmentkollectest1.pdf", pdfType: "midterm", addedAt: "2026-11-14T22:00:19+04:00" },
+          { name: "Menecment Q25", file: "menecmentQ25.pdf", pdfType: "semester", addedAt: "2026-11-19T20:05:00+04:00" }
         ]
       },
       "Metrologiya, standartlaşdırma və sertifikatlaşdırma": {
@@ -417,6 +429,7 @@ const data = {
           { name: "Mikroiqtisadiyyat", file: "mikroiqt3.pdf", pdfType: "old", addedAt: "2026-04-11T13:20:30+04:00" },
           { name: "Mikroiqtisadiyyat", file: "mikroiqtkollek1.pdf", pdfType: "midterm", addedAt: "2026-11-09T17:47:30+04:00" },
           { name: "Mikroiqtisadiyyat", file: "mikroiqtkollek2.pdf", pdfType: "midterm", addedAt: "2026-11-14T12:50:30+04:00" },
+          { name: "Mikroiqtisadiyyat", file: "mikroiqtkollek3.pdf", pdfType: "midterm", addedAt: "2026-11-19T20:05:00+04:00" },
           { name: "Mikroiqtisadiyyat", file: "mikroiqtmesele1.pdf", pdfType: "task", addedAt: "2026-04-11T13:20:30+04:00" },
           { name: "Mikroiqtisadiyyat", file: "mikroiqtmesele2.pdf", pdfType: "task", addedAt: "2026-04-11T13:20:30+04:00" },
           { name: "Mikroiqtisadiyyat ", file: "mikroiqt2.pdf", pdfType: "old", addedAt: "2026-04-11T13:20:30+04:00" }
@@ -433,6 +446,7 @@ const data = {
         type: "test",
         code: "00034",
         pdfs: [
+          { name: "Mülki Müdafiə B26 — mövzu 1–8", file: "mulkimudafieB26.pdf", pdfType: "semester", addedAt: "2026-11-19T20:05:00+04:00" },
           { name: "Mülki Müdafiə Q23", file: "mulkimudafieQ23.pdf", pdfType: "semester", addedAt: "2026-04-22T23:06:04+04:00" },
           { name: "Mülki Müdafiə Q26", file: "mulkimudafieQ26.pdf", pdfType: "semester", addedAt: "2026-04-22T11:24:59+04:00" },
           { name: "Mülki Müdafiə Y24", file: "mulkimudafieY24.pdf", pdfType: "semester", addedAt: "2026-04-22T11:24:59+04:00" },

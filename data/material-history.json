@@ -1,5 +1,5 @@
 {
-  "assetCount": 159,
+  "assetCount": 167,
   "dateBasis": "Git committer timestamps with timezone; historical upload lineage when verified, otherwise first catalog reference or an explicit maintainer timestamp.",
   "materials": {
     "pdf-extra/adiaktest1.pdf": {
@@ -303,8 +303,22 @@
       "sourceCommit": null,
       "sourcePath": "pdfs.js"
     },
+    "pdf/beynelxalqiqtkollek3.pdf": {
+      "addedAt": "2026-11-19T20:05:00+04:00",
+      "note": "Maintainer-supplied timestamp; not inferred from a Git upload.",
+      "source": "explicit",
+      "sourceCommit": null,
+      "sourcePath": "pdfs.js"
+    },
     "pdf/beynelxalqmarketinqY25.pdf": {
       "addedAt": "2026-11-14T22:00:19+04:00",
+      "note": "Maintainer-supplied timestamp; not inferred from a Git upload.",
+      "source": "explicit",
+      "sourceCommit": null,
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/beynelxalqmenecmentQ26.pdf": {
+      "addedAt": "2026-11-19T20:05:00+04:00",
       "note": "Maintainer-supplied timestamp; not inferred from a Git upload.",
       "source": "explicit",
       "sourceCommit": null,
@@ -411,6 +425,13 @@
     },
     "pdf/emekkollek3.pdf": {
       "addedAt": "2026-11-09T17:47:10+04:00",
+      "note": "Maintainer-supplied timestamp; not inferred from a Git upload.",
+      "source": "explicit",
+      "sourceCommit": null,
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/emekkollek4.pdf": {
+      "addedAt": "2026-11-19T20:05:00+04:00",
       "note": "Maintainer-supplied timestamp; not inferred from a Git upload.",
       "source": "explicit",
       "sourceCommit": null,
@@ -891,6 +912,13 @@
       "sourceCommit": "3cad3e94f6b187cbcb95015575b64e203efcb690",
       "sourcePath": "pdfs.js"
     },
+    "pdf/menecmentQ25.pdf": {
+      "addedAt": "2026-11-19T20:05:00+04:00",
+      "note": "Maintainer-supplied timestamp; not inferred from a Git upload.",
+      "source": "explicit",
+      "sourceCommit": null,
+      "sourcePath": "pdfs.js"
+    },
     "pdf/menecmentY26.pdf": {
       "addedAt": "2026-11-13T19:30:46+04:00",
       "note": "Maintainer-supplied timestamp; not inferred from a Git upload.",
@@ -962,6 +990,13 @@
       "sourceCommit": null,
       "sourcePath": "pdfs.js"
     },
+    "pdf/mikroiqtkollek3.pdf": {
+      "addedAt": "2026-11-19T20:05:00+04:00",
+      "note": "Maintainer-supplied timestamp; not inferred from a Git upload.",
+      "source": "explicit",
+      "sourceCommit": null,
+      "sourcePath": "pdfs.js"
+    },
     "pdf/mikroiqtmesele1.pdf": {
       "addedAt": "2026-04-11T13:20:30+04:00",
       "catalogFirst": {
@@ -1016,6 +1051,13 @@
       "source": "git-upload",
       "sourceCommit": "104fa42d47d5e6549689b3577e226aad594deee6",
       "sourcePath": "pdf/muhendisqrafikasi1.pdf"
+    },
+    "pdf/mulkimudafieB26.pdf": {
+      "addedAt": "2026-11-19T20:05:00+04:00",
+      "note": "Maintainer-supplied timestamp; not inferred from a Git upload.",
+      "source": "explicit",
+      "sourceCommit": null,
+      "sourcePath": "pdfs.js"
     },
     "pdf/mulkimudafieQ23.pdf": {
       "addedAt": "2026-04-22T23:06:04+04:00",
@@ -1120,6 +1162,20 @@
       "source": "git-upload",
       "sourceCommit": "a953ba6ad88b7d43ceb2aaa143877523caef0b1f",
       "sourcePath": "pdf/qiymet1.pdf"
+    },
+    "pdf/qiymetkollek2.pdf": {
+      "addedAt": "2026-11-19T20:05:00+04:00",
+      "note": "Maintainer-supplied timestamp; not inferred from a Git upload.",
+      "source": "explicit",
+      "sourceCommit": null,
+      "sourcePath": "pdfs.js"
+    },
+    "pdf/qiymetkollek3.pdf": {
+      "addedAt": "2026-11-19T20:05:00+04:00",
+      "note": "Maintainer-supplied timestamp; not inferred from a Git upload.",
+      "source": "explicit",
+      "sourceCommit": null,
+      "sourcePath": "pdfs.js"
     },
     "pdf/reqemsaliqt1.pdf": {
       "addedAt": "2026-10-08T21:54:53+04:00",
@@ -1560,6 +1616,6 @@
       "sourcePath": "pdf/yonetimorganizasyonQ25.pdf"
     }
   },
-  "recordCount": 166,
+  "recordCount": 174,
   "schemaVersion": 1
 }

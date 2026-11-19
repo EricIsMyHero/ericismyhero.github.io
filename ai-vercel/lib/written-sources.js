@@ -105,6 +105,14 @@ export const WRITTEN_SOURCES = [
     "url": "https://pub-2179773f096a4b76a772ec1317daec99.r2.dev/pdf/beynelxalqiqtkollek2.pdf"
   },
   {
+    "id": "beynelxalqiqtkollek3.pdf",
+    "file": "beynelxalqiqtkollek3.pdf",
+    "name": "Beynəlxalq İqtisadiyyat",
+    "subject": "Beynəlxalq iqtisadiyyat",
+    "addedAt": "2026-11-19T20:05:00+04:00",
+    "url": "https://pub-2179773f096a4b76a772ec1317daec99.r2.dev/pdf/beynelxalqiqtkollek3.pdf"
+  },
+  {
     "id": "bizneshuququ1.pdf",
     "file": "bizneshuququ1.pdf",
     "name": "Biznes Hüququ",
@@ -175,6 +183,14 @@ export const WRITTEN_SOURCES = [
     "subject": "Əməyin iqtisadiyyatı",
     "addedAt": "2026-11-09T17:47:10+04:00",
     "url": "https://pub-2179773f096a4b76a772ec1317daec99.r2.dev/pdf/emekkollek3.pdf"
+  },
+  {
+    "id": "emekkollek4.pdf",
+    "file": "emekkollek4.pdf",
+    "name": "Əməyin İqtisadiyyatı",
+    "subject": "Əməyin iqtisadiyyatı",
+    "addedAt": "2026-11-19T20:05:00+04:00",
+    "url": "https://pub-2179773f096a4b76a772ec1317daec99.r2.dev/pdf/emekkollek4.pdf"
   },
   {
     "id": "emi1.pdf",
@@ -329,6 +345,22 @@ export const WRITTEN_SOURCES = [
     "url": "https://pub-2179773f096a4b76a772ec1317daec99.r2.dev/pdf/qiymetkollek1.pdf"
   },
   {
+    "id": "qiymetkollek2.pdf",
+    "file": "qiymetkollek2.pdf",
+    "name": "Qiymət Siyasəti",
+    "subject": "Qiymət siyasəti",
+    "addedAt": "2026-11-19T20:05:00+04:00",
+    "url": "https://pub-2179773f096a4b76a772ec1317daec99.r2.dev/pdf/qiymetkollek2.pdf"
+  },
+  {
+    "id": "qiymetkollek3.pdf",
+    "file": "qiymetkollek3.pdf",
+    "name": "Qiymət Siyasəti",
+    "subject": "Qiymət siyasəti",
+    "addedAt": "2026-11-19T20:05:00+04:00",
+    "url": "https://pub-2179773f096a4b76a772ec1317daec99.r2.dev/pdf/qiymetkollek3.pdf"
+  },
+  {
     "id": "makroiqt1.pdf",
     "file": "makroiqt1.pdf",
     "name": "Makroiqtisadiyyat",
@@ -391,6 +423,14 @@ export const WRITTEN_SOURCES = [
     "subject": "Mikroiqtisadiyyat",
     "addedAt": "2026-11-14T12:50:30+04:00",
     "url": "https://pub-2179773f096a4b76a772ec1317daec99.r2.dev/pdf/mikroiqtkollek2.pdf"
+  },
+  {
+    "id": "mikroiqtkollek3.pdf",
+    "file": "mikroiqtkollek3.pdf",
+    "name": "Mikroiqtisadiyyat",
+    "subject": "Mikroiqtisadiyyat",
+    "addedAt": "2026-11-19T20:05:00+04:00",
+    "url": "https://pub-2179773f096a4b76a772ec1317daec99.r2.dev/pdf/mikroiqtkollek3.pdf"
   },
   {
     "id": "mikroiqtmesele1.pdf",
