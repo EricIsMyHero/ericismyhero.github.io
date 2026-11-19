@@ -56,7 +56,7 @@
 
   Object.assign(U, { $, $$, esc, ic, mi, enc, dec, tr, LS, normAz });
 
-  // ── Naviqasiya tərifi (yan panel + drawer + funksiyalar üçün tək mənbə) ──
+  // ── Naviqasiya tərifi (yan naviqasiya və funksiyalar üçün tək mənbə) ──
   const NAV = [
     { id: 'home',       icon: 'home',            key: 'navHome',     route: '/home' },
     { id: 'functions',  icon: 'grid',            key: 'navFunctions', route: '/functions' },
@@ -69,7 +69,7 @@
     { id: 'requests',   icon: 'folder-open',     key: 'navRequests', route: '/requests',   fc: 'requests', desc: 'featRequestsDesc' },
     { id: 'timer',      icon: 'timer',           key: 'navTimer',    route: '/timer',      fc: 'timer',    desc: 'featTimerDesc' },
     { id: 'dashboard',  icon: 'chart',           key: 'navDashboard',route: '/dashboard',  fc: 'dash',     desc: 'featDashDesc' },
-    { id: 'support',    icon: 'heart',           key: 'navSupport',  route: '/support',    fc: 'support', desc: 'featSupportDesc', desktopOnly: true },
+    { id: 'support',    icon: 'heart',           key: 'navSupport',  route: '/support',    fc: 'support', desc: 'featSupportDesc' },
     { id: 'more',       icon: 'ellipsis',        key: 'navMore',     route: '/more',       desktopOnly: true }
   ];
   U.NAV = NAV;
@@ -83,15 +83,13 @@
   const TAB_NAV_ID = { home: 'home', courses: 'courses', tests: 'tests', gpa: 'gpa', curriculum: 'curriculum',
     requests: 'requests', timer: 'timer', dashboard: 'dashboard', support: 'support', more: 'more' };
 
-  function navLinkHTML(item, withSub) {
-    return `<li><a class="nav-link" href="#${item.route}" data-nav="${item.id}">${ic(item.icon)}<span>${esc(t(item.key))}</span>${withSub || ''}</a></li>`;
+  function navLinkHTML(item) {
+    return `<li><a class="nav-link" href="#${item.route}" data-nav="${item.id}">${ic(item.icon)}<span>${esc(t(item.key))}</span></a></li>`;
   }
 
   function renderNav() {
     const side = $('#sideNav');
-    const drawer = $('#drawerNav');
-    if (side)   side.innerHTML   = NAV.map(i => navLinkHTML(i)).join('');
-    if (drawer) drawer.innerHTML = NAV.filter(i => !i.desktopOnly).map(i => navLinkHTML(i)).join('');
+    if (side) side.innerHTML = NAV.map(navLinkHTML).join('');
     syncNavState();
   }
 

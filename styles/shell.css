@@ -314,6 +314,51 @@
 }
 .drawer.is-open { transform: none; visibility: visible; transition-delay: 0s; }
 .drawer-head { display: flex; align-items: center; justify-content: space-between; padding: 0 4px 12px; margin-bottom: 4px; }
+.drawer > .progress-card {
+  flex: none;
+  margin-top: 0;
+}
+.drawer-support {
+  display: grid;
+  flex: none;
+  gap: 14px;
+  margin-top: auto;
+  padding: 16px;
+  border: 1px solid color-mix(in srgb, var(--fc-support) 30%, var(--border));
+  border-radius: var(--r-lg);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--fc-support) 12%, var(--color-surface-elevated)), var(--color-surface-elevated));
+}
+.drawer-support-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.drawer-support-icon {
+  display: grid;
+  flex: 0 0 40px;
+  place-items: center;
+  height: 40px;
+  border-radius: var(--r-sm);
+  background: color-mix(in srgb, var(--fc-support) 20%, var(--color-surface));
+  color: color-mix(in srgb, var(--fc-support) 55%, var(--color-text-primary));
+  font-size: 1.25rem;
+}
+.drawer-support h2 {
+  margin: 0 0 4px;
+  font-size: var(--fs-md);
+}
+.drawer-support p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+}
+.drawer-support .drawer-support-action {
+  justify-content: space-between;
+  min-height: 44px;
+  padding: 0 12px;
+  font-size: var(--fs-sm);
+}
 @media (min-width: 1024px) { .drawer, .scrim--drawer { display: none; } }
 
 /* ── Aşağı naviqasiya ─────────────────────────────────────────── */

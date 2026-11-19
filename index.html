@@ -135,7 +135,7 @@
   <link rel="stylesheet" href="styles/chat.css?v=20261106-3">
   <link rel="stylesheet" href="styles/ratings.css?v=20261106-3">
   <link rel="stylesheet" href="styles/tokens.css?v=20261106-3">
-  <link rel="stylesheet" href="styles/shell.css?v=20261106-3">
+  <link rel="stylesheet" href="styles/shell.css?v=20261119-drawer">
   <link rel="stylesheet" href="styles/screens.css?v=20261119-functions">
   <link rel="stylesheet" href="styles/tools.css?v=20261119-function-pages">
   <link rel="stylesheet" href="styles/written.css?v=20261115-design">
@@ -1806,8 +1806,20 @@
     </span>
     <button class="icon-btn" id="drawerClose" type="button" aria-label="Menyunu bağla" data-i18n-aria="appMenuClose"><svg class="ic"><use href="#i-x"/></svg></button>
   </div>
-  <nav aria-label="Əsas bölmələr" data-i18n-aria="appMainNav"><ul class="nav-list" id="drawerNav"></ul></nav>
   <div class="progress-card" id="drawerProgress" hidden></div>
+  <section class="drawer-support" aria-labelledby="drawerSupportTitle">
+    <div class="drawer-support-heading">
+      <span class="drawer-support-icon"><svg class="ic" aria-hidden="true"><use href="#i-heart"/></svg></span>
+      <div>
+        <h2 id="drawerSupportTitle" data-i18n="navSupport">Dəstək</h2>
+        <p data-i18n="featSupportDesc">Layihənin davam etməsinə töhfə ver.</p>
+      </div>
+    </div>
+    <a class="btn btn--secondary drawer-support-action" href="#/support">
+      <span data-i18n="supToastBtn">Dəstək ol</span>
+      <svg class="ic" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+    </a>
+  </section>
 </aside>
 
 <!-- ═══ SHEETLƏR ═══════════════════════════════════════════ -->
@@ -2398,7 +2410,7 @@
 <script src="scripts/curriculum.js?v=20261114-curriculum-clean"></script>
 <script src="scripts/badges.js?v=20261106-3"></script>
 <script src="scripts/timer.js?v=20261111"></script>
-<script src="scripts/app-core.js?v=20261119-functions"></script>
+<script src="scripts/app-core.js?v=20261119-drawer"></script>
 <script src="scripts/app-materials.js?v=20261114-metadata"></script>
 <script src="data/compass-catalog.js?v=20261109-2"></script>
 <script src="scripts/compass.js?v=20261119-function-pages"></script>
