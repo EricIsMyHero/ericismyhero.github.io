@@ -72,7 +72,7 @@ async function doLogin() {
     document.getElementById("login-screen").hidden = true;
     document.getElementById("app").hidden = false;
     cache.overview = result;
-    await showTab("overview");
+    await showTab(location.hash === "#career" ? "career" : "overview");
     err.textContent = "";
   } catch (error) {
     err.textContent = error.message;
@@ -1214,6 +1214,9 @@ document
   .getElementById("refresh-btn")
   .addEventListener("click", refreshCurrent);
 document.getElementById("export-btn").addEventListener("click", exportCsv);
+document
+  .getElementById("open-career")
+  .addEventListener("click", () => showTab("career"));
 for (const key of ["users", "requests", "chats"])
   document.getElementById(key + "-search").addEventListener("input", () => {
     pages[key] = 1;

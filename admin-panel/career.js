@@ -34,7 +34,7 @@ const loadCareerTab = (() => {
     const message = Number.isSafeInteger(row.telegramMessageId)
       ? `<a href="${channel}/${row.telegramMessageId}" target="_blank" rel="noopener noreferrer">Telegram postunu aç</a>`
       : '';
-    return `<article class="push-preview" data-id="${esc(row.id)}">
+    return `<article class="push-preview" id="career-row-${esc(row.id)}" data-id="${esc(row.id)}" tabindex="-1">
       <b>${esc(row.title)}</b>
       <span>${esc(row.company)} · ${esc(typeLabels[row.type])} · ${esc(categoryLabels[row.category])}</span>
       <span>Son müraciət · ${esc(row.deadline || 'Göstərilməyib')}</span>
@@ -55,6 +55,7 @@ const loadCareerTab = (() => {
     root.innerHTML = `
       <form class="push-form">
         <h2 class="push-form-head">Yeni elan</h2>
+        <p class="muted">Qaralamanı saxla, sonra elanın yanında «Təsdiqlə və paylaş» düyməsini seç.</p>
         <label for="career-title">Proqramın adı</label>
         <input id="career-title" name="title" required maxlength="160">
         <label for="career-company">Şirkət və ya təşkilat</label>
@@ -98,7 +99,7 @@ const loadCareerTab = (() => {
         if (navSession !== session || view !== generation) return;
         const feedback = action === 'publish'
           ? `Elan saytdadır. ${telegramLabels[row.telegramStatus]}.` : message;
-        await load(feedback);
+        await load(feedback, action === "save" ? row.id : null);
       } catch (err) {
         if (navSession !== session || view !== generation) return;
         status.textContent = errors[err.message] || err.message;
@@ -165,7 +166,7 @@ const loadCareerTab = (() => {
     };
   }
 
-  async function load(notice = '') {
+  async function load(notice = '', savedId = null) {
     const view = ++generation;
     const navSession = session;
     document.getElementById('data-notice').hidden = true;
@@ -176,10 +177,16 @@ const loadCareerTab = (() => {
       if (view !== generation || navSession !== session) return;
       if (currentTab === 'career') dataStatus(data);
       show(data, notice);
+      if (savedId && currentTab === 'career') {
+        const item = document.getElementById('career-row-' + savedId);
+        (item?.querySelector('[data-action="publish"]') || item)?.focus();
+      }
     } catch (err) {
       if (view !== generation || navSession !== session) return;
       if (currentTab === 'career') document.getElementById('sync-status').textContent = '';
-      root.textContent = errors[err.message] || err.message;
+      root.textContent = err.data?.error === 'invalid_section'
+        ? 'Karyera bölməsi bu backend versiyasında yoxdur. Vercel-də son deploy-u yoxla.'
+        : errors[err.message] || err.message;
     }
   }
   return load;
