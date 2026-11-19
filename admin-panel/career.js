@@ -1,5 +1,5 @@
 const loadCareerTab = (() => {
-  const typeLabels = { internship: 'Təcrübə', volunteer: 'Könüllülük' };
+  const typeLabels = { internship: 'Təcrübə', volunteer: 'Könüllülük', training: 'Təlim' };
   const categoryLabels = { bank: 'Bank', finance: 'Maliyyə', audit: 'Audit', it: 'İT', other: 'Digər' };
   const telegramLabels = {
     idle: 'Telegram-da paylaşılmayıb',
@@ -64,6 +64,12 @@ const loadCareerTab = (() => {
         <select id="career-type" name="type">${optionList(typeLabels)}</select>
         <label for="career-category">Sahə</label>
         <select id="career-category" name="category">${optionList(categoryLabels)}</select>
+        <label for="career-description">Elanın təsviri</label>
+        <textarea id="career-description" name="description" rows="6" maxlength="2000"></textarea>
+        <label for="career-schedule">Tədbirin tarix və saatı</label>
+        <input id="career-schedule" name="schedule" maxlength="160" placeholder="21–22 noyabr 2026, 09:00–16:00">
+        <label for="career-location">Məkan</label>
+        <input id="career-location" name="location" maxlength="220">
         <label for="career-deadline">Son müraciət tarixi (Bakı vaxtı, istəyə bağlı)</label>
         <input id="career-deadline" name="deadline" type="date">
         <label for="career-apply-url">Rəsmi müraciət linki</label>
@@ -133,8 +139,8 @@ const loadCareerTab = (() => {
       switch (button.dataset.action) {
         case 'edit':
           editing = row;
-          for (const name of ['title', 'company', 'type', 'category', 'deadline', 'applyUrl']) {
-            form.elements.namedItem(name).value = row[name];
+          for (const name of ['title', 'company', 'type', 'category', 'description', 'schedule', 'location', 'deadline', 'applyUrl']) {
+            form.elements.namedItem(name).value = row[name] ?? '';
           }
           form.querySelector('h2').textContent = 'Elanı redaktə et';
           submit.textContent = 'Dəyişiklikləri saxla';

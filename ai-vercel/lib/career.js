@@ -3,8 +3,9 @@ import * as firestore from './firestore.js';
 const COLLECTION = 'career_opportunities';
 export const CAREER_CHANNEL = 'unecstudentshubcareer';
 const CATEGORIES = Object.freeze({ bank: 'Bank', finance: 'Maliyyə', audit: 'Audit', it: 'İT', other: 'Digər' });
-const TYPES = Object.freeze({ internship: 'Təcrübə', volunteer: 'Könüllülük' });
+const TYPES = Object.freeze({ internship: 'Təcrübə', volunteer: 'Könüllülük', training: 'Təlim' });
 const ID = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
+const DETAILS = { description: 2000, schedule: 160, location: 220 };
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 const bakuDay = now => new Date(now.getTime() + 4 * 3600_000).toISOString().slice(0, 10);
 const isActive = (row, today) => !row.deadline || row.deadline >= today;
@@ -20,11 +21,19 @@ function fields(input) {
       !Object.hasOwn(CATEGORIES, category) || typeof type !== 'string' || !Object.hasOwn(TYPES, type)) return null;
   if (typeof deadline !== 'string' || (deadline && (!DATE.test(deadline) ||
       !Number.isFinite(Date.parse(deadline)) || new Date(deadline).toISOString().slice(0, 10) !== deadline))) return null;
+  const details = {};
+  for (const [key, limit] of Object.entries(DETAILS)) {
+    if (!Object.hasOwn(input, key)) continue;
+    const value = input[key];
+    if (typeof value !== 'string' || value.trim().length > limit ||
+        (key !== 'description' && /[\r\n]/.test(value))) return null;
+    details[key] = value.trim();
+  }
   if (typeof input.applyUrl !== 'string' || input.applyUrl.length > 1000) return null;
   try {
     const url = new URL(input.applyUrl);
-    if (url.protocol !== 'https:' || url.username || url.password) return null;
-    return { title, company, type, category, deadline, applyUrl: url.href };
+    if (url.protocol !== 'https:' || url.username || url.password || url.href.length > 1000) return null;
+    return { title, company, type, category, deadline, applyUrl: url.href, ...details };
   } catch {
     return null;
   }
@@ -37,8 +46,11 @@ export async function publicCareer(db = firestore, now = new Date()) {
   });
   const today = bakuDay(now);
   return docs.filter(({ data }) => isActive(data, today))
-    .map(({ id, data: { title, company, type, category, deadline, applyUrl } }) => ({
+    .map(({ id, data: { title, company, type, category, deadline, applyUrl, description, schedule, location } }) => ({
       id, title, company, type, category, deadline, applyUrl,
+      ...(description && { description }),
+      ...(schedule && { schedule }),
+      ...(location && { location }),
     }))
     .sort((a, b) => (a.deadline || '9999-12-31').localeCompare(b.deadline || '9999-12-31') ||
       a.title.localeCompare(b.title, 'az'));
@@ -48,10 +60,13 @@ async function sendTelegram(row, token, request) {
   const text = [
     `#${TYPES[row.type]} | ${CATEGORIES[row.category]}`,
     `${row.company} — ${row.title}`,
+    row.description,
+    row.schedule && `📅 Tarix və saat: ${row.schedule}`,
+    row.location && `📍 Məkan: ${row.location}`,
     `Son müraciət: ${row.deadline ? row.deadline.split('-').reverse().join('.') : 'Göstərilməyib'}`,
     `Müraciət: ${row.applyUrl}`,
     'Karyera lövhəsi: https://unecstudentshub.com/#/career',
-  ].join('\n\n');
+  ].filter(Boolean).join('\n\n');
   try {
     const response = await request(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',

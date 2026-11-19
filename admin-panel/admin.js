@@ -1089,7 +1089,7 @@ function fmtDate(iso) {
 const DESCRIPTIONS = {
   overview: "Göstəricilər və son fəaliyyət",
   workspace: "Postlar, buraxılışlar və texniki işlərin koordinasiyası",
-  career: "Təcrübə və könüllülük elanlarını hazırla və paylaş",
+  career: "Təcrübə, könüllülük və təlim elanlarını hazırla və paylaş",
   users: "Hesablar və tədris məlumatları",
   requests: "Yazışmalar, fayllar və bildiriş nəticələri",
   chats: "Fənlər üzrə müzakirələr",

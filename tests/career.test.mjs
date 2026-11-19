@@ -93,3 +93,29 @@ test('ambiguous Telegram sends require reconciliation before a retry', async () 
   }, db, NOW);
   assert.equal(verified.json.row.telegramMessageId, 42);
 });
+
+test('training announcements preserve descriptions, event schedules and locations independently of the deadline', async () => {
+  const db = database();
+  const details = {
+    description: 'CV hazırlığı\n🔹 Müsahibəyə hazırlıq',
+    schedule: '21–22 noyabr 2026, 09:00–16:00',
+    location: 'Kənd Təsərrüfatı Nazirliyinin inzibati binası',
+  };
+  const command = { ...fields, ...details, deadline: '', type: 'training', id: ID, action: 'save' };
+  assert.equal((await adminCareer({ ...command, description: 'a'.repeat(2001) }, db, NOW)).status, 400);
+  const { json: { row } } = await adminCareer(command, db, NOW);
+  let payload;
+  const published = await adminCareer({ action: 'publish', id: ID, revision: row.revision }, db, NOW,
+    { CAREER_TELEGRAM_BOT_TOKEN: 'fake-token' }, async (_url, options) => {
+      payload = JSON.parse(options.body);
+      return Response.json({ ok: true, result: { message_id: 50 } });
+    });
+  assert.equal(published.status, 200);
+  assert(payload.text.startsWith('#Təlim'));
+  assert(payload.text.includes(details.description));
+  assert(payload.text.includes('📅 Tarix və saat: ' + details.schedule));
+  assert(payload.text.includes('📍 Məkan: ' + details.location));
+  assert(payload.text.includes('Son müraciət: Göstərilməyib'));
+  const [opportunity] = await publicCareer(db, NOW);
+  assert.deepEqual(opportunity, { ...fields, ...details, deadline: '', type: 'training', id: ID });
+});

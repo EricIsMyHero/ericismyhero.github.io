@@ -5,7 +5,7 @@
   const { $, esc, tr } = U;
   const endpoint = (typeof BACKEND_URL === 'string' ? BACKEND_URL : 'https://ericismyhero-github-io.vercel.app') +
     '/api/admin-data?section=career';
-  const typeLabels = { internship: 'careerInternship', volunteer: 'careerVolunteer' };
+  const typeLabels = { internship: 'careerInternship', volunteer: 'careerVolunteer', training: 'careerTraining' };
   const categoryLabels = { bank: 'careerBank', finance: 'careerFinance', audit: 'careerAudit', it: 'careerIT', other: 'careerOther' };
   const types = $('#careerType');
   const categories = $('#careerCategory');
@@ -31,7 +31,11 @@
         <p class="compass-category-label">${esc(type)} · ${esc(category)}</p>
         <h2>${esc(row.title)}</h2>
         <p>${esc(row.company)}</p>
+        ${row.schedule ? `<p>${esc(tr('careerSchedule'))} · ${esc(row.schedule)}</p>` : ''}
+        ${row.location ? `<p>${esc(tr('careerLocation'))} · ${esc(row.location)}</p>` : ''}
         <p>${esc(tr('careerDeadline'))} · ${deadline}</p>
+        ${row.description ? `<details class="career-details"><summary>${esc(tr('careerDetails'))}</summary>
+          <p>${esc(row.description)}</p></details>` : ''}
         <p><a href="${esc(url.href)}" target="_blank" rel="noopener noreferrer">${esc(tr('careerApply'))}</a></p>
       </div>
     </article>`;

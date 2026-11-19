@@ -155,9 +155,9 @@ All three allowances are resolved by `lib/practice-policy.js` using the same ser
 
 ## Karyera lövhəsi
 
-Saytda `#/career` bölməsi təsdiqlənmiş təcrübə və könüllülük elanlarını göstərir.
+Saytda `#/career` bölməsi təsdiqlənmiş təcrübə, könüllülük və təlim elanlarını göstərir.
 Admin panelində **Karyera elanları** bölməsindən qaralama saxla və **Təsdiqlə və paylaş** düyməsi ilə dərc et.
-Tarix daxil edilibsə, elan həmin günün sonunadək (Bakı vaxtı) aktiv qalır. Tarixi göstərilməyən elanları admin panelindən bağlamaq olar.
+Təsvir, tədbirin tarix və saatı və məkan ayrıca daxil edilə bilər. Son müraciət tarixi daxil edilibsə, elan həmin günün sonunadək (Bakı vaxtı) aktiv qalır. Tarixi göstərilməyən elanları admin panelindən bağlamaq olar.
 
 1. Telegram-da BotFather ilə bot yarat və onu [karyera kanalına](https://t.me/unecstudentshubcareer) post paylaşma icazəsi olan admin kimi əlavə et.
 2. Bot tokenini Vercel layihəsinin Production mühitində `CAREER_TELEGRAM_BOT_TOKEN` adı ilə saxla, sonra backend-i yenidən deploy et.

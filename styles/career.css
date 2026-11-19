@@ -16,3 +16,14 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+#main-career .career-details {
+  margin-top: 8px;
+}
+#main-career .career-details summary {
+  min-height: 44px;
+  align-content: center;
+  cursor: pointer;
+}
+#main-career .career-details p {
+  white-space: pre-wrap;
+}
