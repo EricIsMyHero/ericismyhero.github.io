@@ -149,6 +149,7 @@ function dataStatus(data) {
 const TAB_TITLES = {
   overview: "Ümumi baxış",
   workspace: "İş sahəsi",
+  career: "Karyera elanları",
   users: "İstifadəçilər",
   chats: "Fənn çatları",
   requests: "Material istəkləri",
@@ -199,6 +200,7 @@ async function showTab(tab) {
 }
 
 async function loadTab(tab) {
+  if (tab === "career") return loadCareerTab();
   if (tab === "push") return loadPush();
   if (tab === "requests") return loadRequestsTab();
   document.getElementById("sync-status").textContent = "Yüklənir…";
@@ -1087,6 +1089,7 @@ function fmtDate(iso) {
 const DESCRIPTIONS = {
   overview: "Göstəricilər və son fəaliyyət",
   workspace: "Postlar, buraxılışlar və texniki işlərin koordinasiyası",
+  career: "Təcrübə və könüllülük elanlarını hazırla və paylaş",
   users: "Hesablar və tədris məlumatları",
   requests: "Yazışmalar, fayllar və bildiriş nəticələri",
   chats: "Fənlər üzrə müzakirələr",

@@ -8,7 +8,8 @@
     <link rel="icon" href="../images/favicon.svg" />
     <link rel="stylesheet" href="admin.css?v=20261110" />
     <script src="workspace.js?v=20261110" defer></script>
-    <script src="admin.js?v=20261110" defer></script>
+    <script src="admin.js?v=20261119" defer></script>
+    <script src="career.js?v=20261119" defer></script>
   </head>
   <body>
     <svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
@@ -129,6 +130,9 @@
           <span class="nav-index">◇</span><span>Məzmun iş sahəsi</span>
         </button>
         <nav aria-label="Admin bölmələri">
+          <button class="nav-item" id="nav-career" data-tab="career" type="button">
+            <span>Karyera elanları</span>
+          </button>
           <button
             class="nav-item active"
             id="nav-overview"
@@ -214,6 +218,9 @@
           id="panel-workspace"
           aria-labelledby="nav-workspace"
         ></section>
+        <section class="tab-panel" id="panel-career" aria-labelledby="nav-career">
+          <div id="career-content"></div>
+        </section>
         <section
           class="tab-panel active"
           id="panel-overview"

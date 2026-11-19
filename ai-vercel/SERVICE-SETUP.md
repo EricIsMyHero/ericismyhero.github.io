@@ -152,3 +152,16 @@ exports include the reservation record, and account deletion removes it with
 the existing usage subtree. No new collection permissions or secrets are needed.
 
 All three allowances are resolved by `lib/practice-policy.js` using the same server-controlled redemption receipts as AI access. Browser-supplied Premium flags, limits and profile fields are ignored. Receipt lookup errors fail closed. Upgrades and expiry do not reset daily usage; unused allowance resets only at Baku midnight. No new API keys or Firestore rules are required.
+
+## Karyera lövhəsi
+
+Saytda `#/career` bölməsi təsdiqlənmiş təcrübə və könüllülük elanlarını göstərir.
+Admin panelində **Karyera elanları** bölməsindən qaralama saxla və **Təsdiqlə və paylaş** düyməsi ilə dərc et.
+Tarix daxil edilibsə, elan həmin günün sonunadək (Bakı vaxtı) aktiv qalır. Tarixi göstərilməyən elanları admin panelindən bağlamaq olar.
+
+1. Telegram-da BotFather ilə bot yarat və onu [karyera kanalına](https://t.me/unecstudentshubcareer) post paylaşma icazəsi olan admin kimi əlavə et.
+2. Bot tokenini Vercel layihəsinin Production mühitində `CAREER_TELEGRAM_BOT_TOKEN` adı ilə saxla, sonra backend-i yenidən deploy et.
+3. Əvvəlki `FIREBASE_SERVICE_ACCOUNT` və `ADMIN_SECRET_KEY` ayarları istifadə olunur. `career_opportunities` kolleksiyasının birbaşa brauzer oxuma və yazma icazəsini Firestore qaydalarında bağlı saxla. Aktiv elanlar `GET /api/admin-data?section=career` vasitəsilə açıqdır. Qaralamaları və göndəriş məlumatlarını yalnız admin endpoint-inin autentifikasiyalı POST sorğusu verir.
+4. İlk real elanı təsdiqlədikdən sonra həm lövhədə, həm də karyera kanalında göründüyünü yoxla.
+
+Bot quraşdırılmayıbsa və ya Telegram sorğunu rədd edibsə, təsdiqlənən elan yenə saytda dərc olunur. Səbəbi aradan qaldırdıqdan sonra həmin elanda **Telegram-a göndər** seç. Göndəriş təsdiqlənməyibsə, kanalı yoxla və **Paylaşımı yoxla** düyməsindən istifadə et. Orada mövcud postun keçidini qeyd edə və ya postun göndərilmədiyini təsdiqləyə bilərsən. Elanı saytda redaktə etdikdə və ya bağladıqda, əvvəl paylaşılmış Telegram postunu kanalda ayrıca yenilə.

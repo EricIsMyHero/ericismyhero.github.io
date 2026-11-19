@@ -1,0 +1,18 @@
+#main-career .compass-card {
+  padding: 18px;
+}
+#main-career .compass-card h2 {
+  margin: 4px 0;
+  font-size: var(--fs-base);
+  overflow-wrap: anywhere;
+}
+#main-career .compass-card a,
+#main-career .compass-hero a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--accent2);
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

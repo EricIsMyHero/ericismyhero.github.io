@@ -142,6 +142,7 @@
   <link rel="stylesheet" href="styles/support.css?v=20261106-3">
   <link rel="stylesheet" href="styles/legacy.css?v=20261106-3">
   <link rel="stylesheet" href="styles/compass.css?v=20261109-2">
+  <link rel="stylesheet" href="styles/career.css?v=20261119">
 
   <!-- ═══ Analytics & Ads ═══════════════════════════════════════ -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4095192858738222" crossorigin="anonymous"></script>
@@ -368,6 +369,7 @@
 
           <div id="homeBody">
             <a class="compass-home-entry" href="#/compass"><span class="compass-home-icon"><svg class="ic" aria-hidden="true"><use href="#i-compass"/></svg></span><span class="grow"><b data-i18n="navCompass">Tələbə Kompası</b><small data-i18n="featCompassDesc">Tələbələr və abituriyentlər üçün praktik məlumatlar.</small></span><svg class="ic" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+            <a class="compass-home-entry" href="#/career"><span class="compass-home-icon"><svg class="ic" aria-hidden="true"><use href="#i-briefcase"/></svg></span><span class="grow"><b data-i18n="navCareer">Karyera lövhəsi</b><small data-i18n="careerIntro">UNEC tələbələri üçün təcrübə və könüllülük proqramları.</small></span><svg class="ic" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
             <div class="feature-grid" id="featureGrid"></div>
 
             <div class="stat-row" aria-label="Statistika">
@@ -1631,6 +1633,45 @@
         <div class="container screen"><div id="compassRoot"></div></div>
       </div>
 
+      <div id="main-career" class="main-tab is-hidden" data-route="career">
+        <div class="container screen">
+          <header class="compass-hero">
+            <span class="compass-hero-icon"><svg class="ic" aria-hidden="true"><use href="#i-briefcase"/></svg></span>
+            <div>
+              <h1 data-i18n="navCareer">Karyera lövhəsi</h1>
+              <p data-i18n="careerIntro">UNEC tələbələri üçün təcrübə və könüllülük proqramları.</p>
+              <a href="https://t.me/unecstudentshubcareer" target="_blank" rel="noopener noreferrer" data-i18n="careerChannel">Telegram kanalına qoşul</a>
+            </div>
+          </header>
+          <section class="compass-controls" aria-label="Elan filtrləri" data-i18n-aria="navCareer">
+            <div class="compass-filter-row">
+              <label class="compass-category-select">
+                <span data-i18n="careerType">Proqram növü</span>
+                <select id="careerType" aria-controls="careerResults">
+                  <option value="" data-i18n="careerAllTypes">Bütün proqramlar</option>
+                  <option value="internship" data-i18n="careerInternship">Təcrübə</option>
+                  <option value="volunteer" data-i18n="careerVolunteer">Könüllülük</option>
+                </select>
+              </label>
+              <label class="compass-category-select">
+                <span data-i18n="careerCategory">Sahə</span>
+                <select id="careerCategory" aria-controls="careerResults">
+                  <option value="" data-i18n="careerAllCategories">Bütün sahələr</option>
+                  <option value="bank" data-i18n="careerBank">Bank</option>
+                  <option value="finance" data-i18n="careerFinance">Maliyyə</option>
+                  <option value="audit" data-i18n="careerAudit">Audit</option>
+                  <option value="it" data-i18n="careerIT">İT</option>
+                  <option value="other" data-i18n="careerOther">Digər</option>
+                </select>
+              </label>
+            </div>
+          </section>
+          <p id="careerStatus" class="compass-result-count" role="status"></p>
+          <button id="careerRetry" class="chip" type="button" hidden data-i18n="careerRetry">Yenidən yoxla</button>
+          <div id="careerResults" class="compass-card-grid"></div>
+        </div>
+      </div>
+
       <!-- ── DAHA ÇOX ───────────────────────────────────────────── -->
       <div id="main-more" class="main-tab is-hidden" data-route="more">
         <div class="container screen">
@@ -2279,7 +2320,7 @@
 <script src="data/material-identities.js?v=20261114-catalog"></script>
 <script src="pdfs.js?v=20261114-majors"></script>
 <script src="scripts/i18n.js?v=20261115-premium-clean"></script>
-<script src="scripts/i18n-app.js?v=20261115-design"></script>
+<script src="scripts/i18n-app.js?v=20261119"></script>
 <script src="scripts/data-utils.js?v=20261113-subjects"></script>
 <script src="scripts/study-data.js?v=20261111"></script>
 <script src="scripts/ui.js?v=20261114-majors"></script>
@@ -2300,10 +2341,11 @@
 <script src="scripts/curriculum.js?v=20261114-curriculum-clean"></script>
 <script src="scripts/badges.js?v=20261106-3"></script>
 <script src="scripts/timer.js?v=20261111"></script>
-<script src="scripts/app-core.js?v=20261114-majors"></script>
+<script src="scripts/app-core.js?v=20261119"></script>
 <script src="scripts/app-materials.js?v=20261114-metadata"></script>
 <script src="data/compass-catalog.js?v=20261109-2"></script>
 <script src="scripts/compass.js?v=20261111"></script>
+<script src="scripts/career.js?v=20261119"></script>
 <script src="scripts/app-screens.js?v=20261113-subjects"></script>
 <script src="scripts/push.js?v=20261112-project"></script>
 <script src="scripts/auth-dialog.js?v=20261112"></script>

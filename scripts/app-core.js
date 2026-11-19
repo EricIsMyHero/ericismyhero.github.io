@@ -64,6 +64,7 @@
     { id: 'gpa',        icon: 'calculator',      key: 'navGpa',      route: '/gpa',        fc: 'gpa',      desc: 'featGpaDesc' },
     { id: 'curriculum', icon: 'calendar-days',   key: 'navPlan',     route: '/curriculum', fc: 'plan',     desc: 'featPlanDesc' },
     { id: 'compass',    icon: 'compass',         key: 'navCompass',  route: '/compass',    fc: 'compass',  desc: 'featCompassDesc' },
+    { id: 'career',     icon: 'briefcase',       key: 'navCareer',   route: '/career' },
     { id: 'requests',   icon: 'folder-open',     key: 'navRequests', route: '/requests',   fc: 'requests', desc: 'featRequestsDesc' },
     { id: 'timer',      icon: 'timer',           key: 'navTimer',    route: '/timer',      fc: 'timer',    desc: 'featTimerDesc' },
     { id: 'dashboard',  icon: 'chart',           key: 'navDashboard',route: '/dashboard',  fc: 'dash',     desc: 'featDashDesc' },
@@ -76,7 +77,7 @@
 
   // Hansı bölmə hansı aşağı-naviqasiya elementini işıqlandırır
   const TAB_PARENT = {
-    home: 'home', tests: 'home', gpa: 'home', curriculum: 'home', compass: 'home', requests: 'home', timer: 'home',
+    home: 'home', tests: 'home', gpa: 'home', curriculum: 'home', compass: 'home', career: 'home', requests: 'home', timer: 'home',
     courses: 'courses', support: 'support', more: 'more', dashboard: 'more'
   };
   const TAB_NAV_ID = { home: 'home', courses: 'courses', tests: 'tests', gpa: 'gpa', curriculum: 'curriculum',
@@ -189,7 +190,7 @@
   // ── Router ──────────────────────────────────────────────────
   // Public catalogue routes: #/materials, #/materials/all, #/subject/<name>,
   // #/material/<subject>/<file>, #/extra/<file>. Old course-based hashes remain aliases.
-  const TABS = ['home', 'courses', 'support', 'tests', 'gpa', 'dashboard', 'curriculum', 'compass', 'requests', 'timer', 'more'];
+  const TABS = ['home', 'courses', 'support', 'tests', 'gpa', 'dashboard', 'curriculum', 'compass', 'career', 'requests', 'timer', 'more'];
   let route = null;
   let prevRoute = null;
   let depth = (history.state && history.state.i) || 0;
@@ -307,6 +308,7 @@
       case 'tests':      if (r.query?.mode !== 'written' && typeof initTestSystem === 'function') initTestSystem(); break;
       case 'gpa':        if (typeof initGPA === 'function') initGPA(); if (U.syncGpaStepper) U.syncGpaStepper(); break;
       case 'compass': if (U.renderCompass) U.renderCompass(r); break;
+      case 'career': if (U.loadCareer) U.loadCareer(); break;
       case 'curriculum': if (typeof initCurriculum === 'function') initCurriculum(); break;
       case 'requests':   if (typeof initMaterialRequests === 'function') initMaterialRequests(); break;
       case 'timer':      if (typeof initTimer === 'function') initTimer(); break;
