@@ -127,7 +127,7 @@
   <noscript><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"></noscript>
   <link rel="stylesheet" href="styles/splash.css?v=20261106-3">
   <link rel="stylesheet" href="styles/base.css?v=20261106-3">
-  <link rel="stylesheet" href="styles/components.css?v=20261106-3">
+  <link rel="stylesheet" href="styles/components.css?v=20261120-policies">
   <link rel="stylesheet" href="styles/features.css?v=20261115-premium-limits">
   <link rel="stylesheet" href="styles/curriculum.css?v=20261106-3">
   <link rel="stylesheet" href="styles/gpa.css?v=20261106-3">
@@ -398,7 +398,7 @@
               <div class="home-footer-links">
                 <span class="home-footer-copy">&copy; 2025 - 2026 AliVerse Studio ✦</span>
                 <a href="https://ericismyhero.github.io/my-portfolio/" target="_blank" rel="noopener" class="home-footer-link">Portfolio</a>
-                <a href="mailto:unecstudentshub@gmail.com" class="home-footer-link" data-i18n="homeFooterContact">Əlaqə</a>
+                <a class="home-footer-link" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=unecstudentshub%40gmail.com" target="_blank" rel="noopener noreferrer" data-i18n="homeFooterContact">Əlaqə</a>
                 <button type="button" class="home-footer-link" onclick="openPrivacyModal()" data-i18n="homeFooterPrivacy">Məxfilik</button>
                 <button type="button" class="home-footer-link" onclick="openTermsModal()" data-i18n="homeFooterTerms">Şərtlər</button>
               </div>
@@ -1747,7 +1747,7 @@
             <h2 class="more-section-title" id="moreInfoTitle" data-i18n="moreInfoGroup">Məlumat və qaydalar</h2>
             <div class="menu-group" id="moreGroupInfo">
               <button class="menu-row" type="button" onclick="openAboutModal()"><svg class="ic"><use href="#i-info"/></svg><span class="grow" data-i18n="moreAbout">Haqqımızda</span><svg class="ic chev"><use href="#i-chevron-right"/></svg></button>
-              <button class="menu-row" type="button" onclick="openTermsModal()"><svg class="ic"><use href="#i-file-text"/></svg><span class="grow" data-i18n="moreTerms">Şərt və qaydalar</span><svg class="ic chev"><use href="#i-chevron-right"/></svg></button>
+              <button class="menu-row" type="button" onclick="openTermsModal()"><svg class="ic"><use href="#i-file-text"/></svg><span class="grow" data-i18n="moreTerms">İstifadə şərtləri</span><svg class="ic chev"><use href="#i-chevron-right"/></svg></button>
               <button class="menu-row" type="button" onclick="openPrivacyModal()"><svg class="ic"><use href="#i-shield-check"/></svg><span class="grow" data-i18n="morePrivacy">Məxfilik siyasəti</span><svg class="ic chev"><use href="#i-chevron-right"/></svg></button>
             </div>
           </section>
@@ -1755,7 +1755,7 @@
           <section class="more-section" aria-labelledby="moreSocialTitle">
             <h2 class="more-section-title" id="moreSocialTitle" data-i18n="moreSocialGroup">Əlaqə və sosial şəbəkələr</h2>
             <div class="menu-group" id="moreGroupSocial">
-              <a class="menu-row" href="mailto:unecstudentshub@gmail.com"><svg class="ic"><use href="#i-mail"/></svg><span class="grow" data-i18n="moreContact">Bizimlə əlaqə</span><svg class="ic chev"><use href="#i-chevron-right"/></svg></a>
+              <a class="menu-row" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=unecstudentshub%40gmail.com" target="_blank" rel="noopener noreferrer"><svg class="ic"><use href="#i-mail"/></svg><span class="grow" data-i18n="moreContact">Bizimlə əlaqə</span><svg class="ic chev"><use href="#i-chevron-right"/></svg></a>
               <a class="menu-row" href="https://whatsapp.com/channel/0029VbDlVlqJJhzeqDcnzV0t" target="_blank" rel="noopener noreferrer"><svg class="ic" aria-hidden="true"><use href="#i-whatsapp"/></svg><span class="grow" data-i18n="moreWhatsApp">WhatsApp kanalı</span><svg class="ic chev" aria-hidden="true"><use href="#i-external-link"/></svg></a>
               <a class="menu-row" href="https://www.instagram.com/unecstudentshub" target="_blank" rel="noopener noreferrer"><svg class="ic" aria-hidden="true"><use href="#i-instagram"/></svg><span class="grow">Instagram</span><svg class="ic chev" aria-hidden="true"><use href="#i-external-link"/></svg></a>
               <a class="menu-row" href="https://www.tiktok.com/@unecstudentshub.com" target="_blank" rel="noopener noreferrer"><svg class="ic" aria-hidden="true"><use href="#i-tiktok"/></svg><span class="grow">TikTok</span><svg class="ic chev" aria-hidden="true"><use href="#i-external-link"/></svg></a>
@@ -2045,200 +2045,38 @@
   </div>
 </div>
 
-<!-- About Modalı -->
-<div id="aboutOverlay" class="thanks-overlay hidden" onclick="if(event.target===this)closeAboutModal()">
-  <div class="thanks-modal">
-    <div class="thanks-modal-header">
-      <span class="thanks-modal-icon" style="animation:none"><span class="material-symbols-outlined">info</span></span>
-      <h2 class="thanks-modal-title" data-i18n="aboutTitle">Sayt Haqqında</h2>
-      <button class="thanks-modal-close" onclick="closeAboutModal()">✕</button>
-    </div> 
-    <div class="about-body">
-      <p data-i18n-html="aboutIntro">UNEC Students Hub, <strong>UNEC tələbələri</strong> və <strong>Süni intellekt</strong> tərəfindən hazırlanmış müstəqil tələbə platformasıdır. Məqsədimiz tələbələrin akademik və gündəlik universitet həyatını asanlaşdıran resursları, alətləri və xidmətləri vahid platformada bir araya gətirməkdir. Platformada aşağıdakı xidmətlər təqdim olunur:</p>
-      <div class="about-list">
-        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">menu_book</span></span><span data-i18n="aboutItem1">İmtahan materialları və öyrənmə resursları</span></div>
-        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">search</span></span><span data-i18n="aboutItem2">Onlayn testlər və bilik yoxlama sistemi</span></div>
-        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">calculate</span></span><span data-i18n="aboutItem3">GPA kalkulyatoru</span></div>
-        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">bookmark</span></span><span data-i18n="aboutItem4">İxtisas planı</span></div>
-        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">person</span></span><span data-i18n="aboutItem5">Dashboard və nailiyyət sistemi</span></div>
-        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">local_offer</span></span><span data-i18n="aboutItem6">Material istəkləri</span></div> 
-        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">edit</span></span><span data-i18n="aboutItem7">AI köməkçisi</span></div>
-        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">timer</span></span><span data-i18n="aboutItem8">Taymer və məhsuldarlıq alətləri</span></div>
-        <div class="about-item"><span class="about-item-icon"><span class="material-symbols-outlined">family_restroom</span></span><span data-i18n="aboutItem9">Gələcək tələbə xidmətləri və icma funksiyaları</span></div>
-      </div>
-      <p class="about-note"><span class="material-symbols-outlined msi">warning</span> <span data-i18n="aboutNote">Platforma tələbələr tərəfindən idarə olunur və UNEC və ya hər hansı dövlət qurumu ilə rəsmi əlaqəsi yoxdur. Platforma süni intellektin köməyi ilə qurulmuşdur. Platformada yerləşdirilən materialların müəllif hüquqları onların qanuni sahiblərinə məxsusdur. Hüquq pozuntusu olduğunu düşünürsünüzsə, bizimlə əlaqə saxlayın.</span></p>
-      <div class="about-contact">
-        <a href="mailto:unecstudentshub@gmail.com"><span class="material-symbols-outlined msi">mail</span> <span data-i18n="aboutContactBtn">Əlaqə saxla</span></a>
-        <a href="https://ericismyhero.github.io/my-portfolio/" target="_blank"><span class="material-symbols-outlined msi">language</span> Portfolio</a>
-      </div>
+<div id="aboutOverlay" class="thanks-overlay policy-overlay hidden" onclick="if(event.target===this)closeAboutModal()">
+  <div class="thanks-modal policy-modal">
+    <div class="policy-header">
+      <span class="policy-icon"><svg class="ic" aria-hidden="true"><use href="#i-info"/></svg></span>
+      <h2 id="aboutPolicyTitle" data-i18n="aboutTitle">Haqqımızda</h2>
+      <button type="button" class="icon-btn" onclick="closeAboutModal()" aria-label="Bağla" data-i18n-aria="btnClose"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button>
     </div>
+    <div class="policy-body" data-policy="about" role="region" aria-labelledby="aboutPolicyTitle" tabindex="0"></div>
   </div>
 </div>
 
-<!-- Privacy Policy Modalı -->
-<div id="privacyOverlay" class="thanks-overlay hidden" onclick="if(event.target===this)closePrivacyModal()">
-  <div class="thanks-modal privacy-modal">
-    <div class="thanks-modal-header">
-      <span class="thanks-modal-icon" style="animation:none"><span class="material-symbols-outlined">lock</span></span>
-      <h2 class="thanks-modal-title" data-i18n="privacyTitle">Məxfilik Siyasəti</h2>
-      <button class="thanks-modal-close" onclick="closePrivacyModal()">✕</button>
+<div id="privacyOverlay" class="thanks-overlay policy-overlay hidden" onclick="if(event.target===this)closePrivacyModal()">
+  <div class="thanks-modal policy-modal">
+    <div class="policy-header">
+      <span class="policy-icon"><svg class="ic" aria-hidden="true"><use href="#i-lock"/></svg></span>
+      <h2 id="privacyPolicyTitle" data-i18n="privacyTitle">Məxfilik siyasəti</h2>
+      <button type="button" class="icon-btn" onclick="closePrivacyModal()" aria-label="Bağla" data-i18n-aria="btnClose"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button>
     </div>
-    <div class="privacy-body">
-      <div class="privacy-section">
-        <h3>Toplanan məlumatlar</h3>
-    <p>Platformadan istifadə zamanı aşağıdakı məlumatlar toplana və saxlanıla bilər:</p>
-    <ul>
-      <li>Hesab məlumatları, email ünvanı və Google giriş məlumatları</li>
-      <li>İstifadəçi dashboard statistikaları və XP məlumatları</li>
-      <li>Seçilmiş tema, dil seçimi və local storage məlumatları</li>
-      <li>Oxunan material tarixçəsi və platforma fəaliyyəti</li>
-      <li>AI sisteminə göndərilən sorğular</li>
-    </ul>
-    <p style="margin-top:8px;">Bu məlumatlar platformanın düzgün işləməsi və istifadəçi təcrübəsinin yaxşılaşdırılması üçün istifadə olunur.</p>
+    <div class="policy-body" data-policy="privacy" role="region" aria-labelledby="privacyPolicyTitle" tabindex="0"></div>
   </div>
-
-  <div class="privacy-section">
-    <h3>Hesab və giriş məlumatları</h3>
-    <p>Platformada hesab yaratdığınız zaman <strong>Firebase Authentication</strong> vasitəsilə məlumatlar emal olunur. Google ilə giriş zamanı ad, email ünvanı, profil şəkli və hesab identifikatoru əldə edilə bilər.</p>
-  </div>
-
-  <div class="privacy-section">
-    <h3>Xəta bildirişləri</h3>
-    <p>Saytda xəta göndərdiyiniz zaman daxil etdiyiniz mətn və seçdiyiniz fənn adı <strong>Formspree</strong> vasitəsilə bizə ötürülür. Bu məlumatlar yalnız problemi həll etmək üçün istifadə olunur.</p>
-  </div>
-
-  <div class="privacy-section">
-    <h3>Push bildirişlər</h3>
-    <p>Bildirişləri yalnız özünüz "Aç" düyməsinə basıb brauzerin icazəsini verdikdən sonra alırsınız. Bu zaman cihazınız üçün <strong>Firebase Cloud Messaging</strong> tərəfindən yaradılan texniki bildiriş identifikatoru (token), seçdiyiniz dil və — hesaba daxil olmusunuzsa — hesab identifikatorunuz serverimizdə saxlanılır. Bu məlumat yalnız sizə elan göndərmək üçün istifadə olunur. İstənilən vaxt "Söndür" düyməsi ilə və ya brauzerin sayt parametrlərindən bildirişləri ləğv edə bilərsiniz.</p>
-  </div>
-
-  <div class="privacy-section">
-    <h3>Üçüncü tərəf xidmətlər</h3>
-    <p>Saytda aşağıdakı xidmətlər istifadə olunur:</p>
-    <ul>
-      <li><strong>Firebase Authentication, Firestore & Cloud Messaging</strong></li>
-      <li><strong>Google Fonts</strong></li>
-      <li><strong>Google Analytics</strong></li>
-      <li><strong>Formspree</strong></li>
-      <li><strong>Vercel, Cloudflare R2 & Groq və digər AI xidmətləri</strong></li>
-    </ul>
-    <p>Bu xidmətlər öz məxfilik siyasətlərinə uyğun fəaliyyət göstərir.</p>
-  </div>
-
-  <div class="privacy-section">
-    <h3>Google Analytics</h3>
-    <p>Bu platforma istifadəçi davranışını analiz etmək üçün Google Analytics xidmətindən istifadə edir.</p>
-    <ul>
-      <li>Ziyarət edilən səhifələr</li>
-      <li>Kliklənən linklər və materiallar</li>
-      <li>Cihaz və brauzer məlumatları</li>
-      <li>Anonimləşdirilmiş IP məlumatı</li>
-    </ul>
-    <p>Bu məlumatlar platformanın inkişafı üçün istifadə olunur.</p>
-  </div>
-  <div class="privacy-section">
-    <h3>Cookies və local storage</h3>
-    <p>Platforma giriş sessiyası, tema seçimi, dil parametrləri və istifadəçi seçimlərini yadda saxlamaq üçün cookie və local storage texnologiyalarından istifadə edə bilər.</p>
-  </div>
-  <div class="privacy-section">
-    <h3>Süni intellekt istifadəsi</h3>
-    <p>AI funksiyalarından istifadə etdiyiniz zaman sorğular üçüncü tərəf AI xidmətlərinə göndərilə bilər. Cavablar avtomatik yaradılır və tam düzgünlük zəmanəti verilmir.</p>
-  </div>
-  <div class="privacy-section">
-    <h3>Hesab silinməsi</h3>
-    <p>İstifadəçi hesabının silinməsi üçün əlaqə bölməsindən müraciət edilə bilər. Təsdiqdən sonra məlumatlar silinə və ya deaktiv edilə bilər.</p>
-  </div>
-  <div class="privacy-section">
-    <h3>Gələcək dəyişikliklər</h3>
-    <p>Bu siyasət platformanın inkişafına uyğun olaraq yenilənə bilər. Dəyişikliklər bu səhifədə paylaşılır.</p>
-  </div>
-  <div class="privacy-section">
-    <h3>Əlaqə</h3>
-    <p>Hər hansı sual üçün <a href="mailto:unecstudentshub@gmail.com" class="privacy-link">əlaqə bölməsindən</a> istifadə edin.</p>
-  </div>
-  <p class="privacy-updated">Son yenilənmə: 28 İyun 2026</p>
-</div>
-</div>
 </div>
 
-<!-- İstifadə Şərtləri Modalı -->
-<div id="termsOverlay" class="thanks-overlay hidden" onclick="if(event.target===this)closeTermsModal()">
-  <div class="thanks-modal privacy-modal">
-    <div class="thanks-modal-header">
-      <span class="thanks-modal-icon" style="animation:none"><span class="material-symbols-outlined">description</span></span>
-      <h2 class="thanks-modal-title" data-i18n="termsTitle">İstifadə Şərtləri</h2>
-      <button class="thanks-modal-close" onclick="closeTermsModal()">✕</button>
+<div id="termsOverlay" class="thanks-overlay policy-overlay hidden" onclick="if(event.target===this)closeTermsModal()">
+  <div class="thanks-modal policy-modal">
+    <div class="policy-header">
+      <span class="policy-icon"><svg class="ic" aria-hidden="true"><use href="#i-file-text"/></svg></span>
+      <h2 id="termsPolicyTitle" data-i18n="termsTitle">İstifadə şərtləri</h2>
+      <button type="button" class="icon-btn" onclick="closeTermsModal()" aria-label="Bağla" data-i18n-aria="btnClose"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button>
     </div>
-    <div class="privacy-body">
-      <div class="privacy-section">
-        <h3>Saytdan istifadə</h3>
-    <p>Bu platformadan istifadə etməklə aşağıdakı şərtlərlə razılaşırsınız. Əgər bu şərtlərlə razı deyilsinizsə, platformadan istifadə etməyin.</p>
+    <div class="policy-body" data-policy="terms" role="region" aria-labelledby="termsPolicyTitle" tabindex="0"></div>
   </div>
-  <div class="privacy-section">
-    <h3>Platformanın məqsədi</h3>
-    <p>UNEC Students Hub tələbələrin akademik fəaliyyətini dəstəkləmək və faydalı rəqəmsal xidmətlər təqdim etmək məqsədilə hazırlanmış qeyri-rəsmi platformadır.</p>
-  </div>
-  <div class="privacy-section">
-    <h3>Hesab və istifadəçi məlumatları</h3>
-    <p>İstifadəçilər Firebase Authentication vasitəsilə hesab yarada bilər. Hesab təhlükəsizliyinə görə istifadəçi özü məsuliyyət daşıyır. Şübhəli fəaliyyət aşkar edildikdə hesab müvəqqəti məhdudlaşdırıla və ya silinə bilər.</p>
-  </div>
-  <div class="privacy-section">
-    <h3>XP və dashboard sistemi</h3>
-    <p>Platformada göstərilən XP, progress və digər statistik göstəricilər istifadəçi inkişafını izləmək məqsədi daşıyır. Texniki nasazlıqlar səbəbilə statistik məlumatlarda dəyişiklik və ya sıfırlanma baş verə bilər.</p>
-  </div>
-  <div class="privacy-section">
-    <h3>PDF və materiallar</h3>
-    <p>Platformada yerləşdirilən PDF və digər materiallar istifadəçilər tərəfindən paylaşılmış və ya açıq mənbələrdən əldə olunmuş ola bilər. Bütün hüquqlar orijinal müəlliflərə məxsusdur.</p>
-    <p style="margin-top:8px;">Əgər materialın sizə məxsus olduğunu və yerləşdirilməsinin uyğun olmadığını düşünürsünüzsə, <a href="mailto:ericismyhero2467@gmail.com" class="privacy-link">bizə bildirin</a>.</p>
-  </div>
-  <div class="privacy-section">
-    <h3>Süni intellekt xidmətləri</h3>
-    <p>Platformadakı AI funksiyaları avtomatik cavablar yaradır. Bu cavabların tam düzgünlüyünə zəmanət verilmir və akademik qərarlar üçün əlavə yoxlama tövsiyə olunur.</p>
-  </div>
-  <div class="privacy-section">
-    <h3>Qadağan olunan istifadə</h3>
-    <p>Aşağıdakı hallar qadağandır:</p>
-    <ul>
-      <li>Platformanın texniki işinə müdaxilə etmək</li>
-      <li>Saxta hesab yaratmaq</li>
-      <li>Sistemdən sui istifadə etmək</li>
-      <li>Başqa istifadəçilərin məlumatlarına müdaxilə etmək</li>
-      <li>Platformanı zərərli məqsədlərlə istifadə etmək</li>
-    </ul>
-  </div>
-  <div class="privacy-section">
-    <h3>Üçüncü tərəf xidmətlər</h3>
-    <p>Platformada aşağıdakı xidmətlər istifadə olunur:</p>
-    <ul>
-      <li><strong>Firebase Authentication & Firestore</strong></li>
-      <li><strong>Google Analytics</strong></li>
-      <li><strong>Google Fonts</strong></li>
-      <li><strong>Formspree</strong></li>
-      <li><strong>Vercel, Cloudflare R2 & Groq</strong></li>
-    </ul>
-  </div>
-  <div class="privacy-section">
-    <h3>Məsuliyyətin məhdudlaşdırılması</h3>
-    <p>Platformada təqdim olunan məlumatların və xidmətlərin fasiləsiz və tam səhvsiz işləməsinə zəmanət verilmir. İstifadə nəticəsində yaranan hər hansı zərərə görə platforma sahibi məsuliyyət daşımır.</p>
-  </div>
-  <div class="privacy-section">
-    <h3>Xidmət dəyişiklikləri</h3>
-    <p>Platformanın funksiyaları əvvəlcədən xəbərdarlıq edilmədən dəyişdirilə, dayandırıla və ya yenilənə bilər.</p>
-  </div>
-  <div class="privacy-section">
-    <h3>Şərtlərin yenilənməsi</h3>
-    <p>Bu şərtlər istənilən vaxt yenilənə bilər. Yenilənmiş versiya bu səhifədə paylaşılır.</p>
-  </div>
-  <div class="privacy-section">
-    <h3>Əlaqə</h3>
-    <p>Suallar, müəllif hüquqları ilə bağlı müraciətlər və digər məsələlər üçün <a href="mailto:unecstudentshub@gmail.com" class="privacy-link">əlaqə bölməsindən</a> istifadə edin.</p>
-  </div>
-  <p class="privacy-updated">Son yenilənmə: 28 İyun 2026</p>
-
 </div>
-</div>
-</div>
-
 
 <!-- ═══════════════════════════════════════════════════════════ -->
 <!-- AUTH MODAL                                                 -->
@@ -2384,8 +2222,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
 <script src="data/material-identities.js?v=20261114-catalog"></script>
 <script src="pdfs.js?v=20261114-majors"></script>
-<script src="scripts/i18n.js?v=20261115-premium-clean"></script>
-<script src="scripts/i18n-app.js?v=20261120-gpa"></script>
+<script src="scripts/i18n.js?v=20261120-policies"></script>
+<script src="scripts/i18n-app.js?v=20261120-policies"></script>
 <script src="scripts/data-utils.js?v=20261113-subjects"></script>
 <script src="scripts/study-data.js?v=20261111"></script>
 <script src="scripts/ui.js?v=20261114-majors"></script>
@@ -2415,8 +2253,8 @@
 <script src="scripts/app-screens.js?v=20261120-gpa"></script>
 <script src="scripts/push.js?v=20261112-project"></script>
 <script src="scripts/auth-dialog.js?v=20261112"></script>
-<script src="scripts/site-enhancements.js?v=20261112-auth"></script>
-<script src="scripts/policies.js?v=20261115-premium-limits"></script>
+<script src="scripts/site-enhancements.js?v=20261120-policies"></script>
+<script src="scripts/policies.js?v=20261120-policies"></script>
 <script src="scripts/written-practice.js?v=20261115-premium-limits"></script>
 <script src="scripts/test-access.js?v=20261115-premium-limits"></script>
 <script src="scripts/account.js?v=20261111"></script>

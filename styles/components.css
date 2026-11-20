@@ -1055,164 +1055,143 @@
 
 #logo-easter { cursor: pointer; user-select: none; }
 
-/* ─── Privacy / Terms ───────────────────────────────────────── */
-.privacy-modal { max-width: 480px !important; }
-
-.privacy-body {
+/* ─── About, Privacy and Terms ──────────────────────────────── */
+.thanks-modal.policy-modal {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  max-height: 60vh;
-  overflow-y: auto;
-  padding-right: 4px;
-}
-
-.privacy-body::-webkit-scrollbar { width: 4px; }
-.privacy-body::-webkit-scrollbar-track { background: transparent; }
-.privacy-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-
-.privacy-section h3 {
-  font-family: var(--font);
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 6px;
-}
-
-.privacy-section p {
-  font-size: 0.83rem;
-  color: var(--muted);
-  line-height: 1.6;
-}
-
-.privacy-section ul {
-  margin-top: 8px;
-  padding-left: 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.privacy-section ul li {
-  font-size: 0.82rem;
-  color: var(--muted);
-  line-height: 1.5;
-}
-
-.privacy-updated {
-  font-size: 0.73rem;
-  color: var(--muted);
-  opacity: 0.6;
-  text-align: right;
-  padding-top: 4px;
-  border-top: 1px solid var(--border);
-}
-
-.privacy-link {
-  color: var(--accent);
-  text-decoration: none;
-  font-weight: 600;
-  transition: color 0.2s;
-}
-
-.privacy-link:hover { color: var(--accent2); }
-
-/* ─── About Modal ───────────────────────────────────────────── */
-/* Modal ekran hündürlüyünü (overlay padding-i 20px+20px) aşmasın; uzun mətn modalın içində sürüşsün */
-#aboutOverlay .thanks-modal {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
+  max-width: 720px;
   max-height: calc(100vh - 40px);
   max-height: calc(100dvh - 40px);
+  padding: clamp(14px, 3vw, 28px);
+  background: var(--color-background-alt);
 }
-
-#aboutOverlay .thanks-modal-header { flex: 0 0 auto; }
-
-.about-body {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding-top: 4px;
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow-y: auto;
-  padding-right: 4px;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
-}
-
-.about-body > * { flex-shrink: 0; }
-
-.about-body::-webkit-scrollbar { width: 4px; }
-.about-body::-webkit-scrollbar-track { background: transparent; }
-.about-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-
-.about-body p {
-  font-size: 0.88rem;
-  color: var(--muted);
-  line-height: 1.6;
-}
-
-.about-body strong { color: var(--text); }
-
-.about-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.about-item {
-  display: flex;
+.policy-header {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: 12px;
-  padding: 10px 14px;
-  background: var(--surface2);
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.policy-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-md);
+  color: var(--accent2);
+  background: var(--color-primary-soft);
+  font-size: 1.25rem;
+}
+.policy-header h2 {
+  margin: 0;
+  font-size: clamp(1.125rem, 3vw, 1.5rem);
+}
+.policy-body {
+  min-height: 0;
+  padding: 4px 4px 4px 1px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-strong) transparent;
+}
+.policy-updated {
+  margin: 12px 0;
+  color: var(--color-text-muted);
+  font-size: var(--fs-xs);
+}
+.policy-outline {
   border: 1px solid var(--border);
-  border-radius: 10px;
-  font-size: 0.85rem;
-  color: var(--text);
+  border-radius: var(--r-md);
+  background: var(--color-surface-elevated);
 }
-
-.about-item-icon { font-size: 1rem; flex-shrink: 0; }
-
-.about-note {
-  background: rgba(249, 115, 22, 0.08);
-  border: 1px solid rgba(249, 115, 22, 0.2);
-  border-radius: 10px;
-  padding: 10px 14px;
-  font-size: 0.82rem !important;
-  color: #fb923c !important;
-  line-height: 1.5 !important;
+.policy-outline summary {
+  min-height: 44px;
+  align-content: center;
+  margin: 0 4px;
+  padding: 0 10px;
+  font-weight: 700;
+  cursor: pointer;
 }
-
-.about-contact {
+.policy-outline ul {
+  display: grid;
+  gap: 2px 10px;
+  margin: 0;
+  padding: 0 6px 8px;
+  list-style: none;
+}
+.policy-outline button {
+  width: 100%;
+  min-height: 44px;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--color-text-secondary);
+  text-align: start;
+  font: inherit;
+  cursor: pointer;
+}
+.policy-outline button:hover {
+  background: var(--color-surface-inner);
+  color: var(--color-text-primary);
+}
+.policy-section {
+  padding: 16px 2px;
+}
+.policy-section + .policy-section {
+  border-top: 1px solid var(--border);
+}
+.policy-section h3,
+.policy-contact h3 {
+  margin: 0 0 6px;
+  color: var(--color-text-primary);
+  font-size: var(--fs-md);
+  line-height: 1.4;
+  scroll-margin-block-start: 8px;
+}
+.policy-section p,
+.policy-contact p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--fs-base);
+  line-height: 1.65;
+}
+.policy-section p + p {
+  margin-top: 8px;
+}
+.policy-contact {
+  margin-top: 4px;
+  padding: clamp(14px, 2.5vw, 20px);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--r-lg);
+  background: var(--color-surface-elevated);
+}
+.policy-contact-actions {
   display: flex;
-  gap: 10px;
   flex-wrap: wrap;
-}
-
-.about-contact a {
-  flex: 1;
-  min-width: 130px;
-  display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 9px 14px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  color: var(--accent);
-  font-size: 0.82rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.2s;
+  gap: 6px 14px;
+  margin-top: 12px;
 }
-
-.about-contact a:hover {
-  border-color: var(--accent);
-  background: rgba(59, 130, 246, 0.08);
+.policy-contact-actions .btn {
+  min-height: 44px;
+  padding-inline: 12px;
+  font-size: var(--fs-sm);
+}
+.policy-email {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  min-height: 44px;
+  color: var(--accent2);
+  font-size: var(--fs-sm);
+  overflow-wrap: anywhere;
+}
+@media (min-width: 640px) {
+  .policy-outline ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 /* ─── Hamburger ─────────────────────────────────────────────── */

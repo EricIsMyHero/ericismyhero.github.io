@@ -1,59 +1,187 @@
-// Product policies, in both interface languages. Static application copy, no user HTML.
+// Bilingual editorial content for the About, Privacy and Terms dialogs.
 (function () {
+  'use strict';
+
+  const email = 'unecstudentshub@gmail.com';
+  const updated = '2026-11-20';
   const copy = {
     az: {
+      date: '20 noyabr 2026',
+      updated: 'Son yenilənmə',
+      outline: 'Mündəricat',
+      contactTitle: 'Bizimlə əlaqə',
+      contactText: 'Hər hansı şikayətiniz, təklifiniz və ya sualınız varsa, bizimlə əlaqə saxlayın. Müraciətinizdə mövzuya aid səhifə və ya material keçidini göstərə bilərsiniz.',
+      contactButton: 'Əlaqə saxlayın',
+      about: [
+        ['Biz kimik',
+          'UNEC Students Hub Azərbaycan Dövlət İqtisad Universitetinin tələbələri üçün yaradılmış müstəqil tələbə təşəbbüsüdür. Məqsədimiz dərs materiallarını tapmağı, imtahana hazırlaşmağı və universitet həyatını planlaşdırmağı asanlaşdırmaqdır.',
+          'Layihəni tələbələr hazırlayıb və müstəqil şəkildə idarə edir. Universitet adından qərar vermək, arayış təqdim etmək və ya akademik məlumatı təsdiqləmək səlahiyyətimiz yoxdur.'],
+        ['Təhsil resursları və alətlər',
+          'Materiallar bölməsində dərs və imtahan PDF-lərini fənn və kurs üzrə tapa bilərsiniz. Elektron-Test və Elektron-Yazılı sınaqlar məşq etmək üçün nəzərdə tutulub. Material istəkləri bölməsində axtardığınız resursu icmadan soruşa bilərsiniz.',
+          'GPA kalkulyatoru, ixtisas planı və imtahan taymeri hazırlığı planlaşdırmağa kömək edir. AI köməkçisi dərs mövzularını izah etməyə kömək edir. Hesaba daxil olduqda Dashboard-da sınaq nəticələrinizi və şəxsi irəliləyişinizi izləyə bilərsiniz.'],
+        ['Tələbə Kompası və Karyera lövhəsi',
+          'Tələbə Kompası tədris qaydaları, təqaüd, kampuslar və tələbə həyatı haqqında praktik bələdçilər təqdim edir. Məqalələrdəki mənbələr rəsmi məlumatı birbaşa yoxlamağa imkan verir.',
+          'Karyera lövhəsində təcrübə, könüllülük və təlim elanlarını tapa bilərsiniz. Müraciət şərtlərini və son tarixi elanın təşkilatçısı müəyyən edir.'],
+        ['İcmaya töhfə',
+          'Materialdakı səhvi bildirmək, paylaşmağa icazəniz olan resursu təqdim etmək və yeni funksiya təklif etmək layihənin inkişafına kömək edir. Materialların müəllif hüquqları onların qanuni sahiblərinə məxsusdur.'],
+      ],
       privacy: [
-        ['Məlumatların istifadəsi', 'UNEC Students Hub müstəqil tələbə platformasıdır. Hesab adı, e-poçt, profil şəkli və saxladığınız təhsil tarixçəsi hesab xidmətləri üçün Firebase Authentication və Firestore-da işlənir.'],
-        ['Təhsil qeydləri və offline istifadə', 'Hesaba daxil olduqda seçilmiş materiallar, saxlanmış Kompas məqalələri, GPA qeydləri və imtahan tarixləri hesabınıza bağlı şəkildə Firestore-da saxlanılır və cihazlar arasında sinxronlaşdırılır. Offline dəyişikliklər bağlantı bərpa olunana qədər hesabınıza aid yerli yaddaşda qalır. Hesabdan çıxdıqda digər hesabın qeydləri göstərilmir. Qonaq qeydləri ilk daxil olduğunuz hesaba köçürülür. Tema, dil, seçilmiş plan və tamamlanma qeydləri cihazda qala bilər. Offline keş yalnız açıq sayt fayllarını saxlayır; şəxsi API cavabları və PDF-lər avtomatik keşlənmir. Ortaq cihazda saxlanılmış məlumatları təmizləyin.'],
-        ['İstəklər və yazışmalar', 'Material istəkləri, şərhlər və göndərilmiş fayl keçidləri hamıya açıqdır. Şəxsi sənədlər paylaşmayın. Fayllar Cloudflare R2-də saxlanılır. Hesab silinərkən adınız və hesab əlaqəniz açıq yazışmalardan götürülür, öz mesaj məzmununuz və əlavələriniz silinir; digər iştirakçıların yazışması saxlanılır.'],
-        ['Bildirişlər', 'Push bildirişləri könüllüdür. Aktiv etdikdə cihaz tokeni, dil və hesab bağlantısı Firebase Cloud Messaging üçün saxlanılır. İstənilən vaxt bildirişləri söndürə bilərsiniz.'],
-        ['Xidmət təminatçıları', 'Sayt Firebase, Vercel, Cloudflare R2, Groq, Google Fonts, Google Analytics, Google AdSense və Formspree xidmətlərindən istifadə edir. Xəta müraciətləri Formspree-yə, AI sualları və uyğun dərs konteksti Groq-a ötürülür. Ödəniş aktivləşdirilərsə, kart məlumatları ödəniş provayderində işlənir.'],
-        ['Şəxsi PDF-lər və sınaq nəticələri', 'Sınaqlar üçün giriş tələb olunur və nəticələr şəxsi Dashboard-da saxlanılır. Elektron-Test üçün gündəlik limit Sadə planda 5, aktiv Premium planda 10 sınaqdır və serverdə başlanma qeydləri ilə yoxlanılır; yarımçıq saxlanılmış sınaqlar da bu limitə daxildir. Gündə Sadə planda 1, aktiv Premium planda 3 şəxsi PDF yükləmək olar. Orijinal PDF faylı saxlanılmır; ondan çıxarılan suallar və izahlı cavablar serverdə hesabınıza bağlı saxlanılır. Saxlama ən çox altı yer ilə məhdudlaşır və yeni yükləmələr köhnə qeydləri əvəz edir. Mənbələr yalnız cari və əvvəlki gün üçün sınaqda istifadə edilir. Onlar ümumi kataloqa yerləşdirilmir, hesab ixracına daxildir və hesab silinərkən silinir.'],
-        ['Yazılı sınaqlar', 'Elektron-Yazılı sınaq üçün gündəlik limit Sadə planda 3, aktiv Premium planda 5-dir. Yazdığınız cavablar və seçilmiş PDF-dən uyğun izahlar qiymətləndirmə üçün Groq-a göndərilir. Suallar, cavablar, nəticələr və gündəlik limit hesabınıza bağlı şəxsi qeyddə saxlanılır. Cari və əvvəlki günün sınaqları növbəti yazılı sınaq yenilənməsi zamanı saxlanılır, daha köhnə qeydlər çıxarılır. Hesab ixracına bu qeydlər daxildir; hesab silindikdə onlar da silinir. Bu, məşq üçün AI qiymətləndirməsidir və rəsmi bal deyil.'],
-        ['AI və analitika', 'AI cavabları səhv ola bilər. Şəxsi və həssas məlumatları sorğuya daxil etməyin. Google Analytics ziyarət və istifadə hadisələrini, reklam xidməti isə öz siyasətinə uyğun texniki məlumatları işləyə bilər.'],
-        ['Məlumatlarınızı idarə edin', 'Daha çox bölməsindən hesab məlumatlarınızı JSON şəklində endirə və yenidən girişlə hesabınızı silə bilərsiniz. Silmə profil və fərdi təhsil qeydlərini, cihaz tokenlərini və giriş hesabını əhatə edir. Maliyyə əməliyyatı qeydləri hesab bağlantısı götürülərək saxlanıla bilər. Brauzerdən endirdiyiniz surətlər avtomatik silinmir.'],
-        ['Əlaqə', 'Məlumatların istifadəsi və müəllif hüquqları ilə bağlı müraciətlər: unecstudentshub@gmail.com. Siyasət yeniləndikdə bu səhifədə göstərilir.']
+        ['Siyasətin əhatə dairəsi',
+          'Bu siyasət UNEC Students Hub saytında hesab, təhsil alətləri, icma yazışmaları, bildirişlər və ödəniş funksiyalarından istifadə zamanı məlumatların necə işlənildiyini izah edir. Xarici müraciət formaları və digər saytlar öz məxfilik qaydalarını tətbiq edir.'],
+        ['Hesab və profil',
+          'Firebase Authentication giriş və hesabın təsdiqlənməsi üçün istifadə olunur. Giriş üsulundan asılı olaraq hesab identifikatoru, e-poçt, ad və profil şəkli alınır. Əlavə etdiyiniz fakültə, ixtisas və kurs kimi profil məlumatları Firestore-da hesabla əlaqələndirilir.'],
+        ['Təhsil qeydləri və cihaz yaddaşı',
+          'Hesaba daxil olduqda seçilmiş materiallar, saxlanılan Kompas məqalələri, GPA fənləri və tarixçəsi, həmçinin imtahan tarixləri cihazlar arasında sinxronlaşdırılır. İnternet olmadan etdiyiniz dəyişikliklər əlaqə bərpa olunanadək hesabınıza aid cihaz yaddaşında qalır.',
+          'Qonaq kimi saxladığınız uyğun təhsil qeydləri ilk daxil olduğunuz hesaba köçürülə bilər. Hesabdan çıxanda şəxsi qeydlər ekrandan gizlədilir. Dil, tema, ixtisas planı və tamamlanma seçimləri cihazda qala bilər. Oflayn keş açıq sayt fayllarını saxlayır. Uzaq PDF-lər və hesab xidmətləri internet bağlantısı tələb edir.'],
+        ['İctimai yazışmalar və fayllar',
+          'Material istəkləri, fənn yazışmaları və göndərdiyiniz əlavə faylların keçidləri açıq görünə bilər. Yazışmalarda profil adınız göstərilə bilər. Əlavə fayllar Cloudflare R2-də yerləşdirilir. Şəxsi sənədləri, əlaqə məlumatlarını və başqalarına aid məxfi məlumatları açıq yazışmalarda paylaşmayın.'],
+        ['Sınaqlar, şəxsi PDF-lər və süni intellekt',
+          'Sınaq nəticələri və istifadə limitləri hesabla əlaqələndirilir. Şəxsi PDF sınaq hazırlamaq üçün emal olunur. Orijinal PDF serverdə yalnız emal müddətində istifadə olunur. Çıxarılan suallar və istinad cavabları hesabınıza bağlı saxlanılır. Bu mənbələr cari və əvvəlki Bakı təqvim günü ərzində istifadə oluna bilir və yeni yükləmələr köhnə qeydləri əvəz edə bilər.',
+          'AI köməkçisinə yazdığınız sual və uyğun dərs konteksti, eləcə də yazılı sınaqlarda cavablarınız və uyğun mənbə izahları Groq-a ötürülür. Yazılı sınağın sualları, cavabları və nəticəsi hesabla əlaqəli saxlanılır. Növbəti yazılı sınaq yenilənəndə cari və əvvəlki Bakı təqvim gününə aid qeydlər saxlanılır. Sorğularda parol, şəxsiyyət məlumatı və digər həssas məlumat paylaşmayın.'],
+        ['Bildirişlər və müraciətlər',
+          'Brauzerdə push bildirişlərinə icazə versəniz, Firebase Cloud Messaging vasitəsilə cihaz tokeni, dil seçimi və varsa hesab identifikatoru işlənir. Bildirişləri saytın və ya brauzerin parametrlərindən söndürə bilərsiniz.',
+          'Xəta bildirişi göndərdikdə daxil etdiyiniz mətn və uyğun material məlumatları Formspree vasitəsilə ötürülür. E-poçtla müraciətdə yazdığınız məlumatlar müraciətinizi araşdırmaq və sizə cavab vermək üçün istifadə olunur.'],
+        ['Ödənişlər və görünürlük',
+          'Onlayn ödəniş aktiv olduqda kart məlumatlarını ödəniş provayderinin səhifəsində daxil edirsiniz. Sayt sifarişin məbləğini, statusunu və əməliyyatı təsdiqləmək üçün lazım olan qeydləri saxlayır. Dəstəkçilər siyahısında adınızın və ya məbləğin görünməsi seçdiyiniz görünürlük ayarından asılıdır.'],
+        ['Analitika, reklam və digər xidmətlər',
+          'Google Analytics səhifə ziyarətləri və istifadə hadisələri barədə məlumat toplaya bilər. Google AdSense reklam göstərmək və reklam fəaliyyətini ölçmək üçün kukilərdən və digər texniki məlumatlardan istifadə edə bilər. Giriş sessiyası və sayt seçimləri üçün brauzer yaddaşından istifadə olunur.',
+          'Sayt və onun server funksiyaları Vercel, Firebase və Cloudflare xidmətlərindən istifadə edir. Şriftlər Google Fonts-dan yüklənə bilər. Telegram kanalına, xarici müraciət formasına və ya ödəniş səhifəsinə keçdikdə müvafiq xidmətin öz qaydaları tətbiq olunur.'],
+        ['Məlumatlarınıza nəzarət',
+          'Daha çox bölməsində profilinizi və uyğun şəxsi təhsil qeydlərinizi JSON faylı kimi endirə, həmçinin yenidən giriş edib hesabın silinməsini təsdiqləyə bilərsiniz. Hesabın silinməsi giriş hesabını, profili, şəxsi təhsil qeydlərini və hesabla bağlı bildiriş tokenlərini əhatə edir.',
+          'Açıq müzakirələrdən hesab adınız, öz yazışma məzmununuz və ona bağlı əlavələr çıxarılır. Digər iştirakçıların cavabları, anonimləşdirilmiş reytinqlər və hesabdan ayrılmış maliyyə qeydləri qala bilər. Əvvəllər endirdiyiniz faylları cihazınızdan idarə edə bilərsiniz. Ödəniş provayderindəki məlumatlara həmin xidmətin qaydaları tətbiq olunur.'],
       ],
       terms: [
-        ['Platforma', 'UNEC Students Hub universitetlə rəsmi əlaqəsi olmayan tələbə platformasıdır. İxtisas planı və hesablamalar rəsmi akademik qeydi əvəz etmir.'],
-        ['Hesab', 'Öz hesabınızdan istifadə edin, giriş məlumatlarınızı paylaşmayın. Başqalarının məlumatlarına icazəsiz müdaxilə və xidmət məhdudiyyətlərini keçmək qadağandır.'],
-        ['Materiallar və yazışmalar', 'Yalnız paylaşmaq hüququnuz olan faylları göndərin. Şəxsi məlumat, təhqir, spam və zərərli fayllar paylaşmayın. Uyğun olmayan məzmun silinə bilər. Müəllif hüquqları müraciətlərini unecstudentshub@gmail.com ünvanına göndərin.'],
-        ['Alətlər və AI', 'Testlər, GPA, kredit və təqaüd hesablamalarını rəsmi mənbələrlə yoxlayın. AI cavablarının düzgünlüyünə və xidmətin fasiləsiz işləməsinə zəmanət verilmir.'],
-        ['Ödəniş və premium', 'Aktiv planın müddəti və məbləği alışdan əvvəl göstərilir. Kart məlumatları saytımızda saxlanılmır. Ödəniş və premium problemləri üçün dəstəyə müraciət edin.'],
-        ['Hesabın silinməsi', 'Hesabın silinməsi geri qaytarılmır. İstəsəniz əvvəl məlumatlarınızı endirin. Digər iştirakçıların məzmunu, anonim reytinqlər və hesab bağlantısı götürülmüş əməliyyat qeydləri saxlanıla bilər.'],
-        ['Əlaqə və yenilənmə', 'Suallar və şikayətlər: unecstudentshub@gmail.com. Bu şərtlər xidmət dəyişdikcə yenilənə bilər.']
-      ]
+        ['Şərtlərin tətbiqi',
+          'Bu şərtlər UNEC Students Hub saytından, təhsil alətlərindən və hesab xidmətlərindən istifadəyə aiddir. Saytdan istifadə etməklə bu şərtlərə əməl etməyi qəbul edirsiniz. Platforma müstəqil tələbə təşəbbüsüdür və UNEC-i rəsmi şəkildə təmsil etmir.'],
+        ['Hesab və giriş təhlükəsizliyi',
+          'Hesab tələb edən funksiyalardan öz hesabınızla istifadə edin. Giriş məlumatlarınızı, təsdiq kodlarınızı və sessiya məlumatlarınızı qoruyun. Başqasının hesabına və ya şəxsi qeydlərinə icazəsiz giriş cəhdi, platformadakı limitlərin aşılması və xidmətə zərər verən müdaxilə qadağandır.'],
+        ['Materiallar və müəllif hüquqları',
+          'Yalnız yerləşdirməyə və paylaşmağa icazəniz olan faylları göndərin. Mənbə və müəllif barədə məlumatı mümkün olduqda qeyd edin. Materialdan istifadə və onun yenidən yayılması hüquq sahibinin icazə şərtlərinə tabedir.',
+          'Hüquq pozuntusu olduğunu düşünürsünüzsə, materialın keçidini, iddianın əsasını və sizə cavab vermək üçün əlaqə məlumatını göndərin. Müraciət araşdırılarkən materialın görünməsi məhdudlaşdırıla bilər.'],
+        ['İcma qaydaları',
+          'Material istəklərində və yazışmalarda mövzuya aid, hörmətli məzmun paylaşın. Təhqir, ayrı-seçkilik, təhdid, spam, zərərli fayl, aldadıcı keçid və başqasının şəxsi məlumatının icazəsiz paylaşılması qadağandır. Qaydaları pozan məzmun silinə və müvafiq funksiyaya giriş məhdudlaşdırıla bilər.'],
+        ['Təhsil alətləri və AI nəticələri',
+          'GPA, kredit, təqaüd və ixtisas planı barədə göstəricilər istiqamətləndirmə üçündür. Sınaq nəticələri və AI qiymətləndirməsi fərdi hazırlıq üçündür. Akademik qərar verməzdən əvvəl məlumatı UNEC-in aidiyyəti bölməsində və qüvvədə olan sənədlərdə yoxlayın.'],
+        ['Karyera elanları və xarici keçidlər',
+          'Karyera lövhəsi işəgötürənlərin və təşkilatçıların elanlarını tapmağa kömək edir. Son tarixi, tələbləri, proqramın ödənişli olub-olmadığını və qəbul qərarını təşkilatçı müəyyən edir. Müraciət etməzdən əvvəl rəsmi elanı yoxlayın və şəxsi məlumatı yalnız təşkilatçının etibarlı müraciət formasına göndərin.'],
+        ['Premium və dəstək ödənişləri',
+          'Premium planın qiymətinə, müddətinə və imkanlarına ödənişdən əvvəl baxın. Könüllü dəstək və Premium plan ayrı seçimlərdir. Onlayn ödəniş aktiv olduqda kart məlumatlarını provayderin səhifəsində daxil edin. Ödəniş, aktivləşdirmə və ya geri qaytarma ilə bağlı müraciətdə əməliyyat nömrəsini göstərin.'],
+        ['Hesabın silinməsi və xidmət dəyişiklikləri',
+          'Hesabı silmək üçün Daha çox bölməsində yenidən giriş edib əməliyyatı təsdiqləmək tələb olunur. Silinmə geri qaytarılmır. Surət saxlamaq istəyirsinizsə, əvvəl məlumatlarınızı endirin.',
+          'Texniki xidmət, mənbə dəyişiklikləri və üçüncü tərəf xidmətlərinin əlçatanlığı funksiyalara təsir edə bilər. Yenilənmiş şərtlər bu bölmədə göstərilir.'],
+      ],
     },
     en: {
+      date: '20 November 2026',
+      updated: 'Last updated',
+      outline: 'Contents',
+      contactTitle: 'Contact us',
+      contactText: 'Contact us with any complaint, suggestion or question. You can include the link to the relevant page or material in your message.',
+      contactButton: 'Contact us',
+      about: [
+        ['Who we are',
+          'UNEC Students Hub is an independent student initiative created for students at Azerbaijan State University of Economics. We bring together resources that make it easier to find study materials, prepare for exams and plan university life.',
+          'Students built the project as an independent service. It has no authority to make decisions, issue documents or certify academic records on behalf of the university.'],
+        ['Study resources and tools',
+          'Browse course and exam PDFs by subject and year. Use Electronic Test and Electronic Written exams for practice, or ask the community for a missing resource through Material Requests.',
+          'The GPA calculator, curriculum planner and exam timer help you plan your studies. The AI assistant can help explain study topics. Sign in to view practice results and track your progress in the Dashboard.'],
+        ['Student Compass and Career Board',
+          'Student Compass offers practical guides to academic procedures, stipends, campuses and student life. Its source links let you check the official information directly.',
+          'The Career Board lists internships, volunteering and training opportunities. The organisation running each programme sets its requirements and application deadline.'],
+        ['Contributing to the community',
+          'You can improve the project by reporting an error, sharing a resource you have permission to distribute, or proposing a feature. Copyright in study materials belongs to the respective rights holders.'],
+      ],
       privacy: [
-        ['Use of information', 'UNEC Students Hub is an independent student platform. Your account name, email, profile photo and saved study history are processed through Firebase Authentication and Firestore to provide account services.'],
-        ['Study records and offline use', 'When signed in, favorite materials, saved Compass articles, GPA records and exam dates are stored under your account in Firestore and synced across devices. Offline changes remain in an account-specific device cache until connectivity returns. Signing out hides that account’s records from other accounts. Guest records move to the first account you sign into. Theme, language, the selected plan and completion records may remain device-local. The offline cache stores only public site assets; private API responses and PDFs are not automatically cached. Clear saved data on shared devices.'],
-        ['Requests and discussions', 'Material requests, comments and shared attachment links are public. Do not upload personal documents. Files are stored in Cloudflare R2. Account deletion removes your name and account association from public discussions and deletes your own message content and attachments; other participants’ messages remain.'],
-        ['Notifications', 'Push notifications are optional. Enabling them stores a device token, language and account association for Firebase Cloud Messaging. You can turn notifications off at any time.'],
-        ['Service providers', 'The site uses Firebase, Vercel, Cloudflare R2, Groq, Google Fonts, Google Analytics, Google AdSense and Formspree. Bug reports go to Formspree; AI questions and relevant study context go to Groq. If payments are enabled, card details are handled by the payment provider.'],
-        ['Private PDFs and practice results', 'Practice requires sign-in and results are saved in your private Dashboard. The daily Electronic Test allowance is 5 on Free and 10 on active Premium, checked using server-held start reservations, including abandoned exams. Each account can upload 1 private PDF per day on Free or 3 on active Premium. Original PDF bytes are not retained; extracted questions and reference explanations are stored under your account on the server. Storage is bounded to six slots, with new uploads replacing older records. Sources are usable only for the current and previous day. They are not published in the public catalogue, are included in account exports and are removed by account deletion.'],
-        ['Written practice', 'The daily Electronic Written allowance is 3 on Free and 5 on active Premium. Your written answers and relevant explanations from the selected PDF are sent to Groq for grading. Questions, answers, results and daily usage are stored in a private account record. The current and previous day are retained on the next written-practice update, removing older records. These records are included in account exports and removed when your account is deleted. AI grading is for practice and is not an official mark.'],
-        ['AI and analytics', 'AI answers may be incorrect. Do not include sensitive or personal information in prompts. Google Analytics may process visits and usage events; the advertising service may process technical information under its own policy.'],
-        ['Control your data', 'From More, you can download your account data as JSON or delete your account after signing in again. Deletion covers your profile, private study records, device tokens and authentication account. Financial transaction records may be retained with account associations removed. Copies you have downloaded are not automatically deleted.'],
-        ['Contact', 'For data and copyright requests, contact unecstudentshub@gmail.com. Changes to this policy are published on this page.']
+        ['Scope of this policy',
+          'This policy explains how UNEC Students Hub handles information when you use accounts, study tools, public discussions, notifications and payment features. External application forms and other websites apply their own privacy rules.'],
+        ['Account and profile',
+          'Firebase Authentication handles sign-in and account verification. Depending on the sign-in method, the service receives an account ID, email address, name and profile picture. Profile details you add, such as your faculty, major and year, are linked to your account in Firestore.'],
+        ['Study records and device storage',
+          'When you sign in, saved materials, bookmarked Compass articles, GPA subjects and history, and exam dates can sync across devices. Offline changes remain in account-specific device storage until your connection returns.',
+          'Eligible guest study records can move to the first account you sign into. Signing out hides private records from view. Language, theme, selected curriculum and completion choices may remain on the device. The offline cache stores public site files. Remote PDFs and account services require an internet connection.'],
+        ['Public discussions and files',
+          'Material requests, subject discussions and links to submitted attachments can be publicly visible. Your profile name may appear with your contributions. Cloudflare R2 hosts attachments. Keep private documents, contact details and other people’s confidential information out of public discussions.'],
+        ['Practice exams, private PDFs and AI',
+          'Practice results and usage allowances are linked to your account. Personal PDFs are processed to prepare practice questions. The server retains extracted questions and reference answers under your account and discards the original PDF. These sources are usable on the current and previous Baku calendar day, and new uploads can replace older records.',
+          'Groq receives AI assistant questions with relevant study context and written practice answers with relevant source explanations. Written practice questions, answers and results are stored with your account. When written practice next updates, it retains records from the current and previous Baku calendar day. Keep passwords, identity details and other sensitive information out of prompts.'],
+        ['Notifications and correspondence',
+          'If you allow browser notifications, Firebase Cloud Messaging processes a device token, language preference and account ID when available. You can turn notifications off in the site or browser settings.',
+          'When you report an issue, Formspree receives your message and the relevant material details. If you email us, we use the information you share to review and respond to your request.'],
+        ['Payments and visibility',
+          'When online payment is enabled, you enter card details on the payment provider’s page. The site keeps the order amount, status and records needed to confirm the transaction. Your visibility preference determines whether your name or amount appears in the supporters list.'],
+        ['Analytics, advertising and other services',
+          'Google Analytics may collect page visits and usage events. Google AdSense may use cookies and other technical information to display and measure advertising. The site uses browser storage for sign-in sessions and preferences.',
+          'The site and its server functions use Vercel, Firebase and Cloudflare services. Fonts may load from Google Fonts. Telegram, external application forms and payment pages have their own terms and privacy practices.'],
+        ['Managing your information',
+          'From More, you can download your profile and eligible private study records as JSON, or sign in again and confirm account deletion. Deletion covers the sign-in account, profile, private study records and linked notification tokens.',
+          'Your account name, your own message content and its linked attachments are removed from public discussions. Other participants’ replies, anonymised ratings and financial records separated from your account may be retained. You can manage downloaded copies on your device. The payment provider’s policy applies to information held by that service.'],
       ],
       terms: [
-        ['Platform', 'UNEC Students Hub is an independent student platform and is not affiliated with the university. Its curriculum and calculations do not replace official academic records.'],
-        ['Account', 'Use your own account and keep login details private. Unauthorized access to other users’ information and bypassing service limits are prohibited.'],
-        ['Materials and discussions', 'Upload only files you have the right to share. Do not post personal information, abuse, spam or harmful files. Inappropriate content may be removed. Send copyright requests to unecstudentshub@gmail.com.'],
-        ['Tools and AI', 'Check test answers, GPA, credits and scholarship calculations against official sources. AI accuracy and uninterrupted service are not guaranteed.'],
-        ['Payments and premium', 'An active plan’s price and duration are shown before purchase. We do not store card details. Contact support for payment or premium issues.'],
-        ['Account deletion', 'Account deletion cannot be undone. Download your data first if you want a copy. Other participants’ content, anonymous ratings and de-identified transaction records may be retained.'],
-        ['Contact and updates', 'Questions and complaints: unecstudentshub@gmail.com. These terms may be updated as the service changes.']
-      ]
-    }
+        ['Scope of these terms',
+          'These terms apply to using the UNEC Students Hub website, study tools and account services. By using the platform, you agree to follow them. UNEC Students Hub is an independent student initiative with no authority to represent the university.'],
+        ['Account and sign-in security',
+          'Use your own account for features that require one. Keep login details, verification codes and session information secure. Unauthorised access to other accounts or private records, circumventing service limits and disruptive interference with the platform are prohibited.'],
+        ['Materials and copyright',
+          'Submit files only when you have permission to publish and share them. Include the source and author where possible. Use and redistribution are subject to the rights holder’s permissions.',
+          'If you believe a material infringes your rights, send its link, the grounds for your claim and contact details for a reply. The material may be restricted while we review the request.'],
+        ['Community rules',
+          'Keep material requests and discussions relevant and respectful. Abuse, discrimination, threats, spam, harmful files, deceptive links and posting another person’s private information without permission are prohibited. Content may be removed and access to relevant features may be limited for rule violations.'],
+        ['Study tools and AI results',
+          'GPA, credit, stipend and curriculum figures are guidance. Practice scores and AI assessments are for personal study. Check current rules with the relevant UNEC office and official documents before making an academic decision.'],
+        ['Career listings and external links',
+          'The Career Board helps you find listings from employers and organisers. The organiser sets the deadline, eligibility, any payment or fees and the selection decision. Check the official listing and send personal information only through a trusted application form from the organiser.'],
+        ['Premium and support payments',
+          'Review the Premium plan price, duration and features before paying. Voluntary support and Premium plans are separate options. When online payment is enabled, enter card details on the provider’s page. Include the transaction reference when contacting us about a payment, activation or refund.'],
+        ['Account deletion and service changes',
+          'To delete your account, sign in again from More and confirm the action. Deletion is irreversible. Download your data first if you wish to keep a copy.',
+          'Maintenance, changes to source materials and the availability of third-party services may affect features. Updated terms will appear in this section.'],
+      ],
+    },
   };
+
   function render() {
     const data = copy[lang] || copy.az;
-    for (const [id, type] of [['privacyOverlay', 'privacy'], ['termsOverlay', 'terms']]) {
-      const box = document.querySelector('#' + id + ' .privacy-body');
-      if (box) box.innerHTML = data[type].map(([heading, text]) => `<section class="privacy-section"><h3>${UNEC.esc(heading)}</h3><p>${UNEC.esc(text)}</p></section>`).join('') + `<p class="privacy-updated">${lang === 'en' ? 'Updated: 14 November 2026' : 'Yenilənib: 14 noyabr 2026'}</p>`;
+    const { esc, ic } = window.UNEC;
+    for (const box of document.querySelectorAll('[data-policy]')) {
+      const type = box.dataset.policy;
+      const sections = data[type];
+      const sectionId = index => `policy-${type}-${index}`;
+      const contactId = sectionId(sections.length);
+      const topic = box.closest('.policy-modal').querySelector('h2').textContent;
+      const subject = encodeURIComponent(`UNEC Students Hub — ${topic}`);
+      const gmail = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}&su=${subject}`;
+      const outline = type === 'about' ? '' : `<details class="policy-outline">
+        <summary>${esc(data.outline)}</summary>
+        <ul>${[...sections.map(([title]) => title), data.contactTitle].map((title, index) =>
+          `<li><button type="button" data-policy-jump="${sectionId(index)}">${esc(title)}</button></li>`).join('')}</ul>
+      </details>`;
+
+      box.innerHTML = `
+        ${type === 'about' ? '' : `<p class="policy-updated">${esc(data.updated)} · <time datetime="${updated}">${esc(data.date)}</time></p>`}
+        ${outline}
+        ${sections.map(([title, ...paragraphs], index) => `<section class="policy-section">
+          <h3 id="${sectionId(index)}" tabindex="-1">${esc(title)}</h3>
+          ${paragraphs.map(text => `<p>${esc(text)}</p>`).join('')}
+        </section>`).join('')}
+        <section class="policy-contact" aria-labelledby="${contactId}">
+          <h3 id="${contactId}" tabindex="-1">${esc(data.contactTitle)}</h3>
+          <p>${esc(data.contactText)}</p>
+          <div class="policy-contact-actions">
+            <a class="btn btn--primary" href="${esc(gmail)}" target="_blank" rel="noopener noreferrer">${ic('mail')}${esc(data.contactButton)}</a>
+            <a class="policy-email" href="mailto:${email}">${email}</a>
+          </div>
+        </section>`;
     }
   }
-  document.addEventListener('DOMContentLoaded', render); window.addEventListener('unec:langchange', render);
+
+  document.addEventListener('click', event => {
+    const button = event.target.closest('[data-policy-jump]');
+    const heading = button && document.getElementById(button.dataset.policyJump);
+    if (!heading) return;
+    heading.focus({ preventScroll: true });
+    heading.scrollIntoView({ block: 'start' });
+  });
+
+  document.addEventListener('DOMContentLoaded', render);
+  window.addEventListener('unec:langchange', render);
 })();

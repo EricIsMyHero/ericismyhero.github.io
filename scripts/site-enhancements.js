@@ -15,6 +15,8 @@
     el.classList.remove('hidden'); el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true');
     const heading = el.querySelector('h2,.auth-title,.qr-pay-modal-title,.quiz-results-title');
     if (heading) { if (!heading.id) heading.id = id + '-title'; el.setAttribute('aria-labelledby', heading.id); }
+    const policyBody = el.querySelector('[data-policy]');
+    if (policyBody) policyBody.scrollTop = 0;
     const siblings = [...document.body.children].filter(node => node !== el && !node.inert);
     U.openLayer(el, null, opener || document.activeElement, () => { if (id === 'authOverlay') window.UNECAuth?.reset(); el.classList.add('hidden'); siblings.forEach(node => { node.inert = false; }); current = null; });
     siblings.forEach(node => { node.inert = true; }); current = id;

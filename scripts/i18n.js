@@ -102,23 +102,11 @@ const I18N = {
     thanksFooterNote: "Bu sayt tələbələr üçün, tələbələr tərəfindən hazırlanıb",
 
     // ── Haqqımızda modalı ────────────────────────────────────
-    aboutTitle: "Sayt Haqqında",
-    aboutIntro: "UNEC Students Hub, <strong>UNEC tələbələri</strong> tərəfindən hazırlanmış müstəqil tələbə platformasıdır. Məqsədimiz tələbələrin akademik və gündəlik universitet həyatını asanlaşdıran resursları, alətləri və xidmətləri vahid platformada bir araya gətirməkdir. Platformada aşağıdakı xidmətlər təqdim olunur:",
-    aboutItem1: "İmtahan materialları və öyrənmə resursları",
-    aboutItem2: "Onlayn testlər və bilik yoxlama sistemi",
-    aboutItem3: "GPA kalkulyatoru",
-    aboutItem4: "İxtisas planı",
-    aboutItem5: "Dashboard və nailiyyət sistemi",
-    aboutItem6: "Material istəkləri",
-    aboutItem7: "AI köməkçisi",
-    aboutItem8: "Taymer və məhsuldarlıq alətləri",
-    aboutItem9: "Gələcək tələbə xidmətləri və icma funksiyaları",
-    aboutNote: "Platforma tələbələr tərəfindən idarə olunur və UNEC və ya hər hansı dövlət qurumu ilə rəsmi əlaqəsi yoxdur. Platformada yerləşdirilən materialların müəllif hüquqları onların qanuni sahiblərinə məxsusdur. Hüquq pozuntusu olduğunu düşünürsünüzsə, bizimlə əlaqə saxlayın.",
-    aboutContactBtn: "Əlaqə saxla",
+    aboutTitle: "Haqqımızda",
 
-    // ── Privacy / Terms (yalnız başlıq — tam mətn hələ AZ) ───
-    privacyTitle: "Məxfilik Siyasəti",
-    termsTitle: "İstifadə Şərtləri",
+    // ── Privacy / Terms ───
+    privacyTitle: "Məxfilik siyasəti",
+    termsTitle: "İstifadə şərtləri",
 
     // ── Auth modalı ──────────────────────────────────────────
     authSubtitle: "Hesabına daxil ol, irəliləyişini izlə",
@@ -449,21 +437,9 @@ const I18N = {
     thanksFooterNote: "This site is made for students, by students",
 
     // ── About modal ──────────────────────────────────────────
-    aboutTitle: "About the Site",
-    aboutIntro: "UNEC Students Hub is an independent student platform built by <strong>UNEC students</strong>. Our goal is to bring together the resources, tools and services that make students' academic and everyday university life easier, all on one platform. The platform offers the following:",
-    aboutItem1: "Exam materials and study resources",
-    aboutItem2: "Online tests and a knowledge-check system",
-    aboutItem3: "GPA calculator",
-    aboutItem4: "Curriculum plan",
-    aboutItem5: "Dashboard and achievement system",
-    aboutItem6: "Material requests",
-    aboutItem7: "AI assistant",
-    aboutItem8: "Timer and productivity tools",
-    aboutItem9: "Future student services and community features",
-    aboutNote: "The platform is run by students and has no official affiliation with UNEC or any government body. Copyright for materials hosted on the platform belongs to their rightful owners. If you believe a copyright has been violated, please contact us.",
-    aboutContactBtn: "Contact",
+    aboutTitle: "About us",
 
-    // ── Privacy / Terms (title only for now) ─────────────────
+    // ── Privacy / Terms ─────────────────
     privacyTitle: "Privacy Policy",
     termsTitle: "Terms of Use",
 

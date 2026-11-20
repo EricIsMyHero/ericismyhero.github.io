@@ -186,7 +186,7 @@ Object.assign(I18N.az, {
   moreContact: 'Bizimlə əlaqə',
   moreAbout: 'Haqqımızda',
   morePrivacy: 'Məxfilik siyasəti',
-  moreTerms: 'Şərt və qaydalar',
+  moreTerms: 'İstifadə şərtləri',
   moreTelegram: 'Teleqram kanalı',
   moreWhatsApp: 'WhatsApp kanalı',
   moreGeneralGroup: 'Ümumi',
@@ -1193,7 +1193,6 @@ Object.assign(I18N.az, {
   dashFactSolved:'Tamamlanmış sınaq',dashTestUnit:'sınaq',dashRecentResults:'Son sınaq nəticələri',
   dashNoTests:'Hələ heç bir sınaq tamamlanmayıb.',quizResultsTitle:'Son sınaq nəticələri',
   dashXpQuizDone:'Sınaq tamamlandı',streakQuiz:'Sınaq tamamla',streakQuizDesc:'hər gün ən azı 1 sınaq',
-  aboutItem2:'Onlayn sınaqlar və bilik yoxlama sistemi'
 });
 Object.assign(I18N.en, {
   navTests:'Practice',testIntroTitle:'Electronic Test practice',testSelectorLabel:'Subject',
@@ -1205,7 +1204,6 @@ Object.assign(I18N.en, {
   dashFactSolved:'Practice completed',dashTestUnit:'exams',dashRecentResults:'Recent practice results',
   dashNoTests:'No practice exams completed yet.',quizResultsTitle:'Recent practice results',
   dashXpQuizDone:'Practice completed',streakQuiz:'Complete practice',streakQuizDesc:'at least 1 practice exam per day',
-  aboutItem2:'Online practice exams and knowledge checks'
 });
 
 Object.assign(I18N.az,{navCourses:'Kurslar',coursesTitle:'Kurslar',navCoursesHeading:'Kurslar',courseModeSubjects:'Kurslar üzrə'});
