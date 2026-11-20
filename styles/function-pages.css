@@ -69,12 +69,6 @@
 #gpa-calc-view {
   margin-top: 14px;
 }
-#gpa-calc-view .count-stepper {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: transparent;
-}
 .tools--tests .function-hero {
   max-width: 900px;
   margin-inline: auto;

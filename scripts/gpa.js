@@ -104,12 +104,10 @@ function gpaLoad() {
 }
 
 // ── Subject CRUD ──────────────────────────────────────────────
-// stepper (+) fokus vermir ki, mobil klaviatura açılmasın; "Yeni fənn əlavə et" düyməsi isə fokuslayır
-function addSubject(keepFocus) {
+function addSubject() {
   gpaSubjects.push({ id: Date.now(), name: '', credit: 3, score: 0 });
   gpaSave();
   gpaRender();
-  if (keepFocus === true) return;
   setTimeout(() => {
     const inputs = document.querySelectorAll('#gpa-subject-list .gpa-subject-name');
     if (inputs.length) inputs[inputs.length-1].focus();
@@ -216,6 +214,8 @@ function gpaRenderSummary(recordSnapshot = true) {
 
 
   // count badge
+  const countOut = document.getElementById('gpa-count-out');
+  if (countOut) countOut.textContent = String(gpaSubjects.length);
   const countEl = document.getElementById('gpa-count-badge');
   if (countEl) countEl.textContent = t('gpaSubjectCountValue').replace('{n}', gpaSubjects.length);
 }
@@ -365,7 +365,6 @@ function gpaRender(recordSnapshot = true) {
   gpaRenderSmartMessage();
   gpaRenderMemoryCard();
   if (gpaMode === 'predictor') gpaRenderPredictorList();
-  if (window.UNEC && UNEC.syncGpaStepper) UNEC.syncGpaStepper();
 }
 
 

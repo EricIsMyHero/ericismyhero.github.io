@@ -43,8 +43,6 @@ Object.assign(I18N.az, {
   gpaRemoveSubject: 'Fənni sil',
   gpaRemoveShort: 'Sil',
   mdPageTitle: 'Material',
-  gpaDecAria: 'Fənni azalt',
-  gpaIncAria: 'Fənn əlavə et',
   appSkip: 'Əsas məzmuna keç',
   appBack: 'Geri',
   appBackToFunctions: 'Funksiyalara qayıt',
@@ -175,7 +173,6 @@ Object.assign(I18N.az, {
   gpaResultLabel: 'Orta göstərici (GPA)',
   gpaRecalc: 'Yenidən hesabla',
   gpaUpdated: 'GPA yeniləndi',
-  gpaMinSubjects: 'Ən azı bir fənn qalmalıdır',
   gpaCreditShort: 'Kredit',
   gpaScoreShort: 'Bal',
 
@@ -267,8 +264,6 @@ Object.assign(I18N.en, {
   gpaRemoveSubject: 'Remove subject',
   gpaRemoveShort: 'Remove',
   mdPageTitle: 'Material',
-  gpaDecAria: 'Remove a subject',
-  gpaIncAria: 'Add a subject',
   appSkip: 'Skip to main content',
   appBack: 'Back',
   appBackToFunctions: 'Back to features',
@@ -399,7 +394,6 @@ Object.assign(I18N.en, {
   gpaResultLabel: 'Average score (GPA)',
   gpaRecalc: 'Recalculate',
   gpaUpdated: 'GPA updated',
-  gpaMinSubjects: 'At least one subject must remain',
   gpaCreditShort: 'Credits',
   gpaScoreShort: 'Score',
 

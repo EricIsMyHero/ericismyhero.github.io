@@ -425,21 +425,19 @@
    GPA KALKULYATOR
    ═════════════════════════════════════════════════════════════ */
 #main-gpa .gpa-hero, #main-gpa .gpa-footer { display: none; }
-.count-stepper {
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  min-height: 60px; padding: 8px 8px 8px 18px; margin-top: 14px;
-  border: 1px solid var(--border); border-radius: var(--r-lg);
-  background: var(--color-surface-elevated);
+.gpa-subject-count {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: var(--fs-md);
+  font-weight: 600;
 }
-.count-stepper > span { font-size: var(--fs-md); font-weight: 600; }
-.stepper { display: inline-flex; align-items: center; gap: 4px; }
-.stepper button {
-  display: grid; place-items: center; width: 44px; height: 44px;
-  border: 1px solid var(--border); border-radius: 12px;
-  background: var(--color-surface); color: var(--color-text-primary); font-size: 1.2rem; cursor: pointer;
+.gpa-subject-count output {
+  font-size: 1.25rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
 }
-.stepper button:disabled { opacity: 0.4; cursor: not-allowed; }
-.stepper output { min-width: 44px; text-align: center; font-size: 1.25rem; font-weight: 800; font-variant-numeric: tabular-nums; }
 
 #main-gpa .gpa-mode-toggle { margin: 14px 0 0; }
 .gpa-mode-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; border: 1px solid var(--border); border-radius: var(--r-md); background: var(--color-surface-elevated); }

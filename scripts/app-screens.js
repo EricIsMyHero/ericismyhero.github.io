@@ -213,22 +213,10 @@
   }
 
   // ═════════════════════════════════════════════════════════════
-  // GPA — fənn sayı addımlayıcısı və "Yenidən hesabla"
+  // GPA — Yenidən hesabla
   // ═════════════════════════════════════════════════════════════
-  U.syncGpaStepper = function () {
-    const out = $('#gpa-count-out'), dec = $('#gpa-dec');
-    if (typeof gpaSubjects === 'undefined') return;
-    if (out) out.textContent = String(gpaSubjects.length);
-    if (dec) dec.disabled = gpaSubjects.length <= 1;
-  };
-
   function bindGpa() {
-    const inc = $('#gpa-inc'), dec = $('#gpa-dec'), recalc = $('#gpa-recalc');
-    if (inc) inc.addEventListener('click', () => { addSubject(true); });
-    if (dec) dec.addEventListener('click', () => {
-      if (gpaSubjects.length <= 1) { U.toast(t('gpaMinSubjects'), 'error'); return; }
-      removeSubject(gpaSubjects[gpaSubjects.length - 1].id);
-    });
+    const recalc = $('#gpa-recalc');
     if (recalc) recalc.addEventListener('click', () => { gpaRender(); U.toast(t('gpaUpdated')); });
   }
 
