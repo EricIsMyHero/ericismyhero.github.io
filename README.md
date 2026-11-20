@@ -4,7 +4,7 @@ An open-source student platform built for the UNEC community.
 
 UNEC Students Hub is a modern web platform designed to centralize academic resources, productivity tools, and student services in one place. The project aims to enhance the daily university experience by providing fast, accessible, and community-driven solutions.
 
-**Live site:** [unecstudentshub.com](https://unecstudentshub.com) · **Latest release:** [v1.1.25](https://github.com/EricIsMyHero/ericismyhero.github.io/releases/latest)
+**Live site:** [unecstudentshub.com](https://unecstudentshub.com) · **Latest release:** [v1.1.26](https://github.com/EricIsMyHero/ericismyhero.github.io/releases/latest)
 
 This platform is independently developed and is not affiliated with UNEC or any official institution.
 
@@ -25,14 +25,14 @@ ericismyhero.github.io/
 ├── ads.txt                     ← Advertising configuration
 ├── LICENCE
 ├── README.md
-├── releases/                   ← English release notes
+├── releases/                   ← Release notes (EN / AZ)
 │
 ├── scripts/                    ← Application logic
 │   ├── i18n.js                 ← Centralized translation system (AZ / EN)
 │   ├── i18n-app.js             ← Strings of the redesigned interface (AZ / EN)
 │   ├── app-core.js             ← App shell: hash router, navigation, menu drawer, bottom sheets, toasts
 │   ├── app-materials.js        ← Unified subject catalogue, filters, material cards and detail
-│   ├── app-screens.js          ← Home, "More" screen, news sheet, GPA stepper
+│   ├── app-screens.js          ← Home, "More" screen, news sheet, GPA actions
 │   ├── data-utils.js
 │   ├── ui.js
 │   ├── features.js
