@@ -1,0 +1,243 @@
+.student-offers {
+  --offer-accent: color-mix(in srgb, var(--accent2) 72%, var(--color-text-primary));
+}
+.student-offers .function-hero-icon {
+  background: color-mix(in srgb, var(--accent) 18%, var(--color-surface));
+}
+.offer-controls {
+  display: grid;
+  gap: 12px;
+}
+.offer-tabs,
+.offer-options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 8px;
+}
+.offer-tabs .chip,
+.offer-saved-filter {
+  min-height: 44px;
+  padding-inline: 12px;
+  white-space: normal;
+  line-height: 1.25;
+}
+.offer-options > label {
+  display: grid;
+  flex: 1 1 140px;
+  gap: 4px;
+  min-width: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--fs-sm);
+}
+.offer-options select,
+.offer-calculator input {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font: inherit;
+  font-size: var(--fs-base);
+}
+.offer-disclaimer {
+  margin: 16px 0 8px;
+  color: var(--color-text-secondary);
+  font-size: var(--fs-sm);
+}
+.offer-count,
+.offer-meta {
+  color: var(--color-text-secondary);
+  font-size: var(--fs-xs);
+}
+.offer-listbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0 12px;
+}
+.offer-count {
+  margin: 0;
+}
+.offer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 164px), 1fr));
+  gap: 10px;
+}
+.offer-card {
+  --offer-tone: var(--accent2);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-top-color: color-mix(in srgb, var(--offer-tone) 45%, var(--border));
+  border-radius: var(--r-lg);
+  background: var(--color-surface-elevated);
+}
+.offer-card[data-category="education"] { --offer-tone: var(--fc-plan); }
+.offer-card[data-category="food"] { --offer-tone: var(--fc-timer); }
+.offer-card[data-category="software"],
+.offer-card[data-category="cloud"] { --offer-tone: var(--fc-dash); }
+.offer-card[data-category="fashion"],
+.offer-card[data-category="beauty"] { --offer-tone: var(--fc-support); }
+.offer-card[data-category="internet"],
+.offer-card[data-category="health"] { --offer-tone: var(--fc-gpa); }
+
+.offer-card-top,
+.offer-detail-heading {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.offer-card-top {
+  margin-bottom: 12px;
+}
+.offer-mark {
+  display: grid;
+  flex: 0 0 34px;
+  place-items: center;
+  height: 34px;
+  border-radius: var(--r-sm);
+  color: color-mix(in srgb, var(--offer-tone) 55%, var(--color-text-primary));
+  background: color-mix(in srgb, var(--offer-tone) 18%, var(--color-surface));
+  font-size: var(--fs-xs);
+  font-weight: 800;
+}
+.offer-amount {
+  padding: 4px 8px;
+  border-radius: var(--r-pill);
+  background: var(--color-primary-soft);
+  color: var(--offer-accent);
+  font-size: var(--fs-sm);
+  font-weight: 800;
+  line-height: 1.2;
+}
+.offer-save {
+  flex: 0 0 44px;
+  margin-inline-start: auto;
+  color: var(--color-text-muted);
+}
+.offer-save[aria-pressed="true"] {
+  color: color-mix(in srgb, var(--fc-support) 68%, var(--color-text-primary));
+}
+.offer-save[aria-pressed="true"] .ic {
+  fill: currentColor;
+}
+.offer-card h2,
+.offer-description h2,
+.offer-calculator h2,
+.offer-guide h2 {
+  margin: 6px 0;
+  font-size: var(--fs-md);
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+.offer-card p,
+.offer-description p,
+.offer-calculator p,
+.offer-guide p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+}
+.offer-details-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  min-height: 44px;
+  margin-top: auto;
+  padding-top: 6px;
+  color: var(--offer-accent);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  text-decoration: none;
+}
+.offer-details-link:hover,
+.offer-details-link:focus-visible {
+  text-decoration: underline;
+}
+.offer-empty {
+  grid-column: 1 / -1;
+  padding: 22px;
+  border: 1px dashed var(--border);
+  border-radius: var(--r-lg);
+  color: var(--color-text-secondary);
+}
+.offer-empty .btn {
+  margin-top: 12px;
+}
+.offer-detail-grid {
+  display: grid;
+  gap: 12px;
+  align-items: start;
+}
+.offer-description h2,
+.offer-description .offer-meta {
+  margin-top: 14px;
+}
+.offer-description .offer-verification {
+  margin-top: 12px;
+  padding: 10px;
+  border-inline-start: 3px solid var(--color-warning);
+  background: color-mix(in srgb, var(--color-warning) 10%, transparent);
+}
+.offer-description .offer-meta a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 44px;
+  color: var(--offer-accent);
+  text-underline-offset: 3px;
+}
+.offer-calculator label {
+  display: block;
+  margin: 12px 0 6px;
+}
+.offer-calculator output {
+  display: block;
+  margin-top: 10px;
+  font-weight: 700;
+}
+.offer-calculator output:empty {
+  margin-top: 0;
+}
+.offer-guide {
+  display: grid;
+  gap: 8px;
+  margin-top: 24px;
+}
+.offer-guide details {
+  padding-block: 0;
+}
+.offer-guide summary {
+  min-height: 44px;
+  align-content: center;
+  font-weight: 700;
+  cursor: pointer;
+}
+.offer-guide details p {
+  padding: 0 0 12px;
+}
+@media (min-width: 700px) {
+  .offer-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+  }
+  .offer-card {
+    padding: 16px;
+  }
+  .offer-detail-grid:has(.offer-calculator) {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  }
+}
+
+body[data-route="student-plus"] #ai-button {
+  visibility: hidden;
+  pointer-events: none;
+}

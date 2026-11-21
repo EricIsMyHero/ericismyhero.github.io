@@ -5,6 +5,8 @@
 Object.assign(I18N.az, {
   navCompass: 'Tələbə Kompası',
   navCareer: 'Karyera lövhəsi',
+  navStudentPlus: 'Tələbə+ üstünlükləri',
+  studentPlusIntro: 'Tələbə+ kartı endirimləri və tələbələr üçün onlayn imkanlar.',
   careerIntro: 'UNEC tələbələri üçün təcrübə, könüllülük və təlim elanları.',
   careerChannel: 'Telegram kanalına qoşul',
   careerType: 'Proqram növü',
@@ -226,6 +228,8 @@ Object.assign(I18N.az, {
 Object.assign(I18N.en, {
   navCompass: 'Student Compass',
   navCareer: 'Career board',
+  navStudentPlus: 'Student+ benefits',
+  studentPlusIntro: 'Tələbə+ card discounts and online student benefits.',
   careerIntro: 'Internships, volunteering and training for UNEC students.',
   careerChannel: 'Join the Telegram channel',
   careerType: 'Programme type',

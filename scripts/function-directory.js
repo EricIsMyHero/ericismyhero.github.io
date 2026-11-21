@@ -23,6 +23,7 @@
     { key: 'functionsResourcesGroup', items: [
       ['compass', ['tools', 'career']],
       ['career', ['career']],
+      ['student-plus', ['academic', 'tools']],
       ['timer', ['tools', 'planning']],
       ['dashboard', ['tools', 'planning']],
     ] },
