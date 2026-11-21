@@ -47,6 +47,7 @@
     reset: ['Filtrləri sıfırla', 'Reset filters'],
     guide: ['Endirimdən necə istifadə etməli?', 'How to use the offers'],
     source: ['Mənbə', 'Source'],
+    programmeLinks: ['Tətbiq və kart məlumatı', 'App and card information'],
     localSource: ['Təqdim edilmiş ekran görüntüsü', 'Supplied screenshot'],
     localNotice: ['Şəkildə göstərilən təklifdir. Aktivlik, son tarix və iştirak edən məntəqələr ayrıca təsdiqlənməlidir.', 'This offer appears in the screenshot. Confirm availability, expiry and participating locations separately.'],
     onlineNotice: ['Tələbə statusunu provayder ayrıca yoxlayır. Uyğunluq, plan və qiymət şərtlərinə rəsmi səhifədə baxın.', 'The provider verifies student status separately. Check eligibility, plan details and prices on its official site.'],
@@ -77,6 +78,10 @@
   const categoryName = key => categoryLabels[key][languageIndex()];
   const copy = offer => languageIndex() ? offer.en : offer.az;
   const path = '/student-plus';
+  const programmeSources = [
+    ['https://share.google/3jGtbK3eTlQPIb0ER', ['TalabaPlus tətbiqi', 'TalabaPlus app']],
+    ['https://share.google/wE5AD5lT9IwwDdBGl', ['Birbank-da kart məlumatı', 'Birbank card information']],
+  ];
 
   function shortcut(href, text) {
     return `<a class="icon-btn icon-btn--filled function-back" href="#${href}" aria-label="${esc(text)}">${ic('arrow-left')}</a>`;
@@ -138,9 +143,16 @@
       `<div class="offer-empty"><p>${esc(label('empty'))}</p><button type="button" class="btn btn--secondary" data-offer-reset>${esc(label('reset'))}</button></div>`;
   }
 
-  function guide() {
+  function programmeLinks() {
+    return `<nav class="offer-programme-links" aria-label="${esc(label('programmeLinks'))}">
+      ${programmeSources.map(([url, names]) => `<a class="btn btn--secondary" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(names[languageIndex()])}${ic('external-link')}</a>`).join('')}
+    </nav>`;
+  }
+
+  function guide(showProgrammeLinks = false) {
     return `<section class="offer-guide" aria-labelledby="offerGuideTitle">
       <h2 id="offerGuideTitle">${esc(label('guide'))}</h2>
+      ${showProgrammeLinks ? programmeLinks() : ''}
       ${[['card', 'localSteps'], ['online', 'onlineSteps'], ['partnerConditions', 'partnerText'], ['cardSafety', 'safetyText']]
         .map(([title, body]) => `<details class="function-panel"><summary>${esc(label(title))}</summary><p>${esc(label(body))}</p></details>`).join('')}
     </section>`;
@@ -175,7 +187,7 @@
         <button class="chip offer-saved-filter" type="button" data-offer-saved aria-pressed="${state.saved}">${ic('heart')}${esc(label('saved'))}</button>
       </div>
       <div id="offerResults" class="offer-grid"></div>
-      ${guide()}`;
+      ${guide(true)}`;
     $('#offerSearch', root).addEventListener('input', event => {
       state.query = event.target.value;
       renderResults();
@@ -223,6 +235,7 @@
           <p class="offer-meta">${esc(label('source'))} ·
             ${local ? esc(label('localSource')) : `<a href="${esc(offer.url)}" target="_blank" rel="noopener noreferrer">${esc(label('official'))}${ic('external-link')}</a>`}
           </p>
+          ${local ? programmeLinks() : ''}
         </section>
         ${offer.percent == null ? '' : `<section class="function-panel offer-calculator">
           <h2>${esc(label('calc'))}</h2><p>${esc(label('estimate'))}</p>

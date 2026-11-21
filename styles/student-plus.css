@@ -241,3 +241,19 @@ body[data-route="student-plus"] #ai-button {
   visibility: hidden;
   pointer-events: none;
 }
+
+.offer-programme-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.offer-description .offer-programme-links {
+  margin-top: 12px;
+}
+.offer-programme-links .btn {
+  min-height: 44px;
+  padding-inline: 10px;
+  font-size: var(--fs-sm);
+  white-space: normal;
+  line-height: 1.3;
+}
