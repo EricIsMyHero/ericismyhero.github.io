@@ -6,6 +6,7 @@
 }
 .offer-controls {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 12px;
 }
 .offer-tabs,
@@ -29,6 +30,15 @@
   min-width: 0;
   color: var(--color-text-secondary);
   font-size: var(--fs-sm);
+}
+.offer-options > label[hidden],
+.offer-more[hidden] {
+  display: none;
+}
+.offer-more {
+  display: flex;
+  width: fit-content;
+  margin: 16px auto 0;
 }
 .offer-options select,
 .offer-calculator input {
@@ -61,6 +71,10 @@
 }
 .offer-count {
   margin: 0;
+}
+.offer-method {
+  margin-top: 6px;
+  color: var(--offer-accent);
 }
 .offer-grid {
   display: grid;
@@ -256,4 +270,14 @@ body[data-route="student-plus"] #ai-button {
   font-size: var(--fs-sm);
   white-space: normal;
   line-height: 1.3;
+}
+
+@media (max-width: 365px) {
+  .offer-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .offer-tabs .chip {
+    justify-content: center;
+  }
 }
