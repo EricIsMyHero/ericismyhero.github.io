@@ -39,6 +39,8 @@
     show: ['Şərtlərə bax', 'View details'],
     back: ['Təkliflərə qayıt', 'Back to offers'],
     verify: ['Cari şərtləri yoxlayın', 'Check current terms'],
+    verified: ['Rəsmi mənbə yoxlanıb', 'Official source checked'],
+    verificationSource: ['Yoxlanmış mənbəyə bax', 'View checked source'],
     example: ['Şəkildəki təklif', 'Screenshot example'],
     special: ['Xüsusi təklif', 'Special offer'],
     count: ['{n} təklif', '{n} offers'],
@@ -109,13 +111,14 @@
 
   function card(offer) {
     const [summary] = copy(offer);
+    const sourceStatus = offer.kind === 'card' ? 'example' : (offer.verification ? 'verified' : 'verify');
     return `<article class="offer-card" data-category="${offer.category}">
       <div class="offer-card-top">
         <span class="offer-mark" aria-hidden="true">${esc(offer.initials)}</span>
         <span class="offer-amount">${esc(benefit(offer))}</span>
         ${saveButton(offer)}
       </div>
-      <div class="offer-meta">${esc(categoryName(offer.category))} · ${esc(label(offer.kind === 'card' ? 'example' : 'verify'))}</div>
+      <div class="offer-meta">${esc(categoryName(offer.category))} · ${esc(label(sourceStatus))}</div>
       <h2>${esc(offer.name)}</h2>
       <p>${esc(summary)}</p>
       <a class="offer-details-link" href="#${path}/${offer.id}">${esc(label('show'))}${ic('chevron-right')}</a>
@@ -216,6 +219,17 @@
     out.textContent = `${label('savings')} ${money.format(savedCents / 100)} · ${label('final')} ${money.format((amount - savedCents) / 100)}`;
   }
 
+  function verificationDetails(verification) {
+    if (!verification) return '';
+    const { checkedAt, url } = verification;
+    const date = new Intl.DateTimeFormat(languageIndex() ? 'en-GB' : 'az-AZ', {
+      dateStyle: 'long', timeZone: 'UTC',
+    }).format(new Date(checkedAt));
+    return `<p class="offer-meta">${esc(label('verified'))} · <time datetime="${esc(checkedAt)}">${esc(date)}</time><br>
+      <a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label('verificationSource'))}${ic('external-link')}</a>
+    </p>`;
+  }
+
   function detail(offer) {
     if (!offer) {
       root.innerHTML = hero(label('notFound'), '', path, label('back'));
@@ -235,6 +249,7 @@
           <p class="offer-meta">${esc(label('source'))} ·
             ${local ? esc(label('localSource')) : `<a href="${esc(offer.url)}" target="_blank" rel="noopener noreferrer">${esc(label('official'))}${ic('external-link')}</a>`}
           </p>
+          ${verificationDetails(offer.verification)}
           ${local ? programmeLinks() : ''}
         </section>
         ${offer.percent == null ? '' : `<section class="function-panel offer-calculator">

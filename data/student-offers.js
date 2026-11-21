@@ -3,8 +3,8 @@
 (function () {
   const local = (id, name, initials, category, percent, az, en) =>
     ({ id, name, initials, category, percent, kind: 'card', az, en });
-  const online = (id, name, initials, category, url, az, en) =>
-    ({ id, name, initials, category, url, kind: 'online', az, en });
+  const online = (id, name, initials, category, url, az, en, verification) =>
+    ({ id, name, initials, category, url, kind: 'online', az, en, verification });
 
   window.UNEC_STUDENT_OFFERS = [
     local('az-tercume', 'AZ-Tərcümə Mərkəzi', 'AZ', 'services', 15,
@@ -36,11 +36,19 @@
       ['The screenshot shows a special promotion without a percentage.', 'Check eligible restaurants, menu items and hours in the app or at checkout. Delivery orders may have separate terms.']),
 
     online('github', 'GitHub Student Developer Pack', 'GH', 'software', 'https://github.com/education/students',
-      ['GitHub Education vasitəsilə GitHub Pro və tərəfdaş alətlərinə çıxış.', 'GitHub hesabınızla tələbə təsdiqi üçün müraciət edin. Təsdiqdən sonra hər tərəfdaş təklifini ayrıca açın və istifadə müddətini yoxlayın. Copilot Student və digər imkanların tələbləri rəsmi səhifədə göstərilir.'],
-      ['Access GitHub Pro and partner tools through GitHub Education.', 'Apply for student verification with your GitHub account. Once approved, claim partner offers separately and check their durations. See the official page for Copilot Student and other requirements.']),
+      ['Təsdiqlənmiş tələbələr üçün pulsuz GitHub Pro, Copilot Student və Student Developer Pack.', 'Müraciət üçün şəxsi GitHub hesabı, ən azı 13 yaş və diplom verən proqramda cari qeydiyyat tələb olunur. GitHub uyğun təhsil e-poçtu və ya tarixli tələbə sənədi istəyə bilər. Təsdiqdən sonra tərəfdaş təkliflərini ayrıca aktivləşdirin və onların müddətini yoxlayın.'],
+      ['Free GitHub Pro, Copilot Student and the Student Developer Pack for verified students.', 'Apply with a personal GitHub account. You must be at least 13 and enrolled in a degree- or diploma-granting programme. GitHub may request an academic email or dated proof of enrolment. After verification, claim partner offers individually and check their durations.'],
+      {
+        checkedAt: '2026-11-21',
+        url: 'https://github.com/github/docs/blob/main/content/education/about-github-education/github-education-for-students/apply-to-github-education-as-a-student.md',
+      }),
     online('jetbrains', 'JetBrains', 'JB', 'software', 'https://www.jetbrains.com/community/education/',
-      ['Tələbə lisenziyası ilə IntelliJ IDEA, PyCharm və digər IDE-lərdən öyrənmə məqsədilə istifadə.', 'JetBrains hesabında təhsil üçün müraciət edin. Təsdiq üsullarını və lisenziya müddətini yoxlayın. Kommersiya işi üçün ayrıca lisenziya şərtləri tətbiq olunur.'],
-      ['Student licensing for IntelliJ IDEA, PyCharm and other IDEs used for learning.', 'Apply with a JetBrains account. Review accepted verification methods and licence duration. Commercial use has separate licence terms.']),
+      ['Uyğun tələbələr üçün pulsuz təhsil lisenziyası. JetBrains-in domen siyahısına unec.edu.az daxildir.', 'JetBrains hesabınızda universitet e-poçtu ilə təhsil lisenziyasına müraciət edin. Lisenziyanın müddətini və yenilənmə qaydasını provayderdə yoxlayın. Kommersiya istifadəsi üçün ayrıca lisenziya şərtləri tətbiq olunur.'],
+      ['Free education licensing for eligible students. JetBrains lists unec.edu.az as an academic domain.', 'Apply through your JetBrains account using your institutional email. Check the licence duration and renewal process with the provider. Commercial use has separate licence terms.'],
+      {
+        checkedAt: '2026-11-21',
+        url: 'https://github.com/JetBrains/swot/blob/master/lib/domains/az/edu/unec.txt',
+      }),
     online('figma', 'Figma for Education', 'FG', 'software', 'https://www.figma.com/education/',
       ['Figma və FigJam üçün təhsil imkanları.', 'Təhsil statusunuzu təsdiqləyin və uyğun komandanı təhsil planına bağlayın. Mövcud ödənişli komandanı dəyişməzdən əvvəl hesab və komanda şərtlərinə baxın.'],
       ['Education access for Figma and FigJam.', 'Verify your education status and link an eligible team. Check account and team rules before changing an existing paid workspace.']),
@@ -51,8 +59,12 @@
       ['Uyğun təhsil hesabları üçün Word, Excel, PowerPoint və əlaqəli Microsoft xidmətləri.', 'Universitet hesabınızla uyğunluğu yoxlayın. Brauzer və masaüstü proqramlarının əlçatanlığı qurumun lisenziyasından asılıdır. Təhsil hesabı bağlanmazdan əvvəl lazım olan şəxsi faylları ixrac edin.'],
       ['Word, Excel, PowerPoint and related Microsoft services for eligible education accounts.', 'Check eligibility with your institutional account. Browser and desktop apps depend on your institution’s licence. Export any personal files you need before losing institutional access.']),
     online('azure', 'Azure for Students', 'AZ', 'cloud', 'https://azure.microsoft.com/en-us/free/students/',
-      ['Təsdiqlənmiş tələbələr üçün bulud xidmətləri və təhsil krediti.', 'Qeydiyyatda cari kredit məbləğini, region və yaş tələblərini yoxlayın. Resurs yaratmazdan əvvəl xərc bildirişini qurun və ödənişli tarifə keçid şərtlərini oxuyun.'],
-      ['Cloud services and education credit for verified students.', 'Check the current credit, region and age requirements at sign-up. Set a cost alert before creating resources and review the conditions for upgrading to a paid plan.']),
+      ['Uyğun tələbələr üçün 12 ay ərzində 100 ABŞ dolları Azure krediti. Qeydiyyat üçün bank kartı tələb olunmur.', 'Microsoft cari tələbə statusunu universitet e-poçtu ilə yoxlayır. Yaş və region tələblərinə qeydiyyat səhifəsində baxın. Kredit bitdikdə resurslar dayandırıla bilər. Ödənişli tarifə keçməzdən əvvəl istifadənizi və xərcləri yoxlayın.'],
+      ['US$100 in Azure credit for 12 months for eligible students. Sign-up requires no credit card.', 'Microsoft verifies current student status through your institutional email. Check age and regional requirements when signing up. Resources may stop when the credits run out. Review usage and charges before upgrading to a paid plan.'],
+      {
+        checkedAt: '2026-11-21',
+        url: 'https://github.com/MicrosoftDocs/azure-docs/blob/main/articles/education-hub/about-azure-for-students.md',
+      }),
     online('unity', 'Unity Student', 'U', 'software', 'https://unity.com/products/unity-student',
       ['Oyun hazırlamaq üçün tələbələrə yönəlmiş Unity planı.', 'Unity hesabınızla təhsil statusunu təsdiqləyin. Editor versiyası, layihənin yayımı, kommersiya istifadəsi və lisenziyanın bitmə şərtlərini provayderdə yoxlayın.'],
       ['Unity plan aimed at student game developers.', 'Verify education status with your Unity account. Check editor versions, project distribution, commercial use and licence expiry with Unity.']),
