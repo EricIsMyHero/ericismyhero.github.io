@@ -42,7 +42,7 @@
 .sup-off { display: flex; gap: 12px; align-items: flex-start; }
 .sup-off-icon {
   flex: 0 0 auto; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px;
-  color: var(--color-warning);
+  color: var(--color-warning-text);
   background: color-mix(in srgb, var(--color-warning) 14%, transparent);
   border: 1px solid color-mix(in srgb, var(--color-warning) 40%, transparent);
 }
@@ -102,7 +102,7 @@
 }
 .sup-amt[aria-pressed="true"] small { color: var(--color-text-primary); }
 .sup-amt--pop::after {
-  content: '★'; position: absolute; top: 6px; right: 8px; font-size: 0.7rem; color: var(--color-warning);
+  content: '★'; position: absolute; top: 6px; right: 8px; font-size: 0.7rem; color: var(--color-warning-text);
 }
 
 /* Görünüş seçimi (radio kartları) */
@@ -163,7 +163,7 @@
   display: flex; gap: 8px; align-items: flex-start; flex-wrap: wrap; margin: 0;
   font-size: var(--fs-xs); line-height: 1.5; color: var(--color-text-secondary);
 }
-.sup-secure .ic { flex: 0 0 auto; width: 16px; height: 16px; color: var(--color-success); margin-top: 1px; }
+.sup-secure .ic { flex: 0 0 auto; width: 16px; height: 16px; color: var(--color-success-text); margin-top: 1px; }
 .sup-login-hint .link-more { background: none; border: 0; padding: 0; font: inherit; font-weight: 700; cursor: pointer; }
 
 /* Test rejimi qutusu */
@@ -243,7 +243,7 @@
 .sup-empty { display: flex; align-items: center; gap: 10px; margin: 0; padding: 14px; border: 1px dashed var(--border); border-radius: 14px; font-size: var(--fs-sm); color: var(--color-text-secondary); }
 .sup-empty .ic { flex: 0 0 auto; width: 22px; height: 22px; color: var(--tone-text); }
 .sup-empty .btn { margin-left: auto; }
-.sup-empty--error .ic { color: var(--color-danger); }
+.sup-empty--error .ic { color: var(--color-danger-text); }
 
 .sup-mine-total {
   display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px;
@@ -263,7 +263,7 @@
 .sup-fallback .support-card { margin: 0; }
 
 /* Dəstək toast-ı: şlüz aktivdirsə tək "Dəstək ol" düyməsi */
-.support-toast .st-btn-pay { background: var(--accent); color: #fff; }
+.support-toast .st-btn-pay { background: var(--accent); color: var(--color-on-primary); }
 
 @media (prefers-reduced-motion: reduce) {
   .sup-pay-btn.is-busy::before, .sup-result-icon .sup-spin { animation-duration: 2s; }

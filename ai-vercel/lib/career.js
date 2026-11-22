@@ -5,7 +5,8 @@ export const CAREER_CHANNEL = 'unecstudentshubcareer';
 const CATEGORIES = Object.freeze({ bank: 'Bank', finance: 'Maliyyə', audit: 'Audit', it: 'İT', other: 'Digər' });
 const TYPES = Object.freeze({ internship: 'Təcrübə', volunteer: 'Könüllülük', training: 'Təlim' });
 const ID = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
-const DETAILS = { description: 2000, schedule: 160, location: 220 };
+const LIMITS = { title: 300, company: 500, description: 8000, schedule: 300, location: 500, applyUrl: 2048 };
+const TELEGRAM_LIMIT = 4096;
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 const bakuDay = now => new Date(now.getTime() + 4 * 3600_000).toISOString().slice(0, 10);
 const isActive = (row, today) => !row.deadline || row.deadline >= today;
@@ -13,30 +14,36 @@ const result = (status, json) => ({ status, json });
 const error = (status, code) => result(status, { error: code });
 
 function fields(input) {
-  const title = typeof input.title === 'string' ? input.title.trim() : '';
-  const company = typeof input.company === 'string' ? input.company.trim() : '';
-  const { type, category, deadline } = input;
-  if (!title || title.length > 160 || !company || company.length > 100 ||
-      /[\r\n]/.test(title + company) || typeof category !== 'string' ||
-      !Object.hasOwn(CATEGORIES, category) || typeof type !== 'string' || !Object.hasOwn(TYPES, type)) return null;
-  if (typeof deadline !== 'string' || (deadline && (!DATE.test(deadline) ||
-      !Number.isFinite(Date.parse(deadline)) || new Date(deadline).toISOString().slice(0, 10) !== deadline))) return null;
-  const details = {};
-  for (const [key, limit] of Object.entries(DETAILS)) {
+  const values = {};
+  for (const [key, limit] of Object.entries(LIMITS)) {
     if (!Object.hasOwn(input, key)) continue;
-    const value = input[key];
+    const value = input[key] ?? '';
     if (typeof value !== 'string' || value.trim().length > limit ||
         (key !== 'description' && /[\r\n]/.test(value))) return null;
-    details[key] = value.trim();
+    values[key] = value.trim();
   }
-  if (typeof input.applyUrl !== 'string' || input.applyUrl.length > 1000) return null;
-  try {
-    const url = new URL(input.applyUrl);
-    if (url.protocol !== 'https:' || url.username || url.password || url.href.length > 1000) return null;
-    return { title, company, type, category, deadline, applyUrl: url.href, ...details };
-  } catch {
-    return null;
+  for (const [key, choices] of [['type', TYPES], ['category', CATEGORIES]]) {
+    if (!Object.hasOwn(input, key)) continue;
+    const value = input[key] ?? '';
+    if (typeof value !== 'string' || (value && !Object.hasOwn(choices, value))) return null;
+    values[key] = value;
   }
+  if (Object.hasOwn(input, 'deadline')) {
+    const deadline = input.deadline ?? '';
+    if (typeof deadline !== 'string' || (deadline && (!DATE.test(deadline) ||
+        !Number.isFinite(Date.parse(deadline)) || new Date(deadline).toISOString().slice(0, 10) !== deadline))) return null;
+    values.deadline = deadline;
+  }
+  if (values.applyUrl) {
+    try {
+      const url = new URL(values.applyUrl);
+      if (url.protocol !== 'https:' || url.username || url.password || url.href.length > LIMITS.applyUrl) return null;
+      values.applyUrl = url.href;
+    } catch {
+      return null;
+    }
+  }
+  return values;
 }
 
 export async function publicCareer(db = firestore, now = new Date()) {
@@ -46,27 +53,34 @@ export async function publicCareer(db = firestore, now = new Date()) {
   });
   const today = bakuDay(now);
   return docs.filter(({ data }) => isActive(data, today))
-    .map(({ id, data: { title, company, type, category, deadline, applyUrl, description, schedule, location } }) => ({
+    .map(({ id, data: { title = '', company = '', type = '', category = '', deadline = '', applyUrl = '', description, schedule, location } }) => ({
       id, title, company, type, category, deadline, applyUrl,
       ...(description && { description }),
       ...(schedule && { schedule }),
       ...(location && { location }),
     }))
     .sort((a, b) => (a.deadline || '9999-12-31').localeCompare(b.deadline || '9999-12-31') ||
-      a.title.localeCompare(b.title, 'az'));
+      (a.title || a.company || '').localeCompare(b.title || b.company || '', 'az'));
 }
 
 async function sendTelegram(row, token, request) {
-  const text = [
-    `#${TYPES[row.type]} | ${CATEGORIES[row.category]}`,
-    `${row.company} — ${row.title}`,
-    row.description,
+  const heading = [
+    [Object.hasOwn(TYPES, row.type) && `#${TYPES[row.type]}`, Object.hasOwn(CATEGORIES, row.category) && CATEGORIES[row.category]]
+      .filter(Boolean).join(' | '),
+    [row.company, row.title].filter(Boolean).join(' — ') || 'Karyera elanı',
+  ].filter(Boolean);
+  const details = [
     row.schedule && `📅 Tarix və saat: ${row.schedule}`,
     row.location && `📍 Məkan: ${row.location}`,
-    `Son müraciət: ${row.deadline ? row.deadline.split('-').reverse().join('.') : 'Göstərilməyib'}`,
-    `Müraciət: ${row.applyUrl}`,
+    row.deadline && `Son müraciət: ${row.deadline.split('-').reverse().join('.')}`,
+    row.applyUrl && `Müraciət: ${row.applyUrl}`,
     'Karyera lövhəsi: https://unecstudentshub.com/#/career',
-  ].filter(Boolean).join('\n\n');
+  ].filter(Boolean);
+  const available = Math.max(0, TELEGRAM_LIMIT - [...heading, ...details].join('\n\n').length - 2);
+  const description = row.description || '';
+  const excerpt = description.length <= available ? description :
+    available > 0 ? description.slice(0, available - 1).replace(/[\uD800-\uDBFF]$/, '').trimEnd() + '…' : '';
+  const text = [...heading, excerpt, ...details].filter(Boolean).join('\n\n');
   try {
     const response = await request(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',
@@ -101,7 +115,7 @@ export async function adminCareer(body, db = firestore, now = new Date(), env = 
       pageToken = page.nextPageToken;
     } while (pageToken);
     rows.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
-    return result(200, { career: rows, today });
+    return result(200, { career: rows, today, limits: LIMITS });
   }
   if (!['save', 'publish', 'close', 'reconcile'].includes(action)) return error(400, 'invalid_action');
   if (typeof id !== 'string' || !ID.test(id)) return error(400, 'career_invalid');

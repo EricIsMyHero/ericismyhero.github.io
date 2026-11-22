@@ -655,14 +655,17 @@ tr:hover td {
 .push-preview b {
   display: block;
   font-size: 0.85rem;
+  overflow-wrap: anywhere;
 }
 .push-preview span {
   display: block;
   font-size: 0.78rem;
   color: var(--muted);
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
   margin-top: 2px;
 }
+.push-preview span:empty { display: none; }
 .push-actions {
   display: flex;
   gap: 10px;

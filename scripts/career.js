@@ -16,27 +16,33 @@
   let loading = false;
   let failed = false;
 
+  function applyLink(value) {
+    if (!value) return '';
+    try {
+      const url = new URL(value);
+      return url.protocol === 'https:' && !url.username && !url.password ? url.href : '';
+    } catch { return ''; }
+  }
+
   function card(row) {
-    let url;
-    try { url = new URL(row.applyUrl); } catch { return ''; }
-    if (url.protocol !== 'https:' || url.username || url.password) return '';
-    if (!Object.hasOwn(typeLabels, row.type) || !Object.hasOwn(categoryLabels, row.category)) return '';
-    const type = tr(typeLabels[row.type]);
-    const category = tr(categoryLabels[row.category]);
+    const link = applyLink(row.applyUrl);
+    const type = Object.hasOwn(typeLabels, row.type) ? tr(typeLabels[row.type]) : '';
+    const category = Object.hasOwn(categoryLabels, row.category) ? tr(categoryLabels[row.category]) : '';
+    const details = [type, category].filter(Boolean).join(' · ');
     const deadline = row.deadline
       ? `<time datetime="${esc(row.deadline)}">${esc(row.deadline.split('-').reverse().join('.'))}</time>`
-      : esc(tr('careerNoDeadline'));
+      : '';
     return `<article class="compass-card">
       <div class="compass-card-copy">
-        <p class="compass-category-label">${esc(type)} · ${esc(category)}</p>
-        <h2>${esc(row.title)}</h2>
-        <p>${esc(row.company)}</p>
+        ${details ? `<p class="compass-category-label">${esc(details)}</p>` : ''}
+        <h2>${esc(row.title || row.company || tr('careerUntitled'))}</h2>
+        ${row.title && row.company ? `<p>${esc(row.company)}</p>` : ''}
         ${row.schedule ? `<p>${esc(tr('careerSchedule'))} · ${esc(row.schedule)}</p>` : ''}
         ${row.location ? `<p>${esc(tr('careerLocation'))} · ${esc(row.location)}</p>` : ''}
-        <p>${esc(tr('careerDeadline'))} · ${deadline}</p>
+        ${deadline ? `<p>${esc(tr('careerDeadline'))} · ${deadline}</p>` : ''}
         ${row.description ? `<details class="career-details"><summary>${esc(tr('careerDetails'))}</summary>
           <p>${esc(row.description)}</p></details>` : ''}
-        <p><a href="${esc(url.href)}" target="_blank" rel="noopener noreferrer">${esc(tr('careerApply'))}</a></p>
+        ${link ? `<p><a href="${esc(link)}" target="_blank" rel="noopener noreferrer">${esc(tr('careerApply'))}</a></p>` : ''}
       </div>
     </article>`;
   }

@@ -933,14 +933,15 @@ async function openRequestFromLog(id) {
 }
 
 function pushPreview() {
-  const t = document.getElementById("push-title").value;
-  const b = document.getElementById("push-body").value;
-  document.getElementById("push-title-count").textContent = t.length + "/80";
-  document.getElementById("push-body-count").textContent = b.length + "/240";
+  const title = document.getElementById("push-title");
+  const body = document.getElementById("push-body");
+  const t = title.value;
+  const b = body.value;
+  document.getElementById("push-title-count").textContent = t.length + "/" + title.maxLength;
+  document.getElementById("push-body-count").textContent = b.length + "/" + body.maxLength;
   document.getElementById("push-prev-title").textContent =
     t.trim() || "UNEC Students Hub";
-  document.getElementById("push-prev-body").textContent =
-    b.trim() || "Mətn burada görünəcək";
+  document.getElementById("push-prev-body").textContent = b.trim();
 }
 
 function pushAudienceChanged() {
@@ -970,14 +971,12 @@ async function pushSend(dryRun) {
   if (pushBusy) return;
   const payload = {
     action: "send",
-    title: document.getElementById("push-title").value.trim(),
+    title: document.getElementById("push-title").value.trim() || "UNEC Students Hub",
     body: document.getElementById("push-body").value.trim(),
     url: document.getElementById("push-url").value.trim(),
     audience: document.getElementById("push-audience").value,
     email: document.getElementById("push-email").value.trim(),
   };
-  if (!payload.title || !payload.body)
-    return pushResult("Başlıq və mətn boş ola bilməz.", "err");
   if (payload.audience === "user" && !payload.email)
     return pushResult("İstifadəçinin email ünvanını yaz.", "err");
 

@@ -10,7 +10,7 @@ import { stopDuringMigration } from '../lib/maintenance.js';
 //
 // Admin (başlıq: X-Admin-Key = ADMIN_SECRET_KEY, admin-data.js ilə eyni açar):
 //   POST { action: 'stats' }                               → abunəçi sayı
-//   POST { action: 'send', title, body, url?, audience, email?, dryRun?, after? }
+//   POST { action: 'send', title?, body?, url?, audience, email?, dryRun?, after? }
 //        audience: 'all' | 'az' | 'en' | 'user' (user → email lazımdır; test üçün özünə göndər)
 //        Bir sorğu ~8 saniyə işləyir (PUSH_DEADLINE_MS). Çox cihaz olarsa cavabda `cursor` qayıdır —
 //        admin paneli onu `after` kimi göndərib qalanlara davam edir (heç kimə təkrar getmir).
@@ -132,9 +132,8 @@ export default async function handler(req, res) {
         });
       }
 
-      const title = cleanText(b.title, LIMITS.title);
+      const title = cleanText(b.title, LIMITS.title) || 'UNEC Students Hub';
       const text = cleanText(b.body, LIMITS.body, true);
-      if (!title || !text) return res.status(400).json({ error: 'title_and_body_required' });
       const url = cleanUrl(b.url);
       if (!url) return res.status(400).json({ error: 'invalid_url' });
       const audience = AUDIENCES.includes(b.audience) ? b.audience : null;

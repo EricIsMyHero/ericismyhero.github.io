@@ -67,8 +67,8 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent), var(--accent3));
-  color: #fff;
+  background: linear-gradient(135deg, var(--accent), var(--color-primary));
+  color: var(--color-on-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -168,7 +168,7 @@
 .chat-tag-btn.active {
   background: var(--accent);
   border-color: var(--accent);
-  color: #fff;
+  color: var(--color-on-primary);
 }
 
 .chat-input-row {
@@ -194,7 +194,7 @@
 
 .chat-send-btn {
   background: var(--accent);
-  color: #fff;
+  color: var(--color-on-primary);
   border: none;
   border-radius: 10px;
   padding: 0 18px;

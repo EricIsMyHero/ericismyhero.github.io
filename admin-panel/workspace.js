@@ -25,7 +25,6 @@ window.mountAdminWorkspace = function (host) {
           typeof t.id === "string" &&
           /^[a-zA-Z0-9-]{1,100}$/.test(t.id) &&
           typeof t.title === "string" &&
-          t.title.trim() &&
           t.title.length <= 1000 &&
           statuses.includes(t.status) &&
           cats.slice(1, 7).includes(t.type) &&
@@ -352,6 +351,7 @@ window.mountAdminWorkspace = function (host) {
   }
   const badge = (s) =>
     `<span class="badge ${{ Yoxlamada: "review", Hazır: "ready", Qaralama: "draft", Tamamlandı: "done" }[s] || ""}">${esc(s)}</span>`;
+  const taskTitle = (t) => esc(t.title?.trim() || "Başlıqsız tapşırıq");
   const date = (s) =>
     new Date(s).toLocaleDateString("az-AZ", { timeZone: "Asia/Baku" });
   function render() {
@@ -425,7 +425,7 @@ window.mountAdminWorkspace = function (host) {
     }
     if (view === "table")
       $("content").innerHTML =
-        `<div class="tablewrap"><table><thead><tr><th>TAPŞIRIQ</th><th>KANAL / NÖV</th><th>STATUS</th><th>PRİORİTET</th><th>SON DƏYİŞİKLİK</th><th></th></tr></thead><tbody>${list.map((t) => `<tr data-id="${t.id}" tabindex="0"><td class="titlecell">${esc(t.title)}<small>${esc(t.feature)}</small></td><td>${esc(t.channel)}<br><small style="color:#8b968d">${esc(t.type)}</small></td><td>${badge(t.status)}</td><td class="priority ${t.priority === "Yüksək" ? "high" : ""}">● ${esc(t.priority)}</td><td>${date(t.updated)}</td><td>↗</td></tr>`).join("")}</tbody></table></div>`;
+        `<div class="tablewrap"><table><thead><tr><th>TAPŞIRIQ</th><th>KANAL / NÖV</th><th>STATUS</th><th>PRİORİTET</th><th>SON DƏYİŞİKLİK</th><th></th></tr></thead><tbody>${list.map((t) => `<tr data-id="${t.id}" tabindex="0"><td class="titlecell">${taskTitle(t)}${t.feature ? `<small>${esc(t.feature)}</small>` : ""}</td><td>${esc(t.channel)}<br><small style="color:#8b968d">${esc(t.type)}</small></td><td>${badge(t.status)}</td><td class="priority ${t.priority === "Yüksək" ? "high" : ""}">● ${esc(t.priority)}</td><td>${date(t.updated)}</td><td>↗</td></tr>`).join("")}</tbody></table></div>`;
     else
       $("content").innerHTML =
         '<div class="board">' +
@@ -436,7 +436,7 @@ window.mountAdminWorkspace = function (host) {
                 .filter((t) => t.status === s)
                 .map(
                   (t) =>
-                    `<div class="card" tabindex="0" data-id="${t.id}"><span class="badge">${esc(t.channel)}</span><b>${esc(t.title)}</b><p>${esc(t.feature)}</p><span class="priority ${t.priority === "Yüksək" ? "high" : ""}">● ${esc(t.priority)}</span></div>`,
+                    `<div class="card" tabindex="0" data-id="${t.id}"><span class="badge">${esc(t.channel)}</span><b>${taskTitle(t)}</b>${t.feature ? `<p>${esc(t.feature)}</p>` : ""}<span class="priority ${t.priority === "Yüksək" ? "high" : ""}">● ${esc(t.priority)}</span></div>`,
                 )
                 .join("")}</div>`,
           )
@@ -486,7 +486,7 @@ window.mountAdminWorkspace = function (host) {
       .filter((t) => t.commit)
       .map(
         (t) =>
-          `<article class="commit"><small>İş sahəsindəki qeyd</small><h3>${esc(t.title)}</h3><code>${esc(t.commit)}</code><p>${esc(t.summary)}</p><p>${esc(t.impact)}</p><p>${esc(t.notes)}</p><button data-edit="${esc(t.id)}">Redaktə et</button></article>`,
+          `<article class="commit"><small>İş sahəsindəki qeyd</small><h3>${taskTitle(t)}</h3><code>${esc(t.commit)}</code><p>${esc(t.summary)}</p><p>${esc(t.impact)}</p><p>${esc(t.notes)}</p><button data-edit="${esc(t.id)}">Redaktə et</button></article>`,
       )
       .join("");
     document
@@ -496,7 +496,7 @@ window.mountAdminWorkspace = function (host) {
   const defs = [
     ["title", "Başlıq", "input"],
     ["goal", "Məqsəd", "area"],
-    ["feature", "Əlaqəli funksiya", features],
+    ["feature", "Əlaqəli funksiya", ["", ...features]],
     ["type", "Məzmun növü", cats.slice(1, 7)],
     ["channel", "Kanal", "input"],
     ["owner", "Məsul şəxs", "input"],
@@ -516,13 +516,12 @@ window.mountAdminWorkspace = function (host) {
     current = tasks.find((t) => t.id === id) || {
       title: "",
       goal: "",
-      feature: features[0],
+      feature: "",
       type: cats.slice(1, 7).includes(active) ? active : "Post",
-      channel: "Instagram",
+      channel: "",
       status: "Qaralama",
       priority: "Orta",
-      link: base,
-      metrics: "Hədəf: \nFaktiki: ölçülməyib.",
+      link: "",
     };
     $("modaltitle").textContent = current.id
       ? "Tapşırığı redaktə et"
@@ -531,7 +530,7 @@ window.mountAdminWorkspace = function (host) {
       defs
         .map(
           ([k, label, type]) =>
-            `<label class="field ${type === "area" || k === "title" ? "wide" : ""}">${label}${Array.isArray(type) ? `<select name="${k}">${type.map((v) => `<option ${v === current[k] ? "selected" : ""}>${v}</option>`).join("")}</select>` : type === "area" ? `<textarea name="${k}" ${k === "text" ? 'style="min-height:190px"' : ""}>${esc(current[k])}</textarea>` : `<input name="${k}" type="${type === "url" ? "url" : "text"}" value="${esc(current[k])}" ${k === "title" ? "required" : ""}>`}</label>`,
+            `<label class="field ${type === "area" || k === "title" ? "wide" : ""}">${label}${Array.isArray(type) ? `<select name="${k}">${type.map((v) => `<option value="${esc(v)}" ${v === (current[k] ?? "") ? "selected" : ""}>${esc(v || "Seçilməyib")}</option>`).join("")}</select>` : type === "area" ? `<textarea name="${k}" maxlength="20000" ${k === "text" ? 'style="min-height:190px"' : ""}>${esc(current[k])}</textarea>` : `<input name="${k}" type="${type === "url" ? "url" : "text"}" value="${esc(current[k])}" maxlength="${k === "title" ? 1000 : 20000}">`}</label>`,
         )
         .join("") +
       `<small class="wide">Son dəyişiklik: ${current.updated ? esc(new Date(current.updated).toLocaleString("az-AZ", { timeZone: "Asia/Baku" })) : "Hələ saxlanmayıb"} · İlkin qeydlərin tarixi iş sahəsinin hazırlanma tarixidir.</small>`;
@@ -581,7 +580,7 @@ window.mountAdminWorkspace = function (host) {
       ...current,
       ...data,
       id: crypto.randomUUID(),
-      title: data.title + " — nüsxə",
+      title: data.title ? data.title.slice(0, 992) + " — nüsxə" : "",
       status: "Qaralama",
       updated: new Date().toISOString(),
     };

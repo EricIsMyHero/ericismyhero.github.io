@@ -157,7 +157,7 @@ All three allowances are resolved by `lib/practice-policy.js` using the same ser
 
 Saytda `#/career` bölməsi təsdiqlənmiş təcrübə, könüllülük və təlim elanlarını göstərir.
 Admin panelində **Karyera elanları** bölməsindən qaralama saxla və **Təsdiqlə və paylaş** düyməsi ilə dərc et.
-Təsvir, tədbirin tarix və saatı və məkan ayrıca daxil edilə bilər. Son müraciət tarixi daxil edilibsə, elan həmin günün sonunadək (Bakı vaxtı) aktiv qalır. Tarixi göstərilməyən elanları admin panelindən bağlamaq olar.
+Bütün elan sahələri istəyə bağlıdır. Başlıq və tədbirin vaxtı üçün 300, təşkilat və məkan üçün 500, təsvir üçün 8 000, müraciət keçidi üçün 2 048 simvol limiti var. Telegram uzun təsvirin bir hissəsini və karyera lövhəsinə keçidi göstərir. Tam təsvir saytda saxlanılır. Son müraciət tarixi daxil edilibsə, elan həmin günün sonunadək (Bakı vaxtı) aktiv qalır. Tarixi göstərilməyən elanları admin panelindən bağlamaq olar.
 
 1. Telegram-da BotFather ilə bot yarat və onu [karyera kanalına](https://t.me/unecstudentshubcareer) post paylaşma icazəsi olan admin kimi əlavə et.
 2. Bot tokenini Vercel layihəsinin Production mühitində `CAREER_TELEGRAM_BOT_TOKEN` adı ilə saxla, sonra backend-i yenidən deploy et.

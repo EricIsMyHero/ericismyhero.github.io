@@ -7,7 +7,7 @@ import { getAccessToken, serviceAccount, deleteDoc, listDocs, runQuery } from '.
 
 export const COLLECTION = 'push_tokens';
 export const LOG_COLLECTION = 'push_log';
-export const LIMITS = { title: 80, body: 240 };
+export const LIMITS = { title: 120, body: 500 };
 export const AUDIENCES = ['all', 'az', 'en', 'user'];
 
 const LINK_HOSTS = ['unecstudentshub.com', 'www.unecstudentshub.com', 't.me'];
@@ -37,7 +37,7 @@ export function cleanText(v, max, multiline = false) {
   let s = v.normalize('NFC').replace(/\r\n?/g, '\n');
   s = s.replace(multiline ? /[\u0000-\u0009\u000b-\u001f\u007f]/g : /[\u0000-\u001f\u007f]/g, ' ');
   s = multiline ? s.replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n') : s.replace(/\s+/g, ' ');
-  return s.trim().slice(0, max).trim();
+  return s.trim().slice(0, max).replace(/[\uD800-\uDBFF]$/, '').trim();
 }
 
 /**

@@ -74,7 +74,7 @@ function getTypeBadgeHTML(type) {
 function getPdfTypeBadgeHTML(pdfType) {
   if (!pdfType || !PDF_TYPES[pdfType]) return '';
   const t = PDF_TYPES[pdfType];
-  return `<span class="pdf-type-badge" style="color:${t.color};background:${t.bg};border-color:${t.border}">${t.label}</span>`;
+  return `<span class="pdf-type-badge" style="--pdf-badge-color:${t.color}">${t.label}</span>`;
 }
 
 // ── Tema sistemi ─────────────────────────────────────────────
@@ -92,10 +92,48 @@ const themes = {
   slate:    { '--bg':'#f8fafc','--surface':'#ffffff','--surface2':'#f1f5f9','--accent':'#334155','--accent2':'#64748b','--accent3':'#94a3b8','--text':'#0f172a','--muted':'#64748b','--border':'rgba(51,65,85,0.15)','--glow':'rgba(51,65,85,0.05)' },
 };
 
+const themeRgb = hex => hex.slice(1).match(/.{2}/g).map(value => parseInt(value, 16));
+const mixThemeColor = (a, b, amount) => a.map((value, i) => Math.round(value + (b[i] - value) * amount));
+const themeCssRgb = rgb => `rgb(${rgb.join(' ')})`;
+
+function themeLuminance(rgb) {
+  const [r, g, b] = rgb.map(value => {
+    const channel = value / 255;
+    return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+  });
+  return r * 0.2126 + g * 0.7152 + b * 0.0722;
+}
+
+function themeContrast(a, b) {
+  const x = themeLuminance(a), y = themeLuminance(b);
+  return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
+}
+
+function readableThemeText(preferred, text, backgrounds) {
+  const color = themeRgb(preferred);
+  for (let step = 0; step < 20; step++) {
+    const candidate = mixThemeColor(color, text, step / 20);
+    if (backgrounds.every(background => themeContrast(candidate, background) >= 4.8)) return themeCssRgb(candidate);
+  }
+  return themeCssRgb(text);
+}
+
 function applyTheme(name, btn) {
+  if (!Object.hasOwn(themes, name)) return;
   const vars = themes[name];
   const root = document.documentElement;
   Object.entries(vars).forEach(([k, v]) => root.style.setProperty(k, v));
+  const accent = themeRgb(vars['--accent']);
+  const text = themeRgb(vars['--text']);
+  const surfaces = ['--bg', '--surface', '--surface2'].map(key => themeRgb(vars[key]));
+  const backgrounds = [...surfaces, ...surfaces.map(surface => mixThemeColor(surface, accent, 0.2))];
+  const black = [0, 0, 0], white = [255, 255, 255];
+  const useDarkInk = themeContrast(black, accent) >= themeContrast(white, accent);
+  root.style.setProperty('--muted', readableThemeText(vars['--muted'], text, backgrounds));
+  root.style.setProperty('--accent2', readableThemeText(vars['--accent2'], text, backgrounds));
+  root.style.setProperty('--color-on-primary', useDarkInk ? '#000' : '#fff');
+  root.style.setProperty('--color-primary-hover', themeCssRgb(mixThemeColor(accent, useDarkInk ? white : black, 0.14)));
+  root.style.colorScheme = themeLuminance(surfaces[0]) > 0.5 ? 'light' : 'dark';
   document.body.setAttribute('data-theme', name);
   localStorage.setItem('theme', name);
   document.querySelectorAll('.theme-opt, .sidebar-theme-opt').forEach(b => b.classList.remove('active'));

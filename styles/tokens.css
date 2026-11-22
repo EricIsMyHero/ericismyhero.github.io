@@ -4,7 +4,7 @@
    Bu fayl bütün saytın vahid dizayn tokenlərini müəyyən edir.
    Köhnə CSS dəyişənləri (--bg, --surface, --accent ...) bu tokenlərə
    "körpü" olur: tema seçimi (applyTheme) köhnə dəyişənləri dəyişdirir,
-   yeni --color-* tokenləri isə onlardan törəyir — beləliklə 12 temanın
+   yeni --color-* tokenləri isə onlardan törəyir — beləliklə bütün temaların
    hamısı yeni komponentlərdə də işləyir.
 
    Yüklənmə sırası: base → components → ... → tokens → shell → screens → legacy
@@ -39,12 +39,15 @@
   --color-text-muted:        var(--muted);
   --color-border:            var(--border);
   --color-border-strong:     color-mix(in srgb, var(--accent) 38%, var(--border));
-  --color-on-primary:        #FFFFFF;
+  --color-on-primary:        #000000;
 
   /* Statuslar */
   --color-success: #23C99A;
   --color-warning: #FFB547;
   --color-danger:  #FF5364;
+  --color-success-text: color-mix(in srgb, var(--color-success) 34%, var(--text));
+  --color-warning-text: color-mix(in srgb, var(--color-warning) 34%, var(--text));
+  --color-danger-text: color-mix(in srgb, var(--color-danger) 34%, var(--text));
 
   /* Xüsusiyyət rəngləri — bütün tətbiqdə eyni mənanı daşıyır */
   --fc-tests:    #087BFF;   /* Testlər              */
@@ -122,6 +125,7 @@ body {
 body::before, .grid-bg { display: none; }
 
 button, input, select, textarea { font-family: var(--font); }
+:is(input, textarea)::placeholder { color: var(--color-text-muted); opacity: 1; }
 button { -webkit-tap-highlight-color: transparent; }
 
 /* Başlıqlar — yeni miqyas (köhnə clamp(2rem,5vw,3.2rem) əvəzinə) */
@@ -186,7 +190,7 @@ body[data-theme="rainbow"] h2 span {
   left: 12px;
   z-index: calc(var(--z-toast) + 10);
   background: var(--accent);
-  color: #fff;
+  color: var(--color-on-primary);
   padding: 10px 16px;
   border-radius: var(--r-sm);
   font-weight: 700;

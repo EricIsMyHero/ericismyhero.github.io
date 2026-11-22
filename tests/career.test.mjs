@@ -102,7 +102,7 @@ test('training announcements preserve descriptions, event schedules and location
     location: 'Kənd Təsərrüfatı Nazirliyinin inzibati binası',
   };
   const command = { ...fields, ...details, deadline: '', type: 'training', id: ID, action: 'save' };
-  assert.equal((await adminCareer({ ...command, description: 'a'.repeat(2001) }, db, NOW)).status, 400);
+  assert.equal((await adminCareer({ ...command, description: 'a'.repeat(8001) }, db, NOW)).status, 400);
   const { json: { row } } = await adminCareer(command, db, NOW);
   let payload;
   const published = await adminCareer({ action: 'publish', id: ID, revision: row.revision }, db, NOW,
@@ -115,7 +115,35 @@ test('training announcements preserve descriptions, event schedules and location
   assert(payload.text.includes(details.description));
   assert(payload.text.includes('📅 Tarix və saat: ' + details.schedule));
   assert(payload.text.includes('📍 Məkan: ' + details.location));
-  assert(payload.text.includes('Son müraciət: Göstərilməyib'));
+  assert.doesNotMatch(payload.text, /Son müraciət:/);
   const [opportunity] = await publicCareer(db, NOW);
   assert.deepEqual(opportunity, { ...fields, ...details, deadline: '', type: 'training', id: ID });
+});
+
+test('optional fields can be left blank or cleared while a long announcement stays complete on the site', async () => {
+  const db = database();
+  const company = 'T'.repeat(500);
+  const description = '📌'.repeat(4000);
+  const saved = await adminCareer({ id: ID, action: 'save' }, db, NOW);
+  assert.equal(saved.status, 200);
+  const editing = { id: ID, action: 'save', revision: saved.json.row.revision, company, description };
+  assert.equal((await adminCareer({ ...editing, company: company + 'X' }, db, NOW)).status, 400);
+  const { json: { row } } = await adminCareer({ ...editing, type: '', deadline: '', location: '', applyUrl: '' }, db, NOW);
+  let payload;
+  const published = await adminCareer({ id: ID, revision: row.revision, action: 'publish' }, db, NOW,
+    { CAREER_TELEGRAM_BOT_TOKEN: 'fake-token' }, async (_url, options) => {
+      payload = JSON.parse(options.body);
+      return Response.json({ ok: true, result: { message_id: 51 } });
+    });
+  assert.equal(published.json.row.telegramStatus, 'sent');
+  assert.match(payload.text, /…\n\nKaryera lövhəsi:/);
+  assert.ok(payload.text.length <= 4096);
+  assert.doesNotMatch(payload.text, /undefined|Son müraciət:|Müraciət:/);
+  const [visible] = await publicCareer(db, NOW);
+  assert.equal(visible.description, description);
+  assert.equal(visible.company, company);
+  assert.equal(visible.applyUrl, '');
+  const cleared = await adminCareer({ id: ID, revision: published.json.row.revision, action: 'save', company: '' }, db, NOW);
+  assert.equal(cleared.json.row.company, '');
+  assert.equal(cleared.json.row.description, description);
 });

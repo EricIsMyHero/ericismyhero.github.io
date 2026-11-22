@@ -99,7 +99,7 @@ Repo-ya push et: GitHub Pages saytı yeniləyir. **`ai-vercel` qovluğunun hamı
 
 Admin panel → **Bildirişlər**:
 
-- **Başlıq** (80 simvola qədər) və **Mətn** (240) — düz mətndir, HTML yazma.
+- **Başlıq** (120 simvola qədər) və **Mətn** (500) istəyə bağlı düz mətn sahələridir. Başlıq boş olduqda «UNEC Students Hub» görünür.
 - **Klik linki** boş olarsa ana səhifə açılır. Yaza bilərsən: `#/requests`, `/yol`, `https://unecstudentshub.com/...` və ya `https://t.me/...` (başqa domenlər qəbul edilmir).
 - **Kimə:** hamı / yalnız Azərbaycan dilini seçənlər / yalnız English / konkret istifadəçi (email ilə).
 - Nəticə: *Göndərildi / Uğursuz / Köhnəlmiş token silindi*. Hər göndəriş Firestore-da `push_log` kolleksiyasında qeyd olunur.
