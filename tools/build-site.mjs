@@ -81,7 +81,11 @@ for (const match of html.matchAll(/<(?:script|link)\b[^>]*(?:src|href)="([^"#]+)
   if (!outputs.has(url.split('?')[0].replace(/^\//, '')) && !fs.existsSync(path.join(root, url.split('?')[0]))) throw new Error('Missing local asset: ' + url);
   assets.add('/' + url.replace(/^\//, ''));
 }
-for (const file of fs.readdirSync(path.join(root, 'images'))) if (/\.(png|svg|webp|ico)$/.test(file)) assets.add('/images/' + file);
+for (const directory of ['images', 'images/student-offers']) {
+  for (const file of fs.readdirSync(path.join(root, directory), { withFileTypes: true })) {
+    if (file.isFile() && /\.(png|svg|webp|ico)$/.test(file.name)) assets.add('/' + directory + '/' + file.name);
+  }
+}
 const sorted = [...assets].sort(), hash = crypto.createHash('sha256');
 for (const url of sorted) {
   const file = url === '/' ? 'index.html' : url.slice(1).split('?')[0];

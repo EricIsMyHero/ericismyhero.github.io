@@ -30,6 +30,18 @@
     entertainment: ['Musiqi və video', 'Music and video'],
     other: ['Digər xidmətlər', 'Other services'],
   };
+  const categoryIcons = {
+    education: 'graduation-cap', software: 'laptop', electronics: 'zap', cloud: 'layers',
+    services: 'file-text', food: 'utensils', fashion: 'tag', health: 'shield-check',
+    beauty: 'sparkles', internet: 'globe', books: 'book-open', sports: 'trophy',
+    culture: 'landmark', leisure: 'play', travel: 'luggage', entertainment: 'play', other: 'briefcase',
+  };
+  const logos = new Set([
+    'adidas', 'apple-education', 'autodesk', 'azure', 'basecamp', 'codecademy',
+    'datacamp', 'figma', 'framer', 'github', 'jetbrains', 'lucidchart', 'mcdonalds',
+    'microsoft-365', 'miro', 'mongodb', 'mural', 'notion', 'overleaf', 'prezi',
+    'sketch', 'spotify', 'unity', 'wolfram-alpha', 'youtube',
+  ]);
   const labels = {
     search: ['Brend, xidmət və ya təklif axtar', 'Search brands, services or offers'],
     all: ['Hamısı', 'All'],
@@ -105,8 +117,13 @@
   const languageIndex = () => document.documentElement.lang === 'en' ? 1 : 0;
   const label = key => labels[key][languageIndex()];
   const categoryName = key => categoryLabels[key][languageIndex()];
-  const methodNames = { qr: 'qr', card: 'cardPayment', paycity: 'paycity', special: 'specialTerms', 'student-id': 'studentId', online: 'onlineShort' };
-  const methodName = key => label(methodNames[key]);
+  const redemptionMethods = {
+    qr: ['qr', 'qr-code'], card: ['cardPayment', 'credit-card'], paycity: ['paycity', 'nfc'],
+    special: ['specialTerms', 'tag'], 'student-id': ['studentId', 'id-card'], online: ['onlineShort', 'globe'],
+  };
+  const methodName = key => label(redemptionMethods[key][0]);
+  const methodIcon = key => ic(redemptionMethods[key][1]);
+  const offerMethod = offer => offer.method || (offer.kind === 'online' ? 'online' : '');
   const methodsForKind = { card: ['qr', 'card', 'paycity', 'special'], student: ['student-id', 'online'] };
   const localInstructions = { qr: 'qrSteps', card: 'cardSteps' };
   const copy = offer => languageIndex() ? offer.en : offer.az;
@@ -142,27 +159,34 @@
   }
 
   function card(offer) {
-    const [summary] = copy(offer);
+    const method = offerMethod(offer);
+    const logo = logos.has(offer.id) ? `images/student-offers/${offer.id}.svg` : '';
     return `<article class="offer-card" data-category="${offer.category}">
-      <div class="offer-card-top">
-        <span class="offer-mark" aria-hidden="true">${esc(offer.initials)}</span>
-        <span class="offer-amount">${esc(benefit(offer))}</span>
-        ${saveButton(offer)}
-      </div>
-      <div class="offer-meta">${esc(categoryName(offer.category))}</div>
-      <h2>${esc(offer.name)}</h2>
-      <p>${esc(summary)}</p>
-      ${offer.method && offer.kind !== 'online' ? `<div class="offer-meta offer-method">${esc(methodName(offer.method))}</div>` : ''}
-      <a class="offer-details-link" href="#${path}/${offer.id}">${esc(label('show'))}${ic('chevron-right')}</a>
+      <a class="offer-details-link" href="#${path}/${offer.id}" aria-label="${esc(`${label('show')} · ${offer.name}`)}">
+        <div class="offer-brand" aria-hidden="true">
+          <span class="offer-brand-mark">${ic(categoryIcons[offer.category])}${esc(offer.initials)}</span>
+          ${logo ? `<img class="offer-brand-image" src="${logo}" alt="" loading="lazy" decoding="async">` : ''}
+        </div>
+        <div class="offer-card-content">
+          <div class="offer-meta">${esc(categoryName(offer.category))}</div>
+          <h2>${esc(offer.name)}</h2>
+          <div class="offer-benefits">
+            <span class="offer-amount">${esc(benefit(offer))}</span>
+            ${method ? `<span class="offer-method-mark" title="${esc(methodName(method))}">${methodIcon(method)}<span class="sr-only">${esc(methodName(method))}</span></span>` : ''}
+          </div>
+          <span class="offer-details-text">${esc(label('show'))}${ic('chevron-right')}</span>
+        </div>
+      </a>
+      ${saveButton(offer)}
     </article>`;
   }
 
   function visibleOffers() {
     const terms = normAz(state.query).split(' ').filter(Boolean);
     const result = offers.filter(offer => {
-      const method = offer.method ? methodName(offer.method) : '';
+      const method = offerMethod(offer);
       const addresses = offer.locations?.map(location => location.address) || [];
-      const words = normAz([offer.name, categoryName(offer.category), label(offer.kind), method, benefit(offer), ...copy(offer), ...addresses].join(' '));
+      const words = normAz([offer.name, categoryName(offer.category), label(offer.kind), method && methodName(method), benefit(offer), ...copy(offer), ...addresses].join(' '));
       return (!state.kind || offer.kind === state.kind) &&
         (!state.category || offer.category === state.category) &&
         (!state.method || offer.method === state.method) &&
@@ -291,6 +315,7 @@
       return;
     }
     const [summary, conditions] = copy(offer);
+    const method = offerMethod(offer);
     const local = offer.kind === 'card';
     const defaultSteps = local ? (localInstructions[offer.method] || 'localSteps') : (offer.kind === 'student' ? 'studentSteps' : 'onlineSteps');
     const steps = offer.steps?.[languageIndex()];
@@ -301,7 +326,7 @@
         <section class="function-panel offer-description">
           <div class="offer-detail-heading"><span class="offer-amount">${esc(benefit(offer))}</span>${saveButton(offer)}</div>
           <p class="offer-meta">${esc(label(offer.kind))} · ${esc(categoryName(offer.category))}</p>
-          ${offer.method ? `<p class="offer-meta">${esc(label('method'))} · ${esc(methodName(offer.method))}</p>` : ''}
+          ${method ? `<p class="offer-meta offer-detail-method">${methodIcon(method)}<span>${esc(label('method'))} · ${esc(methodName(method))}</span></p>` : ''}
           <h2>${esc(label('steps'))}</h2>
           ${steps ? `<ol class="offer-steps">${steps.map(step => `<li>${esc(step)}</li>`).join('')}</ol>` : `<p>${esc(label(defaultSteps))}</p>`}
           <h2>${esc(label('offerCheck'))}</h2><p>${esc(conditions)}</p>
@@ -325,6 +350,10 @@
     else list();
     $('#studentOffersHeading', root)?.focus({ preventScroll: true });
   }
+
+  root.addEventListener('load', event => {
+    if (event.target.matches('.offer-brand-image')) event.target.classList.add('is-ready');
+  }, true);
 
   root.addEventListener('click', event => {
     const target = event.target.closest('button');
