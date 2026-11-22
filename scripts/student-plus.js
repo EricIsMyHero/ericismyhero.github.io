@@ -14,6 +14,7 @@
   const categoryLabels = {
     education: ['Təhsil və kurslar', 'Education and courses'],
     software: ['Proqramlar', 'Software'],
+    electronics: ['Elektronika', 'Electronics'],
     cloud: ['Bulud xidmətləri', 'Cloud services'],
     services: ['Tərcümə və xidmətlər', 'Translation and services'],
     food: ['Yemək', 'Food'],
@@ -56,7 +57,7 @@
     show: ['Şərtlərə bax', 'View details'],
     back: ['Təkliflərə qayıt', 'Back to offers'],
     verify: ['Cari şərtləri yoxlayın', 'Check current terms'],
-    verified: ['Rəsmi mənbə yoxlanıb', 'Official source checked'],
+    verified: ['Proqramın rəsmi mənbəyi yoxlanıb', 'Official programme source checked'],
     verificationSource: ['Yoxlanmış mənbəyə bax', 'View checked source'],
     example: ['Şəkildəki təklif', 'Screenshot example'],
     unibot: ['UniBot ekran görüntüsü', 'UniBot screenshot'],
@@ -76,6 +77,8 @@
     onlineNotice: ['Tələbə statusunu provayder ayrıca yoxlayır. Uyğunluq, plan və qiymət şərtlərinə rəsmi səhifədə baxın.', 'The provider verifies student status separately. Check eligibility, plan details and prices on its official site.'],
     official: ['Rəsmi səhifəni aç', 'Open official site'],
     steps: ['İstifadə qaydası', 'How to use it'],
+    locations: ['Ünvanlar', 'Locations'],
+    hours: ['İş saatları', 'Hours'],
     localSteps: [
       'Tələbə+ tətbiqində təklifi tapın. Filialı, uyğun məhsulu, son tarixi və endirimin ödəniş üsulundan asılı olub-olmadığını birbaşa tərəfdaşdan yoxlayın.',
       'Find the offer in the Tələbə+ app. Confirm the branch, eligible purchase, expiry and any payment-method rules directly with the partner.',
@@ -136,6 +139,7 @@
 
   function benefit(offer) {
     if (offer.percent != null) return `${offer.percent}%`;
+    if (Array.isArray(offer.amount)) return offer.amount[languageIndex()];
     return offer.amount || label(offer.kind === 'online' ? 'onlineShort' : 'special');
   }
 
@@ -168,7 +172,8 @@
     const terms = normAz(state.query).split(' ').filter(Boolean);
     const result = offers.filter(offer => {
       const method = offer.method ? methodName(offer.method) : '';
-      const words = normAz([offer.name, categoryName(offer.category), label(offer.kind), method, benefit(offer), ...copy(offer)].join(' '));
+      const addresses = offer.locations?.map(location => location.address) || [];
+      const words = normAz([offer.name, categoryName(offer.category), label(offer.kind), method, benefit(offer), ...copy(offer), ...addresses].join(' '));
       return (!state.kind || offer.kind === state.kind) &&
         (!state.category || offer.category === state.category) &&
         (!state.method || offer.method === state.method) &&
@@ -291,6 +296,13 @@
     </p>`;
   }
 
+  function locationDetails(locations) {
+    if (!locations?.length) return '';
+    return `<h2>${esc(label('locations'))}</h2><ul class="offer-locations">${locations.map(({ address, hours }) => `
+      <li>${esc(address)}${hours ? `<span>${esc(label('hours'))} · ${esc(hours)}</span>` : ''}</li>`).join('')}
+    </ul>`;
+  }
+
   function detail(offer) {
     if (!offer) {
       root.innerHTML = hero(label('notFound'), '', path, label('back'));
@@ -300,7 +312,9 @@
     const local = offer.kind === 'card';
     const fromUniBot = offer.source === 'unibot';
     const notice = fromUniBot ? 'unibotNotice' : (local ? 'localNotice' : 'onlineNotice');
-    const steps = local ? (localInstructions[offer.method] || 'localSteps') : (offer.kind === 'student' ? 'studentSteps' : 'onlineSteps');
+    const defaultSteps = local ? (localInstructions[offer.method] || 'localSteps') : (offer.kind === 'student' ? 'studentSteps' : 'onlineSteps');
+    const steps = offer.steps?.[languageIndex()];
+    const canEstimate = offer.percent != null && offer.kind !== 'online';
     const source = fromUniBot ? 'unibot' : 'localSource';
     root.innerHTML = `
       ${hero(offer.name, summary, path, label('back'))}
@@ -309,9 +323,11 @@
           <div class="offer-detail-heading"><span class="offer-amount">${esc(benefit(offer))}</span>${saveButton(offer)}</div>
           <p class="offer-meta">${esc(label(offer.kind))} · ${esc(categoryName(offer.category))}</p>
           <p class="offer-verification">${esc(label(notice))}</p>
-          <h2>${esc(label('steps'))}</h2><p>${esc(label(steps))}</p>
           ${fromUniBot ? `<p class="offer-meta">${esc(label('method'))} · ${esc(methodName(offer.method))}</p>` : ''}
+          <h2>${esc(label('steps'))}</h2>
+          ${steps ? `<ol class="offer-steps">${steps.map(step => `<li>${esc(step)}</li>`).join('')}</ol>` : `<p>${esc(label(defaultSteps))}</p>`}
           <h2>${esc(label('offerCheck'))}</h2><p>${esc(conditions)}</p>
+          ${locationDetails(offer.locations)}
           <p class="offer-meta">${esc(label('source'))} ·
             ${fromUniBot || !offer.url ? esc(label(source)) : ''}
             ${offer.url ? `${fromUniBot ? '<br>' : ''}<a href="${esc(offer.url)}" target="_blank" rel="noopener noreferrer">${esc(label('official'))}${ic('external-link')}</a>` : ''}
@@ -319,12 +335,12 @@
           ${verificationDetails(offer.verification)}
           ${local ? programmeLinks() : ''}
         </section>
-        ${offer.percent == null ? '' : `<section class="function-panel offer-calculator">
+        ${canEstimate ? `<section class="function-panel offer-calculator">
           <h2>${esc(label('calc'))}</h2><p>${esc(label('estimate'))}</p>
           <label for="offerPrice">${esc(label('price'))}</label>
           <input id="offerPrice" type="text" inputmode="decimal" placeholder="100" maxlength="13">
           <output id="offerEstimate" for="offerPrice" role="status"></output>
-        </section>`}
+        </section>` : ''}
       </div>
       ${guide()}`;
     $('#offerPrice', root)?.addEventListener('input', event => showSavings(event.target, offer.percent));

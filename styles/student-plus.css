@@ -95,6 +95,7 @@
 .offer-card[data-category="education"] { --offer-tone: var(--fc-plan); }
 .offer-card[data-category="food"] { --offer-tone: var(--fc-timer); }
 .offer-card[data-category="software"],
+.offer-card[data-category="electronics"],
 .offer-card[data-category="cloud"] { --offer-tone: var(--fc-dash); }
 .offer-card[data-category="fashion"],
 .offer-card[data-category="beauty"] { --offer-tone: var(--fc-support); }
@@ -194,6 +195,20 @@
 .offer-description h2,
 .offer-description .offer-meta {
   margin-top: 14px;
+}
+.offer-steps,
+.offer-locations {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding-inline-start: 1.4em;
+  color: var(--color-text-secondary);
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+}
+.offer-locations span {
+  display: block;
+  font-size: var(--fs-xs);
 }
 .offer-description .offer-verification {
   margin-top: 12px;
