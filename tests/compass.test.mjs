@@ -52,6 +52,21 @@ test('Compass search supports AZ spelling, English and multi-word queries across
   assert.equal(U.searchCompass('   ').length, articles.length);
 });
 
+test('The campus guide renders all directed pairs and uses the chosen stops and addresses', () => {
+  const guide = articles.find(article => article.id === 'korpuslararasi-marsrut');
+  assert.equal(guide.campusRoutes.campuses.length, 4);
+  assert.equal(guide.campusRoutes.routes.length, 12);
+  const { U, rootElement } = fixture([guide]);
+  U.renderCompass({ tab: 'compass', view: 'article', id: guide.id, query: { from: 'semashko', to: 'nizami' } });
+  assert.match(rootElement.innerHTML, /1000119.*1000274/s);
+  assert.match(rootElement.innerHTML, /travelmode=walking/);
+  assert.match(rootElement.innerHTML, /Murtuza Muxtarov küçəsi 194/);
+  assert.equal(U.searchCompass('1000487').length, 1);
+  const invalid = structuredClone(guide);
+  invalid.campusRoutes.routes.pop();
+  assert.throws(() => validateCompass([invalid]), /every directed campus pair/);
+});
+
 test('Financial tables require translated, rectangular data and render safely in both article views', () => {
   const stipend = structuredClone(articles.find(a => a.id === 'teqaud-meblegleri'));
   const table = stipend.sections[0].table;

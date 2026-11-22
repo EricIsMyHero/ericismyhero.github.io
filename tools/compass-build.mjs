@@ -7,8 +7,33 @@ const categories = {
   rights: 'Tələbə hüquqları', military: 'Hərbi xidmətdən möhlət'
 };
 const officialDomains = ['unec.edu.az', 'dim.gov.az', 'edu.gov.az', 'portal.edu.az', 'eatda.edu.az', 'ttkf.edu.az', 'e-ttkf.edu.az',
-  'e-qanun.az', 'president.az', 'cbar.az', 'demx.gov.az', 'sosial.gov.az', 'erasmusplus.org.az'];
+  'e-qanun.az', 'president.az', 'cbar.az', 'demx.gov.az', 'sosial.gov.az', 'erasmusplus.org.az', 'ayna.gov.az', 'metro.gov.az'];
+const routeModes = { metro: 'Metro', bus: 'Avtobus', mixed: 'Metro + avtobus', walk: 'Piyada' };
 const pair = value => value && ['az', 'en'].every(lang => typeof value[lang] === 'string' && value[lang].trim());
+
+function validateCampusRoutes({ campuses, routes }, fail) {
+  if (!Array.isArray(campuses) || campuses.length < 2 || campuses.some(c => !c ||
+    typeof c.id !== 'string' || !/^[a-z][a-z-]*$/.test(c.id) || !pair(c.name) || typeof c.address !== 'string' || !c.address.trim())) {
+    fail('invalid campus names or addresses');
+  }
+  const ids = new Set(campuses.map(c => c.id));
+  if (ids.size !== campuses.length || !Array.isArray(routes) || routes.length !== ids.size * (ids.size - 1)) {
+    fail('one route is required for every directed campus pair');
+  }
+  const directions = new Set();
+  for (const route of routes) {
+    if (!route || route.from === route.to || !ids.has(route.from) || !ids.has(route.to) || directions.has(`${route.from}/${route.to}`)) {
+      fail('invalid or duplicate campus direction');
+    }
+    directions.add(`${route.from}/${route.to}`);
+    if (!Array.isArray(route.options) || route.options.some(option => !option || !Object.hasOwn(routeModes, option.mode) ||
+      !Array.isArray(option.steps) || !option.steps.length || option.steps.some(step => !pair(step))) ||
+      new Set(route.options.map(option => option.mode)).size !== route.options.length || !route.options.some(option => option.mode === 'bus')) {
+      fail('invalid bilingual route options');
+    }
+  }
+}
+
 export function validateCompass(articles) {
   if (!Array.isArray(articles) || !articles.length) throw new Error('Compass articles are missing.');
   const seen = new Set();
@@ -28,6 +53,7 @@ export function validateCompass(articles) {
         !Array.isArray(table.rows) || !table.rows.length || table.rows.some(row => !Array.isArray(row) || row.length !== table.headers.length || row.some(cell => !pair(cell))))) fail('invalid bilingual table');
     }
     if (!Array.isArray(a.steps) || a.steps.length < 3 || a.steps.some(s => !pair(s))) fail('action steps are required');
+    if (a.campusRoutes) validateCampusRoutes(a.campusRoutes, fail);
     if (!Array.isArray(a.sources) || !a.sources.length) fail('official sources are required');
     for (const source of a.sources) {
       if (!pair(source.title)) fail('source title needs both languages');
@@ -38,7 +64,7 @@ export function validateCompass(articles) {
   return articles;
 }
 export function loadCompass(root) {
-  return validateCompass(['data/compass-unec.json', 'data/compass-applicants.json', 'data/compass-students.json'].flatMap(file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'))));
+  return validateCompass(['data/compass-unec.json', 'data/compass-applicants.json', 'data/compass-students.json', 'data/compass-campus-routes.json'].flatMap(file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'))));
 }
 
 export function compassOutputs(root) {
@@ -50,12 +76,24 @@ export function compassOutputs(root) {
 <body><header><a href="/">UNEC Students Hub</a><a href="/compass/">Tələbə Kompası</a></header><main>${body}</main><footer>Müstəqil tələbə platforması. Qaydaları və tarixləri müraciətdən əvvəl rəsmi mənbədən yoxla. <a href="mailto:unecstudentshub@gmail.com">Əlaqə</a></footer></body></html>
 `;
   }
+  function publicRoutes(article) {
+    const guide = article.campusRoutes;
+    if (!guide) return '';
+    return `<section><h2>Korpusu seç</h2>${guide.routes.map(route => {
+      const from = guide.campuses.find(campus => campus.id === route.from);
+      const to = guide.campuses.find(campus => campus.id === route.to);
+      const query = new URLSearchParams({ from: from.id, to: to.id });
+      return `<details><summary>${esc(from.name.az)} → ${esc(to.name.az)}</summary>
+        <p>${esc(from.address)} → ${esc(to.address)}</p>${route.options.map(option => `<h3>${esc(routeModes[option.mode])}</h3><ol>${option.steps.map(step => `<li>${esc(step.az)}</li>`).join('')}</ol>`).join('')}
+        <p><a href="/#/compass/${article.id}?${esc(query.toString())}">Bu marşrutu tətbiqdə aç</a></p></details>`;
+    }).join('')}</section>`;
+  }
   for (const a of articles) {
     const href = '/compass/' + a.id + '/';
     const related = articles.filter(other => other.id !== a.id && other.category === a.category).slice(0, 3);
     const sections = a.sections.map(s => `<section><h2>${esc(s.heading.az)}</h2>${s.paragraphs.map(p => `<p>${esc(p.az)}</p>`).join('')}${s.bullets?.length ? '<ul>' + s.bullets.map(p => `<li>${esc(p.az)}</li>`).join('') + '</ul>' : ''}${s.table ? '<div class="compass-public-table"><table><thead><tr>' + s.table.headers.map(h => '<th scope="col">' + esc(h.az) + '</th>').join('') + '</tr></thead><tbody>' + s.table.rows.map(row => '<tr>' + row.map(cell => '<td>' + esc(cell.az) + '</td>').join('') + '</tr>').join('') + '</tbody></table></div>' : ''}</section>`).join('');
     outputs.set('compass/' + a.id + '/index.html', page(a.title.az, a.summary.az, href,
-      `<nav aria-label="Səhifə yolu"><a href="/compass/">Tələbə Kompası</a> / ${esc(categories[a.category])}</nav><h1>${esc(a.title.az)}</h1><p class="compass-public-lead">${esc(a.summary.az)}</p><p class="compass-public-meta">${a.readMinutes} dəqiqəlik oxu · Yenilənib: <time datetime="${a.updatedAt}">${a.updatedAt}</time></p><div class="actions"><a class="primary" href="/#/compass/${a.id}">Saytda oxu / Read in app</a></div>${sections}<section class="compass-public-steps"><h2>Növbəti addımlar</h2><ol>${a.steps.map(s => `<li>${esc(s.az)}</li>`).join('')}</ol></section><section><h2>Rəsmi mənbələr</h2><ul>${a.sources.map(source => `<li><a href="${esc(source.url)}" target="_blank" rel="noopener noreferrer">${esc(source.title.az)}</a></li>`).join('')}</ul><p>Tarix və şərtlər dəyişə bilər. Müraciətdən əvvəl rəsmi elanı və sənəd siyahısını yoxla.</p></section>${related.length ? '<section><h2>Əlaqəli məqalələr</h2><ul>' + related.map(other => `<li><a href="/compass/${other.id}/">${esc(other.title.az)}</a></li>`).join('') + '</ul></section>' : ''}`,
+      `<nav aria-label="Səhifə yolu"><a href="/compass/">Tələbə Kompası</a> / ${esc(categories[a.category])}</nav><h1>${esc(a.title.az)}</h1><p class="compass-public-lead">${esc(a.summary.az)}</p><p class="compass-public-meta">${a.readMinutes} dəqiqəlik oxu · Yenilənib: <time datetime="${a.updatedAt}">${a.updatedAt}</time></p><div class="actions"><a class="primary" href="/#/compass/${a.id}">Saytda oxu / Read in app</a></div>${publicRoutes(a)}${sections}<section class="compass-public-steps"><h2>Növbəti addımlar</h2><ol>${a.steps.map(s => `<li>${esc(s.az)}</li>`).join('')}</ol></section><section><h2>Rəsmi mənbələr</h2><ul>${a.sources.map(source => `<li><a href="${esc(source.url)}" target="_blank" rel="noopener noreferrer">${esc(source.title.az)}</a></li>`).join('')}</ul><p>${a.campusRoutes ? 'Xətlər və dayanacaqlar dəyişə bilər. Yola çıxmazdan əvvəl cari marşrutu yoxla.' : 'Tarix və şərtlər dəyişə bilər. Müraciətdən əvvəl rəsmi elanı və sənəd siyahısını yoxla.'}</p></section>${related.length ? '<section><h2>Əlaqəli məqalələr</h2><ul>' + related.map(other => `<li><a href="/compass/${other.id}/">${esc(other.title.az)}</a></li>`).join('') + '</ul></section>' : ''}`,
       { '@context': 'https://schema.org', '@type': 'Article', headline: a.title.az, description: a.summary.az, dateModified: a.updatedAt,
         inLanguage: 'az', url: origin + href, isAccessibleForFree: true, author: { '@type': 'Organization', name: 'UNEC Students Hub' },
         publisher: { '@type': 'Organization', name: 'UNEC Students Hub' }, mainEntityOfPage: origin + href }));

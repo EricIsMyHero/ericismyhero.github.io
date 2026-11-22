@@ -2126,5 +2126,494 @@ window.UNEC_COMPASS_DATA = [
         "url": "https://birpencere.unec.edu.az/index.php/az/"
       }
     ]
+  },
+  {
+    "id": "korpuslararasi-marsrut",
+    "category": "campuses",
+    "audience": [
+      "student",
+      "applicant"
+    ],
+    "icon": "compass",
+    "readMinutes": 2,
+    "updatedAt": "2026-11-22",
+    "featured": true,
+    "title": {
+      "az": "Korpuslararası Marşrut Bələdçisi",
+      "en": "Campus-to-campus route guide"
+    },
+    "summary": {
+      "az": "İçərişəhər, Gənclik, Nizami və Semaşko korpusları arasında metro, avtobus və piyada keçidlərini müqayisə et.",
+      "en": "Compare metro, bus and walking options between the İçərişəhər, Gənclik, Nizami and Semaşko campuses."
+    },
+    "campusRoutes": {
+      "campuses": [
+        {
+          "id": "iceriseher",
+          "name": {
+            "az": "İçərişəhər (I korpus)",
+            "en": "İçərişəhər (Campus I)"
+          },
+          "address": "İstiqlaliyyət küçəsi 6, Bakı"
+        },
+        {
+          "id": "genclik",
+          "name": {
+            "az": "Gənclik (II korpus)",
+            "en": "Gənclik (Campus II)"
+          },
+          "address": "Akademik Həsən Əliyev küçəsi 135, Bakı"
+        },
+        {
+          "id": "nizami",
+          "name": {
+            "az": "Nizami (III korpus)",
+            "en": "Nizami (Campus III)"
+          },
+          "address": "Murtuza Muxtarov küçəsi 194, Bakı"
+        },
+        {
+          "id": "semashko",
+          "name": {
+            "az": "Semaşko (IV korpus)",
+            "en": "Semaşko (Campus IV)"
+          },
+          "address": "Abbas Səhhət küçəsi 45A, Bakı"
+        }
+      ],
+      "routes": [
+        {
+          "from": "iceriseher",
+          "to": "genclik",
+          "options": [
+            {
+              "mode": "metro",
+              "steps": [
+                {
+                  "az": "İçərişəhər stansiyasına piyada get. Həzi Aslanov istiqamətindəki qatara min.",
+                  "en": "Walk to İçərişəhər station and board towards Həzi Aslanov."
+                },
+                {
+                  "az": "Sahil və 28 Maydan sonra Gənclikdə düş.",
+                  "en": "Alight at Gənclik after Sahil and 28 May."
+                }
+              ]
+            },
+            {
+              "mode": "bus",
+              "steps": [
+                {
+                  "az": "İçərişəhər m/st (1002256) dayanacağına piyada get. 10 nömrəli avtobusa Ağ Şəhər istiqamətində min, Azərbaycan Milli Konservatoriyasında düş.",
+                  "en": "Walk to İçərişəhər m/st (1002256). Take bus 10 towards Ağ Şəhər and alight at Azərbaycan Milli Konservatoriyası."
+                },
+                {
+                  "az": "Mərkəzi Bank dayanacağına (1001296) piyada keç. 4 nömrəli avtobusa Montin istiqamətində min və Gənclik Nəqliyyat Mübadilə Məntəqəsində (1003344) düş.",
+                  "en": "Walk to the Central Bank stop (1001296). Take bus 4 towards Montin and alight at Gənclik transport interchange (1003344)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "from": "iceriseher",
+          "to": "nizami",
+          "options": [
+            {
+              "mode": "metro",
+              "steps": [
+                {
+                  "az": "İçərişəhər stansiyasına piyada get, Həzi Aslanov istiqamətində min və 28 Mayda düş.",
+                  "en": "Walk to İçərişəhər station, board towards Həzi Aslanov and alight at 28 May."
+                },
+                {
+                  "az": "28 Mayda Dərnəgül istiqamətinə keç və növbəti stansiya olan Nizamidə düş.",
+                  "en": "At 28 May, change to a Dərnəgül-bound train and alight at the next station, Nizami."
+                }
+              ]
+            },
+            {
+              "mode": "bus",
+              "steps": [
+                {
+                  "az": "İçərişəhər m/st (1000629) dayanacağına piyada get və 65 nömrəli avtobusa 9-cu mikrorayon istiqamətində min.",
+                  "en": "Walk to İçərişəhər m/st (1000629) and board bus 65 towards 9-cu mikrorayon."
+                },
+                {
+                  "az": "Nizami metro stansiyası dayanacağında (1000487) düş.",
+                  "en": "Alight at Nizami metro stansiyası (1000487)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "from": "iceriseher",
+          "to": "semashko",
+          "options": [
+            {
+              "mode": "mixed",
+              "steps": [
+                {
+                  "az": "İçərişəhər stansiyasına piyada get və Həzi Aslanov istiqamətində min. 28 Mayda düş.",
+                  "en": "Walk to İçərişəhər station and board towards Həzi Aslanov. Alight at 28 May."
+                },
+                {
+                  "az": "28 May m/st dayanacağına (1000417) piyada keç. 88A avtobusuna Azadlıq prospekti istiqamətində min və Nəsimi Rayon Mühafizə İdarəsində (1001704) düş.",
+                  "en": "Walk to 28 May m/st bus stop (1000417). Take 88A towards Azadlıq prospekti and alight at Nəsimi Rayon Mühafizə İdarəsi (1001704)."
+                }
+              ]
+            },
+            {
+              "mode": "bus",
+              "steps": [
+                {
+                  "az": "İçərişəhər m/st (1000629) dayanacağına piyada get. 65 nömrəli avtobusa 9-cu mikrorayon istiqamətində min və Nizami metro stansiyasında (1000487) düş.",
+                  "en": "Walk to İçərişəhər m/st (1000629). Take bus 65 towards 9-cu mikrorayon and alight at Nizami metro stansiyası (1000487)."
+                },
+                {
+                  "az": "Eyni dayanacaqdan 33 nömrəli avtobusa Dərnəgül istiqamətində min. 1 nömrəli Kliniki Tibbi Mərkəzdə (1000983) düş.",
+                  "en": "From the same stop take bus 33 towards Dərnəgül. Alight at Clinical Medical Centre No. 1 (1000983)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "from": "genclik",
+          "to": "iceriseher",
+          "options": [
+            {
+              "mode": "metro",
+              "steps": [
+                {
+                  "az": "Gənclik stansiyasına piyada get və tabloda İçərişəhər yazılan qatara min.",
+                  "en": "Walk to Gənclik station and board a train marked İçərişəhər."
+                },
+                {
+                  "az": "28 May və Sahildən sonra İçərişəhərdə düş.",
+                  "en": "Alight at İçərişəhər after 28 May and Sahil."
+                }
+              ]
+            },
+            {
+              "mode": "bus",
+              "steps": [
+                {
+                  "az": "200 nömrəli Məktəb-Lisey Kompleksi dayanacağına (1000032) piyada get. 4 nömrəli avtobusa Ağ Şəhər istiqamətində min və Muğan bağında (1000327) düş.",
+                  "en": "Walk to 200 nömrəli Məktəb-Lisey Kompleksi (1000032). Take bus 4 towards Ağ Şəhər and alight at Muğan bağı (1000327)."
+                },
+                {
+                  "az": "Muğan bağı adlanan digər dayanacağa (1001142) piyada keç. 10 nömrəli avtobusa Yasamal MİDA istiqamətində min və İçərişəhər m/st-də (1000629) düş.",
+                  "en": "Walk to the other Muğan bağı stop (1001142). Take bus 10 towards Yasamal MİDA and alight at İçərişəhər m/st (1000629)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "from": "genclik",
+          "to": "nizami",
+          "options": [
+            {
+              "mode": "metro",
+              "steps": [
+                {
+                  "az": "Gənclik stansiyasına piyada get və Dərnəgül yazılan qatara min.",
+                  "en": "Walk to Gənclik station and board a train marked Dərnəgül."
+                },
+                {
+                  "az": "28 Maydan sonra Nizamidə düş.",
+                  "en": "Alight at Nizami after 28 May."
+                }
+              ]
+            },
+            {
+              "mode": "bus",
+              "steps": [
+                {
+                  "az": "200 nömrəli Məktəb-Lisey Kompleksi dayanacağına (1000032) piyada get. 33 nömrəli avtobusa 28 Mall istiqamətində min.",
+                  "en": "Walk to 200 nömrəli Məktəb-Lisey Kompleksi (1000032). Take bus 33 towards 28 Mall."
+                },
+                {
+                  "az": "Nizami metro stansiyası dayanacağında (1000274) düş.",
+                  "en": "Alight at Nizami metro stansiyası (1000274)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "from": "genclik",
+          "to": "semashko",
+          "options": [
+            {
+              "mode": "bus",
+              "steps": [
+                {
+                  "az": "200 nömrəli Məktəb-Lisey Kompleksi dayanacağına (1000032) piyada get. 3 nömrəli avtobusa Badamdar, yaxud 33 nömrəli avtobusa 28 Mall istiqamətində min.",
+                  "en": "Walk to 200 nömrəli Məktəb-Lisey Kompleksi (1000032). Take bus 3 towards Badamdar or bus 33 towards 28 Mall."
+                },
+                {
+                  "az": "Hər iki avtobusdan Qarayev adına 2 nömrəli Uşaq Xəstəxanasında (1000119) düş.",
+                  "en": "On either bus, alight at Qarayev adına 2 nömrəli Uşaq Xəstəxanası (1000119)."
+                }
+              ]
+            },
+            {
+              "mode": "walk",
+              "steps": [
+                {
+                  "az": "Vaxtın imkan verirsə, iki korpus arasındakı piyada yolu xəritədə aç.",
+                  "en": "If you have time, open the walking route between the two campuses on the map."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "from": "nizami",
+          "to": "iceriseher",
+          "options": [
+            {
+              "mode": "metro",
+              "steps": [
+                {
+                  "az": "Nizami stansiyasına piyada get. 28 May istiqamətinə min və növbəti stansiyada düş.",
+                  "en": "Walk to Nizami station. Board towards 28 May and alight at the next station."
+                },
+                {
+                  "az": "28 Mayda İçərişəhər istiqamətinə keç və Sahildən sonra İçərişəhərdə düş.",
+                  "en": "At 28 May, change to an İçərişəhər-bound train and alight at İçərişəhər after Sahil."
+                }
+              ]
+            },
+            {
+              "mode": "bus",
+              "steps": [
+                {
+                  "az": "Nizami metro stansiyası dayanacağına (1000274) piyada get. 65 nömrəli avtobusa Azneft istiqamətində min.",
+                  "en": "Walk to Nizami metro stansiyası (1000274). Board bus 65 towards Azneft."
+                },
+                {
+                  "az": "İçərişəhər m/st dayanacağında (1002256) düş.",
+                  "en": "Alight at İçərişəhər m/st (1002256)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "from": "nizami",
+          "to": "genclik",
+          "options": [
+            {
+              "mode": "metro",
+              "steps": [
+                {
+                  "az": "Nizami stansiyasına piyada get. Həzi Aslanov istiqamətindəki qatara min.",
+                  "en": "Walk to Nizami station. Board towards Həzi Aslanov."
+                },
+                {
+                  "az": "28 Maydan sonra Gənclikdə düş.",
+                  "en": "Alight at Gənclik after 28 May."
+                }
+              ]
+            },
+            {
+              "mode": "bus",
+              "steps": [
+                {
+                  "az": "Vergi Cinayətlərinin İbtidai Araşdırılması Departamenti dayanacağına (1001013) piyada get. 3 nömrəli avtobusa Dərnəgül istiqamətində min və 200 nömrəli Məktəb-Lisey Kompleksində (1000032) düş.",
+                  "en": "Walk to Vergi Cinayətlərinin İbtidai Araşdırılması Departamenti (1001013). Take bus 3 towards Dərnəgül and alight at 200 nömrəli Məktəb-Lisey Kompleksi (1000032)."
+                },
+                {
+                  "az": "Nizami stansiyasına daha yaxınsansa, 1000487 kodlu dayanacaqdan Dərnəgül istiqamətində 33 nömrəli avtobus da həmin məktəb dayanacağına gedir.",
+                  "en": "If you are closer to Nizami station, the Dərnəgül-bound bus 33 from stop 1000487 also serves the same school stop."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "from": "nizami",
+          "to": "semashko",
+          "options": [
+            {
+              "mode": "bus",
+              "steps": [
+                {
+                  "az": "Nizami metro stansiyası dayanacağına (1000487) piyada get. 33 nömrəli avtobusa Dərnəgül istiqamətində min.",
+                  "en": "Walk to Nizami metro stansiyası (1000487). Take bus 33 towards Dərnəgül."
+                },
+                {
+                  "az": "1 nömrəli Kliniki Tibbi Mərkəzdə (1000983) düş.",
+                  "en": "Alight at Clinical Medical Centre No. 1 (1000983)."
+                }
+              ]
+            },
+            {
+              "mode": "walk",
+              "steps": [
+                {
+                  "az": "Vaxtın imkan verirsə, iki korpus arasındakı piyada yolu xəritədə aç.",
+                  "en": "If you have time, open the walking route between the two campuses on the map."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "from": "semashko",
+          "to": "iceriseher",
+          "options": [
+            {
+              "mode": "mixed",
+              "steps": [
+                {
+                  "az": "Qarayev adına 2 nömrəli Uşaq Xəstəxanası dayanacağına (1000119) piyada get. 88A avtobusuna Ağ Şəhər istiqamətində min və 28 May m/st (1000417) dayanacağında düş.",
+                  "en": "Walk to Qarayev adına 2 nömrəli Uşaq Xəstəxanası (1000119). Take 88A towards Ağ Şəhər and alight at 28 May m/st (1000417)."
+                },
+                {
+                  "az": "Metronun 28 May stansiyasına piyada keç, İçərişəhər yazılan qatara min və son stansiyada düş.",
+                  "en": "Walk to 28 May metro station, board a train marked İçərişəhər and alight at its terminus."
+                }
+              ]
+            },
+            {
+              "mode": "bus",
+              "steps": [
+                {
+                  "az": "Qarayev adına 2 nömrəli Uşaq Xəstəxanası dayanacağına (1000119) piyada get. 33 nömrəli avtobusa 28 Mall istiqamətində min və Nizami metro stansiyası dayanacağında (1000274) düş.",
+                  "en": "Walk to Qarayev adına 2 nömrəli Uşaq Xəstəxanası (1000119). Take bus 33 towards 28 Mall and alight at Nizami metro stansiyası (1000274)."
+                },
+                {
+                  "az": "Eyni dayanacaqdan 65 nömrəli avtobusa Azneft istiqamətində min və İçərişəhər m/st-də (1002256) düş.",
+                  "en": "At the same stop, take bus 65 towards Azneft and alight at İçərişəhər m/st (1002256)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "from": "semashko",
+          "to": "genclik",
+          "options": [
+            {
+              "mode": "bus",
+              "steps": [
+                {
+                  "az": "Nəsimi Rayon Mühafizə İdarəsi dayanacağına (1001704) piyada get. 38 nömrəli avtobusa Keşlə istiqamətində min.",
+                  "en": "Walk to Nəsimi Rayon Mühafizə İdarəsi (1001704). Take bus 38 towards Keşlə."
+                },
+                {
+                  "az": "Gənclik m/st dayanacağında (1001111) düş.",
+                  "en": "Alight at Gənclik m/st (1001111)."
+                }
+              ]
+            },
+            {
+              "mode": "walk",
+              "steps": [
+                {
+                  "az": "Vaxtın imkan verirsə, iki korpus arasındakı piyada yolu xəritədə aç.",
+                  "en": "If you have time, open the walking route between the two campuses on the map."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "from": "semashko",
+          "to": "nizami",
+          "options": [
+            {
+              "mode": "bus",
+              "steps": [
+                {
+                  "az": "Qarayev adına 2 nömrəli Uşaq Xəstəxanası dayanacağına (1000119) piyada get. 33 nömrəli avtobusa 28 Mall istiqamətində min.",
+                  "en": "Walk to Qarayev adına 2 nömrəli Uşaq Xəstəxanası (1000119). Take bus 33 towards 28 Mall."
+                },
+                {
+                  "az": "Nizami metro stansiyası dayanacağında (1000274) düş.",
+                  "en": "Alight at Nizami metro stansiyası (1000274)."
+                }
+              ]
+            },
+            {
+              "mode": "walk",
+              "steps": [
+                {
+                  "az": "Vaxtın imkan verirsə, iki korpus arasındakı piyada yolu xəritədə aç.",
+                  "en": "If you have time, open the walking route between the two campuses on the map."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "sections": [
+      {
+        "heading": {
+          "az": "Hansı variantı seçmək daha əlverişlidir?",
+          "en": "Choosing a route"
+        },
+        "paragraphs": [
+          {
+            "az": "İçərişəhər, Gənclik və Nizami arasında əvvəlcə metroya bax. Semaşko ilə Gənclik və Nizami arasında birbaşa avtobus və piyada variantını müqayisə et. Gözləmə vaxtı və tıxac hansı variantın daha tez olduğunu dəyişir.",
+            "en": "Check the metro first for trips between İçərişəhər, Gənclik and Nizami. For Semaşko trips to Gənclik or Nizami, compare the direct bus with walking. Waiting times and traffic determine which option is faster."
+          }
+        ]
+      },
+      {
+        "heading": {
+          "az": "Dayanacağı və istiqaməti necə ayırd etməli?",
+          "en": "Identifying the stop and direction"
+        },
+        "paragraphs": [
+          {
+            "az": "Mötərizədəki nömrə dayanacağın AYNA kodudur. Eyniadlı dayanacaqların kodu gediş və dönüşdə fərqlənə bilər. Avtobusun xətt nömrəsini və son dayanacağını, metroda isə qatarın istiqamətini tabloda yoxla.",
+            "en": "The number in parentheses is the AYNA stop code. Outbound and return stops with the same name may have different codes. Check the bus number and destination and read the train direction on the metro display."
+          }
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "az": "Cədvəlində korpus nömrəsini və ünvanı yoxla.",
+        "en": "Check the campus number and address in your timetable."
+      },
+      {
+        "az": "Getdiyin istiqaməti seç və ilk dayanacağın koduna bax.",
+        "en": "Select your direction and check the first stop code."
+      },
+      {
+        "az": "Yola çıxmazdan əvvəl xəritədə cari xətləri və gəliş vaxtını müqayisə et.",
+        "en": "Compare current routes and arrival times on the map before leaving."
+      }
+    ],
+    "sources": [
+      {
+        "title": {
+          "az": "UNEC — korpuslar və qeydiyyat ünvanları",
+          "en": "UNEC — campuses and registration addresses"
+        },
+        "url": "https://news.unec.edu.az/elan/138-gebul/15395-unec-de-abituriyentlerin-sened-gebuluna-destek-merkezi-fealiyyete-bashlayir"
+      },
+      {
+        "title": {
+          "az": "AYNA xəritəsi — avtobus xətləri və dayanacaqlar",
+          "en": "AYNA map — bus routes and stops"
+        },
+        "url": "https://map.ayna.gov.az/"
+      },
+      {
+        "title": {
+          "az": "Bakı Metropoliteni — stansiyalar və elanlar",
+          "en": "Baku Metro — stations and service updates"
+        },
+        "url": "https://metro.gov.az/"
+      }
+    ]
   }
 ];

@@ -43,6 +43,47 @@ body[data-route="compass"] #ai-button { visibility:hidden;pointer-events:none; }
 .compass-library-footer p { margin: 0; }
 .compass-library-footer a { color: var(--accent2); }
 
+.compass-route-shortcut {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  margin-bottom: 16px;
+  padding: 10px 14px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--r-md);
+  background: var(--color-primary-soft);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  text-decoration: none;
+}
+.compass-route-shortcut .ic { color: var(--accent2); }
+.compass-route-shortcut .ic:last-child { margin-inline-start: auto; }
+.compass-route-shortcut:hover { border-color: var(--accent2); }
+.compass-route-controls { display: grid; grid-template-columns: minmax(0, 1fr) 44px minmax(0, 1fr); align-items: end; gap: 10px; }
+.compass-route-controls label { color: var(--color-text-primary); font-weight: 650; }
+.compass-route-swap { color: var(--accent2); }
+.compass-route-address { margin: 12px 0; color: var(--color-text-secondary); font-size: var(--fs-sm); line-height: 1.55; }
+.compass-route-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.compass-route-options > section {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--color-surface-elevated);
+}
+.compass-route-options h3 { margin: 0 0 7px; color: var(--accent2); font-size: var(--fs-md); }
+.compass-route-options ol { margin: 0; padding-inline-start: 21px; color: var(--color-text-secondary); font-size: var(--fs-sm); line-height: 1.6; }
+.compass-route-options li + li { margin-top: 6px; }
+.compass-route-map { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--accent2); font-size: var(--fs-sm); font-weight: 650; }
+@media (max-width: 539px) {
+  .compass-route-controls { grid-template-columns: minmax(0, 1fr) 44px; align-items: center; }
+  .compass-route-controls > .compass-category-select:last-child { grid-column: 1; grid-row: 2; }
+  .compass-route-swap { grid-column: 2; grid-row: 1 / span 2; }
+  .compass-route-options { grid-template-columns: minmax(0, 1fr); }
+}
+
 .compass-reading { max-width: 900px; margin-inline: auto; }
 .compass-back { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin-bottom: 18px; color: var(--color-text-secondary); text-decoration: none; font-size: var(--fs-sm); }
 .compass-back .ic { width: 19px; height: 19px; }

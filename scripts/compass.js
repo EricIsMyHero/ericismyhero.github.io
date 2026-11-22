@@ -32,6 +32,10 @@
       missing: 'Məqalə tapılmadı', missingSub: 'Keçid dəyişmiş ola bilər. Digər mövzulara baxa bilərsən.',
       loading: 'Məqalələr hazırlanır', loadingSub: 'Bir qədər sonra yenidən yoxla.',
       suggestion: 'Axtardığın mövzu yoxdur?', suggestLink: 'Mövzu təklif et', suggestSubject: 'Tələbə Kompası üçün mövzu təklifi',
+      campusFrom: 'Haradan', campusTo: 'Hara', campusSwap: 'İstiqaməti dəyiş', campusStart: 'Başlanğıc', campusArrival: 'Son piyada hissə',
+      metro: 'Metro', bus: 'Avtobus', mixed: 'Metro + avtobus', walk: 'Piyada',
+      transitMap: 'Cari marşrutu xəritədə yoxla', walkingMap: 'Piyada yolu aç',
+      routeNote: 'Xətlər və dayanacaqlar dəyişə bilər. Yola çıxmazdan əvvəl cari marşrutu yoxla.',
       local: 'Saxlanılan məqalələr bu brauzerdə yadda qalır.', listAria: 'Məqalə filtrləri', external: 'yeni pəncərədə açılır'
     },
     en: {
@@ -48,6 +52,10 @@
       missing: 'Article not found', missingSub: 'The link may have changed. You can explore the other topics.',
       loading: 'Articles are being prepared', loadingSub: 'Please check again later.',
       suggestion: 'Can’t find your topic?', suggestLink: 'Suggest a topic', suggestSubject: 'Topic suggestion for Student Compass',
+      campusFrom: 'From', campusTo: 'To', campusSwap: 'Reverse direction', campusStart: 'Start address', campusArrival: 'Final walk',
+      metro: 'Metro', bus: 'Bus', mixed: 'Metro + bus', walk: 'Walk',
+      transitMap: 'Check current map directions', walkingMap: 'Open walking directions',
+      routeNote: 'Routes and stops can change. Check current directions before leaving.',
       local: 'Saved articles stay in this browser.', listAria: 'Article filters', external: 'opens in a new window'
     }
   };
@@ -106,6 +114,10 @@
       for (const cell of [...(section.table?.headers || []), ...(section.table?.rows || []).flat()]) values.push(cell?.az, cell?.en);
     }
     for (const step of article.steps || []) values.push(step?.az, step?.en);
+    for (const campus of article.campusRoutes?.campuses || []) values.push(campus.name.az, campus.name.en, campus.address);
+    for (const route of article.campusRoutes?.routes || []) {
+      for (const option of route.options) for (const step of option.steps) values.push(step.az, step.en);
+    }
     return U.normAz(values.filter(Boolean).join(' '));
   }
   function searchArticles(query) {
@@ -156,7 +168,9 @@
     state = normalizeState(route.query); lastList = '/compass' + queryFor(state);
     U.currentCompassTitle = l('title');
     const categoriesPresent = categoryOrder.filter(id => data().some(article => article.category === id));
+    const guide = data().find(article => article.campusRoutes);
     root.innerHTML = `${listHero(l('title'), l('intro'))}
+      ${guide ? `<a class="compass-route-shortcut" href="#${e(articlePath(guide))}">${icon(guide.icon)}<span>${e(text(guide.title))}</span>${icon('chevron-right')}</a>` : ''}
       <section class="function-panel" aria-label="${e(l('listAria'))}">
         <div class="compass-audience" role="group" aria-label="${e(l('listAria'))}">${[['all', 'all'], ['student', 'students'], ['applicant', 'applicants']].map(([value, label]) => `<button class="chip" type="button" data-compass-audience="${value}" aria-pressed="${value === state.audience}">${e(l(label))}</button>`).join('')}</div>
         <label class="compass-search-label" for="compassSearch">${e(l('search'))}</label>
@@ -177,6 +191,58 @@
     if (!table) return '';
     return `<div class="compass-table-wrap"><table><thead><tr>${table.headers.map(h => `<th scope="col">${e(text(h))}</th>`).join('')}</tr></thead><tbody>${table.rows.map(row => `<tr>${row.map(cell => `<td>${e(text(cell))}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
   }
+  function campusPair(guide, query) {
+    const from = guide.campuses.find(campus => campus.id === query.from) || guide.campuses[0];
+    const to = guide.campuses.find(campus => campus.id === query.to && campus !== from) || guide.campuses.find(campus => campus !== from);
+    return { from, to };
+  }
+  function directionsLink(from, to, mode, label) {
+    const params = new URLSearchParams({ api: '1', origin: from.address, destination: to.address, travelmode: mode });
+    return `<a class="compass-route-map" href="https://www.google.com/maps/dir/?${e(params.toString())}" target="_blank" rel="noopener noreferrer">${e(l(label))}${icon('external-link')}</a>`;
+  }
+  function campusResult(guide, { from, to }) {
+    const route = guide.routes.find(route => route.from === from.id && route.to === to.id);
+    return `<p class="compass-route-address"><strong>${e(l('campusStart'))}</strong> · ${e(from.address)}</p>
+      <div class="compass-route-options">${route.options.map(option => `<section><h3>${e(l(option.mode))}</h3>
+        <ol>${option.steps.map(step => `<li>${e(text(step))}</li>`).join('')}</ol>
+        ${option.mode === 'walk' ? directionsLink(from, to, 'walking', 'walkingMap') : ''}</section>`).join('')}</div>
+      <p class="compass-route-address"><strong>${e(l('campusArrival'))}</strong> · ${e(to.address)}</p>
+      ${directionsLink(from, to, 'transit', 'transitMap')}`;
+  }
+  function campusChooser(article, query) {
+    const guide = article.campusRoutes;
+    if (!guide) return '';
+    const selection = campusPair(guide, query);
+    const select = (id, value, excluded, label) => `<div class="compass-category-select"><label for="${id}">${e(l(label))}</label>
+      <select id="${id}" data-compass-campus-select aria-controls="compassRouteResult">${guide.campuses.map(campus =>
+        `<option value="${campus.id}"${value === campus.id ? ' selected' : ''}${excluded === campus.id ? ' disabled' : ''}>${e(text(campus.name))}</option>`).join('')}</select></div>`;
+    return `<section class="function-panel compass-route-picker" aria-labelledby="compassHeading">
+      <div class="compass-route-controls">
+        ${select('compassRouteFrom', selection.from.id, selection.to.id, 'campusFrom')}
+        <button class="icon-btn icon-btn--filled compass-route-swap" type="button" data-compass-campus-swap aria-label="${e(l('campusSwap'))}" title="${e(l('campusSwap'))}">${icon('rotate')}</button>
+        ${select('compassRouteTo', selection.to.id, selection.from.id, 'campusTo')}
+      </div>
+      <div id="compassRouteResult" aria-live="polite">${campusResult(guide, selection)}</div>
+    </section>`;
+  }
+  function changeCampusRoute(swap = false) {
+    const route = U.route;
+    const guide = data().find(article => article.id === route?.id)?.campusRoutes;
+    const start = document.getElementById('compassRouteFrom');
+    const end = document.getElementById('compassRouteTo');
+    if (!guide || !start || !end) return;
+    const selection = campusPair(guide, swap ? { from: end.value, to: start.value } : { from: start.value, to: end.value });
+    const { from, to } = selection;
+    for (const option of start.options) option.disabled = option.value === to.id;
+    for (const option of end.options) option.disabled = option.value === from.id;
+    start.value = from.id;
+    end.value = to.id;
+    document.getElementById('compassRouteResult').innerHTML = campusResult(guide, selection);
+    const query = { ...route.query, from: from.id, to: to.id };
+    const hash = '#/compass/' + encodeURIComponent(route.id) + '?' + new URLSearchParams(query);
+    history.replaceState(history.state, '', hash);
+    Object.assign(route, { query, hash });
+  }
   function articleView(root, route) {
     state = normalizeState(route.query); lastList = '/compass' + queryFor(state);
     const article = data().find(item => item.id === route.id);
@@ -191,10 +257,11 @@
     root.innerHTML = `<div class="compass-reading"><a class="compass-back" href="#${e(lastList)}">${icon('arrow-left')}<span>${e(l('back'))}</span></a>
       <article class="compass-article"><header class="compass-article-header"><p class="compass-category-label">${icon(category(article.category).icon)}${e(text(category(article.category)))}</p><h1 id="compassHeading" tabindex="-1">${e(text(article.title))}</h1><p class="compass-lead">${e(text(article.summary))}</p><div class="compass-article-meta"><span>${e(l('minutes').replace('{n}', article.readMinutes))}</span><span>${e(l('updated'))}: <time datetime="${e(article.updatedAt)}">${e(date(article.updatedAt))}</time></span></div>
       <div class="compass-article-actions">${saveButton(article, false)}<button class="compass-share" type="button" data-compass-share="${e(article.id)}">${icon('external-link')}<span>${e(l('share'))}</span></button></div></header>
-      ${article.sections?.length > 1 ? `<details class="compass-toc"><summary>${e(l('toc'))}${icon('chevron-down')}</summary><ol>${article.sections.map((section, index) => `<li><button type="button" data-compass-section="${index}">${e(text(section.heading))}</button></li>`).join('')}</ol></details>` : ''}
+      ${campusChooser(article, route.query)}
+      ${!article.campusRoutes && article.sections?.length > 1 ? `<details class="compass-toc"><summary>${e(l('toc'))}${icon('chevron-down')}</summary><ol>${article.sections.map((section, index) => `<li><button type="button" data-compass-section="${index}">${e(text(section.heading))}</button></li>`).join('')}</ol></details>` : ''}
       <div class="compass-article-body">${(article.sections || []).map((section, index) => `<section aria-labelledby="compass-section-${index}"><h2 id="compass-section-${index}" tabindex="-1">${e(text(section.heading))}</h2>${(section.paragraphs || []).map(value => `<p>${e(text(value))}</p>`).join('')}${section.bullets?.length ? `<ul>${section.bullets.map(value => `<li>${e(text(value))}</li>`).join('')}</ul>` : ''}${sectionTable(section.table)}</section>`).join('')}</div>
       ${article.steps?.length ? `<section class="compass-steps" aria-labelledby="compassStepsTitle"><h2 id="compassStepsTitle">${icon('clipboard-check')}${e(l('steps'))}</h2><ol>${article.steps.map(value => `<li>${e(text(value))}</li>`).join('')}</ol></section>` : ''}
-      <section class="compass-sources" aria-labelledby="compassSourcesTitle"><h2 id="compassSourcesTitle">${e(l('sources'))}</h2><ul>${(article.sources || []).map(sourceLink).join('')}</ul><p>${e(l('note'))}</p></section></article>
+      <section class="compass-sources" aria-labelledby="compassSourcesTitle"><h2 id="compassSourcesTitle">${e(l('sources'))}</h2><ul>${(article.sources || []).map(sourceLink).join('')}</ul><p>${e(l(article.campusRoutes ? 'routeNote' : 'note'))}</p></section></article>
       ${related.length ? `<section class="compass-related" aria-labelledby="compassRelatedTitle"><h2 id="compassRelatedTitle">${e(l('related'))}</h2><div class="compass-card-grid">${related.map(card).join('')}</div></section>` : ''}</div>`;
   }
   function render(route) {
@@ -241,11 +308,13 @@
     state.q = event.target.value; syncUrl(); results();
   });
   document.addEventListener('change', event => {
+    if (event.target.hasAttribute('data-compass-campus-select')) { changeCampusRoute(); return; }
     if (event.target.id !== 'compassCategory') return;
     state.category = event.target.value; syncUrl(); results();
   });
   document.addEventListener('click', event => {
     const target = event.target.closest('#compassRoot button'); if (!target) return;
+    if (target.hasAttribute('data-compass-campus-swap')) { changeCampusRoute(true); return; }
     if (target.hasAttribute('data-compass-save')) { toggleSave(target.dataset.compassSave); return; }
     if (target.hasAttribute('data-compass-share')) { share(target.dataset.compassShare); return; }
     if (target.hasAttribute('data-compass-section')) {
