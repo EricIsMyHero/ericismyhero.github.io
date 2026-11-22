@@ -44,8 +44,9 @@
     allMethods: ['Bütün üsullar', 'All methods'],
     qr: ['TələbəPlus QR', 'TələbəPlus QR'],
     cardPayment: ['TələbəPlus kartı', 'TələbəPlus card'],
+    paycity: ['Visa PayCity', 'Visa PayCity'],
+    specialTerms: ['Xüsusi şərtlər', 'Special terms'],
     studentId: ['Tələbə vəsiqəsi', 'Student ID'],
-    methodUnknown: ['Mənbədə dəqiq göstərilməyib', 'Unspecified in the source'],
     filter: ['Təklif filtrləri', 'Offer filters'],
     sort: ['Sıralama', 'Sort by'],
     catalog: ['Kataloq sırası', 'Catalogue order'],
@@ -56,11 +57,6 @@
     remove: ['Saxlanılanlardan çıxar', 'Remove from saved'],
     show: ['Şərtlərə bax', 'View details'],
     back: ['Təkliflərə qayıt', 'Back to offers'],
-    verify: ['Cari şərtləri yoxlayın', 'Check current terms'],
-    verified: ['Proqramın rəsmi mənbəyi yoxlanıb', 'Official programme source checked'],
-    verificationSource: ['Yoxlanmış mənbəyə bax', 'View checked source'],
-    example: ['Şəkildəki təklif', 'Screenshot example'],
-    unibot: ['UniBot ekran görüntüsü', 'UniBot screenshot'],
     special: ['Xüsusi təklif', 'Special offer'],
     single: ['1 təklif', '1 offer'],
     count: ['{n} təklif', '{n} offers'],
@@ -69,13 +65,8 @@
     notFound: ['Təklif tapılmadı', 'Offer not found'],
     reset: ['Filtrləri sıfırla', 'Reset filters'],
     guide: ['Endirimdən necə istifadə etməli?', 'How to use the offers'],
-    source: ['Mənbə', 'Source'],
     programmeLinks: ['Tətbiq və kart məlumatı', 'App and card information'],
-    localSource: ['Təqdim edilmiş ekran görüntüsü', 'Supplied screenshot'],
-    localNotice: ['Şəkildə göstərilən təklifdir. Aktivlik, son tarix və iştirak edən məntəqələr ayrıca təsdiqlənməlidir.', 'This offer appears in the screenshot. Confirm availability, expiry and participating locations separately.'],
-    unibotNotice: ['Məlumat UniBot ekran görüntüsündən götürülüb. Cari aktivliyi, qiyməti və iştirak edən məntəqələri provayderdən təsdiqləyin.', 'This entry comes from a UniBot screenshot. Confirm current availability, pricing and participating locations with the provider.'],
-    onlineNotice: ['Tələbə statusunu provayder ayrıca yoxlayır. Uyğunluq, plan və qiymət şərtlərinə rəsmi səhifədə baxın.', 'The provider verifies student status separately. Check eligibility, plan details and prices on its official site.'],
-    official: ['Rəsmi səhifəni aç', 'Open official site'],
+    offerSite: ['Sayta keç', 'Visit website'],
     steps: ['İstifadə qaydası', 'How to use it'],
     locations: ['Ünvanlar', 'Locations'],
     hours: ['İş saatları', 'Hours'],
@@ -105,7 +96,7 @@
     estimate: ['Faiz bütün məbləğə tətbiq olunarsa, təxmini nəticə.', 'Estimate if the discount applies to the full amount.'],
     savings: ['Qənaət', 'Savings'],
     final: ['Təxmini ödəniş', 'Estimated total'],
-    summary: ['UniBot və digər ekran görüntülərindəki təkliflərin cari şərtlərini istifadə etməzdən əvvəl yoxlayın.', 'Confirm current terms before using an offer shown in UniBot or other screenshots.'],
+    summary: ['Təklifdən istifadə etməzdən əvvəl cari qiyməti və uyğunluq şərtlərini dəqiqləşdirin.', 'Confirm current pricing and eligibility before using an offer.'],
     partnerConditions: ['Filial, məhsul və kampaniya şərtləri', 'Branches, products and promotion rules'],
     partnerText: ['Alışdan əvvəl endirimin düzgün filiala, məhsula və ya tarifə aid olduğunu yoxlayın. Minimum məbləğ, maksimum endirim, taksit və digər kampaniyalarla birlikdə istifadə qaydalarını tərəfdaşdan soruşun.', 'Confirm that the discount applies to the branch, product or plan you want. Ask about minimum spend, discount caps, instalments and combining offers.'],
     cardSafety: ['Kart və hesab məlumatlarının qorunması', 'Protecting card and account information'],
@@ -114,9 +105,9 @@
   const languageIndex = () => document.documentElement.lang === 'en' ? 1 : 0;
   const label = key => labels[key][languageIndex()];
   const categoryName = key => categoryLabels[key][languageIndex()];
-  const methodNames = { qr: 'qr', card: 'cardPayment', 'student-id': 'studentId', online: 'onlineShort' };
-  const methodName = key => label(methodNames[key] || 'methodUnknown');
-  const methodsForKind = { card: ['qr', 'card'], student: ['student-id', 'online'] };
+  const methodNames = { qr: 'qr', card: 'cardPayment', paycity: 'paycity', special: 'specialTerms', 'student-id': 'studentId', online: 'onlineShort' };
+  const methodName = key => label(methodNames[key]);
+  const methodsForKind = { card: ['qr', 'card', 'paycity', 'special'], student: ['student-id', 'online'] };
   const localInstructions = { qr: 'qrSteps', card: 'cardSteps' };
   const copy = offer => languageIndex() ? offer.en : offer.az;
   const path = '/student-plus';
@@ -152,15 +143,13 @@
 
   function card(offer) {
     const [summary] = copy(offer);
-    const sourceStatus = offer.verification ? 'verified' : (offer.source === 'unibot' ? 'unibot' :
-      (offer.kind === 'card' ? 'example' : 'verify'));
     return `<article class="offer-card" data-category="${offer.category}">
       <div class="offer-card-top">
         <span class="offer-mark" aria-hidden="true">${esc(offer.initials)}</span>
         <span class="offer-amount">${esc(benefit(offer))}</span>
         ${saveButton(offer)}
       </div>
-      <div class="offer-meta">${esc(categoryName(offer.category))} · ${esc(label(sourceStatus))}</div>
+      <div class="offer-meta">${esc(categoryName(offer.category))}</div>
       <h2>${esc(offer.name)}</h2>
       <p>${esc(summary)}</p>
       ${offer.method && offer.kind !== 'online' ? `<div class="offer-meta offer-method">${esc(methodName(offer.method))}</div>` : ''}
@@ -285,22 +274,15 @@
     out.textContent = `${label('savings')} ${money.format(savedCents / 100)} · ${label('final')} ${money.format((amount - savedCents) / 100)}`;
   }
 
-  function verificationDetails(verification) {
-    if (!verification) return '';
-    const { checkedAt, url } = verification;
-    const date = new Intl.DateTimeFormat(languageIndex() ? 'en-GB' : 'az-AZ', {
-      dateStyle: 'long', timeZone: 'UTC',
-    }).format(new Date(checkedAt));
-    return `<p class="offer-meta">${esc(label('verified'))} · <time datetime="${esc(checkedAt)}">${esc(date)}</time><br>
-      <a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label('verificationSource'))}${ic('external-link')}</a>
-    </p>`;
+  function workingHours(hours) {
+    const value = Array.isArray(hours) ? hours[languageIndex()] : hours;
+    return `${esc(label('hours'))} · ${esc(value)}`;
   }
 
-  function locationDetails(locations) {
-    if (!locations?.length) return '';
-    return `<h2>${esc(label('locations'))}</h2><ul class="offer-locations">${locations.map(({ address, hours }) => `
-      <li>${esc(address)}${hours ? `<span>${esc(label('hours'))} · ${esc(hours)}</span>` : ''}</li>`).join('')}
-    </ul>`;
+  function locationDetails(offer) {
+    const places = offer.locations?.map(({ address }) => `<li>${esc(address)}</li>`).join('');
+    return `${places ? `<h2>${esc(label('locations'))}</h2><ul class="offer-locations">${places}</ul>` : ''}
+      ${offer.hours ? `<p class="offer-meta">${workingHours(offer.hours)}</p>` : ''}`;
   }
 
   function detail(offer) {
@@ -310,29 +292,21 @@
     }
     const [summary, conditions] = copy(offer);
     const local = offer.kind === 'card';
-    const fromUniBot = offer.source === 'unibot';
-    const notice = fromUniBot ? 'unibotNotice' : (local ? 'localNotice' : 'onlineNotice');
     const defaultSteps = local ? (localInstructions[offer.method] || 'localSteps') : (offer.kind === 'student' ? 'studentSteps' : 'onlineSteps');
     const steps = offer.steps?.[languageIndex()];
     const canEstimate = offer.percent != null && offer.kind !== 'online';
-    const source = fromUniBot ? 'unibot' : 'localSource';
     root.innerHTML = `
       ${hero(offer.name, summary, path, label('back'))}
       <div class="offer-detail-grid">
         <section class="function-panel offer-description">
           <div class="offer-detail-heading"><span class="offer-amount">${esc(benefit(offer))}</span>${saveButton(offer)}</div>
           <p class="offer-meta">${esc(label(offer.kind))} · ${esc(categoryName(offer.category))}</p>
-          <p class="offer-verification">${esc(label(notice))}</p>
-          ${fromUniBot ? `<p class="offer-meta">${esc(label('method'))} · ${esc(methodName(offer.method))}</p>` : ''}
+          ${offer.method ? `<p class="offer-meta">${esc(label('method'))} · ${esc(methodName(offer.method))}</p>` : ''}
           <h2>${esc(label('steps'))}</h2>
           ${steps ? `<ol class="offer-steps">${steps.map(step => `<li>${esc(step)}</li>`).join('')}</ol>` : `<p>${esc(label(defaultSteps))}</p>`}
           <h2>${esc(label('offerCheck'))}</h2><p>${esc(conditions)}</p>
-          ${locationDetails(offer.locations)}
-          <p class="offer-meta">${esc(label('source'))} ·
-            ${fromUniBot || !offer.url ? esc(label(source)) : ''}
-            ${offer.url ? `${fromUniBot ? '<br>' : ''}<a href="${esc(offer.url)}" target="_blank" rel="noopener noreferrer">${esc(label('official'))}${ic('external-link')}</a>` : ''}
-          </p>
-          ${verificationDetails(offer.verification)}
+          ${locationDetails(offer)}
+          ${offer.url ? `<p class="offer-meta"><a href="${esc(offer.url)}" target="_blank" rel="noopener noreferrer">${esc(label('offerSite'))}${ic('external-link')}</a></p>` : ''}
           ${local ? programmeLinks() : ''}
         </section>
         ${canEstimate ? `<section class="function-panel offer-calculator">

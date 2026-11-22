@@ -1,10 +1,8 @@
-// Local examples are transcribed from the supplied screenshots. Their dates,
-// eligible branches and redemption rules must be confirmed with the programme.
 (function () {
   const local = (id, name, initials, category, percent, az, en) =>
     ({ id, name, initials, category, percent, kind: 'card', az, en });
-  const online = (id, name, initials, category, url, az, en, verification) =>
-    ({ id, name, initials, category, url, kind: 'online', az, en, verification });
+  const online = (id, name, initials, category, url, az, en) =>
+    ({ id, name, initials, category, url, kind: 'online', az, en });
 
   window.UNEC_STUDENT_OFFERS = [
     local('az-tercume', 'AZ-Tərcümə Mərkəzi', 'AZ', 'services', 15,
@@ -14,41 +12,33 @@
       ['Dizayn təhsili və təlim proqramları.', 'Seçdiyiniz kursu, qrupu və ödəniş planını göstərin. Endirimin bütün təhsil haqqına, qeydiyyata və ya yalnız müəyyən paketə tətbiq olunduğunu öyrənin.'],
       ['Design education and training programmes.', 'Specify the course, cohort and payment plan. Confirm whether the offer covers tuition, registration or only a specific package.']),
     local('citynet', 'CityNet', 'CN', 'internet', 25,
-      ['İnternet xidmətləri üzrə şəkildə göstərilən təklif.', 'Ünvanınız üzrə əhatəni, uyğun tarifi və endirim müddətini soruşun. Qoşulma, avadanlıq və kampaniyadan sonrakı aylıq qiyməti ayrıca yoxlayın.'],
-      ['Internet service offer shown in the screenshot.', 'Ask about coverage at your address, eligible plans and the discount period. Check setup, equipment and the monthly price after the offer ends.']),
+      ['İnternet xidmətləri üzrə tələbə endirimi.', 'Ünvanınız üzrə əhatəni, uyğun tarifi və endirim müddətini soruşun. Qoşulma, avadanlıq və kampaniyadan sonrakı aylıq qiyməti ayrıca yoxlayın.'],
+      ['Student discount on internet service.', 'Ask about coverage at your address, eligible plans and the discount period. Check setup, equipment and the monthly price after the offer ends.']),
     local('nirvana-beauty', 'Nirvana Beauty Shop', 'NB', 'beauty', 10,
       ['Gözəllik və qulluq məhsulları.', 'Məhsulu seçdikdən sonra endirimə daxil olan brendləri və filialları dəqiqləşdirin. Əlavə kampaniyalı məhsullarda tətbiq qaydasını kassadan soruşun.'],
       ['Beauty and personal-care products.', 'Confirm the eligible brands and branches. Ask at checkout how the offer applies to products already on promotion.']),
     local('penti-city-park', 'Penti', 'PE', 'fashion', 5,
-      ['Şəkildə Penti City Park nöqtəsi göstərilir.', 'City Park filialında alışdan əvvəl məhsul kateqoriyasını və yekun qiyməti yoxlayın. Digər filiallar, onlayn alış və qaytarma üçün şərtləri ayrıca dəqiqləşdirin.'],
-      ['The screenshot identifies the Penti City Park location.', 'Confirm the product category and final price at City Park before paying. Ask separately about other branches, online purchases and returns.']),
+      ['Penti-nin City Park filialında tələbə endirimi.', 'City Park filialında alışdan əvvəl məhsul kateqoriyasını və yekun qiyməti yoxlayın. Digər filiallar, onlayn alış və qaytarma üçün şərtləri ayrıca dəqiqləşdirin.'],
+      ['Student discount at Penti City Park.', 'Confirm the product category and final price at City Park before paying. Ask separately about other branches, online purchases and returns.']),
     local('focus-optika', 'Focus Optika', 'FO', 'health', 10,
-      ['Optika məhsulları üzrə şəkildə göstərilən təklif.', 'Çərçivə, linza və ölçü xidmətlərinin hər biri üzrə qiyməti soruşun. Endirimin sifarişin hansı hissəsinə aid olduğunu ödənişdən əvvəl dəqiqləşdirin.'],
-      ['Optical products offer shown in the screenshot.', 'Request an itemised quote for frames, lenses and fitting. Confirm which portion of the order is eligible before paying.']),
+      ['Optika məhsulları üzrə tələbə endirimi.', 'Çərçivə, linza və ölçü xidmətlərinin hər biri üzrə qiyməti soruşun. Endirimin sifarişin hansı hissəsinə aid olduğunu ödənişdən əvvəl dəqiqləşdirin.'],
+      ['Student discount on optical products.', 'Request an itemised quote for frames, lenses and fitting. Confirm which portion of the order is eligible before paying.']),
     local('parlaq-imzalar', '“Parlaq İmzalar” MMC', 'Pİ', 'education', 25,
-      ['TələbəPlus üçün şəkildə göstərilən tərəfdaş təklifi.', 'Endirimin tətbiq olunduğu xidmət və ya proqramı tərəfdaşdan öyrənin. Qeydiyyat haqqını, təklifin müddətini və istifadə şərtlərini yazılı təsdiqlətmək faydalıdır.'],
-      ['Partner offer shown for TələbəPlus.', 'Confirm the specific service or programme covered by the discount. Ask for written confirmation of registration fees, the offer period and redemption rules.']),
+      ['TələbəPlus kartı ilə təhsil xidmətlərinə endirim.', 'Endirimin tətbiq olunduğu xidmət və ya proqramı tərəfdaşdan öyrənin. Qeydiyyat haqqını, təklifin müddətini və istifadə şərtlərini yazılı təsdiqlətmək faydalıdır.'],
+      ['Discount on education services with a TələbəPlus card.', 'Confirm the specific service or programme covered by the discount. Ask for written confirmation of registration fees, the offer period and redemption rules.']),
     local('ari', 'ARI Beynəlxalq Təhsil Mərkəzi', 'ARI', 'education', 15,
-      ['Təhsil mərkəzi üzrə şəkildə göstərilən təklif.', 'Kursun adı və başlama tarixini bildirin. Dərs vəsaiti, imtahan haqqı və taksitli ödənişin təklifə daxil olub-olmadığını soruşun.'],
-      ['Education-centre offer shown in the screenshot.', 'Provide your course name and start date. Ask whether materials, exam fees and instalment payments are covered.']),
+      ['Təhsil mərkəzində tələbə endirimi.', 'Kursun adı və başlama tarixini bildirin. Dərs vəsaiti, imtahan haqqı və taksitli ödənişin təklifə daxil olub-olmadığını soruşun.'],
+      ['Student discount at the education centre.', 'Provide your course name and start date. Ask whether materials, exam fees and instalment payments are covered.']),
     local('mcdonalds', 'McDonald’s', 'M', 'food', null,
-      ['Şəkildə xüsusi kampaniya göstərilir. Faiz qeyd edilməyib.', 'Kampaniyanın hansı restoranlarda, menyularda və saatlarda keçərli olduğunu tətbiqdən və ya kassadan yoxlayın. Çatdırılma sifarişləri üçün ayrıca şərtlər ola bilər.'],
-      ['The screenshot shows a special promotion without a percentage.', 'Check eligible restaurants, menu items and hours in the app or at checkout. Delivery orders may have separate terms.']),
+      ['TələbəPlus üçün xüsusi kampaniya.', 'Kampaniyanın hansı restoranlarda, menyularda və saatlarda keçərli olduğunu tətbiqdən və ya kassadan yoxlayın. Çatdırılma sifarişləri üçün ayrıca şərtlər ola bilər.'],
+      ['Special promotion for TələbəPlus.', 'Check eligible restaurants, menu items and hours in the app or at checkout. Delivery orders may have separate terms.']),
 
     online('github', 'GitHub Student Developer Pack', 'GH', 'software', 'https://github.com/education/students',
       ['Təsdiqlənmiş tələbələr üçün pulsuz GitHub Pro, Copilot Student və Student Developer Pack.', 'Müraciət üçün şəxsi GitHub hesabı, ən azı 13 yaş və diplom verən proqramda cari qeydiyyat tələb olunur. GitHub uyğun təhsil e-poçtu və ya tarixli tələbə sənədi istəyə bilər. Təsdiqdən sonra tərəfdaş təkliflərini ayrıca aktivləşdirin və onların müddətini yoxlayın.'],
-      ['Free GitHub Pro, Copilot Student and the Student Developer Pack for verified students.', 'Apply with a personal GitHub account. You must be at least 13 and enrolled in a degree- or diploma-granting programme. GitHub may request an academic email or dated proof of enrolment. After verification, claim partner offers individually and check their durations.'],
-      {
-        checkedAt: '2026-11-21',
-        url: 'https://github.com/github/docs/blob/main/content/education/about-github-education/github-education-for-students/apply-to-github-education-as-a-student.md',
-      }),
+      ['Free GitHub Pro, Copilot Student and the Student Developer Pack for verified students.', 'Apply with a personal GitHub account. You must be at least 13 and enrolled in a degree- or diploma-granting programme. GitHub may request an academic email or dated proof of enrolment. After verification, claim partner offers individually and check their durations.']),
     online('jetbrains', 'JetBrains', 'JB', 'software', 'https://www.jetbrains.com/community/education/',
       ['Uyğun tələbələr üçün pulsuz təhsil lisenziyası. JetBrains-in domen siyahısına unec.edu.az daxildir.', 'JetBrains hesabınızda universitet e-poçtu ilə təhsil lisenziyasına müraciət edin. Lisenziyanın müddətini və yenilənmə qaydasını provayderdə yoxlayın. Kommersiya istifadəsi üçün ayrıca lisenziya şərtləri tətbiq olunur.'],
-      ['Free education licensing for eligible students. JetBrains lists unec.edu.az as an academic domain.', 'Apply through your JetBrains account using your institutional email. Check the licence duration and renewal process with the provider. Commercial use has separate licence terms.'],
-      {
-        checkedAt: '2026-11-21',
-        url: 'https://github.com/JetBrains/swot/blob/master/lib/domains/az/edu/unec.txt',
-      }),
+      ['Free education licensing for eligible students. JetBrains lists unec.edu.az as an academic domain.', 'Apply through your JetBrains account using your institutional email. Check the licence duration and renewal process with the provider. Commercial use has separate licence terms.']),
     online('figma', 'Figma for Education', 'FG', 'software', 'https://www.figma.com/education/',
       ['Figma və FigJam üçün təhsil imkanları.', 'Təhsil statusunuzu təsdiqləyin və uyğun komandanı təhsil planına bağlayın. Mövcud ödənişli komandanı dəyişməzdən əvvəl hesab və komanda şərtlərinə baxın.'],
       ['Education access for Figma and FigJam.', 'Verify your education status and link an eligible team. Check account and team rules before changing an existing paid workspace.']),
@@ -60,11 +50,7 @@
       ['Word, Excel, PowerPoint and related Microsoft services for eligible education accounts.', 'Check eligibility with your institutional account. Browser and desktop apps depend on your institution’s licence. Export any personal files you need before losing institutional access.']),
     online('azure', 'Azure for Students', 'AZ', 'cloud', 'https://azure.microsoft.com/en-us/free/students/',
       ['Uyğun tələbələr üçün 12 ay ərzində 100 ABŞ dolları Azure krediti. Qeydiyyat üçün bank kartı tələb olunmur.', 'Microsoft cari tələbə statusunu universitet e-poçtu ilə yoxlayır. Yaş və region tələblərinə qeydiyyat səhifəsində baxın. Kredit bitdikdə resurslar dayandırıla bilər. Ödənişli tarifə keçməzdən əvvəl istifadənizi və xərcləri yoxlayın.'],
-      ['US$100 in Azure credit for 12 months for eligible students. Sign-up requires no credit card.', 'Microsoft verifies current student status through your institutional email. Check age and regional requirements when signing up. Resources may stop when the credits run out. Review usage and charges before upgrading to a paid plan.'],
-      {
-        checkedAt: '2026-11-21',
-        url: 'https://github.com/MicrosoftDocs/azure-docs/blob/main/articles/education-hub/about-azure-for-students.md',
-      }),
+      ['US$100 in Azure credit for 12 months for eligible students. Sign-up requires no credit card.', 'Microsoft verifies current student status through your institutional email. Check age and regional requirements when signing up. Resources may stop when the credits run out. Review usage and charges before upgrading to a paid plan.']),
     online('unity', 'Unity Student', 'U', 'software', 'https://unity.com/products/unity-student',
       ['Oyun hazırlamaq üçün tələbələrə yönəlmiş Unity planı.', 'Unity hesabınızla təhsil statusunu təsdiqləyin. Editor versiyası, layihənin yayımı, kommersiya istifadəsi və lisenziyanın bitmə şərtlərini provayderdə yoxlayın.'],
       ['Unity plan aimed at student game developers.', 'Verify education status with your Unity account. Check editor versions, project distribution, commercial use and licence expiry with Unity.']),

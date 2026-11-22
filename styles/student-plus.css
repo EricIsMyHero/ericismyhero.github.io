@@ -206,16 +206,6 @@
   font-size: var(--fs-sm);
   line-height: 1.55;
 }
-.offer-locations span {
-  display: block;
-  font-size: var(--fs-xs);
-}
-.offer-description .offer-verification {
-  margin-top: 12px;
-  padding: 10px;
-  border-inline-start: 3px solid var(--color-warning);
-  background: color-mix(in srgb, var(--color-warning) 10%, transparent);
-}
 .offer-description .offer-meta a {
   display: inline-flex;
   align-items: center;

@@ -1,5 +1,3 @@
-// Readable facts from the user-provided UniBot screenshots. Percentages,
-// redemption methods and branches are included only where the image identifies them.
 (function () {
   'use strict';
 
@@ -58,18 +56,18 @@
       ['Student travel offer.', 'Check eligible routes, dates, passengers and the final ticket price with the provider.'],
     ],
     other: [
-      ['UniBot-da göstərilən tələbə təklifi.', 'Məhsul və ya xidmətin adını, filialı, qüvvədə olma müddətini və endirimin istifadə qaydasını təşkilatçıdan təsdiqləyin.'],
-      ['Student offer shown in UniBot.', 'Confirm the product or service, location, validity period and redemption steps with the provider.'],
+      ['Tələbələr üçün xüsusi təklif.', 'Məhsul və ya xidmətin adını, filialı, qüvvədə olma müddətini və endirimin istifadə qaydasını təşkilatçıdan təsdiqləyin.'],
+      ['Special offer for students.', 'Confirm the product or service, location, validity period and redemption steps with the provider.'],
     ],
   };
 
-  // Source updates keep the existing IDs and saved items.
+  // Add redemption methods to the original listings without changing their IDs.
   for (const [id, method] of [
-    ['az-tercume', 'qr'], ['baku-design-academy', 'qr'], ['citynet', 'card'],
+    ['az-tercume', 'card'], ['baku-design-academy', 'qr'], ['citynet', 'card'],
     ['focus-optika', 'qr'], ['parlaq-imzalar', 'card'], ['ari', 'card'],
   ]) {
     const existing = offers.find(offer => offer.id === id);
-    if (existing) Object.assign(existing, { source: 'unibot', method });
+    if (existing) existing.method = method;
   }
 
   // ID, name, initials, category, displayed benefit, redemption method
@@ -87,7 +85,7 @@
     ['abv', 'ABV – Təhlükəsizlik sistemləri və şəbəkə avadanlıqları', 'ABV', 'electronics', 10, 'qr'],
     ['aks-pro', 'AKS Pro', 'AKS', 'electronics', 20, 'card'],
     ['atl-academy', 'ATL Academy', 'ATL', 'education', 15, 'card'],
-    ['azgreen', 'AZGREEN Mühəndislik', 'AZG', 'other', 20, 'card'],
+    ['azgreen', 'AZGREEN Mühəndislik və Ətraf Mühit Xidmətləri', 'AZG', 'other', 20, 'card'],
     ['abseron-olimpiya', 'Abşeron Olimpiya İdman Kompleksi', 'Aİ', 'sports', 20, 'qr'],
     ['berlin-klinika', 'Berlin Ailə və Uşaq Klinikası', 'BK', 'health', 30, 'qr'],
     ['beykoz-doner', 'Beykoz Döner', 'BD', 'food', 10, 'qr'],
@@ -127,7 +125,7 @@
     ['greyder', 'Greyder', 'G', 'fashion', null],
     ['growth-guide', 'Growth Guide', 'GG', 'education', null],
     ['goygol-olimpiya', 'Göygöl Olimpiya İdman Kompleksi', 'Gİ', 'sports', 20],
-    ['heyder-eliyev-idman-konsert', 'Heydər Əliyev adına İdman-Konsert Kompleksi', 'HƏ', 'sports', 20],
+    ['heyder-eliyev-idman-konsert', 'Heydər Əliyev adına İdman-Konsert Kompleksi', 'HƏ', 'sports', 20, 'qr'],
     ['happyland', 'Happyland', 'H', 'leisure', null],
     ['holberton', 'Holberton School Azerbaijan', 'HS', 'education', null],
     ['it-brains', 'IT Brains Academy MMC', 'IT', 'education', 10],
@@ -142,7 +140,7 @@
     ['apply-uni', 'Apply Uni', 'AU', 'education', '20–50%', 'card'],
     ['astara-olimpiya', 'Astara Olimpiya İdman Kompleksi', 'Aİ', 'sports', 20, 'qr'],
     ['attar-gallery', 'Attar Gallery', 'AG', 'beauty', 40, 'qr'],
-    ['avis-tibbi-market', 'Avis Tibbi Market', 'AV', 'health', null, 'qr'],
+    ['avis-tibbi-market', 'Avis Tibbi Market', 'AV', 'health', '2–25%', 'qr'],
     ['dovlet-kukla-teatri', 'Azərbaycan Dövlət Kukla Teatrı', 'KT', 'culture', 20, 'qr'],
     ['genc-tamasacilar-teatri', 'Azərbaycan Dövlət Milli Gənc Tamaşaçılar Teatrı', 'GT', 'culture', 20, 'qr'],
     ['yug-teatri', 'Azərbaycan Dövlət Yuğ Teatrı', 'YT', 'culture', 20, 'qr'],
@@ -150,13 +148,25 @@
     ['agdam-olimpiya', 'Ağdam Olimpiya İdman Kompleksi', 'Aİ', 'sports', 20, 'qr'],
     ['agdas-olimpiya', 'Ağdaş Olimpiya İdman Kompleksi', 'Aİ', 'sports', 20, 'qr'],
     ['bahar-store', 'Bahar Store', 'BS', 'fashion', 10, 'qr'],
-    ['bakcell', 'Bakcell', 'BC', 'internet', '6 GB'],
+    ['bakcell', 'Bakcell', 'BC', 'internet', '5 GB', 'special'],
     ['baku-it-academy', 'Baku IT Academy', 'IT', 'education', 20, 'card'],
     ['baki-dovlet-sirki', 'Bakı Dövlət Sirki', 'BS', 'culture', 10, 'qr'],
     ['baki-nitq-merkezi', 'Bakı Nitq Mərkəzi', 'BN', 'education', 30, 'card'],
     ['balaken-olimpiya', 'Balakən Olimpiya İdman Kompleksi', 'Bİ', 'sports', 20, 'qr'],
     ['barratson', 'Barratson Education Center', 'BE', 'education', 10, 'card'],
-    ['batut-arena', 'Batut Arena', 'BA', 'leisure', 50],
+    ['batut-arena', 'Batut Arena', 'BA', 'leisure', 50, 'qr'],
+    ['ejdaha-doner', 'Əjdaha Döner', 'ƏD', 'food', 5, 'paycity'],
+    ['park-cinema', 'Park Cinema', 'PC', 'leisure', 15, 'paycity'],
+    ['innvino', 'InnVino', 'IV', 'food', 20, 'paycity'],
+    ['lucky-art', 'Lucky Art', 'LA', 'other', 10, 'paycity'],
+    ['iva', 'IVA', 'I', 'food', 5, 'card'],
+    ['gurmania', 'Gurmania', 'GU', 'food', 20, 'paycity'],
+    ['hertz', 'Hertz', 'HZ', 'travel', 10, 'paycity'],
+    ['chocolatier', 'Chocolatier', 'CH', 'food', 10, 'paycity'],
+    ['myshops', 'MYShops', 'MY', 'electronics', 2, 'paycity'],
+    ['portal-games', 'Portal Games', 'PG', 'leisure', 30, 'card'],
+    ['akademik-musiqili-teatr', 'Azərbaycan Dövlət Akademik Musiqili Teatrı', 'MT', 'culture', 20, 'qr'],
+    ['akademik-rus-dram-teatri', 'Azərbaycan Dövlət Akademik Rus Dram Teatrı', 'RD', 'culture', 20, 'qr'],
   ];
 
   const studentRows = [
@@ -178,7 +188,7 @@
         id, name, initials, category, kind, method,
         percent: typeof amount === 'number' ? amount : null,
         amount: typeof amount === 'string' ? amount : '',
-        source: 'unibot', az, en,
+        az, en,
       });
     }
   }
@@ -197,8 +207,8 @@
       ['İnterfeys dizaynı üçün Sketch-in təhsil imkanları.', 'Təhsil müraciətini və macOS uyğunluğunu yoxlayın. İş sahəsinin və sənədlərin plan dəyişəndə necə saxlanıldığını öyrənin.'],
       ['Sketch education access for interface design.', 'Check the education application and macOS compatibility. Review what happens to your workspace and documents if the plan changes.']],
     ['framer', 'Framer', 'FR', 'software', 'https://www.framer.com/pricing/',
-      ['Veb dizayn və portfel səhifələri üzrə UniBot-da göstərilən tələbə imkanı.', 'Cari tələbə proqramını, layihə limitini və xüsusi domenin qiymət şərtlərini Framer-də yoxlayın.'],
-      ['Student opportunity shown in UniBot for web design and portfolios.', 'Confirm a current student programme, project limits and custom-domain pricing with Framer.']],
+      ['Veb dizayn və portfel səhifələri üzrə tələbə imkanı.', 'Cari tələbə proqramını, layihə limitini və xüsusi domenin qiymət şərtlərini Framer-də yoxlayın.'],
+      ['Student offer for web design and portfolios.', 'Confirm a current student programme, project limits and custom-domain pricing with Framer.']],
     ['mural', 'Mural', 'MU', 'software', 'https://www.mural.co/education',
       ['Komanda lövhələri və qrup işi üçün Mural-ın təhsil imkanları.', 'Təhsil planına müraciət qaydasını, iştirakçı limitlərini və müddəti provayderdən yoxlayın.'],
       ['Mural education options for whiteboards and group work.', 'Check the application process, participant limits and term with the provider.']],
@@ -229,6 +239,6 @@
   ];
 
   for (const [id, name, initials, category, url, az, en] of onlineRows) {
-    offers.push({ id, name, initials, category, url, kind: 'online', method: 'online', source: 'unibot', az, en });
+    offers.push({ id, name, initials, category, url, kind: 'online', method: 'online', az, en });
   }
 })();
