@@ -146,28 +146,20 @@
   // ═════════════════════════════════════════════════════════════
   // DAHA ÇOX
   // ═════════════════════════════════════════════════════════════
-  function displayName() {
-    const prof = typeof getProfile === 'function' ? getProfile() : null;
-    const user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
-    return (prof && prof.name) || (user && user.displayName) || (user && user.email && user.email.split('@')[0]) || t('moreStudent');
-  }
-
   U.renderMore = function () {
     const acc = $('#moreAccount');
     const logged = isLogged();
     if (acc) {
       if (logged) {
         const user = getCurrentUser();
-        const name = displayName();
-        const prof = typeof getProfile === 'function' ? getProfile() : null;
+        const prof = getProfile();
+        const name = accountDisplayName(user, prof);
         const xp = (prof && prof.progress && prof.progress.xp) || 0;
         const info = typeof getRankInfo === 'function' ? getRankInfo(xp) : null;
         const sub = info ? `${info.rank.name} · ${xp} XP` : (user && user.email) || '';
-        const avatar = user && user.photoURL
-          ? `<img src="${esc(user.photoURL)}" alt="" referrerpolicy="no-referrer">`
-          : esc(name.charAt(0).toUpperCase());
-        acc.innerHTML = `<a class="account-card" href="#/dashboard"><span class="avatar">${avatar}</span>
+        acc.innerHTML = `<a class="account-card" href="#/dashboard"><span class="avatar" aria-hidden="true"></span>
           <span class="grow"><b>${esc(name)}</b><small>${esc(sub)}</small></span>${ic('chevron-right', 'chev')}</a>`;
+        renderAccountAvatar($('.avatar', acc), name, user, prof);
       } else {
         acc.innerHTML = `<button class="account-card account-card--guest" type="button" id="moreLogin"><span class="avatar">${ic('user')}</span>
           <span class="grow"><b>${esc(t('moreGuestTitle'))}</b><small>${esc(t('moreGuestSub'))}</small></span>${ic('chevron-right', 'chev')}</button>`;

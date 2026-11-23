@@ -112,7 +112,7 @@
 }
 .icon-btn .dot[hidden] { display: none; }
 
-/* Hesab düyməsi (köhnə #authHeaderBtn — firebase.js təkrar yazır) */
+/* Hesab düyməsi və ortaq profil avatarı */
 .header-auth-btn {
   display: inline-flex;
   align-items: center;
@@ -130,12 +130,13 @@
   border-radius: var(--r-pill);
 }
 .header-auth-btn .auth-name { display: none; }
-.header-auth-btn .auth-avatar,
+.header-auth-btn:hover .avatar { opacity: .85; }
 .avatar {
   display: inline-grid;
   place-items: center;
-  width: 38px;
-  height: 38px;
+  width: var(--avatar-size, 38px);
+  height: var(--avatar-size, 38px);
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
   border-radius: 50%;
   background: linear-gradient(145deg, var(--color-primary-hover), var(--accent));
   color: var(--color-on-primary);
@@ -145,14 +146,13 @@
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
   overflow: hidden;
 }
-.avatar img { width: 100%; height: 100%; object-fit: cover; }
+.avatar img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .header-auth-btn.is-guest {
   width: 44px;
   border: 1px solid var(--border);
   background: var(--color-surface-elevated);
   border-radius: 50%;
 }
-.header-auth-btn.is-guest .auth-name { display: none; }
 
 /* Dil seçimi (AZ / EN) */
 .header-lang-pill {
@@ -188,14 +188,24 @@
     border-radius: var(--r-lg);
     background: color-mix(in srgb, var(--color-background-alt) 80%, transparent);
   }
-  .header-auth-btn .auth-name { display: inline; }
+  .header-auth-btn:not(.is-guest) {
+    padding-inline: 3px 12px;
+    background: var(--color-primary-soft);
+    border: 1px solid var(--border);
+  }
+  .header-auth-btn .auth-name {
+    display: block;
+    max-width: 9rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   .header-auth-btn.is-guest {
     width: auto;
     padding: 0 16px 0 12px;
     border-radius: var(--r-pill);
     gap: 8px;
   }
-  .header-auth-btn.is-guest .auth-name { display: inline; }
 }
 
 /* ── Yan panel (desktop) ──────────────────────────────────────── */

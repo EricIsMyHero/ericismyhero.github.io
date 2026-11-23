@@ -552,17 +552,23 @@
    DAHA ÇOX
    ═════════════════════════════════════════════════════════════ */
 .page-title { margin: 12px 0 14px; font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; }
-.account-card {
+.account-card, .dash-profile-row {
   display: flex; align-items: center; gap: 14px;
-  min-height: 78px; padding: 14px 14px 14px 16px;
+}
+.account-card, .dash-profile-card.function-panel {
+  padding: 14px 14px 14px 16px;
   border: 1px solid var(--border); border-radius: var(--r-lg);
   background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 18%, var(--color-surface)), var(--color-surface) 75%);
-  color: var(--color-text-primary); text-decoration: none; width: 100%; font: inherit; text-align: left; cursor: pointer;
+  color: var(--color-text-primary);
 }
-.account-card .avatar { width: 52px; height: 52px; font-size: 1.4rem; }
-.account-card .grow { flex: 1; min-width: 0; }
-.account-card b { display: block; font-size: 1.0625rem; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.account-card small { display: block; color: var(--color-text-secondary); font-size: var(--fs-sm); }
+.account-card {
+  min-height: 78px; text-decoration: none; width: 100%; font: inherit; text-align: left; cursor: pointer;
+}
+.account-card .avatar, .dash-profile-row .avatar { --avatar-size: 52px; font-size: 1.4rem; }
+.account-card .grow, .dash-profile-id { flex: 1; min-width: 0; }
+.account-card b, .dash-profile-name { display: block; font-size: 1.0625rem; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.account-card small, .dash-profile-email { display: block; color: var(--color-text-secondary); font-size: var(--fs-sm); }
+.dash-profile-email { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .account-card .chev { color: var(--color-text-muted); }
 .more-section { margin-top: 24px; }
 .more-section-title { margin: 0 4px 10px; color: var(--color-text-secondary); font-size: var(--fs-sm); font-weight: 700; }

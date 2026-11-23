@@ -56,12 +56,15 @@ let currentUser    = null;
 let currentProfile = null;
 
 async function onAuthStateChange(user) {
+  if (currentUser?.uid !== user?.uid) currentProfile = null;
   currentUser = user;
   if (window.UNECStudy) window.UNECStudy.setUser(user);
 
   if (user) {
     await _ensureUserDoc(user);
-    currentProfile = await _getUserProfile(user.uid);
+    const profile = await _getUserProfile(user.uid);
+    if (currentUser?.uid !== user.uid) return;
+    currentProfile = profile;
     await _handleDailyLogin(user.uid);
     if (currentUser?.uid !== user.uid) return;
 
@@ -420,22 +423,43 @@ function _showAuthError(msg, type = 'error') {
   });
 }
 
+function accountDisplayName(user, profile) {
+  const name = [profile?.name, user?.displayName].find(value => typeof value === 'string' && value.trim());
+  return name?.trim() || user?.email?.split('@')[0] || t('moreStudent');
+}
+
+function renderAccountAvatar(avatar, name, user, profile) {
+  const initial = Array.from(name)[0]?.toLocaleUpperCase(lang === 'en' ? 'en' : 'az') || '?';
+  const providerPhotos = (user?.providerData || []).map(provider => provider.photoURL);
+  const photo = [user?.photoURL, ...providerPhotos, profile?.photoURL]
+    .find(url => typeof url === 'string' && url.startsWith('https://'));
+  avatar.textContent = initial;
+  if (!photo) return;
+
+  const img = document.createElement('img');
+  img.alt = '';
+  img.referrerPolicy = 'no-referrer';
+  img.addEventListener('error', () => {
+    if (img.parentNode === avatar) avatar.textContent = initial;
+  }, { once: true });
+  avatar.replaceChildren(img);
+  img.src = photo;
+}
+
 function _showUserBadge(user) {
   const btn = document.getElementById('authHeaderBtn');
   if (btn) {
-    const name = user.displayName || (user.email && user.email.split('@')[0]) || 'Profil';
+    const name = accountDisplayName(user, currentProfile);
     btn.classList.remove('is-guest');
-    btn.textContent = '';
+    btn.removeAttribute('data-i18n-aria');
     const av = document.createElement('span');
-    av.className = 'auth-avatar';
-    if (user.photoURL) {
-      const img = document.createElement('img');
-      img.src = user.photoURL; img.alt = ''; img.referrerPolicy = 'no-referrer';
-      av.appendChild(img);
-    } else {
-      av.textContent = name.charAt(0).toUpperCase();
-    }
-    btn.appendChild(av);
+    av.className = 'avatar';
+    av.setAttribute('aria-hidden', 'true');
+    renderAccountAvatar(av, name, user, currentProfile);
+    const label = document.createElement('span');
+    label.className = 'auth-name';
+    label.textContent = name;
+    btn.replaceChildren(av, label);
     btn.setAttribute('aria-label', name);
     btn.title = name;
     btn.onclick = () => switchBottomTab('dashboard');
@@ -449,6 +473,7 @@ function _showGuestBadge() {
     const label = (typeof t === 'function') ? t('appLogin') : 'Daxil ol';
     btn.classList.add('is-guest');
     btn.innerHTML = '<svg class="ic" aria-hidden="true"><use href="#i-user"/></svg>';
+    btn.setAttribute('data-i18n-aria', 'appLogin');
     btn.setAttribute('aria-label', label);
     btn.title = label;
     btn.onclick = () => openAuthModal('login');
@@ -458,8 +483,11 @@ function _showGuestBadge() {
 
 async function updateUserProfile(updates) {
   if (!currentUser || !updates) return;
-  await _db.collection('users').doc(currentUser.uid).update(updates);
-  currentProfile = await _getUserProfile(currentUser.uid);
+  const uid = currentUser.uid;
+  await _db.collection('users').doc(uid).update(updates);
+  const profile = await _getUserProfile(uid);
+  if (currentUser?.uid !== uid) return;
+  currentProfile = profile;
   if (typeof renderDashboard === 'function') renderDashboard();
   window.dispatchEvent(new CustomEvent('unec:profilechange'));
 }

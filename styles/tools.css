@@ -58,12 +58,12 @@ body[data-theme="slate"] .tools input[type="date"] { color-scheme: light; }
 
 /* Ortaq "kart" səthi */
 .tl-intro, .tl-loading, .test-config-section, .test-question-card, .test-result-card,
-.dash-profile-card, .dash-rank-card, .dash-stat-card, .dash-streak-msg, .streak-info-panel,
+.dash-rank-card, .dash-stat-card, .dash-streak-msg, .streak-info-panel,
 .pomodoro-card, .exam-form, .req-form, .req-item, .curr-table-wrap {
   border: 1px solid var(--border);
   background: var(--color-surface-elevated);
 }
-.tl-intro, .test-question-card, .test-result-card, .dash-profile-card, .dash-rank-card,
+.tl-intro, .test-question-card, .test-result-card, .dash-rank-card,
 .pomodoro-card {
   background:
     radial-gradient(90% 110% at 100% 0%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 60%),
@@ -432,18 +432,6 @@ body.in-quiz[data-route="tests"] #ai-button { opacity: 0; visibility: hidden; po
 .dash-date::first-letter { text-transform: uppercase; }
 
 /* Profil */
-.dash-profile-card { padding: 16px; border-radius: var(--r-xl); }
-.dash-profile-row { display: flex; align-items: center; gap: 12px; }
-.dash-profile-avatar {
-  flex: 0 0 auto; display: grid; place-items: center;
-  width: 52px; height: 52px; border-radius: 50%;
-  background: linear-gradient(160deg, var(--color-primary-hover), var(--color-primary));
-  color: var(--color-on-primary); font-size: 1.25rem; font-weight: 800;
-  box-shadow: var(--shadow-glow);
-}
-.dash-profile-id { flex: 1; min-width: 0; }
-.dash-profile-name { font-size: 1.0625rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.dash-profile-email { font-size: var(--fs-sm); color: var(--color-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .dash-profile-facts { margin: 14px 0 0; border-top: 1px solid var(--border); }
 .dash-fact { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent); }
 .dash-fact:last-child { border-bottom: 0; }

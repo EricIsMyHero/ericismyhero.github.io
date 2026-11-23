@@ -65,7 +65,7 @@ function renderDashboard() {
   document.getElementById('dash-date').textContent      = _formatDate();
 
   // Profil kartı — şəxsiyyət + faktlar
-  _renderProfileCard(profile, rankInfo, solved);
+  _renderProfileCard(user, profile, rankInfo, solved);
 
   // Statistika kartları
   document.getElementById('dash-streak').textContent    = streak;
@@ -99,13 +99,14 @@ function renderDashboard() {
 }
 
 // ── Profil kartı — avatar, ad, email, faktlar ────────────────
-function _renderProfileCard(profile, rankInfo, solved) {
+function _renderProfileCard(user, profile, rankInfo, solved) {
   const avatarEl = document.getElementById('dash-avatar');
   const nameEl   = document.getElementById('dash-pname');
   const emailEl  = document.getElementById('dash-pemail');
-  if (avatarEl) avatarEl.textContent = (profile?.name || '?').charAt(0).toUpperCase();
-  if (nameEl)   nameEl.textContent   = profile?.name  || '—';
-  if (emailEl)  emailEl.textContent  = profile?.email || '—';
+  const name = accountDisplayName(user, profile);
+  if (avatarEl) renderAccountAvatar(avatarEl, name, user, profile);
+  if (nameEl)   nameEl.textContent  = name;
+  if (emailEl)  emailEl.textContent = user.email || profile?.email || '—';
 
   const setFact = (id, val) => {
     const el = document.getElementById(id);
