@@ -1,0 +1,23 @@
+name: Publish v1.1.27
+
+on:
+  push:
+    tags: [v1.1.27]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" "releases/$GITHUB_REF_NAME.az.md" \
+            --repo "$GITHUB_REPOSITORY" --verify-tag --latest \
+            --title "UNEC Students Hub $GITHUB_REF_NAME" \
+            --notes-file "releases/$GITHUB_REF_NAME.md"
