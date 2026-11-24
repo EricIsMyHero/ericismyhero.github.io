@@ -2,6 +2,7 @@ const loadCareerTab = (() => {
   const typeLabels = { internship: 'Təcrübə', volunteer: 'Könüllülük', training: 'Təlim' };
   const categoryLabels = { bank: 'Bank', finance: 'Maliyyə', audit: 'Audit', it: 'İT', other: 'Digər' };
   const defaultLimits = { title: 300, company: 500, description: 8000, schedule: 300, location: 500, applyUrl: 2048 };
+  const fieldLabels = { title: 'proqramın adı', company: 'təşkilat', description: 'elan təsviri', schedule: 'tarix və saat', location: 'məkan', applyUrl: 'müraciət linki' };
   const telegramLabels = {
     idle: 'Telegram-da paylaşılmayıb',
     sending: 'Telegram göndərişi yoxlanılır',
@@ -58,7 +59,15 @@ const loadCareerTab = (() => {
     root.innerHTML = `
       <form class="push-form">
         <h2 class="push-form-head">Yeni elan</h2>
-        <p class="muted">Bütün məlumat sahələri istəyə bağlıdır. Qaralamanı saxla, sonra paylaşmaq üçün «Təsdiqlə və paylaş» düyməsini seç.</p>
+        <p class="muted">Hazır mətni elana çevir və doldurulan sahələri yoxla. «Təsdiqlə və paylaş» elanı sayta və Telegram kanalına göndərir.</p>
+        <div data-career-import>
+          <label for="career-source-text">Hazır elan mətni</label>
+          <textarea id="career-source-text" rows="5" maxlength="16000" placeholder="Hazır elanı buraya yapışdır"></textarea>
+          <div class="push-actions">
+            <button class="push-btn secondary" type="button" data-import-career>Elana çevir</button>
+          </div>
+          <p class="push-result" data-import-result aria-live="polite"></p>
+        </div>
         <label for="career-title">Proqramın adı</label>
         <input id="career-title" name="title" maxlength="${max('title')}">
         <label for="career-company">Şirkət və ya təşkilat <span>${max('company')} simvol</span></label>
@@ -78,7 +87,8 @@ const loadCareerTab = (() => {
         <label for="career-apply-url">Rəsmi müraciət linki</label>
         <input id="career-apply-url" name="applyUrl" type="url" maxlength="${max('applyUrl')}">
         <div class="push-actions">
-          <button class="push-btn" type="submit">Qaralamanı saxla</button>
+          <button class="push-btn" type="submit" data-save-draft>Qaralamanı saxla</button>
+          <button class="push-btn" type="submit" data-publish-import hidden>Təsdiqlə və paylaş</button>
           <button class="push-btn secondary" type="reset" hidden>Redaktəni bitir</button>
         </div>
       </form>
@@ -89,11 +99,38 @@ const loadCareerTab = (() => {
       </section>`;
     const form = root.querySelector('form');
     const status = root.querySelector('[role="status"]');
-    const submit = form.querySelector('[type="submit"]');
+    const submit = form.querySelector('[data-save-draft]');
+    const publishImport = form.querySelector('[data-publish-import]');
     const reset = form.querySelector('[type="reset"]');
+    const importPanel = form.querySelector('[data-career-import]');
+    const source = form.querySelector('#career-source-text');
+    const importResult = form.querySelector('[data-import-result]');
+    const fieldNames = ['title', 'company', 'type', 'category', 'description', 'schedule', 'location', 'deadline', 'applyUrl'];
     let draftId;
     let editing;
     let busy = false;
+
+    form.querySelector('[data-import-career]').onclick = () => {
+      if (!source.value.trim()) {
+        importResult.textContent = 'Əvvəl elan mətnini yapışdır.';
+        source.focus();
+        return;
+      }
+      if (fieldNames.some(name => form.elements.namedItem(name).value) &&
+        !confirm('Formadakı məlumatlar hazır mətndən çıxarılan məlumatlarla əvəz edilsin?')) return;
+      const { fields, warnings } = parseCareerText(source.value);
+      for (const name of fieldNames) {
+        const field = form.elements.namedItem(name);
+        field.value = fields[name] || '';
+        if (field.maxLength >= 0 && field.value.length > field.maxLength) {
+          warnings.push(`${fieldLabels[name]} sahəsini ${field.maxLength} simvola qədər qısalt.`);
+        }
+      }
+      publishImport.hidden = false;
+      if (fields.deadline && fields.deadline < today) warnings.push('Son müraciət tarixi keçib.');
+      importResult.textContent = ['Forma dolduruldu. Paylaşmazdan əvvəl sahələri yoxla.', ...warnings].join(' ');
+      form.elements.namedItem('title').focus();
+    };
 
     async function mutate(action, payload, message) {
       if (busy) return;
@@ -103,14 +140,26 @@ const loadCareerTab = (() => {
       status.classList.remove('err');
       const navSession = session;
       const view = generation;
+      const importPublish = action === 'publish-import';
+      let savedRow;
       try {
-        const { row } = await apiFetch('career', null, { action, ...payload });
+        let { row } = await apiFetch('career', null, { action: importPublish ? 'save' : action, ...payload });
         if (navSession !== session || view !== generation) return;
-        const feedback = action === 'publish'
+        if (importPublish) {
+          savedRow = row;
+          ({ row } = await apiFetch('career', null, { action: 'publish', id: row.id, revision: row.revision }));
+          if (navSession !== session || view !== generation) return;
+        }
+        const feedback = action === 'publish' || importPublish
           ? `Elan saytdadır. ${telegramLabels[row.telegramStatus]}.` : message;
-        await load(feedback, action === "save" ? row.id : null);
+        await load(feedback, action === 'save' || importPublish ? row.id : null);
       } catch (err) {
         if (navSession !== session || view !== generation) return;
+        if (savedRow) {
+          await load('Elan saxlanıldı. Paylaşım statusunu siyahıda yoxla. ' +
+            (errors[err.message] || err.message), savedRow.id);
+          return;
+        }
         status.textContent = errors[err.message] || err.message;
         status.classList.add('err');
       } finally {
@@ -123,13 +172,22 @@ const loadCareerTab = (() => {
 
     form.onsubmit = event => {
       event.preventDefault();
-      draftId ||= crypto.randomUUID();
       const input = Object.fromEntries(new FormData(form));
-      void mutate('save', { ...input, id: editing?.id || draftId, revision: editing?.revision }, 'Elan saxlanıldı.');
+      const publish = event.submitter === publishImport && !publishImport.hidden;
+      if (publish && input.deadline && input.deadline < today) {
+        importResult.textContent = 'Son müraciət tarixi keçib. Paylaşmaq üçün tarixi yoxla.';
+        return;
+      }
+      draftId ||= crypto.randomUUID();
+      void mutate(publish ? 'publish-import' : 'save',
+        { ...input, id: editing?.id || draftId, revision: editing?.revision }, 'Elan saxlanıldı.');
     };
     form.onreset = () => {
       editing = null;
       draftId = undefined;
+      importPanel.hidden = false;
+      publishImport.hidden = true;
+      importResult.textContent = '';
       form.querySelector('h2').textContent = 'Yeni elan';
       submit.textContent = 'Qaralamanı saxla';
       reset.hidden = true;
@@ -142,7 +200,9 @@ const loadCareerTab = (() => {
       switch (button.dataset.action) {
         case 'edit':
           editing = row;
-          for (const name of ['title', 'company', 'type', 'category', 'description', 'schedule', 'location', 'deadline', 'applyUrl']) {
+          importPanel.hidden = true;
+          publishImport.hidden = true;
+          for (const name of fieldNames) {
             form.elements.namedItem(name).value = row[name] ?? '';
           }
           form.querySelector('h2').textContent = 'Elanı redaktə et';
