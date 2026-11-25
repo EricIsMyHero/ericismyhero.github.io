@@ -33,11 +33,7 @@
   const tau = 2 * Math.PI;
   const segments = ['yellow', 'solid', 'red', 'yellow', 'solid', 'yellow', 'red', 'solid'];
   const wedge = tau / segments.length;
-  const colours = {
-    yellow: ['#ffcb67', '#a35e2d'], solid: ['#456d9b', '#223f61'], red: ['#f77d8b', '#90334d'],
-  };
-  const geometry = { width: 400, height: 420, x: 200, y: 185, radius: 121, depth: 29, pitch: 77 };
-  const ballRadius = 12;
+  const scene = U.towerScene;
   const holdTime = .24;
   const bounceTime = .65;
   const boostTime = 4;
@@ -83,7 +79,7 @@
       return;
     }
     state.fall = { age: 0, duration: state.power ? .13 : .26 };
-    state.fragment = { index, colour: colours[zone][0] };
+    state.fragment = { index, zone, angle: floor.angle + state.rotation + (index + .5) * wedge };
   }
 
   function step(state, dt) {
@@ -111,115 +107,15 @@
     }
   }
 
-  function slice(ctx, y, angle, layer) {
-    const { x, radius, depth } = geometry;
-    ctx.beginPath();
-    ctx.ellipse(x, y + layer, radius, depth, 0, angle, angle + wedge);
-    ctx.ellipse(x, y + layer, radius * .23, depth * .23, 0, angle + wedge, angle, true);
-    ctx.closePath();
-  }
-
-  function platform(ctx, y, rotation, floor, selected = -1) {
-    const { x, radius, depth } = geometry;
-    for (const layer of [7, 0]) {
-      for (let index = 0; index < segments.length; index++) {
-        const angle = floor.angle + rotation + index * wedge;
-        slice(ctx, y, angle, layer);
-        ctx.fillStyle = colours[segments[index]][layer ? 1 : 0];
-        ctx.fill();
-        if (layer) continue;
-        ctx.lineWidth = selected === index ? 2.1 : 1;
-        ctx.strokeStyle = selected === index ? '#ffffff' : '#101d33';
-        ctx.stroke();
-      }
-    }
-    for (const index of [...floor.coins, floor.orb].filter(value => value >= 0)) {
-      const angle = floor.angle + rotation + (index + .5) * wedge;
-      const px = x + Math.cos(angle) * radius * .79;
-      const py = y + Math.sin(angle) * depth * .82;
-      const isOrb = floor.orb === index;
-      ctx.save();
-      ctx.translate(px, py - 8);
-      ctx.beginPath();
-      if (isOrb) {
-        ctx.moveTo(0, -9);
-        ctx.lineTo(8, 0);
-        ctx.lineTo(0, 9);
-        ctx.lineTo(-8, 0);
-        ctx.closePath();
-      } else {
-        ctx.ellipse(0, 0, 6, 8, .22, 0, tau);
-      }
-      ctx.fillStyle = isOrb ? '#ca99ff' : '#fff5b4';
-      ctx.strokeStyle = isOrb ? '#56259e' : '#af702d';
-      ctx.lineWidth = 2;
-      ctx.fill();
-      ctx.stroke();
-      ctx.restore();
-    }
-  }
-
   function draw(state) {
-    const ctx = state.ctx;
-    const { width, height, x, y, depth, pitch } = geometry;
-    const fall = state.fall ? Math.min(1, state.fall.age / state.fall.duration) : 0;
-    const camera = fall * pitch;
-    ctx.clearRect(0, 0, width, height);
-    const shaft = ctx.createLinearGradient(x - 25, 0, x + 25, 0);
-    shaft.addColorStop(0, '#142e4a');
-    shaft.addColorStop(.45, '#4f7d9a');
-    shaft.addColorStop(1, '#132a42');
-    ctx.fillStyle = shaft;
-    ctx.fillRect(x - 25, y - 114 - camera, 50, height);
-    ctx.fillStyle = '#507b99';
-    ctx.beginPath();
-    ctx.ellipse(x, y - 114 - camera, 25, 10, 0, 0, tau);
-    ctx.fill();
-
-    // Draw the floors below first so upper platforms cover their back edges.
-    const first = state.floor + (state.fall ? 1 : 0);
-    for (let index = Math.min(floorCount - 1, state.floor + 5); index >= first; index--) {
-      const heightOnScreen = y + (index - state.floor) * pitch - camera;
-      if (heightOnScreen > height + 30) continue;
-      platform(ctx, heightOnScreen, state.rotation, state.floors[index], index === state.floor ? activeSector(state) : -1);
-    }
-    if (state.floor >= floorCount - 3) {
-      const base = y + (floorCount - state.floor) * pitch - camera;
-      ctx.fillStyle = '#78f2cb';
-      ctx.beginPath();
-      ctx.ellipse(x, base, 100, 23, 0, 0, tau);
-      ctx.fill();
-    }
-    if (state.fragment) {
-      const motion = reducedMotion.matches ? 0 : fall;
-      ctx.globalAlpha = 1 - fall;
-      ctx.fillStyle = state.fragment.colour;
-      const centre = x + (state.fragment.index % 2 ? -1 : 1) * 23 * motion;
-      for (let index = 0; index < 9; index++) {
-        ctx.fillRect(centre + (index - 4) * (7 + motion * 11), y + depth - camera + index % 3 * 5 + motion * 26, 5, 4);
-      }
-      ctx.globalAlpha = 1;
-    }
-
-    const foot = y + depth * .82;
-    const motion = Math.sin(Math.PI * state.bounce / bounceTime) * 69;
-    const ballY = foot - ballRadius - (state.fall ? 0 : motion);
-    ctx.fillStyle = '#09172890';
-    ctx.beginPath();
-    ctx.ellipse(x, foot, 13, 4, 0, 0, tau);
-    ctx.fill();
-    const glowing = state.power > 0;
-    const fill = ctx.createRadialGradient(x - 5, ballY - 6, 1, x, ballY, ballRadius);
-    fill.addColorStop(0, '#ffffff');
-    fill.addColorStop(.48, glowing ? '#edceff' : '#a5ffe2');
-    fill.addColorStop(1, glowing ? '#9150e8' : '#35a99d');
-    ctx.shadowColor = glowing ? '#ca99ff' : '#66dfc3';
-    ctx.shadowBlur = state.charge >= holdTime ? 20 : 8;
-    ctx.fillStyle = fill;
-    ctx.beginPath();
-    ctx.arc(x, ballY, ballRadius, 0, tau);
-    ctx.fill();
-    ctx.shadowBlur = 0;
+    if (!state.ctx) return;
+    scene.draw(state.ctx, {
+      floors: state.floors, floor: state.floor, rotation: state.rotation, sectors: segments,
+      active: activeSector(state), fragment: state.fragment,
+      falling: state.fall ? Math.min(1, state.fall.age / state.fall.duration) : null,
+      bounce: state.fall ? 0 : Math.sin(Math.PI * state.bounce / bounceTime) * 69,
+      powered: state.power > 0, charged: state.charge >= holdTime, reducedMotion: reducedMotion.matches,
+    });
   }
 
   function update(state) {
@@ -312,7 +208,7 @@
           <span>${esc(l.boost)} <strong class="tower-power"></strong></span>
         </div>
         <div class="game-arena tower-arena" tabindex="0" role="group" aria-label="${esc(l.arena)}" aria-describedby="towerInstructions">
-          <canvas width="400" height="420" aria-hidden="true"></canvas>
+          <canvas width="${scene.width}" height="${scene.height}" aria-hidden="true"></canvas>
         </div>
         <p class="game-status tower-status" role="status"></p>
         <div class="game-controls tower-controls">
