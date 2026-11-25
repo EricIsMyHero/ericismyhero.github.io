@@ -25,6 +25,7 @@
       ['career', ['career']],
       ['student-plus', ['academic', 'tools']],
       ['timer', ['tools', 'planning']],
+      ['games', ['tools']],
       ['dashboard', ['tools', 'planning']],
     ] },
     { key: 'functionsOtherGroup', compact: true, items: [

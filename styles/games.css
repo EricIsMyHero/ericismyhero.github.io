@@ -1,0 +1,56 @@
+.games-screen .function-hero { margin-bottom: 20px; }
+.game-entry {
+  display: grid;
+  grid-template-columns: minmax(110px, 36%) 1fr;
+  gap: 18px;
+  align-items: center;
+  max-width: 640px;
+  color: var(--color-text-primary);
+  text-decoration: none;
+}
+.game-entry-art {
+  position: relative;
+  min-height: 110px;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 64% 32%, #eefff7 0 3px, #78f2cb 4px, transparent 9px),
+    repeating-linear-gradient(135deg, transparent 0 9px, #80d6c620 10px 11px),
+    linear-gradient(145deg, #112a38, #091722);
+}
+.game-entry-art::after {
+  content: '';
+  position: absolute;
+  inset: 17px 0;
+  margin: auto;
+  width: 76px;
+  height: 76px;
+  border: 4px solid #78f2cb;
+  border-right-color: transparent;
+  border-radius: 50%;
+  transform: rotate(-20deg);
+}
+.game-entry-info { display: grid; gap: 5px; min-width: 0; }
+.game-entry-info strong { font-size: 1.125rem; }
+.game-entry-info > span { color: var(--color-text-secondary); font-size: var(--fs-sm); }
+.game-entry-info .game-entry-play { display: flex; align-items: center; gap: 6px; margin-top: 5px; color: var(--accent2); font-weight: 750; }
+.game-entry:hover .game-entry-play { text-decoration: underline; }
+
+.game-shell { max-width: 620px; margin-inline: auto; }
+.game-stats { display: flex; justify-content: space-between; gap: 14px; margin-bottom: 10px; color: var(--color-text-secondary); }
+.game-stats strong { display: inline-block; margin-inline-start: 4px; color: var(--color-text-primary); font-variant-numeric: tabular-nums; }
+.game-arena {
+  position: relative;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-lg);
+  background: radial-gradient(ellipse at center, #1a3243 0%, #101e2d 49%, #08121d 100%);
+  overflow: hidden;
+}
+.game-arena canvas { display: block; width: 100%; height: auto; max-width: 480px; }
+.game-aim { position: absolute; inset: 0; border: 0; background: transparent; color: inherit; cursor: crosshair; touch-action: manipulation; }
+.game-aim:focus-visible { outline: 2px solid #78f2cb; outline-offset: -4px; }
+.game-status { font-weight: 750; text-align: center; margin: 12px 0 4px; }
+.game-instructions { color: var(--color-text-secondary); text-align: center; font-size: var(--fs-sm); margin: 0; }
+.game-controls { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 14px; }
+.game-controls .btn { min-height: 44px; min-width: 44px; }

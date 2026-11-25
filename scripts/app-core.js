@@ -66,6 +66,7 @@
     { id: 'curriculum', icon: 'calendar-days',   key: 'navPlan',     route: '/curriculum', fc: 'plan',     desc: 'featPlanDesc' },
     { id: 'compass',    icon: 'compass',         key: 'navCompass',  route: '/compass',    fc: 'compass',  desc: 'featCompassDesc' },
     { id: 'student-plus', icon: 'wallet',       key: 'navStudentPlus', route: '/student-plus', desc: 'studentPlusIntro' },
+    { id: 'games',      icon: 'play',           key: 'navGames',    route: '/games', desc: 'gamesIntro' },
     { id: 'career',     icon: 'briefcase',       key: 'navCareer',   route: '/career', desc: 'careerIntro' },
     { id: 'requests',   icon: 'folder-open',     key: 'navRequests', route: '/requests',   fc: 'requests', desc: 'featRequestsDesc' },
     { id: 'timer',      icon: 'timer',           key: 'navTimer',    route: '/timer',      fc: 'timer',    desc: 'featTimerDesc' },
@@ -78,7 +79,7 @@
   // Hansı bölmə hansı aşağı-naviqasiya elementini işıqlandırır
   const TAB_PARENT = {
     home: 'home', functions: 'functions', tests: 'functions', gpa: 'functions', curriculum: 'functions',
-    compass: 'functions', 'student-plus': 'functions', career: 'functions', requests: 'functions', timer: 'functions', dashboard: 'functions',
+    compass: 'functions', 'student-plus': 'functions', games: 'functions', career: 'functions', requests: 'functions', timer: 'functions', dashboard: 'functions',
     courses: 'courses', support: 'functions', more: 'more'
   };
   const TAB_NAV_ID = { home: 'home', courses: 'courses', tests: 'tests', gpa: 'gpa', curriculum: 'curriculum',
@@ -189,7 +190,7 @@
   // ── Router ──────────────────────────────────────────────────
   // Public catalogue routes: #/materials, #/materials/all, #/subject/<name>,
   // #/material/<subject>/<file>, #/extra/<file>. Old course-based hashes remain aliases.
-  const TABS = ['home', 'functions', 'courses', 'support', 'tests', 'gpa', 'dashboard', 'curriculum', 'compass', 'career', 'student-plus', 'requests', 'timer', 'more'];
+  const TABS = ['home', 'functions', 'courses', 'support', 'tests', 'gpa', 'dashboard', 'curriculum', 'compass', 'career', 'student-plus', 'games', 'requests', 'timer', 'more'];
   let route = null;
   let prevRoute = null;
   let depth = (history.state && history.state.i) || 0;
@@ -224,6 +225,7 @@
       if (!segs[1] && !hasFilter) return Object.assign(base, { tab: 'courses', view: 'entry' });
       return Object.assign(base, { tab: 'courses', view: 'materials' });
     }
+    if (a === 'games' && segs[1] === 'ring-escape') return Object.assign(base, { tab: a, view: 'ring-escape' });
     if (a === 'student-plus' && segs[1]) return Object.assign(base, { tab: a, view: 'offer', id: segs[1] });
     if (a === 'compass' && segs[1]) return Object.assign(base, { tab: 'compass', view: 'article', id: segs.slice(1).join('/') });
     if (a === 'requests' && segs[1]) return Object.assign(base, { tab: 'requests', view: 'thread', id: segs[1] });   // #/requests/<istək-id> — açıq yazışma
@@ -237,6 +239,7 @@
       const query = new URLSearchParams(r.query).toString();
       return '/compass' + (query ? '?' + query : '');
     }
+    if (r.tab === 'games') return r.view ? '/games' : '/functions';
     if (r.tab === 'student-plus' && r.view === 'offer') return '/student-plus';
     if (r.view === 'material')  return r.subject ? '/subject/' + enc(r.subject) : '/materials';
     if (r.view === 'pdfs')      return '/materials';
@@ -310,6 +313,7 @@
       case 'gpa':        if (typeof initGPA === 'function') initGPA(); break;
       case 'compass': if (U.renderCompass) U.renderCompass(r); break;
       case 'career': if (U.loadCareer) U.loadCareer(); break;
+      case 'games': if (U.renderGames) U.renderGames(r); break;
       case 'student-plus': if (U.renderStudentOffers) U.renderStudentOffers(r); break;
       case 'functions':
         if (U.renderFunctionDirectory) U.renderFunctionDirectory();

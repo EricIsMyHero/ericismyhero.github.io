@@ -3,6 +3,8 @@
 // i18n.js-dən sonra yüklənir və I18N obyektinə əlavə edir.
 // ============================================================
 Object.assign(I18N.az, {
+  navGames: 'Oyunlar',
+  gamesIntro: 'Dərs aralarında oynamaq üçün kiçik oyunlar.',
   navCompass: 'Tələbə Kompası',
   navCareer: 'Karyera lövhəsi',
   navStudentPlus: 'Tələbə+ üstünlükləri',
@@ -225,6 +227,8 @@ Object.assign(I18N.az, {
 });
 
 Object.assign(I18N.en, {
+  navGames: 'Games',
+  gamesIntro: 'Short games for study breaks.',
   navCompass: 'Student Compass',
   navCareer: 'Career board',
   navStudentPlus: 'Student+ benefits',
