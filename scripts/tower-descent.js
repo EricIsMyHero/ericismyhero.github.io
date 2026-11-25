@@ -46,8 +46,9 @@
     const floors = Array.from({ length: floorCount }, (_, index) => {
       const angle = index === 0 ? Math.PI / 2 - wedge / 2 : Math.random() * tau;
       const coins = new Set([0, 3 + Math.floor(Math.random() * 3)]);
-      const orb = index >= 2 && Math.random() < .12 ? Math.floor(Math.random() * segments.length) : -1;
-      if (orb >= 0) coins.delete(orb);
+      const vacant = segments.map((_, sector) => sector).filter(sector => !coins.has(sector));
+      coins.add(vacant.splice(Math.floor(Math.random() * vacant.length), 1)[0]);
+      const orb = index >= 2 && Math.random() < .12 ? vacant[Math.floor(Math.random() * vacant.length)] : -1;
       return { angle, coins, orb };
     });
     Object.assign(state, {

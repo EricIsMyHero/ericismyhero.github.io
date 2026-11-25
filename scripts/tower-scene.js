@@ -5,7 +5,7 @@
   const width = 400;
   const height = 460;
   const pitch = 94;
-  const radius = 142;
+  const radius = 158;
   const shaftRadius = 29;
   const playRadius = radius * .79;
   const cameraTilt = .48;
