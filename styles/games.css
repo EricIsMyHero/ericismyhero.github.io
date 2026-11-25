@@ -64,3 +64,38 @@
 .game-instructions { color: var(--color-text-secondary); text-align: center; font-size: var(--fs-sm); margin: 0; }
 .game-controls { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 14px; }
 .game-controls .btn { min-height: 44px; min-width: 44px; }
+
+.game-list { display: grid; gap: 12px; }
+.game-entry-art--tower {
+  background:
+    radial-gradient(circle at 52% 18%, #d9fff2 0 5px, #69d4b5 6px, transparent 10px),
+    repeating-linear-gradient(135deg, transparent 0 9px, #94baff16 10px 11px),
+    linear-gradient(145deg, #1a2950, #101b31);
+}
+.game-entry-art--tower::after {
+  inset: 30px 0 auto;
+  width: 84px;
+  height: 16px;
+  border: 0;
+  border-radius: 50%;
+  background: linear-gradient(95deg, #ffcb67 58%, #f77d8b 58%);
+  box-shadow: 0 17px #5278a7, 0 34px #ffcb67, 0 51px #5278a7;
+  transform: none;
+}
+.tower-arena {
+  background:
+    repeating-linear-gradient(135deg, transparent 0 19px, #91c9ff0a 20px 21px),
+    radial-gradient(ellipse at center, #253758 0%, #0c162a 100%);
+  cursor: grab;
+  touch-action: none;
+}
+.tower-arena:active { cursor: grabbing; }
+.tower-arena:focus-visible { outline: 2px solid #78f2cb; outline-offset: -4px; }
+.tower-arena canvas { max-width: 400px; }
+.tower-controls { margin: 8px 0 12px; }
+.tower-smash { display: inline-flex; align-items: center; gap: 6px; touch-action: none; user-select: none; }
+.tower-smash.tower-charging { background: var(--color-primary); color: var(--color-on-primary); }
+.tower-legend { display: flex; flex-wrap: wrap; gap: 8px 16px; justify-content: center; margin-bottom: 8px; font-size: var(--fs-sm); }
+.tower-legend span::before { content: ''; display: inline-block; width: .65em; height: .65em; border-radius: 50%; margin-inline-end: 6px; background: #ffd371; }
+.tower-legend span:last-child::before { background: #be8bff; border-radius: 2px; transform: rotate(45deg); }
+.tower-legend + .game-instructions { margin-bottom: 4px; }

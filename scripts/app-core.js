@@ -225,7 +225,7 @@
       if (!segs[1] && !hasFilter) return Object.assign(base, { tab: 'courses', view: 'entry' });
       return Object.assign(base, { tab: 'courses', view: 'materials' });
     }
-    if (a === 'games' && segs[1] === 'ring-escape') return Object.assign(base, { tab: a, view: 'ring-escape' });
+    if (a === 'games' && ['ring-escape', 'tower-descent'].includes(segs[1])) return Object.assign(base, { tab: a, view: segs[1] });
     if (a === 'student-plus' && segs[1]) return Object.assign(base, { tab: a, view: 'offer', id: segs[1] });
     if (a === 'compass' && segs[1]) return Object.assign(base, { tab: 'compass', view: 'article', id: segs.slice(1).join('/') });
     if (a === 'requests' && segs[1]) return Object.assign(base, { tab: 'requests', view: 'thread', id: segs[1] });   // #/requests/<istək-id> — açıq yazışma

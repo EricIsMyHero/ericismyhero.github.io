@@ -388,6 +388,12 @@
   }
 
   U.renderGames = function (route) {
+    if (route.view === 'tower-descent') {
+      leave();
+      U.towerGame.render(root, title);
+      return;
+    }
+    U.towerGame.leave();
     if (route.view === 'ring-escape') {
       if (!game) {
         game = { phase: 'idle', difficulty: 'easy', round: 1, elapsed: 0, remaining: startTime, muted: false };
@@ -398,17 +404,25 @@
     }
     leave();
     const l = copy();
+    const tower = U.towerGame.copy();
+    const games = [
+      { id: 'ring-escape', title: l.title, intro: l.intro, art: '' },
+      { id: 'tower-descent', title: tower.title, intro: tower.intro, art: ' game-entry-art--tower' },
+    ];
     root.innerHTML = title(t('navGames'), t('gamesIntro'), 'functions', t('navFunctions')) + `
-      <a class="game-entry function-panel" href="#/games/ring-escape">
-        <span class="game-entry-art" aria-hidden="true"></span>
-        <span class="game-entry-info"><strong>${esc(l.title)}</strong><span>${esc(l.intro)}</span>
+      <div class="game-list">${games.map(entry => `<a class="game-entry function-panel" href="#/games/${entry.id}">
+        <span class="game-entry-art${entry.art}" aria-hidden="true"></span>
+        <span class="game-entry-info"><strong>${esc(entry.title)}</strong><span>${esc(entry.intro)}</span>
           <span class="game-entry-play">${ic('play')} ${esc(l.play)}</span>
         </span>
-      </a>`;
+      </a>`).join('')}</div>`;
   };
 
   window.addEventListener('unec:routechange', event => {
-    if (event.detail.tab !== 'games') leave();
+    if (event.detail.tab !== 'games') {
+      leave();
+      U.towerGame.leave();
+    }
   });
   window.addEventListener('unec:langchange', () => {
     if (U.route?.tab === 'games') U.renderGames(U.route);
