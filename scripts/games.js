@@ -13,8 +13,8 @@
       round: 'Mərhələ', time: 'Vaxt', waiting: 'Başlamağa hazır', inside: 'Top halqanın içindədir',
       outside: 'Top halqadan çıxdı!', paused: 'Oyun dayandırıldı', won: 'Üç mərhələ tamamlandı!',
       difficulty: 'Çətinlik', easy: 'Asan', medium: 'Orta', hard: 'Çətin', rings: 'Keçilən halqalar',
-      expired: 'Vaxt bitdi!', bonus: '+5 saniyə',
-      timerRule: '15 saniyə ilə başla. Keçdiyin hər halqa +5 saniyə qazandırır.',
+      expired: 'Vaxt bitdi!', bonus: '+3 saniyə',
+      timerRule: '15 saniyə ilə başla. Keçdiyin hər halqa +3 saniyə qazandırır.',
       arena: 'Oyun arenası. Halqanın boşluğunu bu istiqamətə çevirmək üçün toxun.',
     },
     en: {
@@ -25,8 +25,8 @@
       round: 'Stage', time: 'Time', waiting: 'Ready to play', inside: 'The ball is inside the ring',
       outside: 'The ball escaped!', paused: 'Game paused', won: 'All three stages complete!',
       difficulty: 'Difficulty', easy: 'Easy', medium: 'Medium', hard: 'Hard', rings: 'Rings cleared',
-      expired: 'Time is up!', bonus: '+5 seconds',
-      timerRule: 'Start with 15 seconds. Every ring cleared adds 5 seconds.',
+      expired: 'Time is up!', bonus: '+3 seconds',
+      timerRule: 'Start with 15 seconds. Every ring cleared adds 3 seconds.',
       arena: 'Game arena. Tap to steer the gap in that direction.',
     }
   };
@@ -35,11 +35,13 @@
   const innerRadius = 68;
   const outerRadius = 151;
   const startTime = 15;
-  const ringBonus = 5;
+  const ringBonus = 3;
+  const haloDuration = .42;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const difficulties = {
-    easy: { rings: [3, 5, 7], offset: .22, gap: .66 },
-    medium: { rings: [5, 7, 10], offset: .30, gap: .56 },
-    hard: { rings: [10, 15, 20], offset: .38, gap: .47 },
+    easy: { rings: [14, 23, 32], offset: 1.1, gap: .66 },
+    medium: { rings: [23, 32, 45], offset: 1.6, gap: .56 },
+    hard: { rings: [45, 68, 90], offset: 2.4, gap: .47 },
   };
   const stages = 3;
   const melody = [69, 76, 72, 76, 67, 74, 71, 74, 65, 72, 69, 72, 64, 71, 67, 71];
@@ -58,19 +60,22 @@
   function level(state) {
     Object.assign(state, {
       x: -23, y: 16, vx: 101 + state.round * 15, vy: -144 + state.round * 26,
-      gap: 1.4, escapedAt: null, trail: [], cleared: 0, soundUntil: 0,
+      gap: 1.4, levelStarted: state.elapsed, escapedAt: null, trail: [], halos: [], cleared: 0, soundUntil: 0,
       ringCount: difficulties[state.difficulty].rings[state.round - 1],
     });
   }
 
   const ringRadius = (state, index) => innerRadius + (outerRadius - innerRadius) * index / (state.ringCount - 1);
-  const ringGap = (state, index) => state.gap + difficulties[state.difficulty].offset * index;
+  const ringGap = (state, index) => {
+    const fraction = index / (state.ringCount - 1);
+    const speed = .36 + state.round * .11 + fraction * .72;
+    return state.gap + difficulties[state.difficulty].offset * fraction + speed * (state.elapsed - state.levelStarted);
+  };
   const aperture = state => difficulties[state.difficulty].gap - .035 * (state.round - 1);
   const outside = state => state.escapedAt !== null || state.elapsed < state.soundUntil;
 
   function step(state, seconds) {
     state.elapsed += seconds;
-    state.gap = (state.gap + (.47 + state.round * .22) * seconds) % tau;
     state.x += state.vx * seconds;
     state.y += state.vy * seconds;
 
@@ -91,9 +96,11 @@
     const contact = radius;
     if (distance < contact) return;
     const angle = Math.atan2(state.y, state.x);
-    const offset = angle - ringGap(state, state.cleared);
+    const gapAngle = ringGap(state, state.cleared);
+    const offset = angle - gapAngle;
     const clearance = Math.abs(Math.atan2(Math.sin(offset), Math.cos(offset)));
     if (clearance < aperture(state) - ballRadius / radius) {
+      if (!reducedMotion.matches) state.halos.push({ radius, angle: gapAngle, at: state.elapsed });
       state.cleared++;
       state.remaining += ringBonus;
       state.soundUntil = state.elapsed + .35;
@@ -184,15 +191,27 @@
       const angle = ringGap(state, index);
       const active = index === state.cleared;
       ctx.beginPath();
-      ctx.lineWidth = active ? 4 : 1.4;
+      ctx.lineWidth = active ? 3 : Math.min(1.4, 55 / (state.ringCount - 1));
       ctx.lineCap = 'round';
-      ctx.strokeStyle = active ? colour : 'rgba(176, 214, 243, .36)';
+      const hue = 155 + index / (state.ringCount - 1) * 165 + (state.round - 1) * 22;
+      ctx.strokeStyle = active ? colour : `hsl(${hue} 86% 71% / .5)`;
       ctx.shadowColor = colour;
       ctx.shadowBlur = active ? 9 : 0;
       ctx.arc(0, 0, radius, angle + gap, angle + tau - gap);
       ctx.stroke();
     }
     ctx.shadowBlur = 0;
+    state.halos = state.halos.filter(halo => state.elapsed - halo.at < haloDuration);
+    ctx.lineWidth = 1.6;
+    ctx.strokeStyle = colour;
+    for (const halo of state.halos) {
+      const progress = (state.elapsed - halo.at) / haloDuration;
+      const expansion = 26 * (1 - (1 - progress) ** 2);
+      ctx.globalAlpha = .65 * (1 - progress);
+      ctx.beginPath();
+      ctx.arc(0, 0, halo.radius + expansion, halo.angle + gap, halo.angle + tau - gap);
+      ctx.stroke();
+    }
 
     for (let i = 0; i < trail.length; i++) {
       ctx.globalAlpha = .42 * (i + 1) / trail.length;
@@ -248,7 +267,7 @@
     // Small steps keep the ball from tunnelling through the ring.
     let seconds = Math.min(.05, elapsed);
     while (seconds > 0 && state.phase === 'playing') {
-      const dt = Math.min(seconds, 1 / 120);
+      const dt = Math.min(seconds, 1 / 240);
       step(state, dt);
       seconds -= dt;
     }
