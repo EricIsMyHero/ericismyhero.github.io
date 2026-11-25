@@ -32,16 +32,17 @@
   };
   const tau = 2 * Math.PI;
   const ballRadius = 5;
-  const innerRadius = 68;
-  const outerRadius = 151;
+  const innerRadius = 72;
+  const ringSpacing = 16;
+  const arenaRadius = 160;
   const startTime = 15;
   const ringBonus = 3;
   const haloDuration = .42;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const difficulties = {
-    easy: { rings: [14, 23, 32], offset: 1.1, gap: .66 },
-    medium: { rings: [23, 32, 45], offset: 1.6, gap: .56 },
-    hard: { rings: [45, 68, 90], offset: 2.4, gap: .47 },
+    easy: { rings: [10, 25, 50], gap: .66 },
+    medium: { rings: [25, 50, 75], gap: .56 },
+    hard: { rings: [50, 75, 100], gap: .47 },
   };
   const stages = 3;
   const melody = [69, 76, 72, 76, 67, 74, 71, 74, 65, 72, 69, 72, 64, 71, 67, 71];
@@ -58,24 +59,28 @@
   }
 
   function level(state) {
+    const ringCount = difficulties[state.difficulty].rings[state.round - 1];
     Object.assign(state, {
       x: -23, y: 16, vx: 101 + state.round * 15, vy: -144 + state.round * 26,
-      gap: 1.4, levelStarted: state.elapsed, escapedAt: null, trail: [], halos: [], cleared: 0, soundUntil: 0,
-      ringCount: difficulties[state.difficulty].rings[state.round - 1],
+      gap: 0, ringShift: 0, levelStarted: state.elapsed, escapedAt: null, trail: [], halos: [], cleared: 0, soundUntil: 0,
+      ringCount,
+      rings: Array.from({ length: ringCount }, () => ({
+        angle: Math.random() * tau,
+        speed: (Math.random() < .5 ? -1 : 1) * (.18 + Math.random() * 1.12),
+      })),
     });
   }
 
-  const ringRadius = (state, index) => innerRadius + (outerRadius - innerRadius) * index / (state.ringCount - 1);
   const ringGap = (state, index) => {
-    const fraction = index / (state.ringCount - 1);
-    const speed = .36 + state.round * .11 + fraction * .72;
-    return state.gap + difficulties[state.difficulty].offset * fraction + speed * (state.elapsed - state.levelStarted);
+    const ring = state.rings[index];
+    return state.gap + ring.angle + ring.speed * (state.elapsed - state.levelStarted);
   };
   const aperture = state => difficulties[state.difficulty].gap - .035 * (state.round - 1);
   const outside = state => state.escapedAt !== null || state.elapsed < state.soundUntil;
 
   function step(state, seconds) {
     state.elapsed += seconds;
+    state.ringShift = Math.max(0, state.ringShift - 260 * seconds);
     state.x += state.vx * seconds;
     state.y += state.vy * seconds;
 
@@ -90,21 +95,26 @@
       return;
     }
 
-    const radius = ringRadius(state, state.cleared);
     const distance = Math.hypot(state.x, state.y);
-    // Test the ball's centre so adjacent rings can be cleared in order even at high ring counts.
-    const contact = radius;
+    const contact = innerRadius;
     if (distance < contact) return;
     const angle = Math.atan2(state.y, state.x);
     const gapAngle = ringGap(state, state.cleared);
     const offset = angle - gapAngle;
     const clearance = Math.abs(Math.atan2(Math.sin(offset), Math.cos(offset)));
-    if (clearance < aperture(state) - ballRadius / radius) {
-      if (!reducedMotion.matches) state.halos.push({ radius, angle: gapAngle, at: state.elapsed });
+    if (clearance < aperture(state) - ballRadius / innerRadius) {
+      if (!reducedMotion.matches) state.halos.push({ radius: innerRadius + state.ringShift, angle: gapAngle, at: state.elapsed });
       state.cleared++;
       state.remaining += ringBonus;
       state.soundUntil = state.elapsed + .35;
       if (state.cleared === state.ringCount) state.escapedAt = state.elapsed;
+      else {
+        // Move the next ring into the same play area while keeping the ball's position smooth on screen.
+        const scale = (distance - ringSpacing) / distance;
+        state.x *= scale;
+        state.y *= scale;
+        if (!reducedMotion.matches) state.ringShift += ringSpacing;
+      }
       return;
     }
     const nx = state.x / distance;
@@ -186,12 +196,13 @@
     }
     ctx.setLineDash([]);
     const gap = aperture(state);
-    for (let index = state.ringCount - 1; index >= state.cleared; index--) {
-      const radius = ringRadius(state, index);
+    const lastVisible = Math.floor((arenaRadius - innerRadius - state.ringShift) / ringSpacing) + state.cleared;
+    for (let index = Math.min(lastVisible, state.ringCount - 1); index >= state.cleared; index--) {
+      const radius = innerRadius + (index - state.cleared) * ringSpacing + state.ringShift;
       const angle = ringGap(state, index);
       const active = index === state.cleared;
       ctx.beginPath();
-      ctx.lineWidth = active ? 3 : Math.min(1.4, 55 / (state.ringCount - 1));
+      ctx.lineWidth = active ? 3 : 1.4;
       ctx.lineCap = 'round';
       const hue = 155 + index / (state.ringCount - 1) * 165 + (state.round - 1) * 22;
       ctx.strokeStyle = active ? colour : `hsl(${hue} 86% 71% / .5)`;
@@ -225,7 +236,9 @@
     ctx.shadowBlur = 14;
     ctx.fillStyle = '#f6fffe';
     ctx.beginPath();
-    ctx.arc(state.x, state.y, ballRadius, 0, tau);
+    const ballDistance = Math.hypot(state.x, state.y);
+    const ballScale = ballDistance > 0 ? (ballDistance + state.ringShift) / ballDistance : 1;
+    ctx.arc(state.x * ballScale, state.y * ballScale, ballRadius, 0, tau);
     ctx.fill();
     ctx.restore();
   }
@@ -271,7 +284,9 @@
       step(state, dt);
       seconds -= dt;
     }
-    state.trail.push({ x: state.x, y: state.y });
+    const angle = Math.atan2(state.y, state.x);
+    const distance = Math.hypot(state.x, state.y) + state.ringShift;
+    state.trail.push({ x: distance * Math.cos(angle), y: distance * Math.sin(angle) });
     if (state.trail.length > 13) state.trail.shift();
     if (wasOutside !== outside(state) || state.phase === 'won') setSound(state);
     if (state.phase === 'playing') {
@@ -342,6 +357,7 @@
       update(state);
     };
     $('.game-aim', root).onclick = event => {
+      if (state.phase !== 'playing' || state.escapedAt !== null) return;
       if (!event.detail) return rotate(state, .36);
       const box = event.currentTarget.getBoundingClientRect();
       const x = event.clientX - box.left - box.width / 2;
