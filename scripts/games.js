@@ -12,6 +12,9 @@
       mute: 'Səsi söndür', unmute: 'Səsi aç', left: 'Halqanı sola döndər', right: 'Halqanı sağa döndər',
       round: 'Mərhələ', time: 'Vaxt', waiting: 'Başlamağa hazır', inside: 'Top halqanın içindədir',
       outside: 'Top halqadan çıxdı!', paused: 'Oyun dayandırıldı', won: 'Üç mərhələ tamamlandı!',
+      difficulty: 'Çətinlik', easy: 'Asan', medium: 'Orta', hard: 'Çətin', rings: 'Keçilən halqalar',
+      expired: 'Vaxt bitdi!', bonus: '+5 saniyə',
+      timerRule: '15 saniyə ilə başla. Keçdiyin hər halqa +5 saniyə qazandırır.',
       arena: 'Oyun arenası. Halqanın boşluğunu bu istiqamətə çevirmək üçün toxun.',
     },
     en: {
@@ -21,12 +24,23 @@
       mute: 'Mute', unmute: 'Unmute', left: 'Rotate ring left', right: 'Rotate ring right',
       round: 'Stage', time: 'Time', waiting: 'Ready to play', inside: 'The ball is inside the ring',
       outside: 'The ball escaped!', paused: 'Game paused', won: 'All three stages complete!',
+      difficulty: 'Difficulty', easy: 'Easy', medium: 'Medium', hard: 'Hard', rings: 'Rings cleared',
+      expired: 'Time is up!', bonus: '+5 seconds',
+      timerRule: 'Start with 15 seconds. Every ring cleared adds 5 seconds.',
       arena: 'Game arena. Tap to steer the gap in that direction.',
     }
   };
   const tau = 2 * Math.PI;
-  const radius = 100;
   const ballRadius = 5;
+  const innerRadius = 68;
+  const outerRadius = 151;
+  const startTime = 15;
+  const ringBonus = 5;
+  const difficulties = {
+    easy: { rings: [3, 5, 7], offset: .22, gap: .66 },
+    medium: { rings: [5, 7, 10], offset: .30, gap: .56 },
+    hard: { rings: [10, 15, 20], offset: .38, gap: .47 },
+  };
   const stages = 3;
   const melody = [69, 76, 72, 76, 67, 74, 71, 74, 65, 72, 69, 72, 64, 71, 67, 71];
   const colours = ['#78f2cb', '#a8c5ff', '#ffca8d'];
@@ -43,10 +57,16 @@
 
   function level(state) {
     Object.assign(state, {
-      x: -35, y: 20, vx: 106 + state.round * 16, vy: -144 + state.round * 28,
-      gap: 1.4, escapedAt: null, trail: [],
+      x: -23, y: 16, vx: 101 + state.round * 15, vy: -144 + state.round * 26,
+      gap: 1.4, escapedAt: null, trail: [], cleared: 0, soundUntil: 0,
+      ringCount: difficulties[state.difficulty].rings[state.round - 1],
     });
   }
+
+  const ringRadius = (state, index) => innerRadius + (outerRadius - innerRadius) * index / (state.ringCount - 1);
+  const ringGap = (state, index) => state.gap + difficulties[state.difficulty].offset * index;
+  const aperture = state => difficulties[state.difficulty].gap - .035 * (state.round - 1);
+  const outside = state => state.escapedAt !== null || state.elapsed < state.soundUntil;
 
   function step(state, seconds) {
     state.elapsed += seconds;
@@ -65,14 +85,19 @@
       return;
     }
 
+    const radius = ringRadius(state, state.cleared);
     const distance = Math.hypot(state.x, state.y);
-    const contact = radius - ballRadius;
+    // Test the ball's centre so adjacent rings can be cleared in order even at high ring counts.
+    const contact = radius;
     if (distance < contact) return;
     const angle = Math.atan2(state.y, state.x);
-    const offset = angle - state.gap;
+    const offset = angle - ringGap(state, state.cleared);
     const clearance = Math.abs(Math.atan2(Math.sin(offset), Math.cos(offset)));
-    if (clearance < aperture(state) - (ballRadius + 4) / radius) {
-      if (distance >= radius + ballRadius + 4) state.escapedAt = state.elapsed;
+    if (clearance < aperture(state) - ballRadius / radius) {
+      state.cleared++;
+      state.remaining += ringBonus;
+      state.soundUntil = state.elapsed + .35;
+      if (state.cleared === state.ringCount) state.escapedAt = state.elapsed;
       return;
     }
     const nx = state.x / distance;
@@ -86,16 +111,14 @@
     state.y = ny * (contact - .15);
   }
 
-  const aperture = state => .73 - .11 * state.round;
-
   function setSound(state) {
     if (!state.audio) return;
     const { audio, volume, filter } = state;
     const time = audio.currentTime;
     const playing = state.phase === 'playing' && !state.muted;
-    const outside = state.escapedAt !== null;
-    volume.gain.setTargetAtTime(playing ? (outside ? .26 : .027) : 0, time, .085);
-    filter.frequency.setTargetAtTime(outside ? 6000 : 720, time, .12);
+    const loud = outside(state);
+    volume.gain.setTargetAtTime(playing ? (loud ? .26 : .027) : 0, time, .085);
+    filter.frequency.setTargetAtTime(loud ? 6000 : 720, time, .12);
   }
 
   function enableSound(state) {
@@ -146,7 +169,7 @@
     ctx.save();
     ctx.translate(200, 170);
     const colour = colours[state.round - 1];
-    for (const r of [50, 76, 132, 152]) {
+    for (const r of [36, 51, 162]) {
       ctx.beginPath();
       ctx.strokeStyle = 'rgba(176, 214, 243, .14)';
       ctx.setLineDash([2, 8]);
@@ -156,26 +179,19 @@
     }
     ctx.setLineDash([]);
     const gap = aperture(state);
-    ctx.beginPath();
-    ctx.strokeStyle = 'rgba(176, 214, 243, .16)';
-    ctx.lineWidth = 2;
-    ctx.arc(0, 0, radius, 0, tau);
-    ctx.stroke();
-
-    for (const distance of [117, 126]) {
+    for (let index = state.ringCount - 1; index >= state.cleared; index--) {
+      const radius = ringRadius(state, index);
+      const angle = ringGap(state, index);
+      const active = index === state.cleared;
       ctx.beginPath();
-      ctx.strokeStyle = 'rgba(188, 229, 255, .3)';
-      ctx.arc(0, 0, distance, state.gap - gap, state.gap + gap);
+      ctx.lineWidth = active ? 4 : 1.4;
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = active ? colour : 'rgba(176, 214, 243, .36)';
+      ctx.shadowColor = colour;
+      ctx.shadowBlur = active ? 9 : 0;
+      ctx.arc(0, 0, radius, angle + gap, angle + tau - gap);
       ctx.stroke();
     }
-    ctx.beginPath();
-    ctx.lineWidth = 8;
-    ctx.lineCap = 'round';
-    ctx.strokeStyle = colour;
-    ctx.shadowColor = colour;
-    ctx.shadowBlur = 13;
-    ctx.arc(0, 0, radius, state.gap + gap, state.gap + tau - gap);
-    ctx.stroke();
     ctx.shadowBlur = 0;
 
     for (let i = 0; i < trail.length; i++) {
@@ -198,26 +214,39 @@
   function update(state) {
     const l = copy();
     const status = {
-      idle: l.waiting, paused: l.paused, won: l.won,
-      playing: state.escapedAt === null ? l.inside : l.outside,
+      idle: l.waiting, paused: l.paused, won: l.won, lost: l.expired,
+      playing: state.escapedAt !== null ? l.outside : outside(state) ? l.bonus : l.inside,
     };
     const setText = (node, value) => {
       if (node.textContent !== value) node.textContent = value;
     };
     setText(state.ui.stage, state.round + ' / ' + stages);
-    setText(state.ui.time, Math.floor(state.elapsed) + ' s');
+    setText(state.ui.time, Math.ceil(state.remaining) + ' s');
+    setText(state.ui.rings, state.cleared + ' / ' + state.ringCount);
+    state.ui.time.classList.toggle('game-time-low', state.remaining <= 5);
+    state.ui.difficulty.disabled = state.phase === 'playing';
     setText(state.ui.status, status[state.phase]);
-    setText(state.ui.main, l[{ idle: 'start', playing: 'pause', paused: 'resume', won: 'replay' }[state.phase]]);
+    setText(state.ui.main, l[{ idle: 'start', playing: 'pause', paused: 'resume', won: 'replay', lost: 'replay' }[state.phase]]);
     setText(state.ui.sound, state.muted ? l.unmute : l.mute);
     draw(state);
   }
 
   function frame(state, time) {
     if (state.phase !== 'playing') return;
-    const wasOutside = state.escapedAt !== null;
-    // Small steps keep the ball from tunnelling through the ring.
-    let seconds = Math.min(.05, (time - (state.previousFrame ?? time)) / 1000);
+    const wasOutside = outside(state);
+    const elapsed = (time - (state.previousFrame ?? time)) / 1000;
     state.previousFrame = time;
+    if (state.escapedAt === null) {
+      state.remaining = Math.max(0, state.remaining - elapsed);
+      if (!state.remaining) {
+        state.phase = 'lost';
+        setSound(state);
+        update(state);
+        return;
+      }
+    }
+    // Small steps keep the ball from tunnelling through the ring.
+    let seconds = Math.min(.05, elapsed);
     while (seconds > 0 && state.phase === 'playing') {
       const dt = Math.min(seconds, 1 / 120);
       step(state, dt);
@@ -225,7 +254,7 @@
     }
     state.trail.push({ x: state.x, y: state.y });
     if (state.trail.length > 13) state.trail.shift();
-    if (wasOutside !== (state.escapedAt !== null) || state.phase === 'won') setSound(state);
+    if (wasOutside !== outside(state) || state.phase === 'won') setSound(state);
     if (state.phase === 'playing') {
       playNote(state);
       state.frame = requestAnimationFrame(next => frame(state, next));
@@ -258,8 +287,13 @@
     const l = copy();
     root.innerHTML = title(l.title, l.intro, 'games', t('navGames')) + `
       <section class="game-shell function-panel" aria-labelledby="gamesTitle">
+        <fieldset class="game-difficulty">
+          <legend>${esc(l.difficulty)}</legend>
+          <div>${Object.keys(difficulties).map(key => `<label><input type="radio" name="game-difficulty" value="${key}" ${state.difficulty === key ? 'checked' : ''}><span>${esc(l[key])}</span></label>`).join('')}</div>
+        </fieldset>
         <div class="game-stats">
           <span>${esc(l.round)} <strong class="game-stage"></strong></span>
+          <span>${esc(l.rings)} <strong class="game-rings"></strong></span>
           <span>${esc(l.time)} <strong class="game-time"></strong></span>
         </div>
         <div class="game-arena">
@@ -268,6 +302,7 @@
         </div>
         <p class="game-status" role="status"></p>
         <p class="game-instructions">${esc(l.instructions)}</p>
+        <p class="game-instructions">${esc(l.timerRule)}</p>
         <div class="game-controls">
           <button type="button" class="btn btn--secondary" data-game-action="left" aria-label="${esc(l.left)}">${ic('chevron-left')}</button>
           <button type="button" class="btn btn--primary" data-game-action="main"></button>
@@ -278,14 +313,21 @@
     state.ctx = $('canvas', root).getContext('2d');
     state.ui = {
       stage: $('.game-stage', root), time: $('.game-time', root), status: $('.game-status', root),
+      rings: $('.game-rings', root), difficulty: $('.game-difficulty', root),
       main: $('[data-game-action="main"]', root), sound: $('[data-game-action="sound"]', root),
+    };
+    state.ui.difficulty.onchange = event => {
+      Object.assign(state, { difficulty: event.target.value, round: 1, elapsed: 0, remaining: startTime, phase: 'idle' });
+      level(state);
+      setSound(state);
+      update(state);
     };
     $('.game-aim', root).onclick = event => {
       if (!event.detail) return rotate(state, .36);
       const box = event.currentTarget.getBoundingClientRect();
       const x = event.clientX - box.left - box.width / 2;
       const y = event.clientY - box.top - box.height / 2;
-      if (Math.hypot(x, y) > 12) rotate(state, Math.atan2(y, x) - state.gap);
+      if (Math.hypot(x, y) > 12) rotate(state, Math.atan2(y, x) - ringGap(state, state.cleared));
     };
     $('[data-game-action="left"]', root).onclick = () => rotate(state, -.36);
     $('[data-game-action="right"]', root).onclick = () => rotate(state, .36);
@@ -297,8 +339,8 @@
     };
     state.ui.main.onclick = () => {
       if (state.phase === 'playing') return pause(state);
-      if (state.phase === 'won') {
-        Object.assign(state, { round: 1, elapsed: 0, note: 0 });
+      if (state.phase === 'won' || state.phase === 'lost') {
+        Object.assign(state, { round: 1, elapsed: 0, remaining: startTime, note: 0 });
         level(state);
       }
       state.phase = 'playing';
@@ -313,7 +355,7 @@
   U.renderGames = function (route) {
     if (route.view === 'ring-escape') {
       if (!game) {
-        game = { phase: 'idle', round: 1, elapsed: 0, muted: false };
+        game = { phase: 'idle', difficulty: 'easy', round: 1, elapsed: 0, remaining: startTime, muted: false };
         level(game);
       }
       renderArena(game);
@@ -338,7 +380,7 @@
   });
   window.addEventListener('keydown', event => {
     if (game?.phase !== 'playing' || (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') ||
-        event.altKey || event.ctrlKey || event.metaKey || !root.contains(document.activeElement)) return;
+        event.altKey || event.ctrlKey || event.metaKey || event.target.matches?.('input') || !root.contains(document.activeElement)) return;
     event.preventDefault();
     rotate(game, event.key === 'ArrowLeft' ? -.22 : .22);
   });

@@ -37,8 +37,18 @@
 .game-entry:hover .game-entry-play { text-decoration: underline; }
 
 .game-shell { max-width: 620px; margin-inline: auto; }
-.game-stats { display: flex; justify-content: space-between; gap: 14px; margin-bottom: 10px; color: var(--color-text-secondary); }
+.game-difficulty { min-width: 0; border: 0; padding: 0; margin: 0 0 14px; }
+.game-difficulty legend { margin-bottom: 6px; color: var(--color-text-secondary); font-size: var(--fs-sm); font-weight: 700; }
+.game-difficulty > div { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.game-difficulty label { position: relative; }
+.game-difficulty input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.game-difficulty span { display: grid; place-items: center; min-height: 44px; padding: 4px; border: 1px solid var(--border); border-radius: var(--r-md); font-weight: 700; }
+.game-difficulty input:checked + span { background: var(--accent); color: var(--color-on-primary); }
+.game-difficulty input:focus-visible + span { outline: 2px solid var(--accent2); outline-offset: 2px; }
+.game-difficulty input:disabled { cursor: default; }
+.game-stats { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 12px; margin-bottom: 10px; color: var(--color-text-secondary); font-size: var(--fs-sm); }
 .game-stats strong { display: inline-block; margin-inline-start: 4px; color: var(--color-text-primary); font-variant-numeric: tabular-nums; }
+.game-stats .game-time-low { color: var(--color-danger-text); }
 .game-arena {
   position: relative;
   display: grid;
