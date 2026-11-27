@@ -70,6 +70,7 @@
 .arena-record-avatar { display: block; height: 43px; width: 40px; }
 .arena-player { display: grid; justify-items: start; gap: 2px; min-width: 0; font-weight: 750; }
 .arena-record > strong { white-space: nowrap; }
+.arena-daily-winner { color: #432a18; background: #f3d78a; border-radius: 6px; padding: 2px 6px; font-size: .73rem; }
 .arena-record > strong small { font-weight: 600; }
 .arena-share-best { justify-self: start; }
 .game-meta [data-score-rule], .game-meta [data-empty] { border-top: 1px solid var(--meta-border); padding-top: 8px; font-size: .8rem; }

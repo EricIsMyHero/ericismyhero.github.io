@@ -4,7 +4,7 @@ import { arenaAction, arenaPaths } from '../ai-vercel/lib/arena.js';
 
 function fixture() {
   const records = new Map();
-  let version = 0;
+  let version = 0, now = new Date('2026-11-27T19:59:00Z');
   const fail = code => { throw Object.assign(new Error(code), { code }); };
   const store = (path, data) => records.set(path, { path, data, updateTime: String(++version) });
   const db = {
@@ -21,16 +21,17 @@ function fixture() {
     deleteDoc: async path => records.delete(path),
     runQuery: async (query, env, parent) => [...records.values()]
       .filter(row => row.path.startsWith(parent + '/scores/'))
+      .filter(row => row.data.rank >= Number(query.where?.fieldFilter.value.integerValue ?? 0))
       .sort((a, b) => b.data.rank - a.data.rank).slice(0, query.limit)
   };
   const users = {
     a: { uid: 'owner-1', email: 'aysu@example.test' },
     b: { uid: 'owner-2', email: 'elvin@example.test' }
   };
-  const call = value => arenaAction(value, {}, { db, verify: async token => users[token] });
+  const call = value => arenaAction(value, {}, { db, now: () => now, verify: async token => users[token] });
   const ring = (score, won = false) => ({ board: 'ring-escape--easy', score, won });
   return {
-    records, store, ring,
+    records, store, ring, setTime: time => { now = new Date(time); },
     read: (board, idToken) => call({ action: 'arena-list', board, idToken }),
     submit: (idToken, results) => call({
       action: 'arena-submit', idToken, results, uid: 'impersonated', email: 'forged@example.test',
@@ -80,6 +81,23 @@ test('validates bounds and board IDs, ranks waves, and respects account deletion
   assert.deepEqual((await read('semester-waves')).json.rows.map(row => row.reached), [8, 7]);
   store('account_deletions/owner-1', {});
   assert.equal((await submit('a', [ring(800)])).status, 409);
-  assert.equal(arenaPaths('owner-1').length, 14);
+  assert.equal(arenaPaths('owner-1').length, 15);
   assert(arenaPaths('owner-1').every(path => !path.includes('owner-1')));
+});
+
+test('the daily leaderboard rolls over at Baku midnight independently of other scoreboards', async () => {
+  const { submit, read, ring, setTime } = fixture();
+  const board = 'semester-defense--daily';
+  await submit('a', [ring(550), { board, day: '2026-11-27', score: 1850, won: true }]);
+  await submit('b', [{ board, day: '2026-11-27', score: 500, won: false }]);
+  const yesterday = (await read(board, 'a')).json;
+  assert.equal(yesterday.day, '2026-11-27');
+  assert.equal(yesterday.rows[0].player, 'aysu');
+  assert.equal(yesterday.mine.score, 1850);
+  setTime('2026-11-27T20:00:00Z');
+  assert.deepEqual((await read(board, 'a')).json, { rows: [], mine: null, day: '2026-11-28' });
+  assert.equal((await submit('b', [{ board, day: '2026-11-27', score: 2300, won: true }])).status, 400);
+  await submit('a', [{ board, day: '2026-11-28', score: 100, won: false }]);
+  assert.equal((await read(board)).json.rows[0].score, 100);
+  assert.equal((await read('ring-escape--easy')).json.rows[0].score, 550);
 });

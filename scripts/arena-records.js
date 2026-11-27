@@ -6,6 +6,9 @@
   const api = 'https://ericismyhero-github-io.vercel.app/api/';
   const stampPrefix = 'unec_arena_uploaded_v1:';
   const waves = 'semester-waves';
+  const daily = 'semester-defense--daily';
+  const dailyClock = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Baku', year: 'numeric', month: '2-digit', day: '2-digit' });
+  const dailyDay = () => dailyClock.format(new Date());
   const states = new Map();
   const key = (game, mode) => game + '--' + mode;
   const notify = () => window.dispatchEvent(new CustomEvent('unec:arenachange'));
@@ -15,6 +18,7 @@
   let syncFailed = false;
   let requestedAgain = false;
   let sent = {};
+  let dailyWatch;
 
   async function request(payload) {
     const response = await fetch(api + 'ask', {
@@ -42,6 +46,7 @@
       if (!Array.isArray(data.rows)) throw new Error('Invalid arena response');
       state.rows = data.rows;
       state.mine = data.mine;
+      if (data.day) state.day = data.day;
       state.known = true;
     } catch {
       state.failed = true;
@@ -53,9 +58,19 @@
   }
   function board(boardKey, refresh = true) {
     let state = states.get(boardKey);
-    if (!state) {
-      state = { rows: [], mine: null, known: false, loading: false, failed: false, expires: 0 };
+    const day = boardKey === daily ? dailyDay() : null;
+    if (!state || state.localDay !== day) {
+      state = { rows: [], mine: null, day, localDay: day, known: false, loading: false, failed: false, expires: 0 };
       states.set(boardKey, state);
+    }
+    if (day && refresh && !dailyWatch) {
+      dailyWatch = setInterval(() => {
+        const current = states.get(daily);
+        if (current?.localDay === dailyDay()) return;
+        clearInterval(dailyWatch);
+        dailyWatch = null;
+        if (current) { states.delete(daily); notify(); }
+      }, 30000);
     }
     if (refresh && !state.loading && Date.now() >= state.expires) {
       state.loading = true;
@@ -67,12 +82,15 @@
 
   function localBest(uid) {
     const best = new Map();
+    const today = dailyDay();
     for (const row of semester.gameRecords()) {
       if (row.uid !== uid || row.economy !== 2 || !Number.isSafeInteger(row.score) || row.score < 0) continue;
       const boardKey = key(row.game, row.mode);
+      if (boardKey === daily && row.day !== today) continue;
       const prior = best.get(boardKey);
       if (!prior || row.score > prior.score || (row.score === prior.score && row.won && !prior.won)) {
-        best.set(boardKey, { board: boardKey, score: row.score, won: row.won === true });
+        best.set(boardKey, { board: boardKey, score: row.score, won: row.won === true,
+          ...(boardKey === daily ? { day: row.day } : {}) });
       }
     }
     for (const row of semester.records()) {
@@ -105,7 +123,11 @@
       fingerprints[row.board] = value;
       return value !== sent[row.board];
     });
-    if (!pending.length) return;
+    if (!pending.length) {
+      syncFailed = false;
+      if (wasFailed) notify();
+      return;
+    }
     if (!navigator.onLine) {
       syncFailed = true;
       if (!wasFailed) notify();
@@ -188,5 +210,5 @@
   window.addEventListener('online', refresh);
   window.addEventListener('offline', scheduleSync);
   window.addEventListener('focus', refresh);
-  window.UNECArenaRecords = { key, waves, board, lookOf, setUser, refresh, syncFailed: () => syncFailed, connectStandalone };
+  window.UNECArenaRecords = { key, waves, daily, dailyDay, board, lookOf, setUser, refresh, syncFailed: () => syncFailed, connectStandalone };
 })();

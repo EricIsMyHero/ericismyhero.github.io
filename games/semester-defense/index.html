@@ -6,7 +6,7 @@
 <title>UNEC · Semestr müdafiəsi</title>
 <link rel="icon" href="../../images/favicon.svg">
 <link rel="stylesheet" href="../../styles/arena-identity.css?v=20261127-arena">
-<link rel="stylesheet" href="../../styles/game-progress.css?v=20261127-arena">
+<link rel="stylesheet" href="../../styles/game-progress.css?v=20261127-tactics">
 <style>
   :root { color-scheme:dark; --glass:#102022ed; --border:#b9dfd33d; --mint:#9be6cb; --gold:#f4cc77; --text:#fff7e6; --soft:#bbd2cb }
   * { box-sizing:border-box }
@@ -45,6 +45,10 @@
   #abilities { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;padding:5px }
   #abilities button { display:grid;align-content:center;gap:2px;min-height:44px;padding:3px 5px;font-size:.73rem;line-height:1.15 }
   #abilities small { color:var(--gold);font-size:.68rem }
+  #road-actions { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;padding:5px }
+  #road-actions button { display:grid;align-content:center;gap:2px;min-height:40px;padding:3px 4px;font-size:.72rem;line-height:1.1 }
+  #road-actions small { color:var(--gold);font-size:.69rem }
+  #daily-note, #ticket-hud { color:var(--mint);font-size:.78rem }
   #wave-event { flex:0 0 100%;color:var(--gold);font-weight:700;font-size:.76rem;line-height:1.15 }
   #tower-card { justify-self:center; width:min(480px,100%);max-height:39dvh;overflow:auto;padding:10px 12px;display:grid;gap:7px; }
   .spec-options { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px }
@@ -60,7 +64,7 @@
   .card-actions button { min-height:34px;font-size:.77rem }
   .priorities { display:flex;flex-wrap:wrap;gap:4px }
   .priorities button { min-height:30px;padding:3px 8px;font-size:.73rem }
-  #toast { position:fixed;bottom:calc(max(10px,env(safe-area-inset-bottom)) + 135px);left:50%; max-width:90%;transform:translateX(-50%); background:#122a2af0;border-radius:8px;color:#ebf9e9;padding:6px 11px;pointer-events:none;z-index:3;text-align:center;font-size:.79rem;white-space:normal }
+  #toast { position:fixed;bottom:calc(max(10px,env(safe-area-inset-bottom)) + 190px);left:50%; max-width:90%;transform:translateX(-50%); background:#122a2af0;border-radius:8px;color:#ebf9e9;padding:6px 11px;pointer-events:none;z-index:3;text-align:center;font-size:.79rem;white-space:normal }
   #controls:has(#tower-card:not([hidden])) + #toast { bottom:auto;top:136px }
   .overlay { position:fixed; inset:0; padding:18px; display:grid; place-items:center;z-index:4; background:#132f3666 }
   .sheet { width:min(480px,100%);padding:clamp(15px,5vw,30px); max-height:100%;overflow:auto }
@@ -84,6 +88,13 @@
   .expansion-option span { color:var(--soft);font-size:.78rem; font-weight:500 }
   .expansion-option small { color:var(--route-accent);font-size:.73rem }
   .expansion-option .tile-bonus { color:var(--buff-color) }
+  .reference-tabs, #relic-options { display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 }
+  #relic-options button { flex:1 1 150px;display:grid;gap:6px;align-content:start;text-align:left;min-height:89px }
+  .reference-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(min(205px,100%),1fr));gap:8px;margin:10px 0 0 }
+  .reference-item { display:grid;align-content:start;gap:5px;border:1px solid var(--border);border-radius:9px;padding:9px;background:#142831 }
+  .reference-item p, .reference-item dl { margin:0;color:var(--soft);font-size:.78rem }
+  .reference-item dl { display:flex;gap:5px 10px;flex-wrap:wrap }
+  .reference-item dd { font-size:.82rem }
   #popups { z-index:1;position:fixed;inset:0;overflow:hidden;pointer-events:none }
   #portal-signals { position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:1 }
   .portal-signal { position:absolute;top:0;left:0; padding:3px 6px; border:1px solid currentColor; border-radius:5px;
@@ -130,15 +141,18 @@
     <button type="button" data-speed="0">Fasilə</button><button type="button" data-speed="1" aria-pressed="true">1×</button><button type="button" data-speed="2">2×</button>
     <button type="button" id="next">Növbəti dalğa</button>
     <button type="button" id="camera-reset" title="Kameranı sıfırla (R)" aria-label="Kameranı sıfırla">Kamera</button>
+    <button type="button" data-open-reference>Statistika</button>
     <div class="sound-actions"><button type="button" id="sound" aria-pressed="false">Səs</button></div>
   </div>
   <div id="wave-event" role="status" hidden></div>
+  <div id="ticket-hud" hidden></div>
 </header>
 <div id="popups" aria-hidden="true"></div>
 <div id="portal-signals" aria-hidden="true"></div>
 <div id="controls" hidden>
   <section id="tower-card" class="panel" aria-label="Müdafiəçi" hidden></section>
   <section id="abilities" class="panel" aria-label="Təcili müdaxilə"></section>
+  <section id="road-actions" class="panel" aria-label="Yol müdafiəsi"></section>
   <nav id="dock" class="panel" aria-label="Tələbə müdafiəçiləri"></nav>
 </div>
 <p id="toast" role="status" hidden></p>
@@ -148,7 +162,7 @@
     <p>Müdafiəni qurmaq üçün 100 AZN və 20 saniyən var. Tələbələri yol kənarındakı xanalara yerləşdir və imtahanları binaya buraxma.</p>
     <p>Kameranı sürüşdürərək döndər, çarxla və ya iki barmağı aralayaraq yaxınlaşdır. Görünüşü daşımaq üçün Shift düyməsini saxla və ya iki barmaqla sürüşdür.</p>
     <p id="semester-account-note" hidden></p>
-    <fieldset><legend>Çətinlik</legend>
+    <fieldset id="difficulty-field"><legend>Çətinlik</legend>
       <label><input name="difficulty" type="radio" value="easy">Asan</label>
       <label><input name="difficulty" type="radio" value="normal" checked>Normal</label>
       <label><input name="difficulty" type="radio" value="hard">Çətin</label>
@@ -156,8 +170,10 @@
     <fieldset><legend>Rejim</legend>
       <label><input name="mode" type="radio" value="campaign" checked>15 həftə</label>
       <label><input name="mode" type="radio" value="endless">Sonsuz</label>
+      <label><input name="mode" type="radio" value="daily">Gündəlik İmtahan Bileti</label>
     </fieldset>
-    <footer><button class="primary" type="submit" disabled>Oyuna Başla</button><button type="button" data-open-meta disabled>Necə oynanılır və rekordlar</button></footer>
+    <p id="daily-note" hidden></p>
+    <footer><button class="primary" type="submit" disabled>Oyuna Başla</button><button type="button" data-open-meta disabled>Necə oynanılır və rekordlar</button><button type="button" data-open-reference>Statistika</button></footer>
   </form>
   <section id="load-error" class="sheet panel" hidden>
     <h1>Oyun açıla bilmədi</h1>
@@ -171,6 +187,13 @@
     <div id="expansion-options"></div>
   </section>
 </div>
+<div id="relic-offer" class="overlay" hidden>
+  <section class="sheet panel" aria-labelledby="relic-title" role="dialog" aria-modal="true">
+    <h2 id="relic-title">Tələbə əşyasını seç</h2>
+    <p id="relic-note"></p>
+    <div id="relic-options"></div>
+  </section>
+</div>
 <div id="summary" class="overlay" hidden>
   <section class="sheet panel" aria-labelledby="summary-title" role="dialog" aria-modal="true">
     <h2 id="summary-title"></h2>
@@ -178,18 +201,27 @@
     <p id="summary-points" hidden></p>
     <p id="summary-semester" hidden></p>
     <footer><button class="primary" type="button" id="replay">Yenidən oyna</button><button type="button" id="continue">Sonsuz rejimə keç</button>
-      <button type="button" data-open-meta disabled>Arena rekordları</button><a class="games-return" href="../../#/dashboard">Dashboard</a></footer>
+      <button type="button" data-open-meta disabled>Arena rekordları</button><button type="button" data-open-reference>Statistika</button><a class="games-return" href="../../#/dashboard">Dashboard</a></footer>
   </section>
 </div>
 <dialog id="game-meta-dialog" class="game-meta-dialog" aria-labelledby="game-meta-title">
   <header><h2 id="game-meta-title">Semestr müdafiəsi</h2><button type="button" id="close-game-meta">Bağla</button></header>
   <div id="game-meta-content"></div>
 </dialog>
+<dialog id="battle-reference" class="game-meta-dialog" aria-labelledby="battle-reference-title">
+  <header><h2 id="battle-reference-title">Döyüş statistikası</h2><button type="button" id="close-reference">Bağla</button></header>
+  <div class="reference-tabs" role="group" aria-label="Statistika bölməsi">
+    <button type="button" data-reference="students">Tələbələr</button>
+    <button type="button" data-reference="exams">İmtahanlar</button>
+    <button type="button" data-reference="items">Tələbə çantası</button>
+  </div>
+  <div id="reference-content"></div>
+</dialog>
 <script src="../../scripts/student-wardrobe.js?v=20261127-arena"></script>
 <script src="../../scripts/semester-profile.js?v=20261127-global-arena"></script>
-<script src="../../scripts/arena-records.js?v=20261127-global-arena"></script>
+<script src="../../scripts/arena-records.js?v=20261127-tactics"></script>
 <script>void window.UNECArenaRecords.connectStandalone();</script>
-<script src="../../scripts/game-progress.js?v=20261127-global-arena"></script>
+<script src="../../scripts/game-progress.js?v=20261127-tactics"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 <script>
 (() => {
@@ -208,9 +240,25 @@
   const V = (x=0,y=0,z=0) => new THREE.Vector3(x,y,z);
   const progress=window.UNECGameProgress;
   const semester=window.UNECSemesterProfile;
+  const arena=window.UNECArenaRecords;
   const rand = (min,max) => min + Math.random()*(max-min);
   const clamp = (value,min,max) => Math.max(min,Math.min(max,value));
   const choose = items => items[Math.floor(Math.random()*items.length)];
+  function seeded(label) {
+    let state=2166136261;
+    for(const char of label) state=Math.imul(state^char.charCodeAt(0),16777619);
+    return ()=>{
+      state=(state+0x6D2B79F5)|0;
+      let value=Math.imul(state^(state>>>15),state|1);
+      value^=value+Math.imul(value^(value>>>7),value|61);
+      return ((value^(value>>>14))>>>0)/4294967296;
+    };
+  }
+  const pickFrom=(items,random)=>items[Math.floor(random()*items.length)];
+  const scaled=(min,max,random)=>min+random()*(max-min);
+  const campusRandom=seeded('unec-campus-road-v1');
+  let ticketDay=null;
+  const examRandom=label=>ticketDay?seeded(ticketDay+':'+label):Math.random;
   const mix = THREE.MathUtils.lerp;
   const waveCount = 15;
   const startingGold = 100;
@@ -358,9 +406,9 @@
       terrain.push([x,(cellar+height-.24)/2,z,tile,height-.24-cellar,tile, choose(['#678062','#64795b','#5d7157'])]);
       terrain.push([x,height-.12,z,tile,.24,tile,color]);
     }
-    if (!channel && !road && !bank && Math.random()<.12) {
-      const tall = rand(.14,.36);
-      if (Math.random()<.22) {
+    if (!channel && !road && !bank && campusRandom()<.12) {
+      const tall = scaled(.14,.36,campusRandom);
+      if (campusRandom()<.22) {
         pad(x-.12,height+tall*.36,z,.11,tall*.72,.12,'#a6b873');
         pad(x+.14,height+tall*.68,z-.07,.13,tall*1.36,.13,'#92ad6c');
       } else {
@@ -394,12 +442,12 @@
     [-15.5,.8],[4.65,7.05],[12.9,17.6]
   ].map(([x,z],i)=>({x,z,i,tower:null}));
 
-  function tree(x,z,s,write=pad) {
-    const height = rand(2.3,3.65)*s;
+  function tree(x,z,s,write=pad,random=Math.random) {
+    const height = scaled(2.3,3.65,random)*s;
     write(x,height*.46+.18,z,.42*s,height*.92,.47*s,'#6e5a3d');
     for(let j=0;j<4;j++) {
       const w=(2.1-j*.39)*s;
-      write(x+(j%2)*.07,height*.49+j*.54*s,z,w,.64*s,w*.89,choose(spruce));
+      write(x+(j%2)*.07,height*.49+j*.54*s,z,w,.64*s,w*.89,pickFrom(spruce,random));
     }
     write(x,height*.49+2.1*s,z,.41*s,.5*s,.47*s,'#559775');
   }
@@ -414,14 +462,14 @@
   ];
   const trees = [];
   for(let i=0;i<400 && trees.length<75;i++) {
-    const x=rand(-30,30),z=rand(-22.5,22.5);
+    const x=scaled(-30,30,campusRandom),z=scaled(-22.5,22.5,campusRandom);
     if(nearLane(x,z)<2.53 || Math.abs(x-waterX(z))<3.3 || ((x>15.5&&z < -8.9)||(x>21&&z<1)||(x>4&&x<16&&z<-16.5)) ||
       sockets.some(q=>Math.hypot(q.x-x,q.z-z)<2.2) ||
       camps.some(([a,b,r])=>Math.hypot(a-x,b-z)<r) ||
       trees.some(([a,b])=>Math.hypot(a-x,b-z)<2.15)) continue;
     trees.push([x,z]);
-    if(Math.random()<.77) tree(x,z,rand(.56,1.03));
-    else boulder(x,z,rand(.5,1.12));
+    if(campusRandom()<.77) tree(x,z,scaled(.56,1.03,campusRandom),pad,campusRandom);
+    else boulder(x,z,scaled(.5,1.12,campusRandom));
   }
   // Outer cliffs and a few snow-dusted ledges frame the board.
   for (const [x,z,s] of [[-29,-19,1.3],[-23,-22,1.15],[28,19,1.5],[29,-17,1],[22,22,1.15],[-15,20,.75]]) {
@@ -650,8 +698,22 @@
     midterm:{name:'Midterm / Aralıq İmtahan',geo:geometry(midterm),health:39,speed:5.65,damage:1,radius:.47,bar:1.41,color:'#dd9d59',stride:12},
     brute:{name:'Final / Semestr İmtahanı',geo:geometry(finalExam),health:85,speed:3.38,damage:2,radius:.68,bar:1.99,color:'#8b9bb4',stride:6},
     flyer:{name:'Attendance Limit / Qayıb',geo:geometry(attendance),health:36,speed:6.15,damage:1,radius:.44,bar:1.01,color:'#c291e1',stride:15},
-    boss:{name:'Kəsr (Retake)',geo:geometry(retake),health:340,speed:2.50,damage:7,radius:.98,bar:2.98,color:'#e87877',stride:4.5}
+    boss:{name:'KƏSR',geo:geometry(retake),health:340,speed:2.50,damage:7,radius:.98,bar:2.98,color:'#e87877',stride:4.5}
   };
+  const bossProfiles={
+    retake:{...enemyTypes.boss,detail:'Sürətlənir. Hər 30% can itkisində Təkrar İmtahan çağırır və ya bir tələbəni yatırdır.'},
+    inspection:{...enemyTypes.boss,name:'Dekanat Yoxlaması',health:305,speed:2.82,damage:6,color:'#80f3c5',
+      geo:geometry([...retake.map(([x,y,z,w,h,d],i)=>[x,y,z,w,h,d,i%3===0?'#387972':'#b7daba']),
+        [0,2.54,-.08,1.31,.17,1.23,'#274e53'],[.43,1.16,-.82,.66,.87,.10,'#ffefbe']]),
+      detail:'6,5 məsafədə Kollokvium, aralıq imtahanı və Qayıb görünməz olur və +25% sürətlənir. Dondurma onları üzə çıxarır.'},
+    state:{...enemyTypes.boss,name:'Yekun Dövlət İmtahanı',health:390,speed:2.28,damage:8,color:'#ffa062',
+      geo:geometry([...retake.map(([x,y,z,w,h,d],i)=>[x,y,z,w,h,d,i%3===0?'#956034':'#5c537b']),
+        [0,2.54,-.10,1.52,.23,1.14,'#f4c175'],[-.66,2.79,-.22,.26,.49,.33,'#ee9966'],[.66,2.79,-.22,.26,.49,.33,'#ee9966']]),
+      detail:'Hər 25% can itkisində təsadüfi yol hissəsi seçir. Qırmızı zonadakı qüllələr 7 saniyə deaktiv olur.'}
+  };
+  const bossType=week=>week===10?'inspection':week===15?'state':'retake';
+  const bossAura=Object.fromEntries(Object.entries(bossProfiles).map(([key,{color}])=>[key,
+    new THREE.MeshBasicMaterial({color,transparent:true,opacity:.72,depthWrite:false,side:THREE.DoubleSide})]));
   const footGeo = {
     runner:geometry([[0,.16,0,.13,.30,.34,'#3c785f']]),
     midterm:geometry([[0,.16,0,.23,.31,.38,'#88604b']]),
@@ -704,6 +766,31 @@
     late:{name:'Müəllim Gecikir',detail:'İlk 10 saniyə −40% sürət'},
     blackout:{name:'İşıqlar Söndü',detail:'Gecə Oxuyan 2× zərər vurur'}
   };
+  const roadRules={
+    turnstile:{name:'Sıra Gözləməsi / Turniket',short:'Turniket',cost:35,charges:5,color:'#f7e696',
+      detail:'İlk 5 imtahanı 3 saniyə saxlayır.'},
+    coffee:{name:'Tökülmüş Kofe Ləkəsi',short:'Kofe ləkəsi',cost:30,charges:4,color:'#eea674',
+      detail:'İlk 4 imtahanı 2 xana geri sürüşdürür.'},
+    volunteers:{name:'Tələbə Könüllüləri',short:'Könüllülər',cost:105,color:'#8cf6cc',
+      detail:'Kəsişmədə 3 könüllü quru imtahanlarını saxlayır. Hər könüllü 15 saniyə sonra geri qayıdır.'}
+  };
+  const volunteerStats={count:3,health:95,damage:22,recovery:15};
+  const relics={
+    papers:{name:'Köhnə İmtahan Sualları',detail:'Hər 4-cü hücum zəif nöqtəyə dəyir. Kritik zərər +15% artır.'},
+    card:{name:'Tələbəplus Kartı',detail:'Hər tamamlanan dalğada qalan AZN-ə +10% keşbek.'},
+    pencil:{name:'Ehtiyat Qələm',detail:'Bütün qüllələrin atış sürəti +12% artır.'}
+  };
+  const fusionStats={
+    arrow:{name:'İmtahan Komissiyası · Əlaçılar',damage:1.8,rate:1.2,range:1.35},
+    cannon:{name:'İmtahan Komissiyası · Baristalar',damage:1.65,rate:1.25,range:1.23,splash:1.65},
+    frost:{name:'Tələbə Elmi Cəmiyyəti · İqlim',damage:2,rate:1.22,range:1.40,slow:.80,chill:2.5},
+    storm:{name:'Tələbə Elmi Cəmiyyəti · Foton',damage:1.78,rate:1.14,range:1.32,ramp:3.35},
+    flame:{name:'İmtahan Komissiyası · Gecə qrupu',damage:1.75,rate:1.25,range:1.31,angle:.40}
+  };
+  const docentStats={name:'Dosent',damage:1.9,rate:1.3,global:true};
+  const relicRanks={papers:0,card:0,pencil:0}, earnedRelics=new Set(), bossWins=new Map();
+  const deployed={}, defeated={};
+  let relicOffer=null;
   const cooldowns={};
   const waveEvents=new Map();
   function towerShape(kind,appearance) {
@@ -763,12 +850,10 @@
   }
   function startProgressRun(mode) {
     scoreBaseline={weeks:completedWeeks,kills,semester:semester?.balance(semesterRun)??0};
-    progressRun=progress?.start('semester-defense',mode+'-'+difficulty)??null;
+    progressRun=progress?.start('semester-defense',mode==='daily'?mode:mode+'-'+difficulty,ticketDay)??null;
   }
   const ringGeo = new THREE.RingGeometry(.83,1,22);
   ringGeo.rotateX(-Math.PI/2);
-  const retakeHalo = new THREE.MeshBasicMaterial({color:'#ff435e',transparent:true,opacity:.83,
-    depthWrite:false,side:THREE.DoubleSide,toneMapped:false});
   const caps = geometry([[0,1.68,.28,.63,.11,.60,'#32384d'],[0,1.755,.28,.91,.055,.77,'#414558'],
     [.29,1.63,-.095,.06,.25,.055,'#f2c779']]);
   const accentStrip = geometry([[0,.50,-.99,1.32,.08,.045,'#bdf5dc'],[-.63,.50,-.59,.045,.075,.59,'#9dd9da'],
@@ -812,13 +897,19 @@
   const laserMat=new THREE.MeshBasicMaterial({color:'#db98ff',transparent:true,opacity:.66,
     depthWrite:false,blending:THREE.AdditiveBlending,toneMapped:false});
   const noSpecialty={};
-  const specialtyOf=tower=>specializations[tower.kind][tower.specialty]??noSpecialty;
+  const specialtyOf=tower=>tower.fusion??specializations[tower.kind][tower.specialty]??noSpecialty;
   const heightOf=slot=>tileBuffs[slot.buff]?.height??0;
-  const rangeOf=tower=>(towerStats[tower.kind].range+(tower.level-1)*.75)*tower.bonuses.range*(specialtyOf(tower).range??1);
-  const fireRate=tower=>tower.bonuses.rate*(specialtyOf(tower).rate??1)*(tower.boostUntil>time?2:1);
+  const rangeOf=tower=>tower.fusion?.global?Infinity:
+    (towerStats[tower.kind].range+(tower.level-1)*.75)*tower.bonuses.range*(specialtyOf(tower).range??1);
+  const fireRate=tower=>tower.bonuses.rate*(specialtyOf(tower).rate??1)*(tower.boostUntil>time?2:1)*(1+.12*relicRanks.pencil);
   const shotDelay=tower=>towerStats[tower.kind].delay/(tower.kind==='frost'?1:1+.13*(tower.level-1));
-  const baseDamage=tower=>tower.kind==='frost'?[0,3,7][tower.level-1]:
-    towerStats[tower.kind].damage*(1+(tower.level-1)*(tower.kind==='storm'?.48:.53));
+  const baseDamage=tower=>(tower.kind==='frost'?[0,3,7][tower.level-1]:
+    towerStats[tower.kind].damage*(1+(tower.level-1)*(tower.kind==='storm'?.48:.53)))*(tower.fusion?.damage??1);
+  const towerAsleep=tower=>Math.max(tower.stunnedUntil,tower.zonedUntil??0)>time;
+  function criticalDamage(tower,native=false,ordinal=tower.shots) {
+    const crit=native||(relicRanks.papers>0&&ordinal%4===0);
+    return baseDamage(tower)*(native?2:1)*(crit?1+.15*relicRanks.papers:1);
+  }
   const buffRange=7.5;
   const distanceBetween=(a,b)=>Math.hypot(a.x-b.x,a.z-b.z);
   const synergies={
@@ -855,7 +946,7 @@
   const upgradeCost=tower=>Math.round(towerStats[tower.kind].cost*(tower.level===1?.68:1.05));
   const sellValue=tower=>tower.invested*.75;
   const studentMat=voxelMat.clone();
-  const statusMaterials=Object.fromEntries(Object.entries({stun:'#c1b5ff',boost:'#ffd865',pair:'#9be6cb'}).map(([key,color])=>[
+  const statusMaterials=Object.fromEntries(Object.entries({stun:'#c1b5ff',boost:'#ffd865',pair:'#9be6cb',zone:'#ff937d'}).map(([key,color])=>[
     key,new THREE.MeshBasicMaterial({color,transparent:true,opacity:.72,depthWrite:false,side:THREE.DoubleSide})
   ]));
   const glowCanvas=document.createElement('canvas');
@@ -890,6 +981,144 @@
     scene.add(mesh); rings.push({mesh,radius,age:0,life:timeToLive});
   }
 
+  const roadSpots=new Map(), roadDefenses=new Map(), zones=[];
+  const roadMeshes={
+    turnstile:geometry([[-.57,.37,0,.16,.74,.27,'#4b5559'],[.57,.37,0,.16,.74,.27,'#4b5559'],
+      [0,.49,0,1.21,.19,.20,'#fae19a'],[-.33,.51,-.11,.20,.18,.04,'#b98158'],[.33,.51,-.11,.20,.18,.04,'#b98158']]),
+    coffee:geometry([[0,.025,0,1.04,.05,.80,'#573324'],[-.31,.03,.24,.67,.06,.45,'#714331'],
+      [.33,.03,-.24,.57,.057,.42,'#a06747'],[-.38,.08,-.38,.34,.14,.29,'#e5bb87']]),
+    volunteers:geometry([[0,.04,0,1.05,.08,1.05,'#558e7a'],[0,.09,0,.76,.045,.76,'#92d6b7']])
+  };
+  const volunteerGeo=geometry([[0,.44,0,.41,.57,.35,'#5bacc1'],[0,.83,0,.38,.32,.33,'#edbd91'],
+    [0,.99,.015,.42,.11,.37,'#423a51'],[-.14,.44,-.20,.19,.35,.12,'#b2dfb9'],
+    [.11,.17,.04,.15,.29,.23,'#2c536a'],[-.11,.17,.04,.15,.29,.23,'#2c536a']]);
+  const zoneGeo=geometry([[0,.03,0,1.43,.052,1.43,'#cd4d56'],
+    [-.32,.068,-.32,.28,.04,.28,'#ffe0cf'],[0,.068,0,.28,.04,.28,'#ffe0cf'],[.32,.068,.32,.28,.04,.28,'#ffe0cf'],
+    [-.32,.068,.32,.28,.04,.28,'#ffe0cf'],[.32,.068,-.32,.28,.04,.28,'#ffe0cf']]);
+  function refreshRoadSpots() {
+    roadSpots.clear();
+    for(const {road} of fronts) for(let i=2;i<road.cells.length-2;i++) {
+      const cell=road.cells[i], key=cellKey(cell);
+      if(roadSpots.has(key)) continue;
+      const neighbors=cardinalSteps.filter(([dx,dz])=>roadSpine.has(cellKey(shiftCell(cell,dx,dz))));
+      const junction=neighbors.length>2||neighbors.length===2&&
+        neighbors[0][0]*neighbors[1][0]+neighbors[0][1]*neighbors[1][1]===0;
+      roadSpots.set(key,{key,cell,road,index:i,junction});
+    }
+  }
+  const roadPoint=cell=>cellPoint(cell).setY(roadHeight(cell)+.035);
+  const canPlaceRoad=(kind,spot)=>!!spot&&!roadDefenses.has(spot.key)&&(kind!=='volunteers'||spot.junction);
+  function deployRoad(kind,spot) {
+    const rule=roadRules[kind];
+    if(phase!=='playing'||!rule||!canPlaceRoad(kind,spot)||gold<rule.cost) return null;
+    const root=new THREE.Group(), model=new THREE.Mesh(roadMeshes[kind],voxelMat);
+    root.position.copy(roadPoint(spot.cell));
+    const before=spot.road.cells[spot.index-1], after=spot.road.cells[spot.index];
+    root.rotation.y=Math.atan2(after.x-before.x,after.z-before.z);
+    root.add(model);scene.add(root);
+    const defense={kind,spot,root,charges:rule.charges,units:[]};
+    if(kind==='volunteers') for(let i=0;i<volunteerStats.count;i++) {
+      const actor=new THREE.Mesh(volunteerGeo,voxelMat);
+      const home=V((i-1)*.42,.08,i===1?.31:-.14);
+      actor.position.copy(home);actor.castShadow=true;root.add(actor);
+      defense.units.push({actor,home,hp:volunteerStats.health,target:null,respawn:0});
+    }
+    roadDefenses.set(spot.key,defense);
+    deployed[kind]=(deployed[kind]??0)+1;
+    gold=roundAzn(gold-rule.cost);renderer.shadowMap.needsUpdate=true;
+    shock(root.position,rule.color,1.5,.55);
+    return defense;
+  }
+  function processRoad(mob,oldProgress) {
+    if(!roadDefenses.size) return;
+    const first=Math.max(0,Math.floor(oldProgress/tile+.5));
+    const last=Math.min(mob.road.cells.length-1,Math.floor(mob.p/tile+.5));
+    for(let i=first;i<=last;i++) {
+      const defense=roadDefenses.get(cellKey(mob.road.cells[i]));
+      if(!defense) continue;
+      const {kind,root}=defense;
+      if(kind==='volunteers') {
+        if(mob.kind==='flyer') continue;
+        const ready=defense.units.find(unit=>unit.hp>0&&!unit.target);
+        if(!ready) continue;
+        ready.target=mob;mob.guard=ready;
+        mob.p=Math.min(mob.p,i*tile);
+      } else {
+        mob.traps??=new Set();
+        if(mob.traps.has(defense)) continue;
+        mob.traps.add(defense);
+        if(kind==='turnstile') {
+          mob.frozenAt=time;mob.frozenUntil=Math.max(mob.frozenUntil,time+3);
+        } else mob.p=Math.max(0,mob.p-tile*2);
+        shock(root.position,roadRules[kind].color,1.1,.48);
+        if(--defense.charges===0) {
+          root.removeFromParent();
+          roadDefenses.delete(defense.spot.key);
+        }
+      }
+      cardDirty||=selected?.spot?.key===defense.spot.key;
+      break;
+    }
+  }
+  function supportMelee(dt) {
+    for(const defense of roadDefenses.values()) for(const unit of defense.units) {
+      if(!unit.hp) {
+        if(time<unit.respawn) continue;
+        unit.hp=volunteerStats.health;
+        unit.actor.visible=true;
+        unit.actor.position.copy(unit.home);
+        shock(defense.root.position,'#8cf6cc',1.13,.45);
+      }
+      const target=unit.target;
+      if(!target||target.removed) {
+        unit.target=null;
+        unit.actor.position.lerp(unit.home,Math.min(1,dt*4));
+        continue;
+      }
+      const toward=defense.root.worldToLocal(target.root.position.clone()).setY(.08);
+      toward.x+=unit.home.x*.48;
+      unit.actor.position.lerp(toward,Math.min(1,dt*5));
+      unit.actor.rotation.y=Math.atan2(unit.actor.position.x-toward.x,unit.actor.position.z-toward.z);
+      hurt(target,volunteerStats.damage*dt,'melee',null);
+      if(target.removed) continue;
+      const blows=target.frozenUntil>time?0:14+target.info.damage*7+target.week*1.2;
+      unit.hp=Math.max(0,unit.hp-blows*dt);
+      if(unit.hp) continue;
+      target.guard=null;unit.target=null;unit.actor.visible=false;
+      unit.respawn=time+volunteerStats.recovery;
+      dust(defense.root.position,'#8dcfba',8,2,.19,.5,3,7);
+    }
+  }
+  const zoneRadius=4.5;
+  const inZone=(position,points)=>points.some(point=>distanceBetween(position,point)<=zoneRadius);
+  function closeRoadZone(boss) {
+    const spots=[...roadSpots.values()];
+    const defended=spots.filter(spot=>{
+      const center=cellPoint(spot.cell);
+      return towers.some(tower=>distanceBetween(tower.slot,center)<=zoneRadius);
+    });
+    const spot=pickFrom(defended.length?defended:spots,examRandom('zone:'+boss.week+':'+boss.bossPhase));
+    if(!spot) return;
+    const points=spot.road.cells.slice(spot.index-2,spot.index+3).map(roadPoint);
+    const zone={root:new THREE.Group(),points,until:time+7};
+    for(const p of points) {
+      const block=new THREE.Mesh(zoneGeo,basic);
+      block.position.copy(p).add(V(0,.067,0));zone.root.add(block);
+    }
+    scene.add(zone.root);zones.push(zone);
+    for(const tower of towers) if(inZone(tower.slot,points)) {
+      tower.zonedUntil=Math.max(tower.zonedUntil,zone.until);
+      if(tower.beam) tower.beam.visible=false;
+      if(tower.chain) tower.chain.visible=false;
+    }
+    notice('YDA · İmtahana giriş qadağandır · Qüllələr 7 saniyə bağlıdır',true);
+  }
+  function clearRoads() {
+    for(const {root} of roadDefenses.values()) root.removeFromParent();
+    roadDefenses.clear();
+    for(const {root} of zones) root.removeFromParent();
+    zones.length=0;
+  }
   function build(kind,slot,quiet=false) {
     const stats=towerStats[kind], geos=towerGeometry(kind);
     const root=new THREE.Group();
@@ -909,13 +1138,15 @@
     scene.add(root);
     const tower={kind,slot,root,head,status,glow,level:1,reload:rand(.04,.2),recoil:0,
       priority:'first',invested:stats.cost,kills:0,shots:0,lock:null,lockAge:0,beam:null,chain:null,
-      specialty:null,boostUntil:0,stunnedUntil:0};
+      specialty:null,boostUntil:0,stunnedUntil:0,zonedUntil:0};
     if(kind==='storm') {
       tower.beam=new THREE.Mesh(cube,laserMat);
       tower.beam.visible=false; scene.add(tower.beam);
     }
     towers.push(tower);
+    if(!quiet) deployed[kind]=(deployed[kind]??0)+1;
     slot.tower=tower;
+    for(const zone of zones) if(inZone(slot,zone.points)) tower.zonedUntil=Math.max(tower.zonedUntil,zone.until);
     syncTowerBonuses();
     renderer.shadowMap.needsUpdate=true;
     if(!quiet) {
@@ -947,9 +1178,44 @@
     renderer.shadowMap.needsUpdate=true;
     return true;
   }
-  function spawn(kind,progress=0,week=0,laneOffset=null,road=mainRoad,retake=false) {
+  function removeTower(tower) {
+    scene.remove(tower.root);
+    if(tower.beam) scene.remove(tower.beam);
+    if(tower.chain) scene.remove(tower.chain);
+    tower.slot.tower=null;
+    towers.splice(towers.indexOf(tower),1);
+    renderer.shadowMap.needsUpdate=true;
+  }
+  const fuseEligible=tower=>tower?.level===3&&!tower.fusion&&towers.includes(tower);
+  const fusionMate=(source,other)=>source!==other&&fuseEligible(source)&&fuseEligible(other)&&source.kind===other.kind;
+  const fusionCrest=geometry([[0,2.14,.24,1.04,.19,.32,'#ffd690'],[-.48,2.08,.26,.17,.45,.32,'#ffd690'],
+    [.48,2.08,.26,.17,.45,.32,'#ffd690'],[0,2.31,.24,.27,.22,.26,'#a2f4dd']]);
+  function fuse(source,other) {
+    if(!fusionMate(source,other)) return false;
+    const docent=source.specialty==='magistr'&&other.specialty==='magistr';
+    const recipe=docent?docentStats:fusionStats[source.kind];
+    const earlier=specialtyOf(source);
+    source.fusion={...earlier,...recipe,rate:(earlier.rate??1)*recipe.rate,
+      range:(earlier.range??1)*(recipe.range??1),
+      detail:docent?'Bütün xəritəyə atəş açır · +90% zərər · +30% atış sürəti':
+        '+'+Math.round((recipe.damage-1)*100)+'% zərər · +'+Math.round((recipe.rate-1)*100)+'% atış sürəti'};
+    source.invested+=other.invested;source.kills+=other.kills;
+    source.stunnedUntil=Math.max(source.stunnedUntil,other.stunnedUntil);
+    source.root.name=recipe.name;
+    source.root.add(new THREE.Mesh(fusionCrest,basic));
+    source.head.scale.multiplyScalar(1.16);
+    removeTower(other);
+    deployed.fusion=(deployed.fusion??0)+1;
+    syncTowerBonuses();
+    shock(source.root.position,'#ffd681',2.5,.85);
+    dust(source.root.position.clone().add(V(0,1.35,0)),'#baf7df',25,2.9,.18,.7,4,6);
+    return true;
+  }
+  function spawn(kind,progress=0,week=0,laneOffset=null,road=mainRoad,retake=false,seedIndex=0) {
     if(enemies.length>=160 && week) return null;
-    const info=enemyTypes[kind];
+    const variant=kind==='boss'?bossType(week):null;
+    const info=variant?bossProfiles[variant]:enemyTypes[kind];
+    const random=week?examRandom('exam:'+week+':'+kind+':'+seedIndex):Math.random;
     const root=new THREE.Group();
     root.name=retake?'Təkrar İmtahan':info.name;
     if(retake) root.scale.setScalar(.82);
@@ -959,7 +1225,7 @@
     root.add(body);
     const aura=[];
     if(kind==='boss') for(let i=0;i<2;i++) {
-      const ring=new THREE.Mesh(ringGeo,retakeHalo);
+      const ring=new THREE.Mesh(ringGeo,bossAura[variant]);
       ring.position.y=.055+i*.065;
       ring.scale.setScalar(1.22+i*.31);
       root.add(ring); aura.push(ring);
@@ -985,19 +1251,21 @@
     const balance=modes[difficulty];
     const scaling=1+Math.max(0,week-1)*.18+Math.max(0,week-15)*.14;
     const max=info.health*scaling*balance.hp*(kind==='boss'&&week?1+week*.085:1)*(retake?.75:1);
-    const mob={kind,info,root,body,parts,shadow,aura,max,hp:max,p:progress,week,road,side:laneOffset ?? rand(-.64,.64),phase:rand(0,6.28),
+    const mob={kind,variant,retake,info,root,body,parts,shadow,aura,max,hp:max,p:progress,week,road,
+      side:laneOffset ?? scaled(-.64,.64,random),phase:scaled(0,6.28,random),
       chill:0,slow:0,burn:0,burnDps:0,burnTower:null,flash:0,flashAt:0,hidden:false,hitSum:0,hitAt:0,removed:false,
       event:waveEvents.get(week),bossPhase:0,semesterBoss:kind==='boss'&&week?++bossSequence:0,
       frozenAt:0,frozenUntil:0,armorWeakUntil:0,
-      speed:info.speed*balance.speed*rand(.93,1.07)};
+      speed:info.speed*balance.speed*scaled(.93,1.07,random)};
     enemies.push(mob);
     pose(mob);
     return mob;
   }
   function pose(mob) {
     const {kind,root,body,parts,shadow,info}=mob;
-    const frozen=mob.frozenUntil>time;
-    const stride=(frozen?mob.frozenAt:time)*info.stride+mob.phase;
+    const frozen=mob.frozenUntil>time, held=!!mob.guard;
+    const stride=(frozen?mob.frozenAt:held?(mob.heldAt??=time):time)*info.stride+mob.phase;
+    if(!held) mob.heldAt=null;
     const drift=kind==='runner' ? .19*Math.sin(stride*1.43) : kind==='midterm' ? .24*Math.sin(stride*.43) : 0;
     const at=lanePoint(mob.p,mob.side+drift,mob.road);
     const look=lanePoint(mob.p+.45,mob.side+drift,mob.road);
@@ -1013,14 +1281,12 @@
       part.rotation.x=Math.sin(stride+(i===0||i===3?0:Math.PI))*.72;
     });
     shadow.position.set(at.x,at.y+.035,at.z);
-    mob.hidden=kind==='flyer' && !frozen && mob.chill<=time && (time+mob.phase*.25)%3.65>2.36;
-    if(kind==='flyer') {
-      body.material.transparent=mob.hidden;
-      body.material.opacity=mob.hidden?.24:1;
-      for(const wing of parts) wing.visible=!mob.hidden;
-    }
-    mob.aura.forEach((ring,i)=>ring.scale.setScalar(1.24+i*.40+Math.sin(time*4-i*.6)*.16));
-    body.material.emissive.set(mob.flash>time ? '#fff2c6' : frozen||mob.chill>time ? '#53dafb' : mob.burn>time ? '#ff6737' : kind==='boss'?'#9d263d':'#000000');
+    mob.hidden=!isChilled(mob)&&(mob.inspected||kind==='flyer'&&(time+mob.phase*.25)%3.65>2.36);
+    body.material.transparent=!!mob.hidden;
+    body.material.opacity=mob.hidden?.24:1;
+    for(const part of parts) part.visible=!mob.hidden;
+    mob.aura.forEach((ring,i)=>ring.scale.setScalar((mob.variant==='inspection'&&i===1?7.1:1.24+i*.40)+Math.sin(time*4-i*.6)*.16));
+    body.material.emissive.set(mob.flash>time ? '#fff2c6' : frozen||mob.chill>time ? '#53dafb' : mob.burn>time ? '#ff6737' : kind==='boss'?info.color:'#000000');
     body.material.emissiveIntensity=mob.flash>time ? .83 : kind==='boss'?.44+Math.sin(time*4)*.14:.34;
   }
   const targetPoint = mob => mob.root.position.clone().add(V(0,mob.kind==='flyer'?.18:mob.info.bar*.49,0));
@@ -1031,8 +1297,17 @@
     if(mob.week && waveLedger.has(mob.week)) waveLedger.set(mob.week,waveLedger.get(mob.week)-1);
   }
   const bossThresholds=[.7,.4,.1];
+  const stateThresholds=[.75,.50,.25];
   function reactToDamage(boss) {
     if(phase!=='playing'||!waveLedger.has(boss.week)) return;
+    if(boss.variant==='inspection') return;
+    if(boss.variant==='state') {
+      while(boss.bossPhase<stateThresholds.length&&boss.hp<=boss.max*stateThresholds[boss.bossPhase]) {
+        boss.bossPhase++;
+        closeRoadZone(boss);
+      }
+      return;
+    }
     while(boss.bossPhase<bossThresholds.length&&boss.hp<=boss.max*bossThresholds[boss.bossPhase]) {
       boss.bossPhase++;
       const sleep=(boss.bossPhase+Math.floor(boss.week/5))%2===1;
@@ -1047,7 +1322,7 @@
         notice('KƏSR bir müdafiəçini 3 saniyəlik yuxuya verdi',true);
       } else {
         for(let i=0;i<3;i++) pending.push({kind:'runner',week:boss.week,road:boss.road,retake:true,
-          progress:clamp(boss.p+(i-1)*.75,0,boss.road.totalLength-.75),side:(i-1)*.68,when:time+.10+i*.08});
+          seedIndex:boss.bossPhase*1000+i,progress:clamp(boss.p+(i-1)*.75,0,boss.road.totalLength-.75),side:(i-1)*.68,when:time+.10+i*.08});
         pending.sort((a,b)=>a.when-b.when);
         waveLedger.set(boss.week,waveLedger.get(boss.week)+3);
         shock(boss.root.position,'#f08578',2.15,.68);
@@ -1060,7 +1335,7 @@
   }
   function hurt(mob,amount,kind,tower) {
     if(!mob || mob.removed || amount<=0) return;
-    const armored=mob.kind==='brute'||mob.kind==='boss';
+    const armored=mob.kind==='brute'||mob.kind==='boss'&&mob.variant!=='inspection';
     const weak=mob.kind==='boss'&&mob.armorWeakUntil>time;
     const flame=kind==='flame'||kind==='burn';
     amount*=tower?.bonuses.damage??1;
@@ -1072,7 +1347,9 @@
     if(time>=mob.flashAt) {mob.flash=time+.12;mob.flashAt=time+.25;}
     if(kind==='flame') {
       const spec=specialtyOf(tower);
-      mob.burn=time+(spec.burnTime??2.4);mob.burnDps=(6+(tower.level-1)*4)*(spec.burnPower??1);mob.burnTower=tower;
+      mob.burn=time+(spec.burnTime??2.4);
+      mob.burnDps=(6+(tower.level-1)*4)*(spec.burnPower??1)*(tower.fusion?.damage??1);
+      mob.burnTower=tower;
     }
     mob.hitSum+=amount;
     if(time>=mob.hitAt && mob.hitSum>=1) {
@@ -1084,10 +1361,13 @@
       if(tower) tower.kills++;
       const center=targetPoint(mob);
       if(phase==='playing') {
+        const entry=mob.variant??(mob.retake?'repeat':mob.kind);
+        defeated[entry]=(defeated[entry]??0)+1;
         const reward=roundAzn((3+Math.max(0,mob.week-1))*(mob.event?.kind==='session'?1.25:1));
         earn(reward);
         floating(center.clone().add(V(.38,.4,0)),'+'+reward+' AZN','azn');
         if(mob.semesterBoss) {
+          bossWins.set(mob.week,mob.info.name);
           const points=semester?.bossDefeated(semesterRun,mob.semesterBoss);
           if(points) floating(center.clone().add(V(.38,1.1,0)),'+'+points+' Semestr Xalı','azn');
         }
@@ -1115,8 +1395,8 @@
     const kind=tower.kind, flight=clamp(from.distanceTo(hit)/stats.speed,.11,.76);
     tower.shots++;
     const critical=specialtyOf(tower).critical&&tower.shots%3===0;
-    if(critical) dust(from,'#fff19b',4,1.1,.15,.55,2.6);
-    projectiles.push({tower,target,kind,mesh,from,hit,flight,age:0,amount:baseDamage(tower)*(critical?2:1)});
+    if(critical||relicRanks.papers&&tower.shots%4===0) dust(from,'#fff19b',4,1.1,.15,.55,2.6);
+    projectiles.push({tower,target,kind,mesh,from,hit,flight,age:0,amount:criticalDamage(tower,critical)});
     tower.recoil=.16;
     tower.reload+=shotDelay(tower);
     if(kind==='cannon'||kind==='flame') dust(from,stats.color,kind==='cannon'?5:3,.99,.19,.38,2);
@@ -1164,7 +1444,7 @@
   function defend(dt) {
     for(const tower of towers) {
       tower.recoil=Math.max(0,tower.recoil-dt);
-      if(tower.stunnedUntil>time) {
+      if(towerAsleep(tower)) {
         if(tower.beam) tower.beam.visible=false;
         if(tower.chain) tower.chain.visible=false;
         continue;
@@ -1180,13 +1460,14 @@
         const around=enemies.filter(inside);
         if(!around.length) continue;
         tower.reload+=shotDelay(tower);
+        tower.shots++;
         shock(tower.root.position.clone().setY(.24),stats.color,range,.74);
         dust(tower.root.position.clone().add(V(0,1.1,0)),stats.color,8,2.2,.12,.58,1.7);
         for(const mob of around) {
           const slow=spec.slow??.40+(level-1)*.10;
           if(mob.chill<=time||mob.slow<=slow) {mob.chill=time+(spec.chill??1.57);mob.slow=slow;}
           mob.hidden=false;
-          hurt(mob,baseDamage(tower),'frost',tower);
+          hurt(mob,criticalDamage(tower),'frost',tower);
         }
         continue;
       }
@@ -1209,9 +1490,9 @@
         tower.head.rotation.y=Math.atan2(-aim.x,-aim.z);
         const ramp=Math.min(spec.ramp??2.05,tower.lockAge*.73);
         drawBeam(tower.beam,from,end,.084+ramp*.047);
-        const damage=baseDamage(tower)*(1+ramp)*dt*rate;
+        const damage=criticalDamage(tower,false,Math.floor(tower.lockAge)+1)*(1+ramp)*dt*rate;
         hurt(chosen,damage,'storm',tower);
-        if(tower.chain&&tower.stunnedUntil<=time) {
+        if(tower.chain&&!towerAsleep(tower)) {
           const second=enemies.find(m=>m!==chosen&&!m.removed&&!m.hidden&&m.root.position.distanceToSquared(chosen.root.position)<16);
           if(second) {
             tower.chain.visible=true;
@@ -1304,7 +1585,7 @@
     return forecast={number,entries,portals};
   }
   function mayStart() {
-    return phase==='playing' && (wave<waveCount||endless);
+    return phase==='playing' && (wave<waveCount||endless) && (!ticketDay||!waveLedger.size);
   }
   function startWave(early=false) {
     if(!mayStart() || (early&&time<canRushAt)) return;
@@ -1316,13 +1597,14 @@
     }
     const number=++wave;
     if(number%3===0) {
-      const kind=choose(Object.keys(weeklyEvents));
+      const kind=pickFrom(Object.keys(weeklyEvents),examRandom('event:'+number));
       waveEvents.set(number,{kind,start:time});
       notice('Həftə '+number+' · '+weeklyEvents[kind].name);
     }
     const {entries}=planWave(number);
+    const random=examRandom('positions:'+number);
     for(const [i,entry] of entries.entries()) {
-      pending.push({...entry,when:time+entry.delay,side:entry.kind==='midterm'?(i%3-1)*.53:rand(-.56,.56)});
+      pending.push({...entry,seedIndex:i,when:time+entry.delay,side:entry.kind==='midterm'?(i%3-1)*.53:scaled(-.56,.56,random)});
     }
     pending.sort((a,b)=>a.when-b.when);
     waveLedger.set(number,entries.length);
@@ -1340,16 +1622,19 @@
       wavePortalCounts.delete(number);
       waveEvents.delete(number);
       const tier=tiers[scholarship];
-      const reward=roundAzn(tier.payout+gold*tier.interestPercent/100);
+      const cashback=roundAzn(gold*.10*relicRanks.card);
+      const reward=roundAzn(tier.payout+gold*tier.interestPercent/100+cashback);
       earn(reward);
       playSound('earn');
-      offerExpansion(number,reward,semesterReward);
+      if(number%5===0&&bossWins.has(number)&&!earnedRelics.has(number)) {
+        offerRelic(number,reward,semesterReward,cashback);
+      } else offerExpansion(number,reward,semesterReward,cashback);
       return;
     }
     while(pending.length && time>=pending[0].when && enemies.length<160) {
       const item=pending.shift();
-      spawn(item.kind,item.progress??0,item.week,item.side,item.road??item.front.road,item.retake);
-      if(item.kind==='boss') {notice('KƏSR ortaya çıxdı!',true);playSound('boss');}
+      const mob=spawn(item.kind,item.progress??0,item.week,item.side,item.road??item.front.road,item.retake,item.seedIndex);
+      if(mob?.kind==='boss') {notice(mob.info.name+' ortaya çıxdı!',true);playSound('boss');}
     }
     if(!waveLedger.size && !pending.length && !enemies.length) {
       if(!mayStart()) {finish('won');return;}
@@ -1373,13 +1658,13 @@
     const score=(completedWeeks-scoreBaseline.weeks)*100+(kills-scoreBaseline.kills)*3+(state==='won'?200:0);
     const result=progress?.finish(progressRun,score,state==='won');
     ui.summaryPoints.hidden=!result;
-    if(result) ui.summaryPoints.textContent=result.score+' oyun xalı';
+    if(result) ui.summaryPoints.textContent=result.score+' oyun xalı'+(ticketDay?' · İmtahan Bileti '+ticketDay:'');
     ui.summarySemester.hidden=!semesterRun?.uid;
     if(semesterRun?.uid) {
       const points=semester.balance(semesterRun)-scoreBaseline.semester+(result?.award??0);
       ui.summarySemester.textContent='Bu hissədə +'+points+' Semestr Xalı';
     }
-    ui.resumeEndless.hidden=state!=='won';
+    ui.resumeEndless.hidden=state!=='won'||!!ticketDay;
     ui.summary.hidden=false;
     ui.replay.focus({preventScroll:true});
     playSound(state==='won'?'earn':'boss');
@@ -1397,6 +1682,10 @@
     for(const {node} of popups) node.remove();
     for(const list of [enemies,towers,projectiles,rings,particles,papers,grades,pending,popups]) list.length=0;
     waveLedger.clear();waveEvents.clear();wavePortalCounts.clear();
+    clearRoads();bossWins.clear();earnedRelics.clear();relicOffer=null;
+    for(const id of Object.keys(relics)) relicRanks[id]=0;
+    for(const counters of [deployed,defeated]) for(const key of Object.keys(counters)) delete counters[key];
+    ui.relic.hidden=true;
     for(const ability of Object.keys(abilityRules)) cooldowns[ability]=0;
     for(const slot of sockets) slot.tower=null;
     resetCampus();
@@ -1405,6 +1694,7 @@
     renderer.shadowMap.needsUpdate=true;
   }
   function demo() {
+    ticketDay=null;
     clearBattle();
     phase='menu';
     runSkin=progress?.activeSkin();
@@ -1416,7 +1706,7 @@
     clearBattle();
     phase='playing';wave=0;gold=startingGold;health=maxLives;kills=0;speed=1;
     completedWeeks=0;semesterRun=semester?.startRun()??null;
-    startProgressRun(endless?'endless':'campaign');
+    startProgressRun(ticketDay?'daily':endless?'endless':'campaign');
     bossSequence=0;
     runSkin=progressRun?.skin;
     scholarship=0;totalGold=0;totalBuilt=0;nextWaveAt=setupSeconds;canRushAt=0;
@@ -1427,8 +1717,9 @@
     playSound('build');
     updateHud();
   }
+  const choicesOpen=()=>phase==='expanding'||phase==='relic';
   function step(dt) {
-    if(phase==='expanding') return;
+    if(choicesOpen()) return;
     time+=dt;
     if(phase==='menu') {
       if(time>28) {demo();return;}
@@ -1439,15 +1730,20 @@
     }
     if(phase==='menu'||phase==='playing') {
       if(phase==='playing') progressWaves();
-      if(phase==='expanding') return;
+      if(choicesOpen()) return;
+      const inspectors=enemies.filter(mob=>!mob.removed&&mob.variant==='inspection');
       for(const mob of enemies) {
         if(mob.removed) continue;
         if(mob.burn>time) hurt(mob,mob.burnDps*dt,'burn',mob.burnTower);
         if(mob.removed) continue;
-        if(mob.frozenUntil<=time) {
-          const surge=mob.kind==='boss'&&(time+mob.phase)%5<1.22 ? 1.83 : 1;
+        mob.inspected=(mob.kind==='runner'||mob.kind==='midterm'||mob.kind==='flyer')&&inspectors.some(boss=>!boss.removed&&
+          distanceBetween(boss.root.position,mob.root.position)<=6.5);
+        if(mob.frozenUntil<=time&&!mob.guard) {
+          const surge=mob.variant==='retake'&&(time+mob.phase)%5<1.22 ? 1.83 : 1;
           const eventRate=mob.event?.kind==='session'?1.15:mob.event?.kind==='late'&&time-mob.event.start<10?.6:1;
-          mob.p+=mob.speed*dt*surge*eventRate*(mob.chill>time?1-mob.slow:1);
+          const oldProgress=mob.p;
+          mob.p+=mob.speed*dt*surge*eventRate*(mob.inspected&&!isChilled(mob)?1.25:1)*(mob.chill>time?1-mob.slow:1);
+          processRoad(mob,oldProgress);
         }
         if(mob.p>=mob.road.totalLength) {
           if(phase==='playing') {
@@ -1461,6 +1757,7 @@
           if(phase==='playing' && !health) {finish('lost');break;}
         } else pose(mob);
       }
+      if(phase==='playing') supportMelee(dt);
       if(phase==='playing'||phase==='menu') defend(dt);
     }
     for(let i=projectiles.length-1;i>=0;i--) {
@@ -1480,6 +1777,9 @@
       }
     }
     for(let i=enemies.length-1;i>=0;i--) if(enemies[i].removed) enemies.splice(i,1);
+    for(let i=zones.length-1;i>=0;i--) if(time>=zones[i].until) {
+      zones[i].root.removeFromParent();zones.splice(i,1);
+    }
     for(let i=particles.length-1;i>=0;i--) {
       const p=particles[i];
       p.age+=dt;
@@ -1516,7 +1816,7 @@
       }
       dust(V(fountainX,.99,fountainZ),'#b7f1f1',4,.67,.10,.58,3.3,10);
       for(const mob of enemies) if(mob.kind==='boss') {
-        dust(mob.root.position.clone().add(V(rand(-.85,.85),.16,rand(-.85,.85))),'#ff626a',3,.55,.15,.73,2.4,-.8);
+        dust(mob.root.position.clone().add(V(rand(-.85,.85),.16,rand(-.85,.85))),mob.info.color,3,.55,.15,.73,2.4,-.8);
       }
       if(phase!=='menu'&&health<maxLives*.55) dust(V(campusX-2.0,3.0,campusZ+1.6),'#a48573',3,1.1,.3,1.8,2.2,-.3);
     }
@@ -1573,6 +1873,7 @@
   const ui={top:get('topbar'),controls:get('controls'),dock:get('dock'),card:get('tower-card'),abilities:get('abilities'),event:get('wave-event'),
     toast:get('toast'),start:get('start'),startForm:get('start-form'),summary:get('summary'),
     expansion:get('expansion'),expansionWeek:get('expansion-week'),expansionOptions:get('expansion-options'),
+    road:get('road-actions'),relic:get('relic-offer'),reference:get('battle-reference'),
     summaryTitle:get('summary-title'),summaryStats:get('summary-stats'),summaryPoints:get('summary-points'),
     summarySemester:get('summary-semester'),replay:get('replay'),
     resumeEndless:get('continue'),next:get('next'),sound:get('sound'),gamesReturn:get('games-return'),popups:get('popups')};
@@ -1602,9 +1903,14 @@
     `<button type="button" data-ability="${id}" title="${ability.hint}" aria-label="${ability.name}" aria-pressed="false">
       <strong>${ability.name}</strong><small></small></button>`).join('');
   const abilityButtons=[...ui.abilities.querySelectorAll('button')];
+  ui.road.innerHTML=Object.entries(roadRules).map(([id,rule])=>
+    `<button type="button" data-road="${id}" aria-label="${rule.name} · ${rule.cost} AZN" aria-pressed="false">
+      <strong>${rule.short}</strong><small>${rule.cost} AZN</small></button>`).join('');
+  const roadButtons=[...ui.road.querySelectorAll('button')];
   const speedButtons=[...ui.top.querySelectorAll('[data-speed]')];
   const economyBtn=get('economy');
-  let activeKind=null, selected=null, hovered=null, aiming=null, cardDirty=true, toastUntil=0, lastUi=0;
+  let activeKind=null, activeRoad=null, fusionSource=null, selected=null, hovered=null, aiming=null,
+    cardDirty=true, toastUntil=0, lastUi=0;
   let muted=true, audio;
 
   function playSound(kind) {
@@ -1725,6 +2031,12 @@
   const previewHead=new THREE.Mesh(towerGeos.arrow.head,previewMat);
   previewHead.position.y=.55;
   preview.add(previewBase,previewHead);scene.add(preview);
+  const roadHints=new THREE.InstancedMesh(cube,new THREE.MeshBasicMaterial({color:'#8cf6cc',transparent:true,
+    opacity:.40,depthWrite:false}),2048);
+  roadHints.frustumCulled=false;roadHints.visible=false;scene.add(roadHints);
+  const roadChosen=new THREE.Mesh(cube,queuedMaterial);
+  roadChosen.scale.setScalar(1.21);roadChosen.scale.y=.05;
+  roadChosen.visible=false;scene.add(roadChosen);
   function indicators() {
     let slot=null, kind=null, radius=0;
     if(phase==='playing') {
@@ -1736,23 +2048,37 @@
         slot=hovered;kind=activeKind;
       }
     }
-    preview.visible=!!kind;range.visible=!!slot;
+    preview.visible=!!kind;range.visible=!!slot&&Number.isFinite(radius);
     if(kind) {
       const geos=towerGeometry(kind);
       previewBase.geometry=geos.base;previewHead.geometry=geos.head;
       preview.position.set(slot.x,.39+heightOf(slot),slot.z);
       radius=towerStats[kind].range*(slot.buff==='wifi'?1.25:1);
+      range.visible=true;
     }
-    if(slot) {
+    if(range.visible) {
       range.position.set(slot.x,.51+heightOf(slot),slot.z);range.scale.setScalar(radius);
     }
     for(const tile of sockets) {
-      tile.marker.visible=phase==='playing' && !tile.tower;
-      tile.marker.material=tile===slot?queuedMaterial:(buffMaterials[tile.buff]??markerMaterial);
+      const mate=!!fusionSource&&fusionMate(fusionSource,tile.tower);
+      tile.marker.visible=phase==='playing'&&(fusionSource?mate:!activeRoad&&!tile.tower);
+      tile.marker.material=mate||tile===slot?queuedMaterial:(buffMaterials[tile.buff]??markerMaterial);
     }
+    roadChosen.visible=phase==='playing'&&!!selected?.spot;
+    if(roadChosen.visible) roadChosen.position.copy(roadPoint(selected.spot.cell)).add(V(0,.08,0));
+    roadHints.visible=phase==='playing'&&!!activeRoad;
+    if(!roadHints.visible) return;
+    let index=0;
+    dummy.rotation.set(0,0,0);dummy.scale.set(1.17,.055,1.17);
+    for(const spot of roadSpots.values()) {
+      if(!canPlaceRoad(activeRoad,spot)) continue;
+      dummy.position.copy(roadPoint(spot.cell));dummy.updateMatrix();roadHints.setMatrixAt(index++,dummy.matrix);
+      if(index>=roadHints.instanceMatrix.count) break;
+    }
+    roadHints.count=index;roadHints.instanceMatrix.needsUpdate=true;
   }
   function clearSelection() {
-    activeKind=null;hovered=null;selected=null;aiming=null;abilityRing.visible=false;
+    activeKind=null;activeRoad=null;fusionSource=null;hovered=null;selected=null;aiming=null;abilityRing.visible=false;
     renderer.domElement.classList.remove('targeting');
     cardDirty=true;indicators();updateHud();
   }
@@ -1766,12 +2092,22 @@
     }
     cardDirty=true;indicators();updateHud();
   }
+  function selectRoad(spot) {
+    if(!spot) return false;
+    if(activeRoad&&!canPlaceRoad(activeRoad,spot)) {
+      notice(activeRoad==='volunteers'?'Boş yol kəsişməsini seç':'Boş yol xanasını seç',true);
+      return true;
+    }
+    if(!activeRoad&&!roadDefenses.has(spot.key)) return false;
+    selected={type:'road',spot};cardDirty=true;indicators();updateHud();
+    return true;
+  }
   function towerNumbers(tower) {
     const damage=baseDamage(tower)*tower.bonuses.damage;
     const rate=fireRate(tower);
     return {
       damage:tower.kind==='storm'?Math.round(damage*rate)+' DPS':Math.round(damage),
-      range:rangeOf(tower).toFixed(1),
+      range:tower.fusion?.global?'Bütün xəritə':rangeOf(tower).toFixed(1),
       rate:tower.kind==='storm'?rate.toFixed(2)+'×':(rate/shotDelay(tower)).toFixed(2)+'/s',
       kills:tower.kills
     };
@@ -1788,11 +2124,24 @@
   function cardHead(title) {
     return '<div class="card-head"><strong>'+title+'</strong><button type="button" data-action="close" aria-label="Paneli bağla">×</button></div>';
   }
+  function roadStatus(defense) {
+    if(defense.kind!=='volunteers') return 'Qalan istifadə · '+defense.charges;
+    const ready=defense.units.filter(unit=>unit.hp>0).length;
+    const next=Math.min(...defense.units.filter(unit=>!unit.hp).map(unit=>unit.respawn));
+    return 'Aktiv · '+ready+'/'+volunteerStats.count+(Number.isFinite(next)?' · Növbəti dönüş '+Math.max(0,Math.ceil(next-time))+'s':'');
+  }
   function showCard() {
     cardDirty=false;
     ui.card.hidden=phase!=='playing'||!selected;
     if(ui.card.hidden) return;
-    if(selected.type==='economy') {
+    if(selected.type==='road') {
+      const defense=roadDefenses.get(selected.spot.key), kind=defense?.kind??activeRoad;
+      if(!kind) {clearSelection();return;}
+      const rule=roadRules[kind];
+      ui.card.innerHTML=cardHead(rule.name)+`<div class="muted">${rule.detail}</div>`+
+        (defense?`<div id="road-status" class="muted">${roadStatus(defense)}</div>`:
+          `<div class="card-actions"><button class="primary" type="button" data-action="deploy">Yerləşdir · ${rule.cost} AZN</button></div>`);
+    } else if(selected.type==='economy') {
       const tier=tiers[scholarship], next=tiers[scholarship+1];
       const interest=tier.interestPercent?` · Qalan balansa ${tier.interestPercent}% faiz`:'';
       ui.card.innerHTML=cardHead(tier.name)+`<div class="muted">Hər tamamlanan həftə +${tier.payout} AZN${interest}</div>`+
@@ -1815,11 +2164,15 @@
       const upgradeChoices=tower.level===2?`<div class="muted">İxtisaslaşma · ${upgradeCost(tower)} AZN</div>
         <div class="spec-options">${Object.entries(specializations[tower.kind]).map(([id,option])=>
           `<button type="button" data-action="upgrade" data-specialty="${id}"><strong>${option.name}</strong><small>${option.detail}</small></button>`).join('')}</div>`:'';
-      ui.card.innerHTML=cardHead((spec.name??towerStats[tower.kind].name)+' · Səviyyə '+tower.level+'/3')+
+      const partners=towers.filter(peer=>fusionMate(tower,peer));
+      const fusionChoices=tower===fusionSource?`<div class="spec-options">${partners.map(peer=>
+        `<button type="button" data-action="merge" data-slot="${peer.slot.i}"><strong>${specialtyOf(peer).name}</strong><small>Xana ${peer.slot.i+1}</small></button>`).join('')}</div>`:'';
+      ui.card.innerHTML=cardHead((spec.name??towerStats[tower.kind].name)+(tower.fusion?' · Birləşmə':' · Səviyyə '+tower.level+'/3'))+
         (spec.name?`<div class="muted">${spec.detail}</div>`:'')+statsLine(tower)+tileNote(tower.slot)+
         (links.length?`<div class="muted">${links.join(' · ')}</div>`:'')+`<div id="tower-status" class="muted" hidden></div>`+
-        priorities+upgradeChoices+
+        priorities+upgradeChoices+fusionChoices+
         `<div class="card-actions">${tower.level===1?`<button class="primary" type="button" data-action="upgrade">Yüksəlt · ${upgradeCost(tower)} AZN</button>`:''}
+        ${partners.length?`<button type="button" data-action="fusion" aria-pressed="${tower===fusionSource}">${tower===fusionSource?'Seçimi ləğv et':'Birləşdir'}</button>`:''}
         <button type="button" data-action="sell">Sat · +${sellValue(tower)} AZN</button></div>`;
     }
   }
@@ -1856,12 +2209,20 @@
       button.disabled=phase!=='playing'||gold<towerStats[button.dataset.tower].cost;
       button.setAttribute('aria-pressed',String(button.dataset.tower===activeKind));
     }
+    for(const button of roadButtons) {
+      const kind=button.dataset.road;
+      button.disabled=phase!=='playing'||gold<roadRules[kind].cost;
+      button.setAttribute('aria-pressed',String(kind===activeRoad));
+    }
+    get('ticket-hud').hidden=!ticketDay;
+    if(ticketDay) changeText(get('ticket-hud'),'İmtahan Bileti · '+ticketDay);
     economyBtn.setAttribute('aria-pressed',String(selected?.type==='economy'));
     changeText(get('tier-cost'),tiers[scholarship+1]?tiers[scholarship+1].cost+' AZN':'Maksimum');
     if(cardDirty) showCard();
     if(!ui.card.hidden) for(const button of ui.card.querySelectorAll('[data-action]')) {
       const action=button.dataset.action;
       if(action==='build') button.disabled=!activeKind || gold<towerStats[activeKind].cost;
+      if(action==='deploy') button.disabled=!activeRoad||!canPlaceRoad(activeRoad,selected.spot)||gold<roadRules[activeRoad].cost;
       if(action==='upgrade') button.disabled=gold<upgradeCost(selected.slot.tower);
       if(action==='economy') button.disabled=gold<(tiers[scholarship+1]?.cost??Infinity);
     }
@@ -1869,10 +2230,13 @@
       const tower=selected.slot.tower, numbers=towerNumbers(tower);
       for(const stat of ui.card.querySelectorAll('[data-stat]')) changeText(stat,String(numbers[stat.dataset.stat]));
       const status=get('tower-status');
-      const asleep=tower.stunnedUntil>time, boosted=tower.boostUntil>time;
-      status.hidden=!asleep&&!boosted;
-      if(!status.hidden) changeText(status,asleep?'Yuxu · '+Math.ceil(tower.stunnedUntil-time)+'s':'Enerji İçkisi · '+Math.ceil(tower.boostUntil-time)+'s');
+      const zoned=tower.zonedUntil>time, asleep=tower.stunnedUntil>time, boosted=tower.boostUntil>time;
+      status.hidden=!zoned&&!asleep&&!boosted;
+      if(!status.hidden) changeText(status,zoned?'YDA zonası · '+Math.ceil(tower.zonedUntil-time)+'s':
+        asleep?'Yuxu · '+Math.ceil(tower.stunnedUntil-time)+'s':'Enerji İçkisi · '+Math.ceil(tower.boostUntil-time)+'s');
     }
+    const roadState=get('road-status'), defense=selected?.spot&&roadDefenses.get(selected.spot.key);
+    if(roadState&&defense) changeText(roadState,roadStatus(defense));
   }
   ui.abilities.onclick=event=>{
     const id=event.target.closest('[data-ability]')?.dataset.ability;
@@ -1889,7 +2253,7 @@
     if(phase!=='playing') return;
     const button=event.target.closest('button');
     if(!button||button.disabled) return;
-    if(aiming) clearSelection();
+    if(aiming||activeRoad||fusionSource) clearSelection();
     if(button===economyBtn) {
       selected=selected?.type==='economy'?null:{type:'economy'};
       activeKind=null;
@@ -1900,13 +2264,25 @@
     }
     cardDirty=true;indicators();updateHud();
   };
+  ui.road.onclick=event=>{
+    if(phase!=='playing') return;
+    const button=event.target.closest('[data-road]');
+    if(!button||button.disabled) return;
+    const next=activeRoad===button.dataset.road?null:button.dataset.road;
+    clearSelection();activeRoad=next;
+    if(next) notice(next==='volunteers'?'Parlaq kəsişməni seç':'Parlaq yol xanasını seç');
+    indicators();updateHud();
+  };
   ui.card.onclick=event=>{
     if(phase!=='playing'||!selected) return;
     const button=event.target.closest('button');
     if(!button||button.disabled) return;
     const action=button.dataset.action, slot=selected.slot;
     if(action==='close') {clearSelection();return;}
-    if(action==='build'&&slot&&!slot.tower&&activeKind) {
+    if(action==='deploy'&&activeRoad) {
+      if(!deployRoad(activeRoad,selected.spot)) return;
+      activeRoad=null;playSound('build');
+    } else if(action==='build'&&slot&&!slot.tower&&activeKind) {
       const cost=towerStats[activeKind].cost;
       if(gold<cost) return;
       gold=roundAzn(gold-cost);totalBuilt++;
@@ -1924,12 +2300,17 @@
         const cost=upgradeCost(tower);
         if(gold<cost||!upgrade(tower,button.dataset.specialty)) return;
         gold=roundAzn(gold-cost);tower.invested+=cost;playSound('build');
+      } else if(action==='fusion') {
+        fusionSource=fusionSource===tower?null:tower;
+        activeKind=null;
+        if(fusionSource) notice('Eyni tipdən olan parlaq 3-cü səviyyə qülləsini seç');
+      } else if(action==='merge') {
+        completeFusion(sockets[Number(button.dataset.slot)]?.tower);
+        return;
       } else if(action==='sell') {
         const refund=sellValue(tower);
         gold=roundAzn(gold+refund);
-        scene.remove(tower.root);if(tower.beam) scene.remove(tower.beam);
-        if(tower.chain) scene.remove(tower.chain);
-        towers.splice(towers.indexOf(tower),1);slot.tower=null;
+        removeTower(tower);fusionSource=null;
         syncTowerBonuses();
         selected=null;renderer.shadowMap.needsUpdate=true;
         notice('Satıldı · +'+refund+' AZN');playSound('sell');
@@ -1939,20 +2320,35 @@
     }
     cardDirty=true;indicators();updateHud();
   };
+  function completeFusion(other) {
+    if(!fuse(fusionSource,other)) {notice('Parlaq tərəfdaş qülləsini seç',true);return;}
+    notice(fusionSource.fusion.name+' yaradıldı');
+    fusionSource=null;
+    cardDirty=true;indicators();updateHud();playSound('build');
+  }
+  function dailySelected() { return ui.startForm.elements.mode.value==='daily'; }
+  function showTicket() {
+    const daily=dailySelected(), note=get('daily-note'), difficultyField=get('difficulty-field');
+    difficultyField.hidden=difficultyField.disabled=daily;
+    note.hidden=!daily;
+    if(daily) note.textContent=arena.dailyDay()+' · Bakı tarixi · Normal çətinlik, 15 dalğa, hamı üçün eyni yollar və hadisələr.';
+  }
+  ui.startForm.onchange=showTicket;
   ui.startForm.onsubmit=event=>{
     event.preventDefault();
     const form=new FormData(ui.startForm);
     const choice=form.get('difficulty');
-    difficulty=Object.hasOwn(modes,choice)?choice:'normal';endless=form.get('mode')==='endless';
+    ticketDay=dailySelected()?arena.dailyDay():null;
+    difficulty=!ticketDay&&Object.hasOwn(modes,choice)?choice:'normal';endless=form.get('mode')==='endless';
     begin();
   };
   ui.replay.onclick=()=>{
     speed=1;
     ui.summary.hidden=true;ui.top.hidden=true;ui.controls.hidden=true;ui.start.hidden=false;ui.toast.hidden=true;
-    demo();resetCamera(false);indicators();ui.startForm.querySelector('button').focus({preventScroll:true});
+    demo();showTicket();resetCamera(false);indicators();ui.startForm.querySelector('button').focus({preventScroll:true});
   };
   ui.resumeEndless.onclick=()=>{
-    if(phase!=='won') return;
+    if(phase!=='won'||ticketDay) return;
     startProgressRun('continuation');
     endless=true;phase='playing';speed=1;nextWaveAt=time+8;canRushAt=time;
     ui.summary.hidden=true;cardDirty=true;indicators();updateHud();
@@ -1982,7 +2378,7 @@
     trigger.disabled=!progress;
     trigger.onclick=()=>{
       const form=new FormData(ui.startForm);
-      const mode=phase==='menu'?(form.get('mode')+'-'+form.get('difficulty')):progressRun?.mode;
+      const mode=phase==='menu'?(dailySelected()?'daily':form.get('mode')+'-'+form.get('difficulty')):progressRun?.mode;
       progress.mount(get('game-meta-content'),{
         game:'semester-defense',mode,openGuide:phase==='menu',openRecords:true,
         result:phase==='menu'?null:progressRun?.result
@@ -1992,6 +2388,65 @@
   }
 
   // A 16×16 parcel is just under one fifth of the original 42×32 campus.
+  const referenceContent=get('reference-content');
+  const referenceButtons=[...ui.reference.querySelectorAll('[data-reference]')];
+  let referenceTab='students';
+  function referenceItem(title,fields,description) {
+    const stats=fields.length?'<dl>'+fields.map(([name,value])=>'<div><dt>'+name+'</dt><dd>'+value+'</dd></div>').join('')+'</dl>':'';
+    return '<article class="reference-item"><strong>'+title+'</strong>'+stats+'<p>'+description+'</p></article>';
+  }
+  function renderReference() {
+    for(const button of referenceButtons) button.setAttribute('aria-pressed',String(button.dataset.reference===referenceTab));
+    let cards=[];
+    if(referenceTab==='exams') {
+      const enemyNotes={
+        runner:'Sürətli və zəif müdafiəli.',midterm:'Qrupla gəlir. Kofe sıçrayışına həssasdır.',
+        flyer:'Vaxtaşırı gizlənir. Kofe sıçrayışı üçün dondurma tələb olunur.',
+        brute:'Zireh karandaş zərərini azaldır. Lazer və alov daha təsirlidir.',
+        repeat:'KƏSR-in çağırdığı daha zəif Kollokvium.'
+      };
+      const rows=[...Object.entries(enemyTypes).filter(([id])=>id!=='boss'),
+        ['repeat',{...enemyTypes.runner,name:'Təkrar İmtahan',health:enemyTypes.runner.health*.75}],
+        ...Object.entries(bossProfiles)];
+      cards=rows.map(([id,exam])=>referenceItem(exam.name,[
+        ['Baza canı',exam.health],['Sürət',exam.speed.toFixed(2)],['Bina zərəri',exam.damage],['Məğlub',defeated[id]??0]
+      ],exam.detail??enemyNotes[id]));
+    } else if(referenceTab==='items') {
+      const effect={papers:'+15% kritik zərər',card:'+10% keşbek',pencil:'+12% atış sürəti'};
+      cards=Object.entries(relics).map(([id,item])=>referenceItem(item.name,
+        [['Seçilmə sayı',relicRanks[id]],['Hər seçim',effect[id]]],item.detail));
+    } else {
+      cards=towerKinds.map(kind=>{
+        const stats=towerStats[kind], count=towers.filter(tower=>tower.kind===kind).length;
+        return referenceItem(stats.name,[
+          ['Qiymət',stats.cost+' AZN'],['Baza zərəri',kind==='storm'?stats.damage+' DPS':stats.damage??0],
+          ['Məsafə',stats.range],['Atış',stats.delay?Math.round(100/stats.delay)/100+'/s':'Davamlı'],
+          ['Xəritədə',phase==='menu'?0:count],['Qurulub',deployed[kind]??0]
+        ],descriptions[kind]);
+      });
+      cards.push(referenceItem(roadRules.volunteers.name,[
+        ['Qiymət',roadRules.volunteers.cost+' AZN'],['Heyət',volunteerStats.count],
+        ['Hər tələbənin canı',volunteerStats.health],['Zərər',volunteerStats.damage+' DPS'],
+        ['Qayıdış',volunteerStats.recovery+'s'],['Yerləşdirilib',deployed.volunteers??0]
+      ],roadRules.volunteers.detail));
+      for(const id of ['turnstile','coffee']) cards.push(referenceItem(roadRules[id].name,[
+        ['Qiymət',roadRules[id].cost+' AZN'],['İstifadə',roadRules[id].charges],['Yerləşdirilib',deployed[id]??0]
+      ],roadRules[id].detail));
+      cards.push(referenceItem('Qüllə birləşməsi',[['Birləşdirilib',deployed.fusion??0]],
+        'Eyni tipli iki maksimum səviyyəli qüllə daha güclü bir qülləyə çevrilir. İki Magistr bütün xəritəyə atəş açan Dosent yaradır.'));
+    }
+    const note=referenceTab==='exams'?'<p class="muted">Can və sürət çətinliyə görə dəyişir. İmtahanların canı hər dalğada artır.</p>':'';
+    referenceContent.innerHTML=note+'<div class="reference-grid">'+cards.join('')+'</div>';
+  }
+  for(const button of document.querySelectorAll('[data-open-reference]')) button.onclick=()=>{
+    renderReference();
+    ui.reference.showModal();
+  };
+  get('close-reference').onclick=()=>ui.reference.close();
+  for(const button of referenceButtons) button.onclick=()=>{
+    referenceTab=button.dataset.reference;renderReference();
+  };
+
   const parcelCells=16, chunkSize=parcelCells*tile, branchBonus=40;
   const originalBounds={minX:-31.5,maxX:31.5,minZ:-24,maxZ:24};
   const portalPalette=['#a6e7ba','#e5c38a','#d6b6fd','#90d8fc','#ffa69a','#e2ee8a'];
@@ -2119,7 +2574,7 @@
     }
     return null;
   }
-  function branchOptions(limit) {
+  function branchOptions(limit,random=Math.random) {
     const points=[], tried=new Set(), parcels=new Map();
     for(const {road} of fronts) for(let i=1;i<road.cells.length-1;i++) {
       const p=road.cells[i], prev=road.cells[i-1], next=road.cells[i+1];
@@ -2134,7 +2589,7 @@
     }
     const choices=[];
     for(let attempt=0;points.length&&choices.length<limit&&attempt<120;attempt++) {
-      const selected=Math.floor(Math.random()*points.length);
+      const selected=Math.floor(random()*points.length);
       const {road,i,p,dx,dz}=points[selected];
       points[selected]=points.at(-1);points.pop();
       const path=findBranch(p,dx,dz,parcels);
@@ -2154,30 +2609,32 @@
     return {target,plot,connector,pads,center,direction,opens:!target,color,name,chunkRoad,
       track:[...chunkRoad,...connector,tail[0]].map(cellPoint),road:makeRoad(cells)};
   }
-  function planChoices() {
+  function planChoices(number=0) {
+    const random=examRandom('expansion:'+number);
+    const pick=items=>pickFrom(items,random);
     const extensions=routeOptions();
-    const main=extensions.splice(Math.floor(Math.random()*extensions.length),1)[0];
-    const branches=branchOptions(extensions.length&&Math.random()<.65?1:2);
-    const bend=choose([-1,1]);
+    const main=extensions.splice(Math.floor(random()*extensions.length),1)[0];
+    const branches=branchOptions(extensions.length&&random()<.65?1:2,random);
+    const bend=pick([-1,1]);
     const options=[makeOption(main,bend,'Yeni Korpus Yolu',main.target.color)];
     const colors=portalPalette.filter(color=>!fronts.some(front=>front.color===color));
     for(const [i,branch] of branches.entries()) {
-      options.push(makeOption(branch,choose([-1,1]),branchNames[(fronts.length-1+i)%branchNames.length],
+      options.push(makeOption(branch,pick([-1,1]),branchNames[(fronts.length-1+i)%branchNames.length],
         colors[i]??portalPalette[(fronts.length+i)%portalPalette.length]));
     }
     if(options.length<3&&extensions.length) {
-      const next=choose(extensions);
-      options.push(makeOption(next,choose([-1,1]),'Giriş '+next.target.id+' · Yeni Keçid',next.target.color));
+      const next=pick(extensions);
+      options.push(makeOption(next,pick([-1,1]),'Giriş '+next.target.id+' · Yeni Keçid',next.target.color));
     }
     if(options.length<2) options.push(makeOption(main,-bend,'Dolama Korpus Yolu','#a2d5f5'));
-    const special=options.filter(()=>Math.random()<.45);
-    if(!special.length) special.push(choose(options));
+    const special=options.filter(()=>random()<.45);
+    if(!special.length) special.push(pick(options));
     for(const option of special) {
-      option.buff=choose(Object.keys(tileBuffs));
-      const pad=option.buff==='buffet'?option.pads[1]:choose(option.pads);
+      option.buff=pick(Object.keys(tileBuffs));
+      const pad=option.buff==='buffet'?option.pads[1]:pick(option.pads);
       pad.buff=option.buff;
     }
-    return options;
+    return ticketDay?[number%3===2?options.find(option=>option.opens)??options[0]:options[0]]:options;
   }
   function includePlots(bounds,options) {
     const result={...bounds};
@@ -2238,14 +2695,37 @@
     stampRoad(mainRoad.cells);
     const entrance=mainRoad.cells[0];
     createFront(mainRoad,parcelAt(shiftCell(entrance,-1,0),-1,0,7));
+    refreshRoadSpots();
     extraEnemies=0;forecast=null;
     ui.expansion.hidden=true;
     campaignInput(false);
     syncMapLighting();
   }
-  function offerExpansion(number,reward,semesterReward=0) {
+  function offerRelic(number,reward,semesterReward,cashback) {
+    phase='relic';relicOffer={number,reward,semesterReward,cashback};
+    clearSelection();campaignInput(true);
+    ui.toast.hidden=true;
+    get('relic-note').textContent='Həftə '+number+' · '+bossWins.get(number)+' məğlub oldu. Seçdiyin bonus bu oyun boyu qalır.';
+    const options=get('relic-options');
+    options.innerHTML=Object.entries(relics).map(([id,item])=>
+      '<button type="button" data-relic="'+id+'"><strong>'+item.name+'</strong><small>'+item.detail+
+      '</small><small>Hazırda seçilib · '+relicRanks[id]+'</small></button>').join('');
+    ui.relic.hidden=false;
+    options.firstElementChild.focus({preventScroll:true});
+  }
+  get('relic-options').onclick=event=>{
+    const id=event.target.closest('[data-relic]')?.dataset.relic;
+    if(phase!=='relic'||!relicOffer||!Object.hasOwn(relics,id)) return;
+    const {number,reward,semesterReward,cashback}=relicOffer;
+    relicRanks[id]++;earnedRelics.add(number);
+    relicOffer=null;ui.relic.hidden=true;
+    playSound('earn');
+    offerExpansion(number,reward,semesterReward,cashback);
+  };
+  function offerExpansion(number,reward,semesterReward=0,cashback=0) {
     phase='expanding';
-    const options=planChoices();
+    const options=planChoices(number);
+    for(const option of options) option.week=number;
     expansionOffer={options,bounds:includePlots(mapBounds,options)};
     clearSelection();
     ui.toast.hidden=true;
@@ -2264,7 +2744,8 @@
         scene.add(marker);plotOutlines.push(marker);
       }
     });
-    ui.expansionWeek.textContent='Həftə '+number+' tamamlandı · +'+reward+' AZN'+
+    ui.expansionWeek.textContent='Həftə '+number+' tamamlandı · +'+reward+' AZN'+(ticketDay?' · İmtahan Biletinin marşrutu':'')+
+      (cashback?' · '+cashback+' AZN keşbek daxil':'')+
       (semesterReward?' · +'+semesterReward+' Semestr Xalı':'');
     ui.expansionOptions.style.setProperty('--choices',options.length);
     ui.expansionOptions.innerHTML=options.map(({target,name,direction,color,pads,opens,buff},i)=>`
@@ -2282,6 +2763,7 @@
   }
   function makeChunk(option) {
     const {plot,chunkRoad,pads}=option;
+    const random=examRandom('land:'+option.week);
     const track=chunkRoad.map(cellPoint);
     const ground=[], decor=[];
     const write=(...box)=>decor.push(box);
@@ -2294,7 +2776,9 @@
       const bottom=rand(-3.3,-2.85);
       ground.push([x,(bottom+height-.22)/2,z,tile,height-.22-bottom,tile,'#64795b']);
       ground.push([x,height-.11,z,tile,.22,tile,choose(road?pathCols:grass)]);
-      if(!road&&!buildable&&distanceToRoad(x,z,track)>2.7&&Math.random()<.035) tree(x,z,rand(.58,.83),write);
+      if(!road&&!buildable&&distanceToRoad(x,z,track)>2.7&&random()<.035) {
+        tree(x,z,scaled(.58,.83,random),write,random);
+      }
     });
     for(const pad of pads) {
       const {x,z,buff}=pad, height=heightOf(pad);
@@ -2358,6 +2842,7 @@
     } else {
       target.road=road;target.reserve=plot.reserve;placeGate(target);
     }
+    refreshRoadSpots();
     extraEnemies+=opens?4:2;
     forecast=null;
     for(const {x,z,buff} of pads) {
@@ -2413,6 +2898,10 @@
     aimRay(event);
     const point=ray.ray.intersectPlane(groundPlane,V());
     return point&&terrainCells.has(cellKey(pointCell(point.x,point.z)))?point:null;
+  }
+  function pickRoad(event) {
+    const point=pickGround(event);
+    return point?roadSpots.get(cellKey(pointCell(point.x,point.z))):null;
   }
   function showAbilityAim(event) {
     const tower=aiming==='boost'?pick(event)?.tower:null;
@@ -2473,7 +2962,19 @@
     if(aiming) {
       const target=aiming==='strike'?pickGround(event):pick(event)?.tower;
       if(!useAbility(aiming,target)) notice(abilityRules[aiming].hint);
-    } else selectSlot(pick(event));
+      return;
+    }
+    if(fusionSource) {
+      completeFusion(pick(event)?.tower);
+      return;
+    }
+    if(activeRoad) {
+      if(!selectRoad(pickRoad(event))) notice('Yol xanasını seç',true);
+      return;
+    }
+    const slot=pick(event);
+    if(slot) selectSlot(slot);
+    else if(!selectRoad(pickRoad(event))) clearSelection();
   });
   surface.addEventListener('pointerleave',()=>{abilityRing.visible=false;});
   const cancel=event=>pointerMap.delete(event.pointerId);
@@ -2511,7 +3012,8 @@
       if(front.signal.hidden) continue;
       front.signal.classList.toggle('boss',!!alert.boss);
       front.signal.classList.toggle('elite',!!alert.elite);
-      changeText(front.signal,'Giriş '+front.id+' · Həftə '+next.number+' · '+alert.count+(alert.boss?' · KƏSR':alert.elite?' · Elit':''));
+      const threat=alert.boss?bossProfiles[bossType(next.number)].name:alert.elite?'Elit':'';
+      changeText(front.signal,'Giriş '+front.id+' · Həftə '+next.number+' · '+alert.count+(threat?' · '+threat:''));
       front.signal.style.transform='translate('+((position.x+1)*innerWidth/2).toFixed(1)+'px,'+
         ((1-position.y)*innerHeight/2).toFixed(1)+'px) translate(-50%,-100%)';
     }
@@ -2533,8 +3035,8 @@
     for(const material of Object.values(buffMaterials)) material.opacity=mix(.84,.54,nightMix);
     studentMat.emissive.set('#ffbb76');studentMat.emissiveIntensity=.25*nightMix;
     for(const tower of towers) {
-      tower.glow.visible=nightMix>.015;
-      const mood=tower.stunnedUntil>time?'stun':tower.boostUntil>time?'boost':tower.bonuses.pairs.length?'pair':null;
+      tower.glow.visible=nightMix>.015&&!towerAsleep(tower);
+      const mood=tower.zonedUntil>time?'zone':tower.stunnedUntil>time?'stun':tower.boostUntil>time?'boost':tower.bonuses.pairs.length?'pair':null;
       tower.status.visible=!!mood;
       if(mood) tower.status.material=statusMaterials[mood];
     }
@@ -2594,10 +3096,10 @@
   function animate(now) {
     const dt=clamp((now-previous)/1000,0,.05);
     previous=now;
-    if(phase!=='expanding') logic+=dt*(phase==='playing'?speed:1);
+    if(!choicesOpen()&&!ui.reference.open) logic+=dt*(phase==='playing'?speed:1);
     while(logic>=1/60) {
       logic-=1/60;step(1/60);
-      if(phase==='expanding') {logic=0;break;}
+      if(choicesOpen()) {logic=0;break;}
     }
     paint(dt);
     requestAnimationFrame(animate);

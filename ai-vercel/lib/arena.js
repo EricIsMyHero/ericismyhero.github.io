@@ -5,12 +5,16 @@ import * as firestore from './firestore.js';
 
 const ringCounts = { easy: 85, medium: 150, hard: 225 };
 const wavesBoard = 'semester-waves';
+const dailyBoard = 'semester-defense--daily';
+const maxScore = 2000000;
+const dayStride = (maxScore + 1) * 2;
+const days = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Baku', year: 'numeric', month: '2-digit', day: '2-digit' });
 const boards = new Set([
   ...Object.keys(ringCounts).map(mode => 'ring-escape--' + mode),
   'tower-descent--standard',
   ...['campaign', 'endless', 'continuation'].flatMap(mode =>
     ['easy', 'normal', 'hard'].map(level => 'semester-defense--' + mode + '-' + level)),
-  wavesBoard
+  wavesBoard, dailyBoard
 ]);
 const lookFields = ['head', 'outfit', 'accessory', 'palette', 'effect', 'title'];
 const safeInt = (value, min, max) => Number.isSafeInteger(value) && value >= min && value <= max;
@@ -28,7 +32,7 @@ function publicLook(value) {
     typeof value?.[key] === 'string' && /^[a-z][a-z0-9-]{0,23}$/.test(value[key]) ? value[key] : '']));
 }
 
-function validateResult(item) {
+function validateResult(item, day, dayRank) {
   const board = item?.board;
   if (!boards.has(board)) return null;
   if (board === wavesBoard) {
@@ -36,7 +40,11 @@ function validateResult(item) {
     return { board, reached: item.reached, cleared: item.cleared, rank: item.reached * 10001 + item.cleared };
   }
   const { score, won } = item;
-  if (!safeInt(score, 0, 2000000) || typeof won !== 'boolean') return null;
+  if (!safeInt(score, 0, maxScore) || typeof won !== 'boolean') return null;
+  if (board === dailyBoard) {
+    if (item.day !== day || (won && score < 1700)) return null;
+    return { board, day, score, won, rank: dayRank + score * 2 + Number(won) };
+  }
   if (board.startsWith('ring-escape--')) {
     const max = ringCounts[board.split('--')[1]] * 10;
     if (score % 10 || (won ? score !== max + 100 : score > max)) return null;
@@ -75,19 +83,26 @@ async function saveBest(db, env, id, identity, result) {
 export async function arenaAction(body, env = process.env, services = {}) {
   const db = services.db || firestore;
   const verify = services.verify || verifyIdToken;
+  const day = days.format(services.now?.() ?? new Date());
+  const dayRank = Math.floor(Date.parse(day) / 86400000) * dayStride;
   if (body.action === 'arena-list') {
     if (!boards.has(body.board)) return error(400, 'invalid_board');
     const user = body.idToken ? await verify(body.idToken, env) : null;
     const parent = 'arena_leaderboards/' + body.board;
+    const daily = body.board === dailyBoard;
     const [docs, mine] = await Promise.all([
       db.runQuery({
         from: [{ collectionId: 'scores' }],
+        ...(daily ? { where: { fieldFilter: { field: { fieldPath: 'rank' }, op: 'GREATER_THAN_OR_EQUAL',
+          value: { integerValue: String(dayRank) } } } } : {}),
         orderBy: [{ field: { fieldPath: 'rank' }, direction: 'DESCENDING' }],
         limit: 10
       }, env, parent),
       user ? db.getDoc(collection(body.board) + '/' + playerId(user.uid), env) : null
     ]);
-    return response(200, { rows: docs.map(doc => publicResult(doc.data)), mine: mine ? publicResult(mine.data) : null });
+    const rows = docs.filter(doc => !daily || doc.data.day === day).map(doc => publicResult(doc.data));
+    return response(200, { rows, mine: mine && (!daily || mine.data.day === day) ? publicResult(mine.data) : null,
+      ...(daily ? { day } : {}) });
   }
   if (body.action !== 'arena-submit') return error(400, 'invalid_action');
 
@@ -99,7 +114,7 @@ export async function arenaAction(body, env = process.env, services = {}) {
     return error(400, 'invalid_results');
   }
 
-  const results = body.results.map(validateResult);
+  const results = body.results.map(item => validateResult(item, day, dayRank));
   // Validate each category independently so one invalid older result cannot block the others.
   const accepted = results.filter(Boolean);
   const seen = new Set(accepted.map(row => row.board));

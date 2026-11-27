@@ -15,7 +15,8 @@
       empty: 'Bu kateqoriyada hesabla yazılmış rekord yoxdur.', share: 'Nəticəni paylaş', copied: 'Nəticə kopyalandı.',
       fallback: 'Paylaşmaq üçün mətni kopyala.', me: 'Sənin rekordun', leader: 'Kateqoriya lideri',
       easy: 'Asan', medium: 'Orta', normal: 'Normal', hard: 'Çətin', standard: 'Standart',
-      campaign: '15 həftə', endless: 'Sonsuz', continuation: 'Kampaniyadan sonra',
+      campaign: '15 həftə', endless: 'Sonsuz', continuation: 'Kampaniyadan sonra', daily: 'Gündəlik İmtahan Bileti',
+      dailyWinner: 'Günün Qalibi', dailyDate: 'Bakı tarixi',
       rule: ({minimum, interval, victory, limit}) =>
         `İlk Semestr Xalı ${minimum} oyun xalında gəlir. Hər əlavə ${interval} xal və qələbə müvafiq olaraq +1 və +${victory} verir. Bir nəticədən ən çox ${limit} Semestr Xalı qazanılır.`
     },
@@ -29,7 +30,8 @@
       empty: 'No account records in this category yet.', share: 'Share result', copied: 'Result copied.',
       fallback: 'Copy this text to share your result.', me: 'Your record', leader: 'Category leader',
       easy: 'Easy', medium: 'Medium', normal: 'Normal', hard: 'Hard', standard: 'Standard',
-      campaign: '15 weeks', endless: 'Endless', continuation: 'After campaign',
+      campaign: '15 weeks', endless: 'Endless', continuation: 'After campaign', daily: 'Daily Exam Ticket',
+      dailyWinner: 'Daily Winner', dailyDate: 'Baku date',
       rule: ({minimum, interval, victory, limit}) =>
         `Earn the first Semester Point at ${minimum} game points. Every extra ${interval} game points adds 1, and winning adds ${victory}. Each result earns up to ${limit}.`
     }
@@ -56,9 +58,11 @@
     ],
     'semester-defense': [
       ['Müdafiəçini seç, yol kənarındakı xanada yerləşdir və qülləyə toxunaraq onu yüksəlt. Üçüncü səviyyədə ixtisas seç.',
+        'Eyni tipli iki maksimum səviyyəli qülləni birləşdir. Maneələri yola, könüllüləri isə kəsişməyə yerləşdir.',
         'Hər dalğadan sonra xəritəni genişləndir. Şparqalka Yağışı sahəyə, Apellyasiya bütün imtahanlara, Enerji İçkisi seçilən müdafiəçiyə təsir edir.',
         'Tamamlanan həftə 100, məğlub edilən imtahan 3 və kampaniya qələbəsi əlavə 200 xal verir.'],
       ['Choose a defender and place it beside a path. Select a defender to upgrade it and choose a specialization at level 3.',
+        'Fuse two max-level towers of the same type. Place traps on the path and assign volunteers to a junction.',
         'Expand the map after waves. Cheat Sheet Strike targets an area, Appeal freezes exams, and Energy Drink boosts one defender.',
         'A completed week gives 100 points, each defeated exam gives 3, and a campaign win adds 200.']
     ]
@@ -66,8 +70,8 @@
   const modes = {
     'ring-escape': ['easy', 'medium', 'hard'],
     'tower-descent': ['standard'],
-    'semester-defense': ['campaign', 'endless', 'continuation']
-      .flatMap(mode => ['easy', 'normal', 'hard'].map(difficulty => mode + '-' + difficulty))
+    'semester-defense': ['daily', ...['campaign', 'endless', 'continuation']
+      .flatMap(mode => ['easy', 'normal', 'hard'].map(difficulty => mode + '-' + difficulty))]
   };
   const links = {
     'ring-escape': '/#/games/ring-escape',
@@ -109,12 +113,12 @@
     } catch { /* Default skin is still available. */ }
     return baseSkin;
   }
-  function start(game, mode) {
+  function start(game, mode, day) {
     if (!isMode(game, mode)) return null;
     const id = globalThis.crypto?.randomUUID?.() ??
       Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
     const account = semester.account();
-    return { id, game, mode, uid: account?.uid ?? null, mail: account?.mail ?? '', skin: activeSkin(), result: null };
+    return { id, game, mode, day, uid: account?.uid ?? null, mail: account?.mail ?? '', skin: activeSkin(), result: null };
   }
   function refreshPanels() {
     document.querySelectorAll('[data-game-meta]').forEach(node => mounts.get(node)?.refresh());
@@ -122,7 +126,8 @@
   function finish(run, score, won) {
     if (!run || run.result) return run?.result ?? null;
     const result = { game: run.game, mode: run.mode, uid: run.uid, mail: run.mail, score: number(score),
-      won: !!won, economy: 2, at: Date.now(), award: run.uid ? semester.scoreReward(run.game, run.mode, score, won) : 0 };
+      won: !!won, economy: 2, at: Date.now(), ...(run.mode === 'daily' ? { day: run.day } : {}),
+      award: run.uid ? semester.scoreReward(run.game, run.mode, score, won) : 0 };
     run.result = result;
     if (run.uid) semester.saveGameRecord(run.id, result);
     return result;
@@ -173,6 +178,7 @@
             <div><small>${l.me}</small><strong data-mine></strong></div>
             <div><small>${l.leader}</small><strong data-lead></strong></div>
           </div>
+          <p data-arena-day hidden></p>
           <ol data-board class="game-meta-board" aria-label="${l.rank}"></ol>
           <p data-empty role="status" hidden></p>
           <p data-arena-pending role="status" hidden>${l.pending}</p>
@@ -196,22 +202,26 @@
       const rows = entries(), runs = semester.records(), account = semester.account();
       const panel = el('[data-record-dashboard]').closest('.arena-record-panel, details');
       const visible = panel.tagName !== 'DETAILS' || panel.open;
-      const { rows: records, mine, known, failed } = arena.board(arena.key(game, mode), visible);
+      const { rows: records, mine, day, known, failed } = arena.board(arena.key(game, mode), visible);
       best = records.length ? { ...records[0], game, mode } : null;
-      const local = account ? rows.filter(row => row.uid === account.uid && row.game === game && row.mode === mode)
+      const local = account ? rows.filter(row => row.uid === account.uid && row.game === game && row.mode === mode &&
+          (mode !== 'daily' || row.day === day))
         .sort(compare)[0] : null;
       const myScore = mine || local ? Math.max(number(mine?.score), number(local?.score)) : null;
       el('[data-record-dashboard]').textContent = account ? l.dashboard : l.login;
       el('[data-points]').textContent = account ? String(semester.stats(account.uid, runs, rows).points) : '—';
       el('[data-mine]').textContent = myScore === null ? '—' : myScore + ' ' + l.score;
       el('[data-lead]').textContent = best ? number(best.score) + ' ' + l.score : '—';
+      el('[data-arena-day]').hidden = !day;
+      if (day) el('[data-arena-day]').textContent = l.dailyDate + ' · ' + day;
       boardList.innerHTML = records.map((row, index) => {
         const look = arena.lookOf(row);
         const title = semester.title(look, language);
+        const champion = mode === 'daily' && index === 0 ? `<span class="arena-daily-winner">${l.dailyWinner}</span>` : '';
         const medal = index < 3 ? index + 1 : 0;
         return `<li><div class="arena-record" data-medal="${medal}">
           <span class="arena-pos">${index + 1}</span><span class="arena-record-avatar">${semester.avatar(look)}</span>
-          <span class="arena-player">${semester.nameplate(row.player, look)}${title ? `<span class="semester-title">${escape(title)}</span>` : ''}${row.won ? `<small>${l.completed}</small>` : ''}</span>
+          <span class="arena-player">${semester.nameplate(row.player, look)}${champion}${title ? `<span class="semester-title">${escape(title)}</span>` : ''}${row.won ? `<small>${l.completed}</small>` : ''}</span>
           <strong>${number(row.score)} <small>${l.score}</small></strong>
         </div></li>`;
       }).join('');
