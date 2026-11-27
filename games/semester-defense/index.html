@@ -6,24 +6,24 @@
 <title>UNEC · Semestr müdafiəsi</title>
 <link rel="icon" href="../../images/favicon.svg">
 <style>
-  :root { color-scheme:dark; --glass:#102022ed; --border:#b9dfd33d; --mint:#9be6cb; --gold:#f4cc77; --text:#fff7e6; --soft:#bbd2cb; --return-offset:0px }
+  :root { color-scheme:dark; --glass:#102022ed; --border:#b9dfd33d; --mint:#9be6cb; --gold:#f4cc77; --text:#fff7e6; --soft:#bbd2cb }
   * { box-sizing:border-box }
   [hidden] { display:none!important }
   html,body { width:100%; height:100%; margin:0; overflow:hidden; background:#89abb8; color:var(--text); font:500 14px/1.35 system-ui,sans-serif }
   canvas { display:block; position:fixed; inset:0; width:100%;height:100%;touch-action:none;cursor:grab }
   canvas:active { cursor:grabbing }
   canvas.targeting:not(:active) { cursor:crosshair }
-  button { border:1px solid var(--border); border-radius:9px; background:#233a3a; color:var(--text); min-height:40px; padding:7px 12px; font:inherit; font-weight:700; cursor:pointer }
-  button:hover:not(:disabled) { background:#34544d }
+  button,.games-return { border:1px solid var(--border); border-radius:9px; background:#233a3a; color:var(--text); min-height:40px; padding:7px 12px; font:inherit; font-weight:700; cursor:pointer }
+  button:hover:not(:disabled),.games-return:hover { background:#34544d }
   button:focus-visible,select:focus-visible,.games-return:focus-visible { outline:2px solid var(--mint); outline-offset:2px }
   button:disabled { opacity:.52;cursor:default }
   button.primary { background:#a7e4cc; color:#142d2a;border-color:#b3f4dc }
   button.primary:hover:not(:disabled) { background:#c6f5e1 }
   button[data-on="true"],button[aria-pressed="true"] { border-color:var(--mint);color:var(--mint);background:#254b43 }
   .panel { background:var(--glass);border:1px solid var(--border); border-radius:14px;box-shadow:0 8px 40px #13282a46;backdrop-filter:blur(12px) }
-  .games-return { position:fixed; top:max(6px,env(safe-area-inset-top)); right:max(8px,env(safe-area-inset-right)); z-index:5; display:flex;gap:6px;align-items:center; min-height:44px;padding:0 12px;color:var(--text);text-decoration:none;font-weight:700 }
-  .games-return:hover { color:var(--mint) }
-  #topbar { position:fixed; top:calc(max(12px,env(safe-area-inset-top)) + var(--return-offset)); left:max(12px,env(safe-area-inset-left)); display:flex;flex-wrap:wrap;gap:6px 10px;padding:9px;z-index:2;max-width:calc(100% - 24px); align-items:center }
+  .games-return { display:inline-flex;gap:4px;align-items:center;text-decoration:none;white-space:nowrap }
+  body > .games-return { position:fixed; top:max(6px,env(safe-area-inset-top)); right:max(8px,env(safe-area-inset-right)); z-index:5; min-height:44px }
+  #topbar { position:fixed; top:max(12px,env(safe-area-inset-top)); left:max(12px,env(safe-area-inset-left)); display:flex;flex-wrap:wrap;gap:6px 10px;padding:9px;z-index:2;max-width:calc(100% - 24px); align-items:center }
   #hud { display:flex;flex-wrap:wrap;gap:6px 13px;align-items:center;margin:0;padding:0 4px }
   #hud div { display:grid;gap:1px }
   dt,.muted { color:var(--soft);font-size:.77rem }
@@ -31,7 +31,8 @@
   #gold { color:var(--gold) }
   #health.danger, #toast.warning { color:#ffd2c5 }
   .top-actions { display:flex;flex-wrap:wrap;gap:4px }
-  .top-actions button { min-height:36px;padding:5px 9px;font-size:.78rem }
+  .sound-actions { display:flex;gap:4px }
+  .top-actions :is(button,.games-return) { min-height:36px;padding:5px 9px;font-size:.78rem }
   #next { color:#feebb2 }
   #controls { position:fixed; bottom:max(10px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%); width:min(680px,calc(100% - 20px)); z-index:2;display:grid;gap:7px;pointer-events:none}
   #controls > * { pointer-events:auto }
@@ -58,7 +59,7 @@
   .priorities { display:flex;flex-wrap:wrap;gap:4px }
   .priorities button { min-height:30px;padding:3px 8px;font-size:.73rem }
   #toast { position:fixed;bottom:calc(max(10px,env(safe-area-inset-bottom)) + 135px);left:50%; max-width:90%;transform:translateX(-50%); background:#122a2af0;border-radius:8px;color:#ebf9e9;padding:6px 11px;pointer-events:none;z-index:3;text-align:center;font-size:.79rem;white-space:normal }
-  #controls:has(#tower-card:not([hidden])) + #toast { bottom:auto;top:calc(136px + var(--return-offset)) }
+  #controls:has(#tower-card:not([hidden])) + #toast { bottom:auto;top:136px }
   .overlay { position:fixed; inset:0; padding:18px; display:grid; place-items:center;z-index:4; background:#132f3666 }
   .sheet { width:min(480px,100%);padding:clamp(15px,5vw,30px); max-height:100%;overflow:auto }
   h1,h2,p { margin:0 0 10px }
@@ -87,28 +88,25 @@
   .portal-signal.boss { color:#ffd1c6;background:#6a2b3a;z-index:1 }
   .pop { position:absolute;top:0;left:0;text-shadow:0 1px 3px #122123,0 0 5px #182b2c; font:800 14px/1 system-ui,sans-serif;white-space:nowrap; color:#f8c9a5 }
   .pop.azn { color:#ffdc84 }
-  @media(max-width:830px) {
-    :root { --return-offset:48px }
-  }
   @media(max-width:520px) {
-    #topbar { left:6px;top:calc(max(6px,env(safe-area-inset-top)) + var(--return-offset));max-width:calc(100% - 12px);gap:4px;padding:5px }
+    #topbar { left:6px;top:max(6px,env(safe-area-inset-top));max-width:calc(100% - 12px);gap:4px;padding:5px }
     #hud { gap:5px 10px }
     dt { font-size:.67rem }
     dd { font-size:.82rem }
-    .top-actions button { font-size:.68rem;min-height:33px;padding:3px 6px }
+    .top-actions :is(button,.games-return) { font-size:.68rem;min-height:33px;padding:3px 6px }
     #controls { width:calc(100% - 12px);bottom:max(6px,env(safe-area-inset-bottom)) }
     #dock { gap:3px;padding:4px }
     #dock button { padding:3px 1px; font-size:.68rem; min-height:53px;line-height:1.06 }
     #dock button b { font-size:.63rem }
     #dock .icon { width:16px;height:16px }
-    #controls:has(#tower-card:not([hidden])) + #toast { top:calc(115px + var(--return-offset)) }
+    #controls:has(#tower-card:not([hidden])) + #toast { top:115px }
     #expansion { padding:8px 8px max(8px,env(safe-area-inset-bottom)) }
     #expansion .sheet { max-height: min(65dvh,100%) }
     #expansion-options { grid-template-columns:1fr; gap:5px }
     .expansion-option { padding:7px 9px; gap:2px }
   }
   @media(max-width:370px) {
-    .top-actions button { font-size:.66rem;padding-inline:4px }
+    .top-actions :is(button,.games-return) { font-size:.66rem;padding-inline:4px }
   }
   @media(max-aspect-ratio:4/5) and (min-height:620px) {
     #start { align-items:end; padding-bottom:max(18px,env(safe-area-inset-bottom)) }
@@ -116,7 +114,7 @@
 </style>
 </head>
 <body>
-<a class="games-return panel" href="../../#/games"><span aria-hidden="true">←</span> Oyunlar</a>
+<a id="games-return" class="games-return" href="../../#/games"><span aria-hidden="true">←</span> Oyunlar</a>
 <header id="topbar" class="panel" hidden>
   <dl id="hud" lang="az" aria-label="Oyun göstəriciləri">
     <div><dt>Həftə</dt><dd id="wave">1 / 15</dd></div>
@@ -128,7 +126,7 @@
     <button type="button" data-speed="0">Fasilə</button><button type="button" data-speed="1" aria-pressed="true">1×</button><button type="button" data-speed="2">2×</button>
     <button type="button" id="next">Növbəti dalğa</button>
     <button type="button" id="camera-reset" title="Kameranı sıfırla (R)" aria-label="Kameranı sıfırla">Kamera</button>
-    <button type="button" id="sound" aria-pressed="false">Səs</button>
+    <div class="sound-actions"><button type="button" id="sound" aria-pressed="false">Səs</button></div>
   </div>
   <div id="wave-event" role="status" hidden></div>
 </header>
@@ -1518,7 +1516,7 @@
     toast:get('toast'),start:get('start'),startForm:get('start-form'),summary:get('summary'),
     expansion:get('expansion'),expansionWeek:get('expansion-week'),expansionOptions:get('expansion-options'),
     summaryTitle:get('summary-title'),summaryStats:get('summary-stats'),replay:get('replay'),
-    resumeEndless:get('continue'),next:get('next'),sound:get('sound'),popups:get('popups')};
+    resumeEndless:get('continue'),next:get('next'),sound:get('sound'),gamesReturn:get('games-return'),popups:get('popups')};
   const icons={
     arrow:'<path d="m4 16-1 5 5-1L21 7l-4-4Z"/><path d="m14 6 4 4M4 16l4 4"/>',
     cannon:'<path d="M4 7h12v6a6 6 0 1 1-12 0ZM16 9h2a3 3 0 0 1 0 6h-2M3 21h16M8 3h.1m4 0h.1"/>',
@@ -1768,6 +1766,8 @@
   const changeText=(node,value)=>{if(node.textContent!==value)node.textContent=value;};
   function updateHud() {
     if(performance.now()>=toastUntil) ui.toast.hidden=true;
+    const returnArea=phase==='playing'?ui.sound.parentElement:document.body;
+    if(ui.gamesReturn.parentElement!==returnArea) returnArea.append(ui.gamesReturn);
     if(phase==='menu') return;
     changeText(hud.wave,(Math.max(1,wave))+(endless?' / ∞':' / '+waveCount));
     changeText(hud.gold,String(gold));
