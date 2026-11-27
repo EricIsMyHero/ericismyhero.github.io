@@ -425,6 +425,13 @@
       return;
     }
     leave();
+    const recordsName = lang === 'en' ? 'Arena records' : 'Arena rekordları';
+    if (route.view === 'records') {
+      const intro = lang === 'en' ? 'Compare scores across all three games.' : 'Hər üç oyunun nəticələrini müqayisə et.';
+      root.innerHTML = title(recordsName, intro, 'games', t('navGames')) + '<div class="game-meta-directory"></div>';
+      progress.mount($('.game-meta-directory', root), { language: lang, fullRecords: true });
+      return;
+    }
     const l = copy();
     const tower = U.towerGame.copy();
     const defense = lang === 'en'
@@ -436,13 +443,13 @@
       { href: 'games/semester-defense/', ...defense, art: ' game-entry-art--defense' },
     ];
     root.innerHTML = title(t('navGames'), t('gamesIntro'), 'functions', t('navFunctions')) + `
+      <a class="btn btn--secondary game-record-link" href="#/games/records">${ic('trophy')} ${esc(recordsName)}</a>
       <div class="game-list">${games.map(entry => `<a class="game-entry function-panel" href="${esc(entry.href || '#/games/' + entry.id)}">
         <span class="game-entry-art${entry.art}" aria-hidden="true"></span>
         <span class="game-entry-info"><strong>${esc(entry.title)}</strong><span>${esc(entry.intro)}</span>
           <span class="game-entry-play">${ic('play')} ${esc(l.play)}</span>
         </span>
-      </a>`).join('')}</div><div class="game-meta-directory"></div>`;
-    progress.mount($('.game-meta-directory', root), { language: lang, openRecords: true });
+      </a>`).join('')}</div>`;
   };
 
   window.addEventListener('unec:routechange', event => {

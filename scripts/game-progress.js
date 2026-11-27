@@ -1,32 +1,32 @@
 (function () {
   'use strict';
 
-  const profileKey = 'unec_games_profile_v1';
-  const recordPrefix = 'unec_games_run_v1:';
+  const semester = window.UNECSemesterProfile;
+  const wardrobe = window.UNECStudentWardrobe;
   const words = {
     az: {
-      guide: 'Necə oynanılır', progress: 'Rekordlar və görünüşlər', game: 'Oyun', mode: 'Kateqoriya',
-      student: 'Tələbə', player: 'Oyunçu adı', score: 'Xal', points: 'kampus xalı', yourScore: 'Nəticən',
-      local: 'Rekordlar, xallar və görünüşlər bu brauzerdə oyunçu adına görə saxlanılır.',
-      empty: 'Bu kateqoriyada hələ nəticə yoxdur.', share: 'Nəticəni paylaş', copied: 'Nəticə kopyalandı.',
-      fallback: 'Paylaşmaq üçün mətni kopyala.', achievements: 'Nailiyyətlər', skins: 'Tələbə görünüşləri',
-      nextRun: 'Seçdiyin görünüş növbəti oyunda tətbiq olunur.', chosen: 'Seçilib', unlocked: 'Açıqdır',
-      first: 'İlk nəticə', all: 'Üç oyunda nəticə', champion: 'Üç oyunda qələbə',
+      guide: 'Necə oynanılır', progress: 'Arena rekordları', game: 'Oyun', mode: 'Kateqoriya',
+      score: 'xal', points: 'Semestr Xalı', yourScore: 'Nəticən', completed: 'Qələbə', rank: 'Sıra',
+      local: 'Bu brauzerdə hər hesabın ən yaxşı nəticəsi göstərilir. Ad e-poçtun @ işarəsindən əvvəlki hissəsidir.',
+      login: 'Xal qazanmaq və rekord yazmaq üçün hesabına daxil ol.', dashboard: 'Tələbə paneli',
+      empty: 'Bu kateqoriyada hesabla yazılmış rekord yoxdur.', share: 'Nəticəni paylaş', copied: 'Nəticə kopyalandı.',
+      fallback: 'Paylaşmaq üçün mətni kopyala.', me: 'Sənin rekordun', leader: 'Kateqoriya lideri',
       easy: 'Asan', medium: 'Orta', normal: 'Normal', hard: 'Çətin', standard: 'Standart',
       campaign: '15 həftə', endless: 'Sonsuz', continuation: 'Kampaniyadan sonra',
-      earned: 'Hər 20 oyun xalı 1 kampus xalı verir. Müsbət nəticələr yuxarı yuvarlaqlaşdırılır.'
+      rule: ({minimum, interval, victory, limit}) =>
+        `İlk Semestr Xalı ${minimum} oyun xalında gəlir. Hər əlavə ${interval} xal və qələbə müvafiq olaraq +1 və +${victory} verir. Bir nəticədən ən çox ${limit} Semestr Xalı qazanılır.`
     },
     en: {
-      guide: 'How to Play', progress: 'Records & skins', game: 'Game', mode: 'Category',
-      student: 'Student', player: 'Player name', score: 'Score', points: 'campus points', yourScore: 'Your result',
-      local: 'Records, points and skins are saved in this browser under your player name.',
-      empty: 'No results in this category yet.', share: 'Share result', copied: 'Result copied.',
-      fallback: 'Copy this text to share your result.', achievements: 'Achievements', skins: 'Student skins',
-      nextRun: 'Your selected skin applies to the next run.', chosen: 'Selected', unlocked: 'Unlocked',
-      first: 'First result', all: 'Result in all three games', champion: 'Won all three games',
+      guide: 'How to Play', progress: 'Arena records', game: 'Game', mode: 'Category',
+      score: 'points', points: 'Semester Points', yourScore: 'Your result', completed: 'Victory', rank: 'Place',
+      local: 'This browser shows each account’s best result under the name before @ in its email address.',
+      login: 'Sign in to earn points and set account records.', dashboard: 'Student dashboard',
+      empty: 'No account records in this category yet.', share: 'Share result', copied: 'Result copied.',
+      fallback: 'Copy this text to share your result.', me: 'Your record', leader: 'Category leader',
       easy: 'Easy', medium: 'Medium', normal: 'Normal', hard: 'Hard', standard: 'Standard',
       campaign: '15 weeks', endless: 'Endless', continuation: 'After campaign',
-      earned: 'Every 20 game points earn 1 campus point. Positive results are rounded up.'
+      rule: ({minimum, interval, victory, limit}) =>
+        `Earn the first Semester Point at ${minimum} game points. Every extra ${interval} game points adds 1, and winning adds ${victory}. Each result earns up to ${limit}.`
     }
   };
   const titles = {
@@ -69,86 +69,71 @@
     'tower-descent': '/#/games/tower-descent',
     'semester-defense': '/games/semester-defense/'
   };
-  const skins = [
-    { id: 'campus', at: 0, title: ['Kampus', 'Campus'], color: null, accent: '#abbaad' },
-    { id: 'fresh', at: 10, title: ['Birinci kurs', 'First Year'], color: '#65dfc4', accent: '#236f7b' },
-    { id: 'honors', at: 30, title: ['Zərbəçi', 'Honors'], color: '#ffd17c', accent: '#a4562a' },
-    { id: 'grad', at: 75, title: ['Məzun', 'Graduate'], color: '#d8adff', accent: '#6d47ad' }
+  const oldSkins = [
+    { id: 'fresh', at: 10, color: '#65dfc4', accent: '#236f7b' },
+    { id: 'honors', at: 30, color: '#ffd17c', accent: '#a4562a' },
+    { id: 'grad', at: 75, color: '#d8adff', accent: '#6d47ad' }
   ];
-  const memory = new Map();
+  const baseSkin = { id: 'campus', color: null };
   const mounts = new WeakMap();
-  let fallbackProfile;
   const number = value => Number.isSafeInteger(value) && value >= 0 ? value : 0;
-  const nameOf = value => typeof value === 'string' ? value.trim().slice(0, 24) : '';
-  const playerKey = value => nameOf(value).toLocaleLowerCase('az') || 'tələbə';
-  const escape = value => String(value).replace(/[&<>"']/g, char => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-  })[char]);
+  const keyOf = value => typeof value === 'string' ? value.trim().toLocaleLowerCase('az') || 'tələbə' : 'tələbə';
+  const escape = semester.escape;
   const isMode = (game, mode) => Object.hasOwn(modes, game) && modes[game].includes(mode);
-  const campusPoints = score => Math.ceil(score / 20);
+  const entries = () => semester.gameRecords().filter(row => isMode(row.game, row.mode));
 
-  function parse(raw) {
-    try { return JSON.parse(raw); } catch { return null; }
-  }
-  function profile() {
-    try { return fallbackProfile ?? parse(localStorage.getItem(profileKey)) ?? {}; }
-    catch { return fallbackProfile ?? {}; }
-  }
-  function saveProfile(changes) {
-    const data = { ...profile(), ...changes };
-    try { localStorage.setItem(profileKey, JSON.stringify(data)); fallbackProfile = undefined; }
-    catch { fallbackProfile = data; }
-  }
-  function entries() {
-    const results = new Map(memory);
-    try {
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (!key?.startsWith(recordPrefix)) continue;
-        const result = parse(localStorage.getItem(key));
-        if (result && isMode(result.game, result.mode)) results.set(key.slice(recordPrefix.length), result);
+  function activeSkin() {
+    const account = semester.account();
+    if (account) {
+      const { palette } = semester.lookOf(account.uid);
+      if (palette !== 'default') {
+        const swatch = wardrobe.palettes[palette];
+        return { id: palette, color: swatch.light, accent: swatch.mid };
       }
-    } catch { /* Session records remain available if storage is disabled. */ }
-    return [...results.values()].filter(row => isMode(row.game, row.mode));
-  }
-  function personal(rows) {
-    const key = playerKey(profile().player);
-    return rows.filter(row => playerKey(row.player) === key);
-  }
-  const pointsFor = rows => rows.reduce((sum, row) => sum + campusPoints(number(row.score)), 0);
-  function activeSkin(points = pointsFor(personal(entries()))) {
-    const data = profile(), picked = data.skins?.[playerKey(data.player)];
-    return skins.find(skin => skin.id === picked && skin.at <= points) ?? skins[0];
+    }
+    // Keep the former skin choice available for existing runs saved under a browser nickname.
+    try {
+      const prior = JSON.parse(localStorage.getItem('unec_games_profile_v1'));
+      const key = keyOf(prior?.player);
+      const picked = oldSkins.find(skin => skin.id === prior?.skins?.[key]);
+      if (picked) {
+        const points = entries().filter(row => !row.uid && row.economy !== 2 && keyOf(row.player) === key)
+          .reduce((sum, row) => sum + Math.ceil(number(row.score) / 20), 0);
+        if (points >= picked.at) return picked;
+      }
+    } catch { /* Default skin is still available. */ }
+    return baseSkin;
   }
   function start(game, mode) {
     if (!isMode(game, mode)) return null;
     const id = globalThis.crypto?.randomUUID?.() ??
       Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
-    return { id, game, mode, player: nameOf(profile().player), skin: activeSkin(), result: null };
+    const account = semester.account();
+    return { id, game, mode, uid: account?.uid ?? null, mail: account?.mail ?? '', skin: activeSkin(), result: null };
   }
   function refreshPanels() {
     document.querySelectorAll('[data-game-meta]').forEach(node => mounts.get(node)?.refresh());
   }
   function finish(run, score, won) {
     if (!run || run.result) return run?.result ?? null;
-    const result = { game: run.game, mode: run.mode, player: run.player, score: number(score), won: !!won, at: Date.now() };
+    const result = { game: run.game, mode: run.mode, uid: run.uid, mail: run.mail, score: number(score),
+      won: !!won, economy: 2, at: Date.now(), award: run.uid ? semester.scoreReward(run.game, run.mode, score, won) : 0 };
     run.result = result;
-    try { localStorage.setItem(recordPrefix + run.id, JSON.stringify(result)); }
-    catch { memory.set(run.id, result); }
-    refreshPanels();
+    if (run.uid) semester.saveGameRecord(run.id, result);
     return result;
   }
   function compare(a, b) {
-    return number(b.score) - number(a.score) || number(a.at) - number(b.at);
+    return number(b.score) - number(a.score) || Number(b.won === true) - Number(a.won === true) ||
+      number(a.at) - number(b.at);
   }
-  function board(rows, game, mode, fallback) {
+  function board(rows, game, mode) {
     const best = new Map();
     for (const row of rows) {
       if (row.game !== game || row.mode !== mode) continue;
-      const player = nameOf(row.player) || fallback;
-      const key = playerKey(row.player);
-      const previous = best.get(key);
-      if (!previous || compare(row, previous) < 0) best.set(key, { ...row, player });
+      const player = semester.recordName(row.uid, row.mail);
+      if (!player) continue;
+      const previous = best.get(row.uid);
+      if (!previous || compare(row, previous) < 0) best.set(row.uid, { ...row, player });
     }
     return [...best.values()].sort(compare).slice(0, 10);
   }
@@ -164,6 +149,9 @@
     let mode = isMode(game, options.mode) ? options.mode : modes[game][0];
     let result = options.result ?? null;
     let best = null;
+    const panelStart = options.fullRecords ? '<section class="arena-record-panel">' :
+      `<details data-panel ${options.openRecords ? 'open' : ''}><summary>${l.progress}</summary>`;
+    const panelEnd = options.fullRecords ? '</section>' : '</details>';
     host.classList.add('game-meta');
     host.dataset.gameMeta = '';
     host.innerHTML = (fixedGame ? `
@@ -175,25 +163,28 @@
         <strong data-result-text></strong>
         <button type="button" data-share="result">${l.share}</button>
       </div>
-      <details data-panel ${options.openRecords ? 'open' : ''}>
-        <summary>${l.progress}</summary>
+      ${panelStart}
         <div class="game-meta-content">
-          <p>${l.local}</p>
+          <div class="arena-record-intro">
+            <p>${l.local}</p>
+            <a href="/#/dashboard" data-record-dashboard>${l.dashboard}</a>
+          </div>
           <div class="game-meta-fields">
-            <label>${l.player}<input data-player maxlength="24" autocomplete="off" placeholder="${l.student}"></label>
             ${fixedGame ? '' : `<label>${l.game}<select data-game>${Object.entries(titles).map(([id, title]) =>
               `<option value="${id}">${escape(title[locale])}</option>`).join('')}</select></label>`}
             <label>${l.mode}<select data-mode></select></label>
           </div>
-          <ol data-board class="game-meta-board"></ol>
+          <div class="arena-record-metrics">
+            <div><small>${l.points}</small><strong data-points></strong></div>
+            <div><small>${l.me}</small><strong data-mine></strong></div>
+            <div><small>${l.leader}</small><strong data-lead></strong></div>
+          </div>
+          <ol data-board class="game-meta-board" aria-label="${l.rank}"></ol>
           <p data-empty hidden>${l.empty}</p>
-          <button type="button" data-share="best" hidden>${l.share}</button>
-          <p class="game-meta-points"><strong data-points></strong><br><span>${l.earned}</span></p>
-          <div role="group" aria-label="${l.achievements}" class="game-achievements" data-achievements></div>
-          <div role="group" aria-label="${l.skins}" class="game-skins" data-skins></div>
-          <p>${l.nextRun}</p>
+          <button type="button" class="arena-share-best" data-share="best" hidden>${l.share}</button>
+          <p data-score-rule></p>
         </div>
-      </details>
+      ${panelEnd}
       <p data-share-status role="status" hidden></p>
       <textarea data-share-text readonly aria-label="${l.share}" hidden></textarea>`;
     const el = selector => host.querySelector(selector);
@@ -206,31 +197,32 @@
       modeInput.value = mode;
     }
     function refresh() {
-      const rows = entries(), mine = personal(rows), points = pointsFor(mine);
-      const selected = activeSkin(points);
-      const records = board(rows, game, mode, l.student);
+      const rows = entries(), runs = semester.records(), account = semester.account();
+      const records = board(rows, game, mode);
       best = records[0] ?? null;
-      const input = el('[data-player]');
-      if (document.activeElement !== input) input.value = nameOf(profile().player);
-      boardList.innerHTML = records.map(row =>
-        `<li><div><span>${escape(row.player)}</span><strong>${number(row.score)} ${l.score.toLowerCase()}</strong></div></li>`).join('');
+      const myRecord = account ? rows.filter(row => row.uid === account.uid && row.game === game && row.mode === mode)
+        .sort(compare)[0] : null;
+      el('[data-record-dashboard]').textContent = account ? l.dashboard : l.login;
+      el('[data-points]').textContent = account ? String(semester.stats(account.uid, runs, rows).points) : '—';
+      el('[data-mine]').textContent = myRecord ? number(myRecord.score) + ' ' + l.score : '—';
+      el('[data-lead]').textContent = best ? number(best.score) + ' ' + l.score : '—';
+      boardList.innerHTML = records.map((row, index) => {
+        const look = semester.lookOf(row.uid, semester.stats(row.uid, runs, rows));
+        const title = semester.title(look, language);
+        const medal = index < 3 ? index + 1 : 0;
+        return `<li><div class="arena-record" data-medal="${medal}">
+          <span class="arena-pos">${index + 1}</span><span class="arena-record-avatar">${semester.avatar(look)}</span>
+          <span class="arena-player">${semester.nameplate(row.player, look)}${title ? `<span class="semester-title">${escape(title)}</span>` : ''}${row.won ? `<small>${l.completed}</small>` : ''}</span>
+          <strong>${number(row.score)} <small>${l.score}</small></strong>
+        </div></li>`;
+      }).join('');
       el('[data-empty]').hidden = !!best;
       el('[data-share="best"]').hidden = !best;
-      el('[data-points]').textContent = points + ' ' + l.points;
-      const earned = [mine.some(row => number(row.score) > 0),
-        Object.keys(titles).every(id => mine.some(row => row.game === id && number(row.score) > 0)),
-        Object.keys(titles).every(id => mine.some(row => row.game === id && row.won === true))];
-      el('[data-achievements]').innerHTML = ['first', 'all', 'champion'].map((id, index) =>
-        `<span data-earned="${earned[index]}">${earned[index] ? '✓ ' : ''}${l[id]}</span>`).join('');
-      el('[data-skins]').innerHTML = skins.map(skin => `
-        <button type="button" data-skin="${skin.id}" aria-pressed="${skin === selected}" ${skin.at > points ? 'disabled' : ''}>
-          <span class="game-skin-swatch" style="--skin-color:${skin.color ?? skin.accent}" aria-hidden="true"></span>
-          <strong>${skin.title[locale]}</strong>
-          <small>${skin === selected ? l.chosen : skin.at > points ? skin.at + ' ' + l.points : l.unlocked}</small>
-        </button>`).join('');
+      const rule = semester.ruleFor(game, mode);
+      el('[data-score-rule]').textContent = rule ? l.rule(rule) : '';
       el('.game-meta-result').hidden = !result;
       if (result) el('[data-result-text]').textContent =
-        l.yourScore + ' · ' + result.score + ' ' + l.score.toLowerCase() + ' · +' + campusPoints(result.score) + ' ' + l.points;
+        l.yourScore + ' · ' + result.score + ' ' + l.score + ' · +' + result.award + ' ' + l.points;
     }
     async function share(row) {
       if (!row) return;
@@ -251,32 +243,17 @@
       }
       status.hidden = false;
     }
-    host.oninput = event => {
-      if (!event.target.matches('[data-player]')) return;
-      saveProfile({ player: nameOf(event.target.value) });
-      refreshPanels();
-    };
     host.onchange = event => {
       const node = event.target;
-      if (node.matches('[data-player]')) {
-        node.value = nameOf(node.value);
-      } else if (node.matches('[data-game]')) {
+      if (node.matches('[data-game]')) {
         game = node.value; mode = modes[game][0]; updateModes(); refresh();
       } else if (node.matches('[data-mode]')) {
         mode = node.value; refresh();
       }
     };
     host.onclick = event => {
-      const target = event.target.closest('button');
-      if (!target || target.disabled) return;
-      if (target.dataset.share) void share(target.dataset.share === 'result' ? result : best);
-      if (target.dataset.skin) {
-        const id = target.dataset.skin;
-        const data = profile();
-        saveProfile({ skins: { ...data.skins, [playerKey(data.player)]: id } });
-        refreshPanels();
-        el('[data-skin="' + id + '"]').focus();
-      }
+      const target = event.target.closest('button[data-share]');
+      if (target) void share(target.dataset.share === 'result' ? result : best);
     };
     host.querySelectorAll('details').forEach(panel => {
       panel.ontoggle = () => { if (panel.open) options.onOpen?.(); };
@@ -294,8 +271,7 @@
     return view;
   }
 
-  window.addEventListener('storage', event => {
-    if (!event.key || event.key === profileKey || event.key.startsWith(recordPrefix)) refreshPanels();
-  });
-  window.UNECGameProgress = { activeSkin, start, finish, mount, campusPoints };
+  window.addEventListener('unec:semesterchange', refreshPanels);
+  window.addEventListener('unec:authchange', refreshPanels);
+  window.UNECGameProgress = { activeSkin, start, finish, mount };
 })();

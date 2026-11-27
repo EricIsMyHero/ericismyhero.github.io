@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>UNEC · Semestr müdafiəsi</title>
 <link rel="icon" href="../../images/favicon.svg">
-<link rel="stylesheet" href="../../styles/game-progress.css?v=20261127-records">
+<link rel="stylesheet" href="../../styles/arena-identity.css?v=20261127-arena">
+<link rel="stylesheet" href="../../styles/game-progress.css?v=20261127-arena">
 <style>
   :root { color-scheme:dark; --glass:#102022ed; --border:#b9dfd33d; --mint:#9be6cb; --gold:#f4cc77; --text:#fff7e6; --soft:#bbd2cb }
   * { box-sizing:border-box }
@@ -177,15 +178,16 @@
     <p id="summary-points" hidden></p>
     <p id="summary-semester" hidden></p>
     <footer><button class="primary" type="button" id="replay">Yenidən oyna</button><button type="button" id="continue">Sonsuz rejimə keç</button>
-      <button type="button" data-open-meta disabled>Rekordlar və görünüşlər</button><a class="games-return" href="../../#/dashboard">Dashboard</a></footer>
+      <button type="button" data-open-meta disabled>Arena rekordları</button><a class="games-return" href="../../#/dashboard">Dashboard</a></footer>
   </section>
 </div>
 <dialog id="game-meta-dialog" class="game-meta-dialog" aria-labelledby="game-meta-title">
   <header><h2 id="game-meta-title">Semestr müdafiəsi</h2><button type="button" id="close-game-meta">Bağla</button></header>
   <div id="game-meta-content"></div>
 </dialog>
-<script src="../../scripts/game-progress.js?v=20261127-records"></script>
-<script src="../../scripts/semester-profile.js?v=20261127-wardrobe"></script>
+<script src="../../scripts/student-wardrobe.js?v=20261127-arena"></script>
+<script src="../../scripts/semester-profile.js?v=20261127-arena"></script>
+<script src="../../scripts/game-progress.js?v=20261127-arena"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 <script>
 (() => {
@@ -758,7 +760,7 @@
     return skinGeos.get(key);
   }
   function startProgressRun(mode) {
-    scoreBaseline={weeks:completedWeeks,kills};
+    scoreBaseline={weeks:completedWeeks,kills,semester:semester?.balance(semesterRun)??0};
     progressRun=progress?.start('semester-defense',mode+'-'+difficulty)??null;
   }
   const ringGeo = new THREE.RingGeometry(.83,1,22);
@@ -1369,9 +1371,12 @@
     const score=(completedWeeks-scoreBaseline.weeks)*100+(kills-scoreBaseline.kills)*3+(state==='won'?200:0);
     const result=progress?.finish(progressRun,score,state==='won');
     ui.summaryPoints.hidden=!result;
-    if(result) ui.summaryPoints.textContent=result.score+' xal · +'+progress.campusPoints(result.score)+' kampus xalı';
+    if(result) ui.summaryPoints.textContent=result.score+' oyun xalı';
     ui.summarySemester.hidden=!semesterRun?.uid;
-    if(semesterRun?.uid) ui.summarySemester.textContent='Bu oyunda +'+semester.balance(semesterRun)+' Semestr Xalı';
+    if(semesterRun?.uid) {
+      const points=semester.balance(semesterRun)-scoreBaseline.semester+(result?.award??0);
+      ui.summarySemester.textContent='Bu hissədə +'+points+' Semestr Xalı';
+    }
     ui.resumeEndless.hidden=state!=='won';
     ui.summary.hidden=false;
     ui.replay.focus({preventScroll:true});
@@ -1408,8 +1413,8 @@
   function begin() {
     clearBattle();
     phase='playing';wave=0;gold=startingGold;health=maxLives;kills=0;speed=1;
-    completedWeeks=0;startProgressRun(endless?'endless':'campaign');
-    semesterRun=semester?.startRun(progressRun?.player)??null;
+    completedWeeks=0;semesterRun=semester?.startRun()??null;
+    startProgressRun(endless?'endless':'campaign');
     bossSequence=0;
     runSkin=progressRun?.skin;
     scholarship=0;totalGold=0;totalBuilt=0;nextWaveAt=setupSeconds;canRushAt=0;

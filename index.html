@@ -132,7 +132,8 @@
   <link rel="stylesheet" href="styles/curriculum.css?v=20261122-contrast">
   <link rel="stylesheet" href="styles/gpa.css?v=20261122-contrast">
   <link rel="stylesheet" href="styles/dashboard.css?v=20261123-profile">
-  <link rel="stylesheet" href="styles/semester-dashboard.css?v=20261127-wardrobe">
+  <link rel="stylesheet" href="styles/arena-identity.css?v=20261127-arena">
+  <link rel="stylesheet" href="styles/semester-dashboard.css?v=20261127-arena">
   <link rel="stylesheet" href="styles/chat.css?v=20261122-contrast">
   <link rel="stylesheet" href="styles/ratings.css?v=20261122-contrast">
   <link rel="stylesheet" href="styles/tokens.css?v=20261122-contrast">
@@ -148,7 +149,7 @@
   <link rel="stylesheet" href="styles/function-pages.css?v=20261120-gpa">
 
   <link rel="stylesheet" href="styles/games.css?v=20261127-semester-defense">
-  <link rel="stylesheet" href="styles/game-progress.css?v=20261127-records">
+  <link rel="stylesheet" href="styles/game-progress.css?v=20261127-arena">
   <link rel="stylesheet" href="styles/student-plus.css?v=20261122-cards">
 
   <!-- ═══ Analytics & Ads ═══════════════════════════════════════ -->
@@ -999,12 +1000,15 @@
           <!-- Giriş etmiş -->
           <div id="dash-user-view" class="dash-grid" style="display:none;">
 
-            <div class="dash-col dash-col--side">
+            <section class="semester-hub-banner" aria-labelledby="dash-greeting">
               <div class="dash-hello">
                 <h2 id="dash-greeting" class="dash-greeting"></h2>
                 <p id="dash-date" class="dash-date"></p>
               </div>
+              <a href="#/games/records" class="btn btn--secondary"><svg class="ic" aria-hidden="true"><use href="#i-trophy"/></svg><span id="dash-arena-link">Arena rekordları</span></a>
+            </section>
 
+            <div class="dash-col dash-col--side">
               <!-- Tələbə profili -->
               <section class="dash-profile-card function-panel" aria-label="Profil" data-i18n-aria="dashProfile">
                 <div class="dash-profile-row">
@@ -1017,8 +1021,7 @@
                   <button class="icon-btn dash-profile-edit-btn" type="button" onclick="toggleProfileEdit()" aria-label="Profili redaktə et" title="Profili redaktə et" data-i18n-title="dashEditProfileTitle" data-i18n-aria="dashEditProfileTitle"><svg class="ic"><use href="#i-pencil"/></svg></button>
                 </div>
                 <div class="dash-semester-actions">
-                  <span id="dash-semester-balance">0 Semestr Xalı</span>
-                  <button class="btn btn--secondary" type="button" id="open-semester-wardrobe">Tələbə qarderobu</button>
+                  <button class="btn btn--secondary" type="button" id="open-semester-wardrobe"><svg class="ic" aria-hidden="true"><use href="#i-sparkles"/></svg><span>Tələbə qarderobu</span></button>
                 </div>
 
                 <!-- Baxış rejimi -->
@@ -1091,6 +1094,7 @@
             </div>
 
             <div class="dash-col dash-col--main">
+              <section id="semester-wallet" class="semester-wallet" aria-labelledby="semester-wallet-title"></section>
               <!-- Statistika -->
               <section aria-labelledby="dash-stats-title">
                 <div class="section-head"><h2 id="dash-stats-title" data-i18n="dashStatistics">Statistika</h2></div>
@@ -2238,11 +2242,14 @@
 <dialog class="semester-wardrobe" id="semester-wardrobe" aria-labelledby="semester-wardrobe-title">
   <header><h2 id="semester-wardrobe-title">Tələbə qarderobu</h2><button class="btn btn--secondary" id="semester-wardrobe-close" type="button">Bağla</button></header>
   <p id="semester-wardrobe-local"></p>
-  <div class="semester-preview" id="semester-preview"></div>
+  <div class="semester-preview" id="semester-preview" aria-live="polite"></div>
   <form id="semester-look-form">
+    <div class="semester-wardrobe-tabs" id="semester-wardrobe-tabs"></div>
     <div class="semester-fields" id="semester-fields"></div>
-    <label class="semester-avatar-choice"><input type="checkbox" name="avatar"><span id="semester-avatar-label">Modulyar avatarı göstər</span></label>
-    <button class="btn btn--primary" id="semester-look-save" type="submit">Yadda saxla</button>
+    <div class="semester-wardrobe-footer">
+      <label class="semester-avatar-choice"><input type="checkbox" name="avatar"><span id="semester-avatar-label">Modulyar avatarı göstər</span></label>
+      <button class="btn btn--primary" id="semester-look-save" type="submit">Yadda saxla</button>
+    </div>
   </form>
 </dialog>
 
@@ -2264,13 +2271,14 @@
 <script src="scripts/test-bank.js?v=20261114-radio"></script>
 <script src="scripts/pdf-loader.js?v=20261114-radio"></script>
 <script src="scripts/gpa.js?v=20261120-gpa"></script>
-<script src="scripts/semester-profile.js?v=20261127-wardrobe"></script>
+<script src="scripts/student-wardrobe.js?v=20261127-arena"></script>
+<script src="scripts/semester-profile.js?v=20261127-arena"></script>
 <script src="scripts/firebase.js?v=20261127-wardrobe"></script>
 <script src="scripts/chat.js?v=20261106-3"></script>
 <script src="scripts/ratings.js?v=20261113-subjects"></script>
 <script src="scripts/requests.js?v=20261106-3"></script>
 <script src="scripts/dashboard.js?v=20261127-wardrobe"></script>
-<script src="scripts/semester-dashboard.js?v=20261127-wardrobe"></script>
+<script src="scripts/semester-dashboard.js?v=20261127-arena"></script>
 <script src="scripts/payments.js?v=20261106-3"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="scripts/curriculum-progress.js?v=20261106-4"></script>
@@ -2279,7 +2287,7 @@
 <script src="scripts/curriculum.js?v=20261114-curriculum-clean"></script>
 <script src="scripts/badges.js?v=20261106-3"></script>
 <script src="scripts/timer.js?v=20261111"></script>
-<script src="scripts/app-core.js?v=20261125-tower"></script>
+<script src="scripts/app-core.js?v=20261127-arena"></script>
 <script src="scripts/app-materials.js?v=20261114-metadata"></script>
 <script src="data/compass-catalog.js?v=20261122-routes"></script>
 <script src="scripts/compass.js?v=20261122-routes"></script>
@@ -2288,10 +2296,10 @@
 <script src="data/student-offers.js?v=20261122-offers"></script>
 <script src="data/student-offers-catalog.js?v=20261122-offers"></script>
 <script src="data/student-offer-details.js?v=20261122-offers"></script>
-<script src="scripts/game-progress.js?v=20261127-records"></script>
+<script src="scripts/game-progress.js?v=20261127-arena"></script>
 <script src="scripts/tower-scene.js?v=20261127-records"></script>
 <script src="scripts/tower-descent.js?v=20261127-records"></script>
-<script src="scripts/games.js?v=20261127-records"></script>
+<script src="scripts/games.js?v=20261127-arena"></script>
 <script src="scripts/student-plus.js?v=20261122-cards"></script>
 <script src="scripts/app-screens.js?v=20261123-profile"></script>
 <script src="scripts/push.js?v=20261112-project"></script>

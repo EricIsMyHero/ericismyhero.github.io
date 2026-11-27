@@ -1,72 +1,98 @@
 .game-meta {
-  --meta-border: var(--border, #b9dfd33d);
+  --meta-border: var(--border, #b9dfd342);
   --meta-soft: var(--color-text-secondary, #bbd2cb);
   --meta-text: var(--color-text-primary, #fff7e6);
   --meta-background: var(--color-background-alt, #172d32);
+  --meta-surface: var(--color-background, #11232c);
   --meta-accent: var(--accent2, #a7e4cc);
   display: grid;
-  gap: 7px;
+  gap: 9px;
   min-width: 0;
-  margin-block: 12px 0;
+  margin-block: 15px 0;
   color: var(--meta-text);
-  font-size: .85rem;
+  font-size: .87rem;
 }
 .game-meta [hidden] { display: none !important; }
-.game-meta details,
-.game-meta-result {
+.game-meta details, .game-meta-result, .arena-record-panel {
   border: 1px solid var(--meta-border);
-  border-radius: 11px;
+  border-radius: 15px;
   background: var(--meta-background);
 }
-.game-meta summary { padding: 10px 12px; cursor: pointer; font-weight: 750; }
-.game-meta summary:focus-visible,
-.game-meta :is(button, input, select, textarea):focus-visible {
-  outline: 2px solid var(--meta-accent);
-  outline-offset: 2px;
-}
-.game-meta details > ul { padding-inline-start: 29px; padding-inline-end: 14px; margin: 0 0 12px; color: var(--meta-soft); }
+.game-meta summary { padding: 12px 13px; cursor: pointer; font-weight: 800; }
+.game-meta summary:focus-visible, .game-meta :is(button, select, textarea, a):focus-visible { outline: 2px solid var(--meta-accent); outline-offset: 2px; }
+.game-meta details > ul { padding-inline: 29px 14px; margin-block: 0 12px; color: var(--meta-soft); }
 .game-meta details > ul li + li { margin-top: 6px; }
-.game-meta-content { display: grid; gap: 10px; padding: 0 11px 11px; }
+.game-meta-content { display: grid; gap: 11px; padding: 1px clamp(9px, 2.4vw, 19px) clamp(9px, 2.4vw, 19px); }
 .game-meta-content p { margin: 0; color: var(--meta-soft); }
-.game-meta-fields, .game-achievements, .game-skins { display: flex; gap: 6px; flex-wrap: wrap; }
-.game-meta .game-meta-fields label { flex: 1 1 114px; display: grid; align-content: start; gap: 3px; min-width: 0; padding: 0; border: 0; background: transparent; }
-.game-meta :is(input,select,textarea,button) {
-  min-height: 36px;
+.arena-record-intro { display: flex; flex-wrap: wrap; align-items: center; gap: 7px 14px; }
+.arena-record-intro p { flex: 1 1 235px; }
+.arena-record-intro a { color: var(--meta-accent); font-weight: 750; text-decoration: underline; }
+.game-meta-fields { display: flex; gap: 7px; flex-wrap: wrap; }
+.game-meta .game-meta-fields label { flex: 1 1 115px; display: grid; gap: 4px; min-width: 0; padding: 0; border: 0; background: transparent; }
+.game-meta :is(select, textarea, button) {
+  min-height: 38px;
   min-width: 0;
-  padding: 5px 8px;
+  padding: 5px 9px;
   border: 1px solid var(--meta-border);
-  border-radius: 8px;
-  background: var(--meta-background);
+  border-radius: 9px;
+  background: var(--meta-surface);
   color: var(--meta-text);
   font: inherit;
 }
-.game-meta button { cursor: pointer; font-weight: 700; }
-.game-meta button:disabled { opacity: .65; cursor: default; }
-.game-meta button[aria-pressed="true"] { border-color: var(--meta-accent); color: var(--meta-accent); }
-.game-meta-board { display: grid; gap: 3px; margin: 0; padding-inline-start: 22px; }
-.game-meta-board li { padding: 3px 4px; border-bottom: 1px solid var(--meta-border); }
-.game-meta-board li > div, .game-meta-result { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
-.game-meta-board li span { overflow-wrap: anywhere; }
-.game-meta-board strong { flex-shrink: 0; }
-.game-meta-result { flex-wrap: wrap; padding: 8px; }
+.game-meta button { cursor: pointer; font-weight: 750; }
+.arena-record-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.arena-record-metrics > div {
+  min-width: 0;
+  display: grid;
+  align-content: start;
+  gap: 3px;
+  padding: 7px;
+  border: 1px solid var(--meta-border);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--meta-accent) 10%, var(--meta-surface));
+}
+.arena-record-metrics small, .arena-player small, .arena-record > strong small { color: var(--meta-soft); font-size: .73rem; }
+.arena-record-metrics strong, .arena-record > strong { font-variant-numeric: tabular-nums; }
+.arena-record-metrics strong { font-size: clamp(.85rem, 2.3vw, 1.12rem); }
+.game-meta-board { list-style: none; display: grid; gap: 5px; padding: 0; margin: 0; }
+.game-meta-board:empty { display: none; }
+.arena-record {
+  display: grid;
+  grid-template-columns: auto 40px minmax(0, 1fr) auto;
+  gap: 7px;
+  align-items: center;
+  padding: 4px 7px;
+  border: 1px solid var(--meta-border);
+  border-radius: 10px;
+  background: var(--meta-surface);
+}
+.arena-record[data-medal="1"] { border-color: color-mix(in srgb, #bd9442 60%, var(--meta-border)); }
+.arena-record-avatar { display: block; height: 43px; width: 40px; }
+.arena-player { display: grid; justify-items: start; gap: 2px; min-width: 0; font-weight: 750; }
+.arena-record > strong { white-space: nowrap; }
+.arena-record > strong small { font-weight: 600; }
+.arena-share-best { justify-self: start; }
+.game-meta [data-score-rule], .game-meta [data-empty] { border-top: 1px solid var(--meta-border); padding-top: 8px; font-size: .8rem; }
+.game-meta-result { display: flex; align-items: center; gap: 7px 11px; justify-content: space-between; flex-wrap: wrap; padding: 8px; }
 .game-meta [data-share-status] { margin: 0; color: var(--meta-accent); }
-.game-meta .game-meta-points strong { color: var(--meta-accent); font-size: 1.03rem; }
-.game-achievements span { padding: 4px 7px; border: 1px solid var(--meta-border); border-radius: 7px; color: var(--meta-soft); }
-.game-achievements [data-earned="true"] { color: var(--meta-accent); }
-.game-skins button { flex: 1 1 88px; display: grid; align-content: start; justify-items: start; gap: 4px; text-align: left; }
-.game-skins small { font-weight: 500; color: var(--meta-soft); }
-.game-skin-swatch { width: 17px; height: 17px; border-radius: 5px; background: var(--skin-color); }
-.game-meta-directory { max-width: 640px; }
+.game-meta-directory { max-width: none; }
+.arena-record-panel { padding-top: clamp(9px, 2.4vw, 19px); }
+.game-record-link { margin-bottom: 12px; }
 .game-meta-dialog {
   box-sizing: border-box;
-  width: min(560px, calc(100% - 20px));
-  max-height: calc(100dvh - 24px);
-  padding: 14px;
+  width: min(620px, calc(100% - 18px));
+  max-height: calc(100dvh - 18px);
+  margin: auto;
+  padding: 13px;
   border: 1px solid var(--border, #b9dfd33d);
-  border-radius: 14px;
-  background: #172a32;
-  color: #fff7e6;
+  border-radius: 15px;
+  background: var(--color-background-alt, #172a32);
+  color: var(--color-text-primary, #fff7e6);
 }
 .game-meta-dialog::backdrop { background: #0b1925bd; }
 .game-meta-dialog header { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-.game-meta-dialog header h2 { font-size: 1.2rem; margin: 0; }
+.game-meta-dialog header h2 { font-size: 1.13rem; margin: 0; }
+@media (max-width: 380px) {
+  .arena-record { grid-template-columns: auto 32px minmax(0, 1fr) auto; gap: 5px; }
+  .arena-record-avatar { height: 37px; width: 32px; }
+}
