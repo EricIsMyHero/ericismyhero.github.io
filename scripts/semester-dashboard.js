@@ -10,12 +10,13 @@
   const tabs = get('semester-wardrobe-tabs');
   const fields = get('semester-fields');
   const categories = {
+    character: ['Avatar tipi', 'Character'],
     head: ['Baş geyimi', 'Headwear'], outfit: ['Geyim', 'Outfit'], accessory: ['Aksesuar', 'Accessory'],
     mood: ['Üz ifadəsi', 'Expression'], backdrop: ['Fon və aura', 'Backdrop & aura'],
     pet: ['Maskot', 'Companion'], border: ['Çərçivə', 'Frame'], pose: ['Qələbə pozası', 'Victory pose'],
     palette: ['Ad rəngi', 'Name color'], effect: ['Ad effekti', 'Name effect'], title: ['Titul', 'Title']
   };
-  const parts = ['head', 'outfit', 'accessory', 'mood', 'backdrop', 'pet', 'border', 'pose'];
+  const parts = ['character', 'head', 'outfit', 'accessory', 'mood', 'backdrop', 'pet', 'border', 'pose'];
   const games = [
     ['ring-escape', 'target', 'Halqadan çıxış', 'Ring Escape'],
     ['tower-descent', 'layers', 'Qüllə enişi', 'Tower Descent'],
@@ -192,7 +193,7 @@
     if (!user) return;
     const locale = language(), l = words[locale];
     const data = semester.stats(user.uid), look = semester.lookOf(user.uid, data);
-    editing = { uid: user.uid, name: nameNow(user), locale, data, look, trial: null, pending: false, section: 'head' };
+    editing = { uid: user.uid, name: nameNow(user), locale, data, look, trial: null, pending: false, section: 'character' };
     get('semester-wardrobe-title').textContent = l.wardrobe;
     get('semester-wardrobe-close').textContent = l.close;
     get('semester-purchase-status').textContent = '';
@@ -259,7 +260,7 @@
     if (!event.target.closest('[data-shuffle-look]') || editing.pending) return;
     editing.trial = null;
     get('semester-purchase-status').textContent = '';
-    for (const section of [...parts, 'palette', 'effect']) {
+    for (const section of [...parts.filter(key => key !== 'character'), 'palette', 'effect']) {
       const available = Object.keys(semester.collection[section]).filter(key =>
         semester.unlocked(section, key, editing.data));
       editing.look[section] = available[Math.floor(Math.random() * available.length)];

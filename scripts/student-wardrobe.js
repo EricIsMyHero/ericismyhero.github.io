@@ -23,6 +23,7 @@
   ];
   const palettes = Object.fromEntries(paletteRows.map(([id,,,, base, mid, light]) => [id, { base, mid, light }]));
   const collection = {
+    character: { boy: item('Oğlan', 'Boy', 0), girl: item('Qız', 'Girl', 0) },
     head: {
       none: item('Açıq saç', 'Bare head', 0, 0),
       glasses: item('Əlaçı eynəyi', 'Honors shades', 0, 0),
@@ -88,7 +89,7 @@
       veteran: item('Kampus Veteranı', 'Campus Veteran', 125)
     }
   };
-  const defaults = { head: 'none', outfit: 'classic', accessory: 'none', palette: 'default',
+  const defaults = { character: 'boy', head: 'none', outfit: 'classic', accessory: 'none', palette: 'default',
     effect: 'none', title: 'none', mood: 'none', backdrop: 'none', pet: 'none', border: 'none', pose: 'none', avatar: false };
   const stroke = '#152039';
   const hats = {
@@ -152,6 +153,7 @@
   }
 
   function avatar(look, large = false) {
+    const girl = look.character === 'girl';
     const palette = palettes[look.palette] ?? palettes.default;
     const [base, trim, decoration] = outfits[look.outfit] ?? outfits.classic;
     return `<svg class="semester-avatar-svg" viewBox="0 0 128 144" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
@@ -164,17 +166,20 @@
       <path d="M46 88q-13 1-15 17l-3 9q3 7 11 4l6-15h37l7 17q7 2 11-5l-7-17q-4-9-13-11z" fill="${trim}" stroke="${stroke}" stroke-width="3"/>
       <path d="M43 94q4-10 19-10t21 10l2 28q-16 10-44 0z" fill="${base}" stroke="${stroke}" stroke-width="3"/>
       ${decoration}
+      ${girl ? '<path d="M27 43q-15 26-9 57 8 10 26 4l5-25h29l5 25q18 7 28-3 4-32-10-58z" fill="#543852" stroke="' + stroke + '" stroke-width="3"/>' : ''}
       <path d="M58 82h13v13q-7 5-13 0z" fill="#dba580"/>
       <circle cx="25" cy="64" r="10" fill="#edba91" stroke="${stroke}" stroke-width="3"/>
       <circle cx="99" cy="64" r="10" fill="#edba91" stroke="${stroke}" stroke-width="3"/>
       <path d="M26 59c0-22 13-35 36-35 23 0 37 13 37 35 0 19-13 33-36 35-21-1-37-15-37-35z" fill="#f5cd9f" stroke="${stroke}" stroke-width="3"/>
-      <path d="M24 58c-1-22 13-37 38-37 24 0 40 16 39 37l-8-5-4-12-12 6-6-7-10 8-16-4-6 12z" fill="#423958" stroke="${stroke}" stroke-width="3"/>
+      ${girl
+        ? '<path d="M23 61c-1-25 15-42 39-42 26 0 41 18 40 42l-9-2c-5-2-10-11-13-20-11 9-24 13-43 13l-6 10z" fill="#543852" stroke="' + stroke + '" stroke-width="3"/><path d="M42 43q17-1 30-13" fill="none" stroke="#a5647a" stroke-width="2.5" stroke-linecap="round"/>'
+        : '<path d="M24 58c-1-22 13-37 38-37 24 0 40 16 39 37l-8-5-4-12-12 6-6-7-10 8-16-4-6 12z" fill="#423958" stroke="' + stroke + '" stroke-width="3"/>'}
       ${layers.mood[look.mood] || defaultFace}
       <ellipse cx="36" cy="74" rx="5" ry="2.6" fill="#e7998f"/><ellipse cx="88" cy="74" rx="5" ry="2.6" fill="#e7998f"/>
       ${hats[look.head] ?? ''}${accessories[look.accessory] ?? ''}
       ${layers.pose[look.pose] ?? ''}${layers.pet[look.pet] ?? ''}${layers.border[look.border] ?? ''}
     </svg>`;
   }
-  const combinations = Object.keys(layers).reduce((count, group) => count * Object.keys(collection[group]).length, 1);
+  const combinations = ['character', ...Object.keys(layers)].reduce((count, group) => count * Object.keys(collection[group]).length, 1);
   window.UNECStudentWardrobe = { collection, defaults, palettes, avatar, photoFrame, combinations };
 })();

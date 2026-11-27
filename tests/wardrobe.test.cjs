@@ -89,3 +89,17 @@ test('grandfathers the previous equipped look, with balances durable against sta
   assert.equal((await p.purchase('a', 'mood', 'sleepless')).status, 'storage');
   assert.deepEqual(wallet(p, 'a'), [100, 50, 50]);
 });
+
+test('the avatar character can switch for free without changing the equipped cosmetics', async () => {
+  const { UNECSemesterProfile: profile, UNECStudentWardrobe: wardrobe } = device();
+  profile.setAccount({ uid: 'a', gender: 'female' }, 'A');
+  assert.equal(profile.lookOf('a').character, 'boy');
+  const look = { ...profile.lookOf('a'), head: 'glasses', avatar: true };
+  assert.equal((await profile.saveLook('a', { ...look, character: 'girl' })).status, 'saved');
+  assert.equal(profile.lookOf('a').character, 'girl');
+  assert.equal(profile.lookOf('a').head, 'glasses');
+  assert.notEqual(wardrobe.avatar(profile.lookOf('a')), wardrobe.avatar(look));
+  assert.deepEqual(wallet(profile, 'a'), [0, 0, 0]);
+  await profile.saveLook('a', look);
+  assert.equal(profile.lookOf('a').character, 'boy');
+});
