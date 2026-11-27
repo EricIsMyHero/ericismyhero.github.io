@@ -223,6 +223,68 @@
 <script>void window.UNECArenaRecords.connectStandalone();</script>
 <script src="../../scripts/game-progress.js?v=20261127-tactics"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script id="semester-balance">
+(() => {
+  'use strict';
+
+  const towerCosts={arrow:40,cannon:75,frost:100,flame:125,storm:150};
+  const expansion={extension:4,branch:10,newestPercent:30};
+  const events={
+    session:{name:'İmtahan Sessiyası Başladı',maxHp:1.25,reward:1.25,detail:'+25% maksimum can · +25% AZN'},
+    late:{name:'Müəllim Gecikir',speed:.90,duration:20,detail:'İlk 20 saniyə −10% sürət'},
+    blackout:{name:'İşıqlar Söndü',damage:2,range:.90,detail:'Bütün qüllələrdə 2× zərər · −10% məsafə'}
+  };
+  const abilities={
+    strike:{name:'Şparqalka Yağışı',cooldown:75,area:5.2,damage:125,
+      hint:'Xəritədə kağızların yağacağı yeri seç. Sahədəki imtahanlara ani zərər vurur.'},
+    appeal:{name:'Apellyasiya',cooldown:100,duration:6,armorReduction:.25,
+      hint:'Bütün imtahanları 6 saniyə dondurur və boss zirehini 25% azaldır.'},
+    boost:{name:'Enerji İçkisi',cooldown:60,duration:12,rate:2,
+      hint:'Atış sürətini 12 saniyəlik 2 qat artırmaq üçün bir müdafiəçi seç.'}
+  };
+
+  function portalCounts(total, count) {
+    if(count===1) return [total];
+    const newest=count<=3?Math.ceil(total/count):Math.ceil(total*expansion.newestPercent/100);
+    const oldCount=count-1, remaining=total-newest;
+    const base=Math.floor(remaining/oldCount), remainder=remaining%oldCount;
+    return [...Array.from({length:oldCount},(_,i)=>base+Number(i>=oldCount-remainder)),newest];
+  }
+
+  function assignPortals(entries,fronts) {
+    const counts=portalCounts(entries.length,fronts.length);
+    const portals=fronts.map((front,i)=>({front,count:counts[i],unassigned:counts[i],boss:0,elite:0}));
+    const byThreat=[...portals].sort((a,b)=>b.count-a.count||b.front.id-a.front.id);
+    // Bosses have first claim on the busiest route, followed by armored finals.
+    for(const kind of ['boss','brute']) for(const entry of entries) {
+      if(entry.kind!==kind) continue;
+      const portal=byThreat.find(p=>p.unassigned>0);
+      portal.unassigned--;
+      portal[kind==='boss'?'boss':'elite']++;
+      entry.front=portal.front;
+    }
+    const regular=entries.filter(entry=>!entry.front);
+    for(const p of portals) {p.regular=p.unassigned;p.sent=0;}
+    for(const [i,entry] of regular.entries()) {
+      let selected,best=-Infinity;
+      for(const p of byThreat) {
+        if(!p.unassigned) continue;
+        const deficit=p.regular*(i+1)/regular.length-p.sent;
+        if(deficit>best) {best=deficit;selected=p;}
+      }
+      selected.unassigned--;selected.sent++;
+      entry.front=selected.front;
+    }
+    return portals;
+  }
+
+  const speedDuring=(kind,elapsed)=>kind==='late'&&elapsed<events.late.duration?events.late.speed:1;
+  const armorFactor=(reduction=0)=>1-.52*(1-reduction);
+  const upgradePrice=(base,level)=>Math.round(base*(level===1?.68:1.05));
+  const refund=invested=>Math.round(invested*75)/100;
+  window.UNECSemesterBalance={towerCosts,expansion,events,abilities,portalCounts,assignPortals,speedDuring,armorFactor,upgradePrice,refund};
+})();
+</script>
 <script>
 (() => {
   'use strict';
@@ -241,6 +303,8 @@
   const progress=window.UNECGameProgress;
   const semester=window.UNECSemesterProfile;
   const arena=window.UNECArenaRecords;
+  const {towerCosts,expansion:expansionBalance,events:weeklyEvents,abilities:abilityRules,
+    assignPortals,speedDuring,armorFactor,upgradePrice,refund}=window.UNECSemesterBalance;
   const rand = (min,max) => min + Math.random()*(max-min);
   const clamp = (value,min,max) => Math.max(min,Math.min(max,value));
   const choose = items => items[Math.floor(Math.random()*items.length)];
@@ -722,11 +786,11 @@
   };
   const wingGeo = geometry([[.24,0,.03,.49,.15,.52,'#795b9e'],[.58,-.06,.24,.32,.12,.41,'#c4a4e0'],[.79,-.1,.31,.15,.12,.25,'#e7b1de']]);
   const towerStats = {
-    arrow:    {name:'Əlaçı Tələbə',cost:40,range:8.6, damage:11,delay:.43, speed:25,color:'#b9e69e',core:'#76a382'},
-    cannon:   {name:'Kofeman Tələbə',cost:75,range:10.1,damage:27,delay:1.13,speed:16,color:'#ffbd73',core:'#c58561'},
-    frost:    {name:'Chill / IT Tələbə',cost:90,range:7.2,delay:1.14,color:'#85eafa',core:'#4ab7cb'},
-    storm:    {name:'Proqramçı / Smartboard',cost:130,range:10.0,damage:22,color:'#d8aeff',core:'#a782ce'},
-    flame:    {name:'Gecə Oxuyan',cost:110,range:6.2,damage:10,delay:.52,speed:20,color:'#ff8f45',core:'#d87742'}
+    arrow:    {name:'Əlaçı Tələbə',cost:towerCosts.arrow,range:8.6,damage:11,delay:.43,speed:25,color:'#b9e69e',core:'#76a382'},
+    cannon:   {name:'Kofeman Tələbə',cost:towerCosts.cannon,range:10.1,damage:27,delay:1.13,speed:16,color:'#ffbd73',core:'#c58561'},
+    frost:    {name:'Chill / IT Tələbə',cost:towerCosts.frost,range:7.2,delay:1.14,color:'#85eafa',core:'#4ab7cb'},
+    storm:    {name:'Proqramçı / Smartboard',cost:towerCosts.storm,range:10.0,damage:22,color:'#d8aeff',core:'#a782ce'},
+    flame:    {name:'Gecə Oxuyan',cost:towerCosts.flame,range:6.2,damage:10,delay:.52,speed:20,color:'#ff8f45',core:'#d87742'}
   };
   const towerKinds=Object.keys(towerStats);
   const tileBuffs={
@@ -755,16 +819,6 @@
       blaze:{name:'Alov Ustası',detail:'Daha geniş sahəni alovlandırır',angle:.42},
       marathon:{name:'Marafonçu',detail:'Yanma 4,5 saniyə çəkir və +40% zərər vurur',burnTime:4.5,burnPower:1.4}
     }
-  };
-  const abilityRules={
-    strike:{name:'Şparqalka Yağışı',cooldown:60,area:5.2,damage:125,hint:'Xəritədə kağızların yağacağı yeri seç.'},
-    appeal:{name:'Apellyasiya',cooldown:90,duration:4,hint:'Bütün imtahanları 4 saniyə dondurur və KƏSR-in zirehini zəiflədir.'},
-    boost:{name:'Enerji İçkisi',cooldown:45,duration:8,hint:'8 saniyə 2× atış sürəti üçün müdafiəçi seç.'}
-  };
-  const weeklyEvents={
-    session:{name:'İmtahan Sessiyası Başladı',detail:'+15% sürət · +25% AZN'},
-    late:{name:'Müəllim Gecikir',detail:'İlk 10 saniyə −40% sürət'},
-    blackout:{name:'İşıqlar Söndü',detail:'Gecə Oxuyan 2× zərər vurur'}
   };
   const roadRules={
     turnstile:{name:'Sıra Gözləməsi / Turniket',short:'Turniket',cost:35,charges:5,color:'#f7e696',
@@ -899,9 +953,29 @@
   const noSpecialty={};
   const specialtyOf=tower=>tower.fusion??specializations[tower.kind][tower.specialty]??noSpecialty;
   const heightOf=slot=>tileBuffs[slot.buff]?.height??0;
-  const rangeOf=tower=>tower.fusion?.global?Infinity:
-    (towerStats[tower.kind].range+(tower.level-1)*.75)*tower.bonuses.range*(specialtyOf(tower).range??1);
-  const fireRate=tower=>tower.bonuses.rate*(specialtyOf(tower).rate??1)*(tower.boostUntil>time?2:1)*(1+.12*relicRanks.pencil);
+  function campusBlackout() {
+    for(const event of waveEvents.values()) if(event.kind==='blackout') return true;
+    return false;
+  }
+  const campusRangeRate=()=>campusBlackout()?weeklyEvents.blackout.range:1;
+  const campusDamageRate=()=>campusBlackout()?weeklyEvents.blackout.damage:1;
+  const placementRange=(kind,slot)=>towerStats[kind].range*(slot.buff==='wifi'?1.25:1)*campusRangeRate();
+  function rangeOf(tower) {
+    const rate=campusRangeRate();
+    if(!tower.fusion?.global) return (towerStats[tower.kind].range+(tower.level-1)*.75)*
+      tower.bonuses.range*(specialtyOf(tower).range??1)*rate;
+    if(rate===1) return Infinity;
+    if(tower.roadReach?.bounds!==mapBounds) {
+      let farthest=0;
+      for(const {road} of fronts) for(const cell of road.cells) {
+        farthest=Math.max(farthest,distanceBetween(tower.slot,cellPoint(cell)));
+      }
+      tower.roadReach={bounds:mapBounds,distance:farthest};
+    }
+    return tower.roadReach.distance*rate;
+  }
+  const fireRate=tower=>tower.bonuses.rate*(specialtyOf(tower).rate??1)*
+    (tower.boostUntil>time?abilityRules.boost.rate:1)*(1+.12*relicRanks.pencil);
   const shotDelay=tower=>towerStats[tower.kind].delay/(tower.kind==='frost'?1:1+.13*(tower.level-1));
   const baseDamage=tower=>(tower.kind==='frost'?[0,3,7][tower.level-1]:
     towerStats[tower.kind].damage*(1+(tower.level-1)*(tower.kind==='storm'?.48:.53)))*(tower.fusion?.damage??1);
@@ -943,8 +1017,8 @@
       };
     }
   }
-  const upgradeCost=tower=>Math.round(towerStats[tower.kind].cost*(tower.level===1?.68:1.05));
-  const sellValue=tower=>tower.invested*.75;
+  const upgradeCost=tower=>upgradePrice(towerStats[tower.kind].cost,tower.level);
+  const sellValue=tower=>refund(tower.invested);
   const studentMat=voxelMat.clone();
   const statusMaterials=Object.fromEntries(Object.entries({stun:'#c1b5ff',boost:'#ffd865',pair:'#9be6cb',zone:'#ff937d'}).map(([key,color])=>[
     key,new THREE.MeshBasicMaterial({color,transparent:true,opacity:.72,depthWrite:false,side:THREE.DoubleSide})
@@ -962,6 +1036,14 @@
   glowTexture.colorSpace=THREE.SRGBColorSpace;
   const glowMat=new THREE.MeshBasicMaterial({map:glowTexture,transparent:true,depthWrite:false,
     blending:THREE.AdditiveBlending,toneMapped:false});
+  const spotlightGeo=new THREE.ConeGeometry(1.65,1.55,12,1,true).translate(0,.95,0);
+  const spotlightMat=new THREE.MeshBasicMaterial({color:'#ffbb72',transparent:true,depthWrite:false,
+    blending:THREE.AdditiveBlending,toneMapped:false});
+  const boostBoltGeo=new THREE.BufferGeometry().setFromPoints([
+    V(.46,.37,.12),V(.85,.76,.20),V(.56,.82,.08),V(.98,1.27,.16),V(.5,1.25,.04),V(.74,1.79,.17)
+  ]);
+  const boostBoltMat=new THREE.LineBasicMaterial({color:'#fff2a9',transparent:true,opacity:.86,
+    depthWrite:false,blending:THREE.AdditiveBlending,toneMapped:false});
 
   function dust(position,color,n=12,speed=4,size=.22,life=.6,lift=2,gravity=10,coin=false) {
     const count=Math.min(n,460-particles.length);
@@ -969,6 +1051,11 @@
       x:position.x,y:position.y,z:position.z,vx:rand(-speed,speed),vy:rand(0,lift),vz:rand(-speed,speed),
       size:rand(.55,1.7)*size,life:rand(.55,1.2)*life,age:0,g:gravity,color,spin:rand(-4,4),coin
     });
+  }
+  function boostSparks(tower,count=5) {
+    const source=tower.root.position.clone().add(V(0,1.35,0));
+    dust(source,'#fff4a3',count,1.45,.095,.31,1.6,2.6);
+    dust(source,'#b6efff',Math.ceil(count/2),1.12,.085,.28,1.2,2.8);
   }
   function shock(position,color,radius=.5,timeToLive=.35) {
     if(rings.length>=25) return;
@@ -1134,9 +1221,13 @@
     status.position.y=.18;status.scale.setScalar(1.27);status.visible=false;
     const glow=new THREE.Mesh(plate,glowMat);
     glow.rotation.x=-Math.PI/2;glow.position.y=.13;glow.scale.setScalar(7);glow.visible=false;
-    root.add(base,head,band,status,glow);
+    const spotlight=new THREE.Mesh(spotlightGeo,spotlightMat);
+    spotlight.visible=false;
+    const boostBolt=new THREE.Line(boostBoltGeo,boostBoltMat);
+    boostBolt.visible=false;
+    root.add(base,head,band,status,glow,spotlight,boostBolt);
     scene.add(root);
-    const tower={kind,slot,root,head,status,glow,level:1,reload:rand(.04,.2),recoil:0,
+    const tower={kind,slot,root,head,status,glow,spotlight,boostBolt,level:1,reload:rand(.04,.2),recoil:0,
       priority:'first',invested:stats.cost,kills:0,shots:0,lock:null,lockAge:0,beam:null,chain:null,
       specialty:null,boostUntil:0,stunnedUntil:0,zonedUntil:0};
     if(kind==='storm') {
@@ -1250,11 +1341,13 @@
     scene.add(root,shadow);
     const balance=modes[difficulty];
     const scaling=1+Math.max(0,week-1)*.18+Math.max(0,week-15)*.14;
-    const max=info.health*scaling*balance.hp*(kind==='boss'&&week?1+week*.085:1)*(retake?.75:1);
+    const event=waveEvents.get(week);
+    const max=info.health*scaling*balance.hp*(kind==='boss'&&week?1+week*.085:1)*(retake?.75:1)*
+      (weeklyEvents[event?.kind]?.maxHp??1);
     const mob={kind,variant,retake,info,root,body,parts,shadow,aura,max,hp:max,p:progress,week,road,
       side:laneOffset ?? scaled(-.64,.64,random),phase:scaled(0,6.28,random),
       chill:0,slow:0,burn:0,burnDps:0,burnTower:null,flash:0,flashAt:0,hidden:false,hitSum:0,hitAt:0,removed:false,
-      event:waveEvents.get(week),bossPhase:0,semesterBoss:kind==='boss'&&week?++bossSequence:0,
+      event,bossPhase:0,semesterBoss:kind==='boss'&&week?++bossSequence:0,
       frozenAt:0,frozenUntil:0,armorWeakUntil:0,
       speed:info.speed*balance.speed*scaled(.93,1.07,random)};
     enemies.push(mob);
@@ -1338,10 +1431,9 @@
     const armored=mob.kind==='brute'||mob.kind==='boss'&&mob.variant!=='inspection';
     const weak=mob.kind==='boss'&&mob.armorWeakUntil>time;
     const flame=kind==='flame'||kind==='burn';
-    amount*=tower?.bonuses.damage??1;
+    if(tower) amount*=tower.bonuses.damage*campusDamageRate();
     if(tower?.slot.buff==='hill'&&mob.kind==='flyer') amount*=1.5;
-    if(flame&&mob.event?.kind==='blackout') amount*=2;
-    if(armored) amount*=kind==='arrow'?(weak?.86:.48):(kind==='storm'||flame?1.25:1)*(weak?1.15:1);
+    if(armored) amount*=kind==='arrow'?armorFactor(weak?abilityRules.appeal.armorReduction:0):(kind==='storm'||flame?1.25:1);
     mob.hp-=amount;
     if(mob.kind==='boss') reactToDamage(mob);
     if(time>=mob.flashAt) {mob.flash=time+.12;mob.flashAt=time+.25;}
@@ -1363,7 +1455,7 @@
       if(phase==='playing') {
         const entry=mob.variant??(mob.retake?'repeat':mob.kind);
         defeated[entry]=(defeated[entry]??0)+1;
-        const reward=roundAzn((3+Math.max(0,mob.week-1))*(mob.event?.kind==='session'?1.25:1));
+        const reward=roundAzn((3+Math.max(0,mob.week-1))*(weeklyEvents[mob.event?.kind]?.reward??1));
         earn(reward);
         floating(center.clone().add(V(.38,.4,0)),'+'+reward+' AZN','azn');
         if(mob.semesterBoss) {
@@ -1550,38 +1642,7 @@
       for(let i=0;i<count;i++) entries.push({kind,delay:delay+i*spacing,week:number});
       delay+=(count-1)*spacing+.80;
     }
-    // Retain the exact historical weights, then assign whole enemies by largest remainder.
-    const newest=fronts.at(-1);
-    const featuredCount=fronts.length===1?entries.length:Math.ceil(entries.length/2);
-    const portals=fronts.map(front=>{
-      const exact=front===newest?featuredCount:(entries.length-featuredCount)*front.weight*2;
-      return {front,count:Math.floor(exact),remainder:exact%1,unassigned:0,boss:0,elite:0};
-    });
-    const byRemainder=[...portals].sort((a,b)=>b.remainder-a.remainder||b.front.id-a.front.id);
-    const unallocated=entries.length-portals.reduce((total,p)=>total+p.count,0);
-    for(let i=0;i<unallocated;i++) byRemainder[i].count++;
-    const byThreat=[...portals].sort((a,b)=>b.front.weight-a.front.weight||b.front.id-a.front.id);
-    for(const p of portals) p.unassigned=p.count;
-    // Bosses have first claim on the busiest route, followed by armored finals.
-    for(const kind of ['boss','brute']) for(const entry of entries) {
-      if(entry.kind!==kind) continue;
-      const portal=byThreat.find(p=>p.unassigned>0);
-      portal.unassigned--;
-      portal[kind==='boss'?'boss':'elite']++;
-      entry.front=portal.front;
-    }
-    const regular=entries.filter(entry=>!entry.front);
-    for(const p of portals) {p.regular=p.unassigned;p.sent=0;}
-    for(const [i,entry] of regular.entries()) {
-      let selected,best=-Infinity;
-      for(const p of byThreat) {
-        if(!p.unassigned) continue;
-        const deficit=p.regular*(i+1)/regular.length-p.sent;
-        if(deficit>best) {best=deficit;selected=p;}
-      }
-      selected.unassigned--;selected.sent++;
-      entry.front=selected.front;
-    }
+    const portals=assignPortals(entries,fronts);
     return forecast={number,entries,portals};
   }
   function mayStart() {
@@ -1600,6 +1661,7 @@
       const kind=pickFrom(Object.keys(weeklyEvents),examRandom('event:'+number));
       waveEvents.set(number,{kind,start:time});
       notice('Həftə '+number+' · '+weeklyEvents[kind].name);
+      if(kind==='blackout') {cardDirty=true;indicators();}
     }
     const {entries}=planWave(number);
     const random=examRandom('positions:'+number);
@@ -1740,7 +1802,7 @@
           distanceBetween(boss.root.position,mob.root.position)<=6.5);
         if(mob.frozenUntil<=time&&!mob.guard) {
           const surge=mob.variant==='retake'&&(time+mob.phase)%5<1.22 ? 1.83 : 1;
-          const eventRate=mob.event?.kind==='session'?1.15:mob.event?.kind==='late'&&time-mob.event.start<10?.6:1;
+          const eventRate=mob.event?speedDuring(mob.event.kind,time-mob.event.start):1;
           const oldProgress=mob.p;
           mob.p+=mob.speed*dt*surge*eventRate*(mob.inspected&&!isChilled(mob)?1.25:1)*(mob.chill>time?1-mob.slow:1);
           processRoad(mob,oldProgress);
@@ -1818,6 +1880,7 @@
       for(const mob of enemies) if(mob.kind==='boss') {
         dust(mob.root.position.clone().add(V(rand(-.85,.85),.16,rand(-.85,.85))),mob.info.color,3,.55,.15,.73,2.4,-.8);
       }
+      for(const tower of towers) if(tower.boostUntil>time) boostSparks(tower);
       if(phase!=='menu'&&health<maxLives*.55) dust(V(campusX-2.0,3.0,campusZ+1.6),'#a48573',3,1.1,.3,1.8,2.2,-.3);
     }
     for(const tower of towers) tower.head.position.z=tower.recoil*.58;
@@ -1900,7 +1963,7 @@
     '<button type="button" id="economy" aria-label="Təqaüdü artır" aria-pressed="false">'+graphic('stipend')+'<span>Təqaüdü Artır</span><b id="tier-cost"></b></button>';
   const dockTowers=[...ui.dock.querySelectorAll('[data-tower]')];
   ui.abilities.innerHTML=Object.entries(abilityRules).map(([id,ability])=>
-    `<button type="button" data-ability="${id}" title="${ability.hint}" aria-label="${ability.name}" aria-pressed="false">
+    `<button type="button" data-ability="${id}" title="${abilityTip(ability)}" aria-label="${ability.name}" aria-pressed="false">
       <strong>${ability.name}</strong><small></small></button>`).join('');
   const abilityButtons=[...ui.abilities.querySelectorAll('button')];
   ui.road.innerHTML=Object.entries(roadRules).map(([id,rule])=>
@@ -1939,6 +2002,9 @@
     ui.toast.classList.toggle('warning',warning);
     toastUntil=performance.now()+2600;
   }
+  function abilityTip(ability) {
+    return ability.hint+' Bərpa müddəti '+ability.cooldown+' saniyə.';
+  }
   const abilityAvailable=id=>phase==='playing'&&time>=cooldowns[id]&&
     (id==='boost'?towers.length>0:enemies.some(mob=>!mob.removed));
   function useAbility(id,target) {
@@ -1958,8 +2024,8 @@
     } else if(id==='appeal') {
       for(const mob of enemies) {
         if(mob.removed) continue;
-        mob.frozenAt=time;mob.frozenUntil=time+ability.duration;mob.hidden=false;
-        if(mob.kind==='boss') mob.armorWeakUntil=mob.frozenUntil;
+        mob.frozenAt=time;mob.frozenUntil=Math.max(mob.frozenUntil,time+ability.duration);mob.hidden=false;
+        if(mob.kind==='boss') mob.armorWeakUntil=time+ability.duration;
         shock(mob.root.position,'#9ce6ff',1.03,.64);
         pose(mob);
       }
@@ -1967,10 +2033,11 @@
       if(!towers.includes(target)) return false;
       target.boostUntil=time+ability.duration;
       shock(target.root.position,'#ffd865',2,.7);
+      boostSparks(target,14);
     }
     cooldowns[id]=time+ability.cooldown;
     clearSelection();
-    notice(ability.name+(id==='appeal'?' · 4s':id==='boost'?' · 8s':''));
+    notice(ability.name+(ability.duration?' · '+ability.duration+'s':'')+' · Bərpa '+ability.cooldown+'s');
     playSound('ability');
     return true;
   }
@@ -2053,7 +2120,7 @@
       const geos=towerGeometry(kind);
       previewBase.geometry=geos.base;previewHead.geometry=geos.head;
       preview.position.set(slot.x,.39+heightOf(slot),slot.z);
-      radius=towerStats[kind].range*(slot.buff==='wifi'?1.25:1);
+      radius=placementRange(kind,slot);
       range.visible=true;
     }
     if(range.visible) {
@@ -2103,11 +2170,11 @@
     return true;
   }
   function towerNumbers(tower) {
-    const damage=baseDamage(tower)*tower.bonuses.damage;
-    const rate=fireRate(tower);
+    const damage=baseDamage(tower)*tower.bonuses.damage*campusDamageRate();
+    const rate=fireRate(tower), range=rangeOf(tower);
     return {
       damage:tower.kind==='storm'?Math.round(damage*rate)+' DPS':Math.round(damage),
-      range:tower.fusion?.global?'Bütün xəritə':rangeOf(tower).toFixed(1),
+      range:Number.isFinite(range)?range.toFixed(1):'Bütün xəritə',
       rate:tower.kind==='storm'?rate.toFixed(2)+'×':(rate/shotDelay(tower)).toFixed(2)+'/s',
       kills:tower.kills
     };
@@ -2148,7 +2215,7 @@
         (next?`<div class="card-actions"><button class="primary" type="button" data-action="economy">Keç · ${next.name} · ${next.cost} AZN</button></div>`:'<div class="muted">Ən yüksək təqaüd səviyyəsi</div>');
     } else if(selected.type==='place') {
       const item=towerStats[activeKind];
-      const reach=(item.range*(selected.slot.buff==='wifi'?1.25:1)).toFixed(1);
+      const reach=placementRange(activeKind,selected.slot).toFixed(1);
       ui.card.innerHTML=cardHead(item.name)+`<div class="muted">${descriptions[activeKind]} Məsafə ${reach}.</div>`+tileNote(selected.slot)+`
         <div class="card-actions"><button class="primary" type="button" data-action="build">Yerləşdir · ${item.cost} AZN</button></div>`;
     } else {
@@ -2173,7 +2240,7 @@
         priorities+upgradeChoices+fusionChoices+
         `<div class="card-actions">${tower.level===1?`<button class="primary" type="button" data-action="upgrade">Yüksəlt · ${upgradeCost(tower)} AZN</button>`:''}
         ${partners.length?`<button type="button" data-action="fusion" aria-pressed="${tower===fusionSource}">${tower===fusionSource?'Seçimi ləğv et':'Birləşdir'}</button>`:''}
-        <button type="button" data-action="sell">Sat · +${sellValue(tower)} AZN</button></div>`;
+        <button type="button" data-action="sell" title="Qoyulan ümumi məbləğin 75%-i">Sat · +${sellValue(tower)} AZN</button></div>`;
     }
   }
   const changeText=(node,value)=>{if(node.textContent!==value)node.textContent=value;};
@@ -2199,11 +2266,13 @@
     ui.sound.setAttribute('aria-pressed',String(!muted));
     for(const button of abilityButtons) {
       const id=button.dataset.ability;
-      const seconds=Math.max(0,Math.ceil(cooldowns[id]-time));
+      const rules=abilityRules[id];
+      const seconds=clamp(Math.ceil(cooldowns[id]-time),0,rules.cooldown);
       const available=abilityAvailable(id);
+      const ready=rules.duration?'Hazır · '+rules.duration+'s təsir':'Hazır';
       button.disabled=!available;
       button.setAttribute('aria-pressed',String(id===aiming));
-      changeText(button.querySelector('small'),seconds?seconds+'s':id===aiming?'Hədəfi seç':available?'Hazır':id==='boost'?'Müdafiəçi qur':'Dalğanı gözlə');
+      changeText(button.querySelector('small'),seconds?seconds+'s':id===aiming?'Hədəfi seç':available?ready:id==='boost'?'Müdafiəçi qur':'Dalğanı gözlə');
     }
     for(const button of dockTowers) {
       button.disabled=phase!=='playing'||gold<towerStats[button.dataset.tower].cost;
@@ -2233,7 +2302,8 @@
       const zoned=tower.zonedUntil>time, asleep=tower.stunnedUntil>time, boosted=tower.boostUntil>time;
       status.hidden=!zoned&&!asleep&&!boosted;
       if(!status.hidden) changeText(status,zoned?'YDA zonası · '+Math.ceil(tower.zonedUntil-time)+'s':
-        asleep?'Yuxu · '+Math.ceil(tower.stunnedUntil-time)+'s':'Enerji İçkisi · '+Math.ceil(tower.boostUntil-time)+'s');
+        asleep?'Yuxu · '+Math.ceil(tower.stunnedUntil-time)+'s':'Enerji İçkisi · '+
+          Math.min(abilityRules.boost.duration,Math.ceil(tower.boostUntil-time))+'s');
     }
     const roadState=get('road-status'), defense=selected?.spot&&roadDefenses.get(selected.spot.key);
     if(roadState&&defense) changeText(roadState,roadStatus(defense));
@@ -2246,7 +2316,7 @@
     clearSelection();
     aiming=id;
     renderer.domElement.classList.add('targeting');
-    notice(abilityRules[id].hint);
+    notice(abilityTip(abilityRules[id]));
     updateHud();
   };
   ui.dock.onclick=event=>{
@@ -2420,7 +2490,7 @@
         const stats=towerStats[kind], count=towers.filter(tower=>tower.kind===kind).length;
         return referenceItem(stats.name,[
           ['Qiymət',stats.cost+' AZN'],['Baza zərəri',kind==='storm'?stats.damage+' DPS':stats.damage??0],
-          ['Məsafə',stats.range],['Atış',stats.delay?Math.round(100/stats.delay)/100+'/s':'Davamlı'],
+          ['Baza məsafəsi',stats.range],['Atış',stats.delay?Math.round(100/stats.delay)/100+'/s':'Davamlı'],
           ['Xəritədə',phase==='menu'?0:count],['Qurulub',deployed[kind]??0]
         ],descriptions[kind]);
       });
@@ -2507,7 +2577,7 @@
     signal.style.setProperty('--portal-color',color);
     signal.hidden=true;
     portalSignals.append(signal);
-    const front={id,road,reserve,weight:1,color,gate,light,signal};
+    const front={id,road,reserve,color,gate,light,signal};
     fronts.push(front);
     placeGate(front);
     return front;
@@ -2751,8 +2821,8 @@
     ui.expansionOptions.innerHTML=options.map(({target,name,direction,color,pads,opens,buff},i)=>`
       <button type="button" class="expansion-option" data-expansion="${i}" style="--route-accent:${color}">
         <strong>${name}</strong>
-        <span>${direction} · ${opens?'Yeni girişə dalğanın 50%-i yönəlir':'Giriş '+target.id+' uzaqlaşır'}</span>
-        <small>+${pads.length} tikinti xanası · +${opens?4:2} imtahan / dalğa${opens?' · +'+branchBonus+' AZN':''}</small>
+        <span>${direction} · ${opens?'Yeni giriş · Əvvəlki girişlərə bərabər pay':'Giriş '+target.id+' uzaqlaşır'}</span>
+        <small>+${pads.length} tikinti xanası · +${opens?expansionBalance.branch:expansionBalance.extension} düşmən${opens?' (min. '+expansionBalance.newestPercent+'% giriş)':''} / dalğa${opens?' · +'+branchBonus+' AZN':''}</small>
         ${buff?`<span class="tile-bonus" style="--buff-color:${tileBuffs[buff].color}">${tileBuffs[buff].name} · ${tileBuffs[buff].detail}</span>`:''}
       </button>`).join('');
     ui.expansion.hidden=false;
@@ -2837,13 +2907,12 @@
     eachCell(plot.rect,cell=>terrainCells.add(cellKey(cell)));
     stampRoad([...chunkRoad,...connector]);
     if(opens) {
-      for(const front of fronts) front.weight*=.5;
-      createFront(road,plot.reserve,color).weight=.5;
+      createFront(road,plot.reserve,color);
     } else {
       target.road=road;target.reserve=plot.reserve;placeGate(target);
     }
     refreshRoadSpots();
-    extraEnemies+=opens?4:2;
+    extraEnemies+=opens?expansionBalance.branch:expansionBalance.extension;
     forecast=null;
     for(const {x,z,buff} of pads) {
       const slot={x,z,buff,i:sockets.length,tower:null};
@@ -2961,7 +3030,7 @@
     if(dragged||event.button!==0) return;
     if(aiming) {
       const target=aiming==='strike'?pickGround(event):pick(event)?.tower;
-      if(!useAbility(aiming,target)) notice(abilityRules[aiming].hint);
+      if(!useAbility(aiming,target)) notice(abilityTip(abilityRules[aiming]));
       return;
     }
     if(fusionSource) {
@@ -3022,7 +3091,7 @@
     advanceExpansion(dt);
     const evening=phase==='menu' ? .16*(.5+.5*Math.sin(time*.18)) : clamp((wave-1+Math.sin(time*.035)*.20)/14,0,1);
     const light=evening*evening*(3-2*evening);
-    const blackout=[...waveEvents.values()].some(event=>event.kind==='blackout');
+    const blackout=campusBlackout();
     nightMix=mix(nightMix,blackout?1:0,1-Math.exp(-4.5*dt));
     fogColor.copy(daylight).lerp(dusk,light).lerp(darkSky,nightMix);
     scene.background.copy(fogColor);scene.fog.color.copy(fogColor);
@@ -3031,11 +3100,15 @@
     sun.color.copy(warm).lerp(copper,light);
     renderer.toneMappingExposure=mix(1.18,1.08,light);
     glowMat.opacity=.7*nightMix;
+    spotlightMat.opacity=.14*nightMix;
     markerMaterial.opacity=mix(.61,.32,nightMix);
     for(const material of Object.values(buffMaterials)) material.opacity=mix(.84,.54,nightMix);
     studentMat.emissive.set('#ffbb76');studentMat.emissiveIntensity=.25*nightMix;
     for(const tower of towers) {
       tower.glow.visible=nightMix>.015&&!towerAsleep(tower);
+      tower.spotlight.visible=tower.glow.visible;
+      tower.boostBolt.visible=tower.boostUntil>time&&time%.42<.23;
+      if(tower.boostBolt.visible) tower.boostBolt.rotation.y=time*5+tower.slot.i;
       const mood=tower.zonedUntil>time?'zone':tower.stunnedUntil>time?'stun':tower.boostUntil>time?'boost':tower.bonuses.pairs.length?'pair':null;
       tower.status.visible=!!mood;
       if(mood) tower.status.material=statusMaterials[mood];
