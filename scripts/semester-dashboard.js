@@ -3,6 +3,7 @@
 
   const semester = window.UNECSemesterProfile;
   const wardrobe = window.UNECStudentWardrobe;
+  const arena = window.UNECArenaRecords;
   const get = id => document.getElementById(id);
   const dialog = get('semester-wardrobe');
   const form = get('semester-look-form');
@@ -28,7 +29,8 @@
       avatar: 'Profil şəklimin yerində bu avatarı göstər', save: 'Yadda saxla', close: 'Bağla',
       shuffle: 'Görünüşü qarışdır', records: 'Arena rekordları', sample: 'Tələbə',
       board: 'Semestr müdafiəsi liderləri', reached: 'dalğa', cleared: 'tamamlanıb', empty: 'Hələ dalğa rekordu yoxdur.',
-      boardLocal: 'Bu brauzerdə qeydə alınan ən yüksək dalğalar. Oyunçu adı e-poçtun @ işarəsindən əvvəlki hissəsidir.',
+      boardGlobal: 'Bütün oyunçular arasında ən yüksək dalğalar.', loading: 'Qlobal rekordlar yüklənir…',
+      unavailable: 'Qlobal rekordları yükləmək olmadı.', retry: 'Yenilə',
       play: 'Kampusu müdafiə et', wallet: 'Arena irəliləyişi', how: 'Xallar necə qazanılır?',
       walletNote: 'Hər oyunun xal həddini keçdikdə qazancın bu balansa əlavə olunur.',
       rules: (boss, semester) => `Semestr müdafiəsində hər məğlub KƏSR +${boss}, ilk 15 dalğanı tamamlamaq isə +${semester} Semestr Xalı verir.`
@@ -42,7 +44,8 @@
       avatar: 'Show this avatar in place of my profile photo', save: 'Save', close: 'Close',
       shuffle: 'Shuffle look', records: 'Arena records', sample: 'Student',
       board: 'Semester Defense leaders', reached: 'wave', cleared: 'cleared', empty: 'No wave records yet.',
-      boardLocal: 'The highest waves recorded in this browser, under the name before @ in each account’s email address.',
+      boardGlobal: 'The highest waves reached by all players.', loading: 'Loading global records…',
+      unavailable: 'Global records could not be loaded.', retry: 'Refresh',
       play: 'Defend the campus', wallet: 'Arena progress', how: 'How do I earn points?',
       walletNote: 'Points earned by reaching each game’s score threshold are added to this balance.',
       rules: (boss, semester) => `In Semester Defense, each Retake boss grants +${boss} and clearing the first 15 waves grants +${semester} Semester Points.`
@@ -61,22 +64,26 @@
     return semester.nameplate(name, look) + badge(semester.title(look, locale));
   }
 
-  function renderBoard(rows, scores, locale) {
+  function renderBoard(locale) {
     const board = get('semester-leaderboard'), l = words[locale];
-    const ranked = semester.leaderboard(rows);
+    const activeTab = window.UNEC?.route?.tab ?? document.body.dataset.route;
+    const { rows: ranked, known, failed } = arena.board(arena.waves, activeTab === 'dashboard');
+    const status = failed ? l.unavailable : known ? l.empty : l.loading;
     board.innerHTML = `<div class="semester-board-head">
       <span class="semester-board-icon">${icon('trophy')}</span>
-      <div><h2 id="semester-board-title">${l.board}</h2><p>${l.boardLocal}</p></div>
+      <div><h2 id="semester-board-title">${l.board}</h2><p>${l.boardGlobal}</p></div>
       <a class="btn btn--secondary" href="games/semester-defense/">${l.play}</a>
       </div>` + (ranked.length ? `<ol class="semester-board-list">${ranked.map((run, rank) => {
-        const look = semester.lookOf(run.uid, semester.stats(run.uid, rows, scores));
+        const look = arena.lookOf(run);
         return `<li class="semester-board-entry">
           <span class="arena-pos" data-medal="${rank < 3 ? rank + 1 : 0}">${rank + 1}</span>
           <div class="semester-board-avatar">${semester.avatar(look)}</div>
           <div class="semester-board-name">${identity(run.player, look, locale)}</div>
-          <div class="semester-board-score"><strong>${run.reached} ${l.reached}</strong><small>${Number.isSafeInteger(run.cleared) ? run.cleared : 0} ${l.cleared}</small></div>
+          <div class="semester-board-score"><strong>${Number.isSafeInteger(run.reached) ? run.reached : 0} ${l.reached}</strong><small>${Number.isSafeInteger(run.cleared) ? run.cleared : 0} ${l.cleared}</small></div>
         </li>`;
-      }).join('')}</ol>` : `<p class="semester-board-empty">${l.empty}</p>`);
+      }).join('')}</ol>` : '') + ((!ranked.length || failed) ?
+      `<p class="semester-board-empty" role="status">${status}</p>` : '') + (failed ?
+      `<button class="btn btn--secondary" type="button" data-arena-retry>${l.retry}</button>` : '');
   }
 
   function renderWallet(data, locale) {
@@ -95,7 +102,7 @@
 
   function render(user = userNow(), name = user ? nameNow(user) : '') {
     const locale = language(), l = words[locale], rows = semester.records(), scores = semester.gameRecords();
-    renderBoard(rows, scores, locale);
+    renderBoard(locale);
     get('dash-arena-link').textContent = l.records;
     if (!user) {
       get('semester-wallet').replaceChildren();
@@ -202,6 +209,12 @@
   });
   window.addEventListener('unec:semesterchange', () => {
     if (document.body.dataset.route === 'dashboard') render();
+  });
+  get('semester-leaderboard').addEventListener('click', event => {
+    if (event.target.closest('[data-arena-retry]')) arena.refresh();
+  });
+  window.addEventListener('unec:arenachange', () => {
+    if (document.body.dataset.route === 'dashboard') renderBoard(language());
   });
   window.addEventListener('unec:routechange', event => {
     if (event.detail.tab === 'dashboard') render();

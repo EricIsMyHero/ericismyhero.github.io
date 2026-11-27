@@ -2,6 +2,8 @@
 .tools--dash .dash-stats-grid { grid-template-columns: repeat(auto-fit, minmax(min(132px, 100%), 1fr)); }
 .tools--dash .dash-stat-card { gap: 8px; }
 .tools--dash .dash-stat-label { white-space: normal; overflow-wrap: anywhere; }
+.dash-edit-status { margin: 0; color: var(--color-text-secondary); font-size: .82rem; }
+.dash-edit-status:empty { display: none; }
 .semester-hub-banner {
   grid-column: 1 / -1;
   display: flex;

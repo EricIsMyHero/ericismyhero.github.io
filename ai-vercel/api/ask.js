@@ -25,6 +25,13 @@ export default async function handler(req, res) {
 
   res.setHeader('Cache-Control', 'no-store');
   const b = body(req);
+  if (b.action === 'arena-list' || b.action === 'arena-submit') {
+    try {
+      const { arenaAction } = await import('../lib/arena.js');
+      const result = await arenaAction(b);
+      return res.status(result.status).json(result.json);
+    } catch { return res.status(503).json({ error: 'arena_unavailable' }); }
+  }
   const user = await verifyIdToken(b.idToken);
   if (!user) return res.status(401).json({ error: 'login_required' });
   if(typeof b.action==='string'&&b.action.startsWith('closed-')){

@@ -59,6 +59,7 @@ async function onAuthStateChange(user) {
   if (currentUser?.uid !== user?.uid) currentProfile = null;
   currentUser = user;
   window.UNECSemesterProfile?.setAccount(user, currentProfile?.name || user?.displayName);
+  window.UNECArenaRecords?.setUser(user);
   if (window.UNECStudy) window.UNECStudy.setUser(user);
 
   if (user) {

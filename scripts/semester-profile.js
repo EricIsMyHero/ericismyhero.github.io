@@ -6,7 +6,6 @@
   const runPrefix = 'unec_semester_run_v1:';
   const scorePrefix = 'unec_games_run_v1:';
   const lookPrefix = 'unec_semester_look_v1:';
-  const handlePrefix = 'unec_semester_handle_v1:';
   const rewards = { boss: 2, semester: 6 };
   const legacyRewards = { boss: 25, semester: 75 };
   const scoreRules = {
@@ -40,10 +39,10 @@
     if (memory.has(key)) return memory.get(key);
     try { return parse(localStorage.getItem(key)); } catch { return null; }
   }
-  function write(key, value, notify = true) {
+  function write(key, value) {
     try { localStorage.setItem(key, JSON.stringify(value)); memory.delete(key); }
     catch { memory.set(key, value); }
-    if (notify) window.dispatchEvent(new CustomEvent('unec:semesterchange'));
+    window.dispatchEvent(new CustomEvent('unec:semesterchange'));
   }
   function list(prefix) {
     const found = new Map();
@@ -76,10 +75,6 @@
       else sessionStorage.removeItem(sessionKey);
       sessionFallback = undefined;
     } catch { sessionFallback = data; }
-    if (data?.mail) write(handlePrefix + data.uid, data.mail, false);
-  }
-  function recordName(uid, paperName) {
-    return uid ? validHandle(read(handlePrefix + uid)) || validHandle(paperName) : '';
   }
   function startRun() {
     const active = account();
@@ -179,20 +174,6 @@
     write(lookPrefix + uid, look);
     return look;
   }
-  function compare(a, b) {
-    return integer(b.reached) - integer(a.reached) ||
-      integer(b.cleared) - integer(a.cleared) || integer(a.at) - integer(b.at);
-  }
-  function leaderboard(rows = records()) {
-    const best = new Map();
-    for (const run of rows) {
-      const player = recordName(run.uid, run.mail);
-      if (!integer(run.reached) || !player) continue;
-      const previous = best.get(run.uid);
-      if (!previous || compare(run, previous) < 0) best.set(run.uid, { ...run, player });
-    }
-    return [...best.values()].sort(compare).slice(0, 10);
-  }
   function nameplate(name, look) {
     const palette = wardrobe.palettes[look.palette] ?? wardrobe.palettes.default;
     return `<span class="semester-nameplate" data-palette="${escape(look.palette)}" data-effect="${escape(look.effect)}"
@@ -203,13 +184,13 @@
   }
 
   window.addEventListener('storage', event => {
-    if (!event.key || [runPrefix, scorePrefix, lookPrefix, handlePrefix].some(prefix => event.key.startsWith(prefix))) {
+    if (!event.key || [runPrefix, scorePrefix, lookPrefix].some(prefix => event.key.startsWith(prefix))) {
       window.dispatchEvent(new CustomEvent('unec:semesterchange'));
     }
   });
   window.UNECSemesterProfile = {
-    account, setAccount, rewards, startRun, reached, clearWave, bossDefeated, maxScholarship, balance, recordName,
+    account, setAccount, rewards, startRun, reached, clearWave, bossDefeated, maxScholarship, balance,
     records, gameRecords, saveGameRecord, scoreReward, ruleFor, stats, collection: wardrobe.collection,
-    unlocked, lookOf, saveLook, leaderboard, avatar: wardrobe.avatar, nameplate, title, escape
+    unlocked, lookOf, saveLook, avatar: wardrobe.avatar, nameplate, title, escape
   };
 })();

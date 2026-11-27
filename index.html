@@ -133,7 +133,7 @@
   <link rel="stylesheet" href="styles/gpa.css?v=20261122-contrast">
   <link rel="stylesheet" href="styles/dashboard.css?v=20261123-profile">
   <link rel="stylesheet" href="styles/arena-identity.css?v=20261127-arena">
-  <link rel="stylesheet" href="styles/semester-dashboard.css?v=20261127-arena">
+  <link rel="stylesheet" href="styles/semester-dashboard.css?v=20261127-global-arena">
   <link rel="stylesheet" href="styles/chat.css?v=20261122-contrast">
   <link rel="stylesheet" href="styles/ratings.css?v=20261122-contrast">
   <link rel="stylesheet" href="styles/tokens.css?v=20261122-contrast">
@@ -1039,6 +1039,10 @@
                     <dd class="dash-fact-val" id="dash-fact-year">—</dd>
                   </div>
                   <div class="dash-fact">
+                    <dt><span class="dash-fact-icon" aria-hidden="true"><svg class="ic"><use href="#i-user"/></svg></span><span class="dash-fact-label" data-i18n="dashFactGender">Cinsiyyət</span></dt>
+                    <dd class="dash-fact-val" id="dash-fact-gender">—</dd>
+                  </div>
+                  <div class="dash-fact">
                     <dt><span class="dash-fact-icon" aria-hidden="true"><svg class="ic"><use href="#i-zap"/></svg></span><span class="dash-fact-label" data-i18n="dashFactRank">Səviyyə</span></dt>
                     <dd class="dash-fact-val" id="dash-fact-rank">—</dd>
                   </div>
@@ -1069,10 +1073,18 @@
                     <option value="4-cü kurs" data-i18n="dashYear4">4-cü kurs</option>
                   </select>
 
+                  <label class="dash-edit-label" for="dash-gender-input" data-i18n="dashFactGender">Cinsiyyət</label>
+                  <select class="dash-edit-input" id="dash-gender-input">
+                    <option value="" data-i18n="dashGenderUnset">Qeyd edilməyib</option>
+                    <option value="male" data-i18n="dashGenderMale">Kişi</option>
+                    <option value="female" data-i18n="dashGenderFemale">Qadın</option>
+                  </select>
+
                   <div class="dash-edit-actions">
                     <button class="btn btn--primary dash-edit-save" id="dash-profile-save-btn" type="button" onclick="handleProfileUpdate()" data-i18n="btnSave">Yadda saxla</button>
                     <button class="btn btn--secondary dash-edit-cancel" type="button" onclick="toggleProfileEdit(false)" data-i18n="btnCancel">Ləğv et</button>
                   </div>
+                  <p class="dash-edit-status" id="dash-profile-save-status" role="status"></p>
                 </div>
 
                 <button class="btn btn--ghost btn--block dash-signout-btn" type="button" onclick="signOut()"><svg class="ic"><use href="#i-log-out"/></svg><span data-i18n="dashSignOut">Çıxış</span></button>
@@ -2262,7 +2274,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
 <script src="data/material-identities.js?v=20261114-catalog"></script>
 <script src="pdfs.js?v=20261114-majors"></script>
-<script src="scripts/i18n.js?v=20261120-policies"></script>
+<script src="scripts/i18n.js?v=20261127-global-arena"></script>
 <script src="scripts/i18n-app.js?v=20261125-games"></script>
 <script src="scripts/data-utils.js?v=20261122-contrast"></script>
 <script src="scripts/study-data.js?v=20261111"></script>
@@ -2272,13 +2284,14 @@
 <script src="scripts/pdf-loader.js?v=20261114-radio"></script>
 <script src="scripts/gpa.js?v=20261120-gpa"></script>
 <script src="scripts/student-wardrobe.js?v=20261127-arena"></script>
-<script src="scripts/semester-profile.js?v=20261127-arena"></script>
-<script src="scripts/firebase.js?v=20261127-wardrobe"></script>
+<script src="scripts/semester-profile.js?v=20261127-global-arena"></script>
+<script src="scripts/arena-records.js?v=20261127-global-arena"></script>
+<script src="scripts/firebase.js?v=20261127-global-arena"></script>
 <script src="scripts/chat.js?v=20261106-3"></script>
 <script src="scripts/ratings.js?v=20261113-subjects"></script>
 <script src="scripts/requests.js?v=20261106-3"></script>
-<script src="scripts/dashboard.js?v=20261127-wardrobe"></script>
-<script src="scripts/semester-dashboard.js?v=20261127-arena"></script>
+<script src="scripts/dashboard.js?v=20261127-global-arena"></script>
+<script src="scripts/semester-dashboard.js?v=20261127-global-arena"></script>
 <script src="scripts/payments.js?v=20261106-3"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="scripts/curriculum-progress.js?v=20261106-4"></script>
@@ -2296,7 +2309,7 @@
 <script src="data/student-offers.js?v=20261122-offers"></script>
 <script src="data/student-offers-catalog.js?v=20261122-offers"></script>
 <script src="data/student-offer-details.js?v=20261122-offers"></script>
-<script src="scripts/game-progress.js?v=20261127-arena"></script>
+<script src="scripts/game-progress.js?v=20261127-global-arena"></script>
 <script src="scripts/tower-scene.js?v=20261127-records"></script>
 <script src="scripts/tower-descent.js?v=20261127-records"></script>
 <script src="scripts/games.js?v=20261127-arena"></script>
@@ -2305,7 +2318,7 @@
 <script src="scripts/push.js?v=20261112-project"></script>
 <script src="scripts/auth-dialog.js?v=20261112"></script>
 <script src="scripts/site-enhancements.js?v=20261120-policies"></script>
-<script src="scripts/policies.js?v=20261120-policies"></script>
+<script src="scripts/policies.js?v=20261127-global-arena"></script>
 <script src="scripts/written-practice.js?v=20261115-premium-limits"></script>
 <script src="scripts/test-access.js?v=20261115-premium-limits"></script>
 <script src="scripts/account.js?v=20261111"></script>

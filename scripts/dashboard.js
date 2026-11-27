@@ -27,6 +27,8 @@ function _profileChoiceLabel(value, choices) {
   return choices.find(item => item.value === value)?.label || value || '—';
 }
 
+const dashGenderLabels = { male: 'dashGenderMale', female: 'dashGenderFemale' };
+
 function renderProfileChoices(profile) {
   const fill = (id, choices, value, placeholder) => {
     const select = document.getElementById(id);
@@ -115,6 +117,7 @@ function _renderProfileCard(user, profile, rankInfo, solved) {
   setFact('dash-fact-faculty', _profileChoiceLabel(profile?.faculty, _profileFacultyOptions()));
   setFact('dash-fact-major',   _profileChoiceLabel(profile?.major, _profileMajorOptions()));
   setFact('dash-fact-year',    _yearLabel(profile?.year) || '—');
+  setFact('dash-fact-gender',  Object.hasOwn(dashGenderLabels, profile?.gender) ? t(dashGenderLabels[profile.gender]) : '—');
   setFact('dash-fact-rank',    rankInfo.rank.name);
   setFact('dash-fact-solved',  String(solved));
   window.UNECSemesterDashboard?.render(user, name);
@@ -131,8 +134,11 @@ function toggleProfileEdit(forceShow) {
   if (opening) {
     const p = getProfile();
     const yEl = document.getElementById('dash-year-input');
+    const gender = document.getElementById('dash-gender-input');
     renderProfileChoices(p);
     if (yEl) yEl.value = p?.year    || '';
+    gender.value = Object.hasOwn(dashGenderLabels, p?.gender) ? p.gender : '';
+    document.getElementById('dash-profile-save-status').textContent = '';
     facts.classList.add('hidden');
     edit.classList.remove('hidden');
   } else {
@@ -146,14 +152,25 @@ async function handleProfileUpdate() {
   const faculty = document.getElementById('dash-faculty-input')?.value?.trim() || '';
   const major   = document.getElementById('dash-major-input')?.value?.trim()  || '';
   const year    = document.getElementById('dash-year-input')?.value || '';
+  const gender  = document.getElementById('dash-gender-input').value;
 
   const btn = document.getElementById('dash-profile-save-btn');
+  const status = document.getElementById('dash-profile-save-status');
   if (btn) { btn.disabled = true; btn.textContent = t('dashSaving'); }
+  status.textContent = '';
 
-  await updateUserProfile({ faculty, major, year });
-
-  if (btn) { btn.disabled = false; btn.textContent = t('btnSave'); }
-  toggleProfileEdit(false);
+  const updates = { faculty, major, year };
+  if (Object.hasOwn(dashGenderLabels, gender) || getProfile()?.gender) {
+    updates.gender = Object.hasOwn(dashGenderLabels, gender) ? gender : '';
+  }
+  try {
+    await updateUserProfile(updates);
+    toggleProfileEdit(false);
+  } catch {
+    status.textContent = t('dashProfileSaveError');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = t('btnSave'); }
+  }
 }
 
 async function _loadDashGpa(uid) {

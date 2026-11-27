@@ -17,9 +17,12 @@ match /ai_usage/{id} { allow read, write: if false; }
 match /ai_usage/{id}/{document=**} { allow read, write: if false; }
 match /account_deletions/{id} { allow read, write: if false; }
 match /premium_codes/{id} { allow read, write: if false; }
+match /arena_leaderboards/{document=**} { allow read, write: if false; }
 ```
 
 Merge these blocks into the existing rules; do not replace the application's other rules. Firestore combines matching `allow` rules with OR, so a broad wildcard granting access must also be restricted. New unmatched collections are already denied by default. The backend uses service-account IAM and does not depend on client-side access.
+
+The `arena-list` and `arena-submit` actions use `/api/ask` and the existing Firebase configuration. Public reads return the top ten in one category. Writes use the authenticated account, keep its best result per category and check that scores fit the bounds of the game. Score submissions come from the browser. Account export includes these records and account deletion removes them.
 
 AI quotas use atomic document preconditions, a Baku calendar day and server-controlled premium-code receipts: 5 requests/day and 250 characters for standard accounts, 12 and 400 for premium. Editing browser storage or profile premium fields does not change these limits. Failed provider calls refund the reserved request. A three-second minimum interval reduces bursts. Service failures fail closed without consuming a successful answer.
 

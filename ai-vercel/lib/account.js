@@ -3,12 +3,14 @@ import * as firestore from './firestore.js';
 import { verifyIdToken } from './payments.js';
 import { r2Delete } from './r2.js';
 import { usagePath } from './ai.js';
+import { arenaPaths } from './arena.js';
 
 const deleted = 'Deleted account';
 const initialTasks = uid => [
   ...['material_requests', 'subject_chats', 'pdf_ratings', 'push_tokens', 'push_log', 'donations', 'premium_codes'].map(path => ({ type: 'scan', path })),
   { type: 'scan', path: 'analytics/pdf_opens/events' },
   { type: 'scan', path: 'analytics/teacher_ratings/reviews' },
+  ...arenaPaths(uid).map(path => ({ type: 'delete', path })),
   { type: 'tree', path: usagePath(uid) }, { type: 'tree', path: `users/${uid}` },
 ];
 
@@ -94,8 +96,10 @@ export async function accountAction(action, b, env = process.env, services = {})
   try {
     if (action === 'account-export') return { status: 200, json: {
       schemaVersion: 1, exportedAt: new Date().toISOString(),
-      account: user, scope: 'Account profile and private study records; public discussions are not included.',
+      account: user, scope: 'Account profile, private study records and arena records; public discussions are not included.',
       records: await exportProfile(user.uid, db, env),
+      arenaRecords: (await Promise.all(arenaPaths(user.uid).map(path => db.getDoc(path, env)))).filter(Boolean)
+        .map(doc => ({ category: doc.path.split('/')[1], data: doc.data })),
       closedPractice: (await db.getDoc(usagePath(user.uid), env))?.data.closedPractice || null,
       writtenPractice: (await db.getDoc(usagePath(user.uid), env))?.data.written || null,
       privatePdfSources: (await db.listDocs(usagePath(user.uid)+'/practice_sources', {pageSize:2}, env)).docs.map(d=>d.data),

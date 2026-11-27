@@ -3,12 +3,15 @@
 
   const semester = window.UNECSemesterProfile;
   const wardrobe = window.UNECStudentWardrobe;
+  const arena = window.UNECArenaRecords;
   const words = {
     az: {
       guide: 'Necə oynanılır', progress: 'Arena rekordları', game: 'Oyun', mode: 'Kateqoriya',
       score: 'xal', points: 'Semestr Xalı', yourScore: 'Nəticən', completed: 'Qələbə', rank: 'Sıra',
-      local: 'Bu brauzerdə hər hesabın ən yaxşı nəticəsi göstərilir. Ad e-poçtun @ işarəsindən əvvəlki hissəsidir.',
+      global: 'Qlobal sıralamada hər hesabın ən yaxşı nəticəsi görünür. Oyunçu adı e-poçtun @ işarəsindən əvvəlki hissəsidir.',
       login: 'Xal qazanmaq və rekord yazmaq üçün hesabına daxil ol.', dashboard: 'Tələbə paneli',
+      loading: 'Qlobal rekordlar yüklənir…', unavailable: 'Qlobal rekordları yükləmək olmadı.',
+      pending: 'Nəticə bu cihazda saxlanılıb. Qlobal cədvələ göndərişi təkrar yoxla.', retry: 'Yenilə',
       empty: 'Bu kateqoriyada hesabla yazılmış rekord yoxdur.', share: 'Nəticəni paylaş', copied: 'Nəticə kopyalandı.',
       fallback: 'Paylaşmaq üçün mətni kopyala.', me: 'Sənin rekordun', leader: 'Kateqoriya lideri',
       easy: 'Asan', medium: 'Orta', normal: 'Normal', hard: 'Çətin', standard: 'Standart',
@@ -19,8 +22,10 @@
     en: {
       guide: 'How to Play', progress: 'Arena records', game: 'Game', mode: 'Category',
       score: 'points', points: 'Semester Points', yourScore: 'Your result', completed: 'Victory', rank: 'Place',
-      local: 'This browser shows each account’s best result under the name before @ in its email address.',
+      global: 'The global leaderboard shows each account’s best result under the name before @ in its email address.',
       login: 'Sign in to earn points and set account records.', dashboard: 'Student dashboard',
+      loading: 'Loading global records…', unavailable: 'Global records could not be loaded.',
+      pending: 'Your result is saved on this device. Retry posting it to the global leaderboard.', retry: 'Refresh',
       empty: 'No account records in this category yet.', share: 'Share result', copied: 'Result copied.',
       fallback: 'Copy this text to share your result.', me: 'Your record', leader: 'Category leader',
       easy: 'Easy', medium: 'Medium', normal: 'Normal', hard: 'Hard', standard: 'Standard',
@@ -126,17 +131,6 @@
     return number(b.score) - number(a.score) || Number(b.won === true) - Number(a.won === true) ||
       number(a.at) - number(b.at);
   }
-  function board(rows, game, mode) {
-    const best = new Map();
-    for (const row of rows) {
-      if (row.game !== game || row.mode !== mode) continue;
-      const player = semester.recordName(row.uid, row.mail);
-      if (!player) continue;
-      const previous = best.get(row.uid);
-      if (!previous || compare(row, previous) < 0) best.set(row.uid, { ...row, player });
-    }
-    return [...best.values()].sort(compare).slice(0, 10);
-  }
   function category(mode, l) {
     return mode.split('-').map(part => l[part]).join(' · ');
   }
@@ -166,7 +160,7 @@
       ${panelStart}
         <div class="game-meta-content">
           <div class="arena-record-intro">
-            <p>${l.local}</p>
+            <p>${l.global}</p>
             <a href="/#/dashboard" data-record-dashboard>${l.dashboard}</a>
           </div>
           <div class="game-meta-fields">
@@ -180,7 +174,9 @@
             <div><small>${l.leader}</small><strong data-lead></strong></div>
           </div>
           <ol data-board class="game-meta-board" aria-label="${l.rank}"></ol>
-          <p data-empty hidden>${l.empty}</p>
+          <p data-empty role="status" hidden></p>
+          <p data-arena-pending role="status" hidden>${l.pending}</p>
+          <button type="button" class="arena-share-best" data-arena-refresh hidden>${l.retry}</button>
           <button type="button" class="arena-share-best" data-share="best" hidden>${l.share}</button>
           <p data-score-rule></p>
         </div>
@@ -198,16 +194,19 @@
     }
     function refresh() {
       const rows = entries(), runs = semester.records(), account = semester.account();
-      const records = board(rows, game, mode);
-      best = records[0] ?? null;
-      const myRecord = account ? rows.filter(row => row.uid === account.uid && row.game === game && row.mode === mode)
+      const panel = el('[data-record-dashboard]').closest('.arena-record-panel, details');
+      const visible = panel.tagName !== 'DETAILS' || panel.open;
+      const { rows: records, mine, known, failed } = arena.board(arena.key(game, mode), visible);
+      best = records.length ? { ...records[0], game, mode } : null;
+      const local = account ? rows.filter(row => row.uid === account.uid && row.game === game && row.mode === mode)
         .sort(compare)[0] : null;
+      const myScore = mine || local ? Math.max(number(mine?.score), number(local?.score)) : null;
       el('[data-record-dashboard]').textContent = account ? l.dashboard : l.login;
       el('[data-points]').textContent = account ? String(semester.stats(account.uid, runs, rows).points) : '—';
-      el('[data-mine]').textContent = myRecord ? number(myRecord.score) + ' ' + l.score : '—';
+      el('[data-mine]').textContent = myScore === null ? '—' : myScore + ' ' + l.score;
       el('[data-lead]').textContent = best ? number(best.score) + ' ' + l.score : '—';
       boardList.innerHTML = records.map((row, index) => {
-        const look = semester.lookOf(row.uid, semester.stats(row.uid, runs, rows));
+        const look = arena.lookOf(row);
         const title = semester.title(look, language);
         const medal = index < 3 ? index + 1 : 0;
         return `<li><div class="arena-record" data-medal="${medal}">
@@ -216,7 +215,11 @@
           <strong>${number(row.score)} <small>${l.score}</small></strong>
         </div></li>`;
       }).join('');
-      el('[data-empty]').hidden = !!best;
+      const status = el('[data-empty]');
+      status.textContent = failed ? l.unavailable : known ? l.empty : l.loading;
+      status.hidden = !!best && !failed;
+      el('[data-arena-pending]').hidden = !arena.syncFailed();
+      el('[data-arena-refresh]').hidden = !failed && !arena.syncFailed();
       el('[data-share="best"]').hidden = !best;
       const rule = semester.ruleFor(game, mode);
       el('[data-score-rule]').textContent = rule ? l.rule(rule) : '';
@@ -252,11 +255,14 @@
       }
     };
     host.onclick = event => {
+      if (event.target.closest('[data-arena-refresh]')) arena.refresh();
       const target = event.target.closest('button[data-share]');
       if (target) void share(target.dataset.share === 'result' ? result : best);
     };
     host.querySelectorAll('details').forEach(panel => {
-      panel.ontoggle = () => { if (panel.open) options.onOpen?.(); };
+      panel.ontoggle = () => {
+        if (panel.open) { options.onOpen?.(); refresh(); }
+      };
     });
     const view = {
       refresh,
@@ -273,5 +279,6 @@
 
   window.addEventListener('unec:semesterchange', refreshPanels);
   window.addEventListener('unec:authchange', refreshPanels);
+  window.addEventListener('unec:arenachange', refreshPanels);
   window.UNECGameProgress = { activeSkin, start, finish, mount };
 })();

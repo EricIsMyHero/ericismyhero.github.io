@@ -186,8 +186,10 @@
   <div id="game-meta-content"></div>
 </dialog>
 <script src="../../scripts/student-wardrobe.js?v=20261127-arena"></script>
-<script src="../../scripts/semester-profile.js?v=20261127-arena"></script>
-<script src="../../scripts/game-progress.js?v=20261127-arena"></script>
+<script src="../../scripts/semester-profile.js?v=20261127-global-arena"></script>
+<script src="../../scripts/arena-records.js?v=20261127-global-arena"></script>
+<script>void window.UNECArenaRecords.connectStandalone();</script>
+<script src="../../scripts/game-progress.js?v=20261127-global-arena"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 <script>
 (() => {
@@ -1960,17 +1962,19 @@
   for(const button of speedButtons) button.onclick=()=>{speed=Number(button.dataset.speed);updateHud();};
   ui.sound.onclick=()=>{muted=!muted;if(!muted)playSound('build');updateHud();};
   const semesterNote=get('semester-account-note');
-  if(semester) {
+  function showSemesterAccount() {
+    if(!semester) return;
     const student=semester.account();
     semesterNote.hidden=false;
-    if(student) semesterNote.textContent='Semestr Xalı bu brauzerdə '+(student.name||'Tələbə')+
-      ' hesabına yazılır. KƏSR üçün +'+semester.rewards.boss+', 15 tamamlanan dalğa üçün +'+semester.rewards.semester;
+    if(student) semesterNote.textContent='Semestr Xalı bu brauzerdə hesabına yazılır. Ən yaxşı nəticən qlobal cədvələ göndərilir.';
     else {
       const link=document.createElement('a');
       link.href='../../#/dashboard';link.textContent='Dashboard-da hesabına daxil ol';
-      semesterNote.append('Profil üçün Semestr Xalı qazanmaq istəyirsənsə, ',link,' və oyunu oradan aç.');
+      semesterNote.replaceChildren('Rekord yazmaq və Semestr Xalı qazanmaq üçün ',link,'.');
     }
   }
+  showSemesterAccount();
+  window.addEventListener('unec:authchange',showSemesterAccount);
   const metaDialog=get('game-meta-dialog');
   get('close-game-meta').onclick=()=>metaDialog.close();
   for(const trigger of document.querySelectorAll('[data-open-meta]')) {
