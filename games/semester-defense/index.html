@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>UNEC · Semestr müdafiəsi</title>
 <link rel="icon" href="../../images/favicon.svg">
+<link rel="stylesheet" href="../../styles/game-progress.css?v=20261127-records">
 <style>
   :root { color-scheme:dark; --glass:#102022ed; --border:#b9dfd33d; --mint:#9be6cb; --gold:#f4cc77; --text:#fff7e6; --soft:#bbd2cb }
   * { box-sizing:border-box }
@@ -152,7 +153,7 @@
       <label><input name="mode" type="radio" value="campaign" checked>15 həftə</label>
       <label><input name="mode" type="radio" value="endless">Sonsuz</label>
     </fieldset>
-    <footer><button class="primary" type="submit" disabled>Oyuna Başla</button></footer>
+    <footer><button class="primary" type="submit" disabled>Oyuna Başla</button><button type="button" data-open-meta disabled>Necə oynanılır və rekordlar</button></footer>
   </form>
   <section id="load-error" class="sheet panel" hidden>
     <h1>Oyun açıla bilmədi</h1>
@@ -170,9 +171,16 @@
   <section class="sheet panel" aria-labelledby="summary-title" role="dialog" aria-modal="true">
     <h2 id="summary-title"></h2>
     <p id="summary-stats"></p>
-    <footer><button class="primary" type="button" id="replay">Yenidən oyna</button><button type="button" id="continue">Sonsuz rejimə keç</button></footer>
+    <p id="summary-points" hidden></p>
+    <footer><button class="primary" type="button" id="replay">Yenidən oyna</button><button type="button" id="continue">Sonsuz rejimə keç</button>
+      <button type="button" data-open-meta disabled>Rekordlar və görünüşlər</button></footer>
   </section>
 </div>
+<dialog id="game-meta-dialog" class="game-meta-dialog" aria-labelledby="game-meta-title">
+  <header><h2 id="game-meta-title">Semestr müdafiəsi</h2><button type="button" id="close-game-meta">Bağla</button></header>
+  <div id="game-meta-content"></div>
+</dialog>
+<script src="../../scripts/game-progress.js?v=20261127-records"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 <script>
 (() => {
@@ -189,6 +197,7 @@
   }
 
   const V = (x=0,y=0,z=0) => new THREE.Vector3(x,y,z);
+  const progress=window.UNECGameProgress;
   const rand = (min,max) => min + Math.random()*(max-min);
   const clamp = (value,min,max) => Math.max(min,Math.min(max,value));
   const choose = items => items[Math.floor(Math.random()*items.length)];
@@ -687,8 +696,8 @@
   };
   const cooldowns={};
   const waveEvents=new Map();
-  function towerShape(kind) {
-    const hoodie=towerStats[kind].core;
+  function towerShape(kind,appearance) {
+    const hoodie=appearance?.color??towerStats[kind].core;
     const hair={arrow:'#5b4446',cannon:'#624040',frost:'#493f5b',storm:'#4b3d56',flame:'#986151'}[kind];
     const skin={arrow:'#e5ba94',cannon:'#bc8b71',frost:'#d1a58b',storm:'#b27b67',flame:'#edc09f'}[kind];
     const base=[
@@ -731,6 +740,19 @@
     band:geometry([[0,.75,0,1.28,.12,1.25,towerStats[kind].core]]),
     lamp:geometry([[0,0,0,.20,.19,.19,towerStats[kind].color]]),
   }]));
+  const skinGeos=new Map();
+  let runSkin=null, progressRun=null, completedWeeks=0, scoreBaseline={weeks:0,kills:0};
+  function towerGeometry(kind) {
+    const original=towerGeos[kind];
+    if(!runSkin?.color) return original;
+    const key=runSkin.id+'/'+kind;
+    if(!skinGeos.has(key)) skinGeos.set(key,{...original,...towerShape(kind,runSkin)});
+    return skinGeos.get(key);
+  }
+  function startProgressRun(mode) {
+    scoreBaseline={weeks:completedWeeks,kills};
+    progressRun=progress?.start('semester-defense',mode+'-'+difficulty)??null;
+  }
   const ringGeo = new THREE.RingGeometry(.83,1,22);
   ringGeo.rotateX(-Math.PI/2);
   const retakeHalo = new THREE.MeshBasicMaterial({color:'#ff435e',transparent:true,opacity:.83,
@@ -857,7 +879,7 @@
   }
 
   function build(kind,slot,quiet=false) {
-    const stats=towerStats[kind], geos=towerGeos[kind];
+    const stats=towerStats[kind], geos=towerGeometry(kind);
     const root=new THREE.Group();
     root.name=stats.name;
     const base=new THREE.Mesh(geos.base,studentMat);
@@ -1294,6 +1316,7 @@
     for(const [number,left] of waveLedger) {
       if(left>0) continue;
       waveLedger.delete(number);
+      completedWeeks++;
       waveEvents.delete(number);
       const tier=tiers[scholarship];
       const reward=roundAzn(tier.payout+gold*tier.interestPercent/100);
@@ -1326,6 +1349,10 @@
     dust(point,state==='won'?'#ffe49b':'#d2bb9f',48,6,.32,1.8,7.5,7);
     ui.summaryTitle.textContent=state==='won'?'UNEC müdafiə olundu!':'UNEC müdafiəsi yarıldı';
     ui.summaryStats.textContent='Həftə '+wave+' · Qazanılan '+totalGold+' AZN · Qurulan müdafiəçi '+totalBuilt+' · Məğlub imtahan '+kills;
+    const score=(completedWeeks-scoreBaseline.weeks)*100+(kills-scoreBaseline.kills)*3+(state==='won'?200:0);
+    const result=progress?.finish(progressRun,score,state==='won');
+    ui.summaryPoints.hidden=!result;
+    if(result) ui.summaryPoints.textContent=result.score+' xal · +'+progress.campusPoints(result.score)+' kampus xalı';
     ui.resumeEndless.hidden=state!=='won';
     ui.summary.hidden=false;
     ui.replay.focus({preventScroll:true});
@@ -1354,6 +1381,7 @@
   function demo() {
     clearBattle();
     phase='menu';
+    runSkin=progress?.activeSkin();
     towerKinds.forEach((kind,index)=>build(kind,sockets[index],true));
     const types=['runner','midterm','runner','flyer','brute'];
     [5,7,14,22,30,39,45,48,55,62,67,76,85,91,95,102,123].forEach((p,i)=>spawn(i===10?'boss':types[i%types.length],p));
@@ -1361,6 +1389,8 @@
   function begin() {
     clearBattle();
     phase='playing';wave=0;gold=startingGold;health=maxLives;kills=0;speed=1;
+    completedWeeks=0;startProgressRun(endless?'endless':'campaign');
+    runSkin=progressRun?.skin;
     scholarship=0;totalGold=0;totalBuilt=0;nextWaveAt=setupSeconds;canRushAt=0;
     ui.start.hidden=true;ui.summary.hidden=true;ui.top.hidden=false;ui.controls.hidden=false;
     clearSelection();
@@ -1515,7 +1545,7 @@
   const ui={top:get('topbar'),controls:get('controls'),dock:get('dock'),card:get('tower-card'),abilities:get('abilities'),event:get('wave-event'),
     toast:get('toast'),start:get('start'),startForm:get('start-form'),summary:get('summary'),
     expansion:get('expansion'),expansionWeek:get('expansion-week'),expansionOptions:get('expansion-options'),
-    summaryTitle:get('summary-title'),summaryStats:get('summary-stats'),replay:get('replay'),
+    summaryTitle:get('summary-title'),summaryStats:get('summary-stats'),summaryPoints:get('summary-points'),replay:get('replay'),
     resumeEndless:get('continue'),next:get('next'),sound:get('sound'),gamesReturn:get('games-return'),popups:get('popups')};
   const icons={
     arrow:'<path d="m4 16-1 5 5-1L21 7l-4-4Z"/><path d="m14 6 4 4M4 16l4 4"/>',
@@ -1679,7 +1709,8 @@
     }
     preview.visible=!!kind;range.visible=!!slot;
     if(kind) {
-      previewBase.geometry=towerGeos[kind].base;previewHead.geometry=towerGeos[kind].head;
+      const geos=towerGeometry(kind);
+      previewBase.geometry=geos.base;previewHead.geometry=geos.head;
       preview.position.set(slot.x,.39+heightOf(slot),slot.z);
       radius=towerStats[kind].range*(slot.buff==='wifi'?1.25:1);
     }
@@ -1892,6 +1923,7 @@
   };
   ui.resumeEndless.onclick=()=>{
     if(phase!=='won') return;
+    startProgressRun('continuation');
     endless=true;phase='playing';speed=1;nextWaveAt=time+8;canRushAt=time;
     ui.summary.hidden=true;cardDirty=true;indicators();updateHud();
     notice('Sonsuz rejim · Həftə '+(wave+1));
@@ -1899,6 +1931,21 @@
   ui.next.onclick=()=>{startWave(true);updateHud();};
   for(const button of speedButtons) button.onclick=()=>{speed=Number(button.dataset.speed);updateHud();};
   ui.sound.onclick=()=>{muted=!muted;if(!muted)playSound('build');updateHud();};
+  const metaDialog=get('game-meta-dialog');
+  get('close-game-meta').onclick=()=>metaDialog.close();
+  for(const trigger of document.querySelectorAll('[data-open-meta]')) {
+    trigger.hidden=!progress;
+    trigger.disabled=!progress;
+    trigger.onclick=()=>{
+      const form=new FormData(ui.startForm);
+      const mode=phase==='menu'?(form.get('mode')+'-'+form.get('difficulty')):progressRun?.mode;
+      progress.mount(get('game-meta-content'),{
+        game:'semester-defense',mode,openGuide:phase==='menu',openRecords:true,
+        result:phase==='menu'?null:progressRun?.result
+      });
+      metaDialog.showModal();
+    };
+  }
 
   // A 16×16 parcel is just under one fifth of the original 42×32 campus.
   const parcelCells=16, chunkSize=parcelCells*tile, branchBonus=40;

@@ -4,29 +4,26 @@
   const U = window.UNEC;
   const { $, esc, ic } = U;
   const root = $('#gamesRoot');
+  const progress = window.UNECGameProgress;
   const labels = {
     az: {
       title: 'Halqadan çıxış', intro: 'Topu fırlanan halqanın boşluğundan keçir.',
-      instructions: 'Halqanı yönəltmək üçün arenaya toxun və ya ← → düymələrindən istifadə et.',
       play: 'Oyuna keç', start: 'Başla', pause: 'Fasilə', resume: 'Davam et', replay: 'Yenidən oyna',
       mute: 'Səsi söndür', unmute: 'Səsi aç', left: 'Halqanı sola döndər', right: 'Halqanı sağa döndər',
-      round: 'Mərhələ', time: 'Vaxt', waiting: 'Başlamağa hazır', inside: 'Top halqanın içindədir',
+      round: 'Mərhələ', time: 'Vaxt', score: 'Xal', waiting: 'Başlamağa hazır', inside: 'Top halqanın içindədir',
       outside: 'Top halqadan çıxdı!', paused: 'Oyun dayandırıldı', won: 'Üç mərhələ tamamlandı!',
       difficulty: 'Çətinlik', easy: 'Asan', medium: 'Orta', hard: 'Çətin', rings: 'Keçilən halqalar',
       expired: 'Vaxt bitdi!', bonus: '+3 saniyə',
-      timerRule: '15 saniyə ilə başla. Keçdiyin hər halqa +3 saniyə qazandırır.',
       arena: 'Oyun arenası. Halqanın boşluğunu bu istiqamətə çevirmək üçün toxun.',
     },
     en: {
       title: 'Ring Escape', intro: 'Guide the ball through the gap in the rotating ring.',
-      instructions: 'Tap the arena or use the ← → arrow keys to steer the ring.',
       play: 'Play game', start: 'Start', pause: 'Pause', resume: 'Resume', replay: 'Play again',
       mute: 'Mute', unmute: 'Unmute', left: 'Rotate ring left', right: 'Rotate ring right',
-      round: 'Stage', time: 'Time', waiting: 'Ready to play', inside: 'The ball is inside the ring',
+      round: 'Stage', time: 'Time', score: 'Score', waiting: 'Ready to play', inside: 'The ball is inside the ring',
       outside: 'The ball escaped!', paused: 'Game paused', won: 'All three stages complete!',
       difficulty: 'Difficulty', easy: 'Easy', medium: 'Medium', hard: 'Hard', rings: 'Rings cleared',
       expired: 'Time is up!', bonus: '+3 seconds',
-      timerRule: 'Start with 15 seconds. Every ring cleared adds 3 seconds.',
       arena: 'Game arena. Tap to steer the gap in that direction.',
     }
   };
@@ -48,6 +45,7 @@
   const melody = [69, 76, 72, 76, 67, 74, 71, 74, 65, 72, 69, 72, 64, 71, 67, 71];
   const colours = ['#78f2cb', '#a8c5ff', '#ffca8d'];
   const copy = () => labels[lang === 'en' ? 'en' : 'az'];
+  const score = state => state.totalCleared * 10 + (state.phase === 'won' ? 100 : 0);
   let game;
 
   function title(heading, description, back, backName) {
@@ -105,6 +103,7 @@
     if (clearance < aperture(state) - ballRadius / innerRadius) {
       if (!reducedMotion.matches) state.halos.push({ radius: innerRadius + state.ringShift, angle: gapAngle, at: state.elapsed });
       state.cleared++;
+      state.totalCleared++;
       state.remaining += ringBonus;
       state.soundUntil = state.elapsed + .35;
       if (state.cleared === state.ringCount) state.escapedAt = state.elapsed;
@@ -232,14 +231,22 @@
       ctx.fill();
     }
     ctx.globalAlpha = 1;
-    ctx.shadowColor = colour;
+    const skin = state.run?.skin ?? state.skin;
+    ctx.shadowColor = skin?.color ?? colour;
     ctx.shadowBlur = 14;
-    ctx.fillStyle = '#f6fffe';
+    ctx.fillStyle = skin?.color ?? '#f6fffe';
     ctx.beginPath();
     const ballDistance = Math.hypot(state.x, state.y);
     const ballScale = ballDistance > 0 ? (ballDistance + state.ringShift) / ballDistance : 1;
-    ctx.arc(state.x * ballScale, state.y * ballScale, ballRadius, 0, tau);
+    const x = state.x * ballScale, y = state.y * ballScale;
+    ctx.arc(x, y, ballRadius, 0, tau);
     ctx.fill();
+    if (skin?.color) {
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = skin.accent;
+      ctx.fillRect(x - 3, y - 1, 6, 2);
+      ctx.fillRect(x - 1, y + 1, 2, 2);
+    }
     ctx.restore();
   }
 
@@ -255,11 +262,16 @@
     setText(state.ui.stage, state.round + ' / ' + stages);
     setText(state.ui.time, Math.ceil(state.remaining) + ' s');
     setText(state.ui.rings, state.cleared + ' / ' + state.ringCount);
+    setText(state.ui.score, String(score(state)));
     state.ui.time.classList.toggle('game-time-low', state.remaining <= 5);
     state.ui.difficulty.disabled = state.phase === 'playing';
     setText(state.ui.status, status[state.phase]);
     setText(state.ui.main, l[{ idle: 'start', playing: 'pause', paused: 'resume', won: 'replay', lost: 'replay' }[state.phase]]);
     setText(state.ui.sound, state.muted ? l.unmute : l.mute);
+    if ((state.phase === 'won' || state.phase === 'lost') && state.run && !state.run.result) {
+      const result = progress.finish(state.run, score(state), state.phase === 'won');
+      state.meta?.showResult(result);
+    }
     draw(state);
   }
 
@@ -329,29 +341,34 @@
           <span>${esc(l.round)} <strong class="game-stage"></strong></span>
           <span>${esc(l.rings)} <strong class="game-rings"></strong></span>
           <span>${esc(l.time)} <strong class="game-time"></strong></span>
+          <span>${esc(l.score)} <strong class="game-score"></strong></span>
         </div>
         <div class="game-arena">
           <canvas width="400" height="340" aria-hidden="true"></canvas>
           <button class="game-aim" type="button" aria-label="${esc(l.arena)}" title="${esc(l.arena)}"></button>
         </div>
         <p class="game-status" role="status"></p>
-        <p class="game-instructions">${esc(l.instructions)}</p>
-        <p class="game-instructions">${esc(l.timerRule)}</p>
         <div class="game-controls">
           <button type="button" class="btn btn--secondary" data-game-action="left" aria-label="${esc(l.left)}">${ic('chevron-left')}</button>
           <button type="button" class="btn btn--primary" data-game-action="main"></button>
           <button type="button" class="btn btn--secondary" data-game-action="right" aria-label="${esc(l.right)}">${ic('chevron-right')}</button>
           <button type="button" class="btn btn--secondary" data-game-action="sound"></button>
         </div>
+        <div data-game-profile></div>
       </section>`;
     state.ctx = $('canvas', root).getContext('2d');
     state.ui = {
       stage: $('.game-stage', root), time: $('.game-time', root), status: $('.game-status', root),
-      rings: $('.game-rings', root), difficulty: $('.game-difficulty', root),
+      rings: $('.game-rings', root), score: $('.game-score', root), difficulty: $('.game-difficulty', root),
       main: $('[data-game-action="main"]', root), sound: $('[data-game-action="sound"]', root),
     };
+    state.meta = progress.mount($('[data-game-profile]', root), {
+      game: 'ring-escape', mode: state.difficulty, language: lang, result: state.run?.result, onOpen: () => pause(state)
+    });
     state.ui.difficulty.onchange = event => {
-      Object.assign(state, { difficulty: event.target.value, round: 1, elapsed: 0, remaining: startTime, phase: 'idle' });
+      Object.assign(state, { difficulty: event.target.value, round: 1, elapsed: 0, remaining: startTime, phase: 'idle', totalCleared: 0, run: null });
+      state.meta.setMode(state.difficulty);
+      state.meta.showResult(null);
       level(state);
       setSound(state);
       update(state);
@@ -375,8 +392,12 @@
     state.ui.main.onclick = () => {
       if (state.phase === 'playing') return pause(state);
       if (state.phase === 'won' || state.phase === 'lost') {
-        Object.assign(state, { round: 1, elapsed: 0, remaining: startTime, note: 0 });
+        Object.assign(state, { round: 1, elapsed: 0, remaining: startTime, note: 0, totalCleared: 0, run: null });
         level(state);
+      }
+      if (!state.run) {
+        state.run = progress.start('ring-escape', state.difficulty);
+        state.meta.showResult(null);
       }
       state.phase = 'playing';
       state.previousFrame = null;
@@ -396,7 +417,8 @@
     U.towerGame.leave();
     if (route.view === 'ring-escape') {
       if (!game) {
-        game = { phase: 'idle', difficulty: 'easy', round: 1, elapsed: 0, remaining: startTime, muted: false };
+        game = { phase: 'idle', difficulty: 'easy', round: 1, elapsed: 0, remaining: startTime, muted: false,
+          totalCleared: 0, skin: progress.activeSkin() };
         level(game);
       }
       renderArena(game);
@@ -419,7 +441,8 @@
         <span class="game-entry-info"><strong>${esc(entry.title)}</strong><span>${esc(entry.intro)}</span>
           <span class="game-entry-play">${ic('play')} ${esc(l.play)}</span>
         </span>
-      </a>`).join('')}</div>`;
+      </a>`).join('')}</div><div class="game-meta-directory"></div>`;
+    progress.mount($('.game-meta-directory', root), { language: lang, openRecords: true });
   };
 
   window.addEventListener('unec:routechange', event => {

@@ -23,7 +23,7 @@
   const shade = (colour, light) => 'rgb(' + colour.map(channel => Math.round(Math.min(255, channel * light))).join(' ') + ')';
 
   function draw(ctx, view) {
-    const { floors, floor, rotation, sectors, active, falling, fragment, bounce, powered, charged, reducedMotion } = view;
+    const { floors, floor, rotation, sectors, active, falling, fragment, bounce, powered, charged, reducedMotion, skin } = view;
     const descent = falling === null ? 0 : falling;
     const camera = descent * descent * (3 - 2 * descent) * pitch;
     const wedge = tau / sectors.length;
@@ -170,15 +170,20 @@
       const size = 14 * ball.scale;
       const fill = ctx.createRadialGradient(ball.x - size * .4, ball.y - size * .5, 1, ball.x, ball.y, size);
       fill.addColorStop(0, '#fff');
-      fill.addColorStop(.48, powered ? '#e6c7ff' : '#abffe5');
-      fill.addColorStop(1, powered ? '#7946c7' : '#288e92');
-      ctx.shadowColor = powered ? '#bd8aff' : '#66dfc3';
+      fill.addColorStop(.48, powered ? '#e6c7ff' : skin?.color ?? '#abffe5');
+      fill.addColorStop(1, powered ? '#7946c7' : skin?.color ? skin.accent : '#288e92');
+      ctx.shadowColor = powered ? '#bd8aff' : skin?.color ?? '#66dfc3';
       ctx.shadowBlur = charged ? 20 : 8;
       ctx.fillStyle = fill;
       ctx.beginPath();
       ctx.arc(ball.x, ball.y, size, 0, tau);
       ctx.fill();
       ctx.shadowBlur = 0;
+      if (skin?.color) {
+        ctx.fillStyle = powered ? '#fff4ff' : skin.accent;
+        ctx.fillRect(ball.x - size * .42, ball.y - size * .1, size * .84, size * .18);
+        ctx.fillRect(ball.x - size * .15, ball.y + size * .08, size * .3, size * .2);
+      }
     } });
 
     ctx.clearRect(0, 0, width, height);

@@ -3,11 +3,11 @@
 
   const U = window.UNEC;
   const { $, esc, ic } = U;
+  const progress = window.UNECGameProgress;
   const words = {
     az: {
       title: 'Qüllə enişi', intro: 'Qülləni döndər, platformaları qır və ən aşağıya en.',
       instructions: 'Qülləni sürüşdürərək və ya ← → ilə döndər. Sarı hissəni qırmaq üçün arenaya, «Qır» düyməsinə və ya Space düyməsinə basılı saxla.',
-      rules: 'Qırmızı və mavi hissədə qırmağa çalışsan, oyun bitir. Bənövşəyi orb 4 saniyə ərzində istənilən hissəni qırmağa imkan verir.',
       floor: 'Platforma', score: 'Xal', boost: 'Güc', start: 'Başla', pause: 'Fasilə', resume: 'Davam et', replay: 'Yenidən oyna',
       left: 'Qülləni sola döndər', right: 'Qülləni sağa döndər', smash: 'Basılı saxla · Qır',
       ready: 'Başla, sonra sarı hissəni qabağa gətir.', paused: 'Oyun dayandırılıb.',
@@ -19,7 +19,6 @@
     en: {
       title: 'Tower Descent', intro: 'Rotate the tower, break platforms and reach the bottom.',
       instructions: 'Drag or use ← → to rotate. Hold the arena, Smash or Space to break a yellow section.',
-      rules: 'Trying to smash red or blue ends the run. A purple orb lets you break any section for 4 seconds.',
       floor: 'Platform', score: 'Score', boost: 'Power', start: 'Start', pause: 'Pause', resume: 'Resume', replay: 'Play again',
       left: 'Rotate tower left', right: 'Rotate tower right', smash: 'Hold · Smash',
       ready: 'Start, then turn a yellow section to the front.', paused: 'Game paused.',
@@ -40,6 +39,7 @@
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const copy = () => words[lang === 'en' ? 'en' : 'az'];
   const wrap = angle => (angle % tau + tau) % tau;
+  const score = state => state.score + state.floor * 20 + (state.phase === 'won' ? 100 : 0);
   let game;
 
   function reset(state) {
@@ -54,7 +54,7 @@
     Object.assign(state, {
       phase: 'idle', floors, floor: 0, score: 0, power: 0, rotation: 0,
       bounce: 0, fall: null, fragment: null, pointer: null, held: false, charge: 0,
-      failure: null, previousFrame: null,
+      failure: null, previousFrame: null, run: null, skin: progress.activeSkin(),
     });
   }
 
@@ -116,6 +116,7 @@
       falling: state.fall ? Math.min(1, state.fall.age / state.fall.duration) : null,
       bounce: state.fall ? 0 : Math.sin(Math.PI * state.bounce / bounceTime) * 69,
       powered: state.power > 0, charged: state.charge >= holdTime, reducedMotion: reducedMotion.matches,
+      skin: state.run?.skin ?? state.skin,
     });
   }
 
@@ -127,11 +128,15 @@
     };
     const set = (node, value) => { if (node.textContent !== value) node.textContent = value; };
     set(state.ui.floor, Math.min(state.floor + 1, floorCount) + ' / ' + floorCount);
-    set(state.ui.score, String(state.score));
+    set(state.ui.score, String(score(state)));
     set(state.ui.power, Math.ceil(state.power) + ' s');
     set(state.ui.status, status[state.phase]);
     set(state.ui.main, { idle: l.start, playing: l.pause, paused: l.resume, lost: l.replay, won: l.replay }[state.phase]);
     state.ui.smash.classList.toggle('tower-charging', state.held);
+    if ((state.phase === 'won' || state.phase === 'lost') && state.run && !state.run.result) {
+      const result = progress.finish(state.run, score(state), state.phase === 'won');
+      state.meta?.showResult(result);
+    }
     draw(state);
   }
 
@@ -219,8 +224,8 @@
           <button class="btn btn--secondary tower-smash" type="button" data-tower="smash">${ic('zap')}${esc(l.smash)}</button>
         </div>
         <div class="tower-legend"><span>${esc(l.coin)}</span><span>${esc(l.orb)}</span></div>
-        <p class="game-instructions" id="towerInstructions">${esc(l.instructions)}</p>
-        <p class="game-instructions">${esc(l.rules)}</p>
+        <p class="sr-only" id="towerInstructions">${esc(l.instructions)}</p>
+        <div data-game-profile></div>
       </section>`;
     const arena = $('.tower-arena', root);
     state.ctx = $('canvas', arena).getContext('2d');
@@ -229,6 +234,9 @@
       floor: $('.tower-floor', root), score: $('.tower-score', root), power: $('.tower-power', root),
       status: $('.tower-status', root), main: $('[data-tower="main"]', root), smash: $('[data-tower="smash"]', root),
     };
+    state.meta = progress.mount($('[data-game-profile]', root), {
+      game: 'tower-descent', mode: 'standard', language: lang, result: state.run?.result, onOpen: () => pause(state)
+    });
     $('[data-tower="left"]', root).onclick = () => rotate(state, -wedge / 2);
     $('[data-tower="right"]', root).onclick = () => rotate(state, wedge / 2);
     bindInput(state, arena, true);
@@ -236,6 +244,10 @@
     state.ui.main.onclick = () => {
       if (state.phase === 'playing') return pause(state);
       if (state.phase === 'lost' || state.phase === 'won') reset(state);
+      if (!state.run) {
+        state.run = progress.start('tower-descent', 'standard');
+        state.meta.showResult(null);
+      }
       state.phase = 'playing';
       state.previousFrame = null;
       state.frame = requestAnimationFrame(time => tick(state, time));
