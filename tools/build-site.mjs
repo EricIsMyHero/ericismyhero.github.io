@@ -75,7 +75,7 @@ outputs.set('data/mobile-catalog.json', JSON.stringify({
   compass: compass.articles
 }) + '\n');
 outputs.set('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ['/', '/materials/', ...ordered.map(href), '/compass/', ...compass.articles.map(a => '/compass/' + a.id + '/')].map(p => `  <url><loc>${esc(origin + p)}</loc></url>`).join('\n') + '\n</urlset>\n');
-const html = read('index.html'), assets = new Set(['/', '/index.html', '/manifest.json']);
+const html = read('index.html'), assets = new Set(['/', '/index.html', '/manifest.json', '/games/semester-defense/']);
 for (const match of html.matchAll(/<(?:script|link)\b[^>]*(?:src|href)="([^"#]+)"/g)) {
   const url = match[1]; if (/^(?:https?:|\/\/)/.test(url)) continue;
   if (!outputs.has(url.split('?')[0].replace(/^\//, '')) && !fs.existsSync(path.join(root, url.split('?')[0]))) throw new Error('Missing local asset: ' + url);
@@ -88,7 +88,8 @@ for (const directory of ['images', 'images/student-offers']) {
 }
 const sorted = [...assets].sort(), hash = crypto.createHash('sha256');
 for (const url of sorted) {
-  const file = url === '/' ? 'index.html' : url.slice(1).split('?')[0];
+  const pathname = url.slice(1).split('?')[0];
+  const file = !pathname || pathname.endsWith('/') ? pathname + 'index.html' : pathname;
   hash.update(url); hash.update(outputs.has(file) ? outputs.get(file) : fs.readFileSync(path.join(root, file)));
 }
 hash.update(read('sw.js'));

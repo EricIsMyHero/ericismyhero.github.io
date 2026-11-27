@@ -82,6 +82,24 @@
   box-shadow: 0 17px #5278a7, 0 34px #ffcb67, 0 51px #5278a7;
   transform: none;
 }
+.game-entry-art--defense {
+  background:
+    linear-gradient(90deg, transparent 27%, #7cadba 27% 35%, transparent 35%) 0 100% / 100% 38% no-repeat,
+    repeating-linear-gradient(90deg, #567b62 0 12px, #71977a 12px 24px) 0 100% / 100% 38% no-repeat,
+    linear-gradient(145deg, #23394c, #162b39);
+}
+.game-entry-art--defense::after {
+  inset: auto 0 31%;
+  width: min(88px, 80%);
+  height: 49px;
+  border: 0;
+  border-radius: 0;
+  background:
+    linear-gradient(#cc806a 0 23%, transparent 23%),
+    repeating-linear-gradient(90deg, #e0c7a1 0 9px, #56636a 9px 16px);
+  clip-path: polygon(0 24%, 50% 0, 100% 24%, 100% 100%, 0 100%);
+  transform: none;
+}
 .tower-arena {
   background:
     repeating-linear-gradient(135deg, transparent 0 19px, #91c9ff0a 20px 21px),

@@ -405,12 +405,16 @@
     leave();
     const l = copy();
     const tower = U.towerGame.copy();
+    const defense = lang === 'en'
+      ? { title: 'UNEC Semester Defense', intro: 'Defend the campus from exam waves and expand your routes.' }
+      : { title: 'UNEC · Semestr müdafiəsi', intro: 'Kampusu imtahan dalğalarından qoru və yeni yollar aç.' };
     const games = [
       { id: 'ring-escape', title: l.title, intro: l.intro, art: '' },
       { id: 'tower-descent', title: tower.title, intro: tower.intro, art: ' game-entry-art--tower' },
+      { href: 'games/semester-defense/', ...defense, art: ' game-entry-art--defense' },
     ];
     root.innerHTML = title(t('navGames'), t('gamesIntro'), 'functions', t('navFunctions')) + `
-      <div class="game-list">${games.map(entry => `<a class="game-entry function-panel" href="#/games/${entry.id}">
+      <div class="game-list">${games.map(entry => `<a class="game-entry function-panel" href="${esc(entry.href || '#/games/' + entry.id)}">
         <span class="game-entry-art${entry.art}" aria-hidden="true"></span>
         <span class="game-entry-info"><strong>${esc(entry.title)}</strong><span>${esc(entry.intro)}</span>
           <span class="game-entry-play">${ic('play')} ${esc(l.play)}</span>
