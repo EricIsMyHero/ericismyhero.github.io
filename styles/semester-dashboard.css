@@ -1,0 +1,123 @@
+.dash-semester-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 10px;
+}
+#dash-semester-balance { color: var(--accent2); font-size: .83rem; font-weight: 750; }
+#dash-pname { overflow-wrap: anywhere; }
+#dash-avatar[data-semester-avatar] { background: transparent; border-radius: 24%; }
+.semester-avatar-svg { display: block; width: 100%; height: 100%; }
+.semester-nameplate {
+  position: relative;
+  display: inline;
+  max-width: 100%;
+  color: var(--color-text-primary);
+}
+.semester-nameplate:not([data-palette="default"]) {
+  color: color-mix(in srgb, var(--semester-color) 52%, var(--color-text-primary));
+}
+.semester-nameplate[data-effect="shimmer"] > span {
+  background: linear-gradient(105deg, currentColor 35%, color-mix(in srgb, var(--semester-color) 48%, currentColor) 50%, currentColor 65%);
+  background-size: 240% 100%;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: semester-shimmer 4s ease-in-out infinite;
+}
+.semester-nameplate[data-effect="flame"] {
+  border: 1px solid #eb8d54;
+  border-radius: 7px;
+  padding: 1px 5px;
+  box-shadow: 0 0 8px #dd6e4480;
+  box-decoration-break: clone;
+  animation: semester-flame 2s ease-in-out infinite alternate;
+}
+.semester-nameplate[data-effect="stars"]::after {
+  content: '';
+  display: inline-block;
+  width: .72em;
+  height: .72em;
+  margin-inline-start: 4px;
+  background: var(--semester-color);
+  clip-path: polygon(50% 0, 61% 38%, 100% 50%, 61% 61%, 50% 100%, 38% 61%, 0 50%, 38% 38%);
+  animation: semester-stars 2s ease-in-out infinite alternate;
+}
+@keyframes semester-shimmer {
+  0%, 35% { background-position: 110% 0; }
+  70%, 100% { background-position: -10% 0; }
+}
+@keyframes semester-flame { to { box-shadow: 0 0 10px #fda75fbd; } }
+@keyframes semester-stars { to { opacity: .4; transform: scale(.7); } }
+@media (prefers-reduced-motion: reduce) {
+  .semester-nameplate[data-effect] { animation: none; }
+  .semester-nameplate[data-effect="shimmer"] > span { background: none; -webkit-text-fill-color: currentColor; animation: none; }
+  .semester-nameplate[data-effect="stars"]::after { animation: none; }
+}
+.semester-title {
+  display: inline-block;
+  width: fit-content;
+  padding: 2px 7px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--accent2);
+  font-size: .72rem;
+  font-weight: 700;
+}
+#dash-semester-title:empty { display: none; }
+#dash-semester-title { margin-top: 3px; }
+.semester-leaderboard { margin-block: 18px 0; }
+.semester-board-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 7px;
+}
+.semester-board-head h2 { margin: 0; font-size: 1.03rem; }
+.semester-board-head p, .semester-board-empty, .semester-board-score small {
+  color: var(--color-text-secondary);
+  font-size: .81rem;
+  margin: 3px 0 0;
+}
+.semester-board-list { display: grid; gap: 5px; margin: 12px 0 0; padding-inline-start: 23px; }
+.semester-board-list li { padding: 5px 0 5px 3px; border-top: 1px solid var(--border); }
+.semester-board-entry { display: grid; grid-template-columns: 38px minmax(0, 1fr) auto; align-items: center; gap: 8px; }
+.semester-board-avatar { width: 38px; height: 38px; }
+.semester-board-name, .semester-board-score { display: grid; gap: 2px; overflow-wrap: anywhere; font-weight: 700; }
+.semester-board-score { text-align: end; }
+.semester-board-score small { margin: 0; font-weight: 500; }
+.semester-wardrobe {
+  box-sizing: border-box;
+  width: min(560px, calc(100% - 20px));
+  max-height: calc(100dvh - 24px);
+  margin: auto;
+  padding: 15px;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  background: var(--color-background-alt);
+  color: var(--color-text-primary);
+}
+.semester-wardrobe::backdrop { background: #071222bb; }
+.semester-wardrobe header { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 0; }
+.semester-wardrobe h2 { font-size: 1.11rem; margin: 0; }
+.semester-wardrobe p { font-size: .82rem; color: var(--color-text-secondary); margin: 6px 0 10px; }
+.semester-preview { display: flex; align-items: center; gap: 12px; padding: 8px; border: 1px solid var(--border); border-radius: 10px; }
+.semester-preview-avatar { width: 70px; flex: 0 0 70px; }
+.semester-preview-id { display: grid; gap: 4px; font-weight: 750; min-width: 0; overflow-wrap: anywhere; }
+.semester-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(185px, 100%), 1fr)); gap: 7px; margin-block: 11px; }
+.semester-fields label { display: grid; min-width: 0; gap: 3px; font-size: .8rem; }
+.semester-fields select {
+  width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 5px;
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  font: inherit;
+}
+.semester-avatar-choice { display: flex; align-items: center; gap: 7px; margin: 0 0 10px; font-size: .82rem; }
+.semester-avatar-choice input { accent-color: var(--accent); }

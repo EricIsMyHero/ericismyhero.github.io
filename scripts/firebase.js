@@ -58,6 +58,7 @@ let currentProfile = null;
 async function onAuthStateChange(user) {
   if (currentUser?.uid !== user?.uid) currentProfile = null;
   currentUser = user;
+  window.UNECSemesterProfile?.setAccount(user, currentProfile?.name || user?.displayName);
   if (window.UNECStudy) window.UNECStudy.setUser(user);
 
   if (user) {
@@ -65,6 +66,7 @@ async function onAuthStateChange(user) {
     const profile = await _getUserProfile(user.uid);
     if (currentUser?.uid !== user.uid) return;
     currentProfile = profile;
+    window.UNECSemesterProfile?.setAccount(user, profile?.name || user.displayName);
     await _handleDailyLogin(user.uid);
     if (currentUser?.uid !== user.uid) return;
 
@@ -488,6 +490,7 @@ async function updateUserProfile(updates) {
   const profile = await _getUserProfile(uid);
   if (currentUser?.uid !== uid) return;
   currentProfile = profile;
+  window.UNECSemesterProfile?.setAccount(currentUser, profile?.name || currentUser.displayName);
   if (typeof renderDashboard === 'function') renderDashboard();
   window.dispatchEvent(new CustomEvent('unec:profilechange'));
 }

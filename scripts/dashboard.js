@@ -117,6 +117,7 @@ function _renderProfileCard(user, profile, rankInfo, solved) {
   setFact('dash-fact-year',    _yearLabel(profile?.year) || '—');
   setFact('dash-fact-rank',    rankInfo.rank.name);
   setFact('dash-fact-solved',  String(solved));
+  window.UNECSemesterDashboard?.render(user, name);
 }
 
 // ── Profil redaktə rejimi açıb-bağlamaq ──────────────────────

@@ -66,6 +66,8 @@
   h1,h2,p { margin:0 0 10px }
   h1,h2 { font-size:clamp(1.55rem,4.8vw,2.35rem);line-height:1.05;letter-spacing:-.035em }
   .sheet p { color:#c3d7ce;font-size:.88rem }
+  #semester-account-note { color:var(--gold); }
+  #semester-account-note a { color:var(--mint); }
   .sheet fieldset { border:0;padding:0;margin:10px 0 12px;display:flex;flex-wrap:wrap;gap:5px }
   .sheet legend { padding:0 0 5px;color:var(--soft);font-size:.79rem }
   .sheet label { display:flex;align-items:center;gap:6px;min-height:37px;padding:4px 9px;border:1px solid var(--border);border-radius:8px;background:#203732 }
@@ -144,6 +146,7 @@
     <h1>UNEC · Semestr müdafiəsi</h1>
     <p>Müdafiəni qurmaq üçün 100 AZN və 20 saniyən var. Tələbələri yol kənarındakı xanalara yerləşdir və imtahanları binaya buraxma.</p>
     <p>Kameranı sürüşdürərək döndər, çarxla və ya iki barmağı aralayaraq yaxınlaşdır. Görünüşü daşımaq üçün Shift düyməsini saxla və ya iki barmaqla sürüşdür.</p>
+    <p id="semester-account-note" hidden></p>
     <fieldset><legend>Çətinlik</legend>
       <label><input name="difficulty" type="radio" value="easy">Asan</label>
       <label><input name="difficulty" type="radio" value="normal" checked>Normal</label>
@@ -172,8 +175,9 @@
     <h2 id="summary-title"></h2>
     <p id="summary-stats"></p>
     <p id="summary-points" hidden></p>
+    <p id="summary-semester" hidden></p>
     <footer><button class="primary" type="button" id="replay">Yenidən oyna</button><button type="button" id="continue">Sonsuz rejimə keç</button>
-      <button type="button" data-open-meta disabled>Rekordlar və görünüşlər</button></footer>
+      <button type="button" data-open-meta disabled>Rekordlar və görünüşlər</button><a class="games-return" href="../../#/dashboard">Dashboard</a></footer>
   </section>
 </div>
 <dialog id="game-meta-dialog" class="game-meta-dialog" aria-labelledby="game-meta-title">
@@ -181,6 +185,7 @@
   <div id="game-meta-content"></div>
 </dialog>
 <script src="../../scripts/game-progress.js?v=20261127-records"></script>
+<script src="../../scripts/semester-profile.js?v=20261127-wardrobe"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 <script>
 (() => {
@@ -198,6 +203,7 @@
 
   const V = (x=0,y=0,z=0) => new THREE.Vector3(x,y,z);
   const progress=window.UNECGameProgress;
+  const semester=window.UNECSemesterProfile;
   const rand = (min,max) => min + Math.random()*(max-min);
   const clamp = (value,min,max) => Math.max(min,Math.min(max,value));
   const choose = items => items[Math.floor(Math.random()*items.length)];
@@ -742,6 +748,8 @@
   }]));
   const skinGeos=new Map();
   let runSkin=null, progressRun=null, completedWeeks=0, scoreBaseline={weeks:0,kills:0};
+  let semesterRun=null, bossSequence=0;
+  const wavePortalCounts=new Map();
   function towerGeometry(kind) {
     const original=towerGeos[kind];
     if(!runSkin?.color) return original;
@@ -975,7 +983,8 @@
     const max=info.health*scaling*balance.hp*(kind==='boss'&&week?1+week*.085:1)*(retake?.75:1);
     const mob={kind,info,root,body,parts,shadow,aura,max,hp:max,p:progress,week,road,side:laneOffset ?? rand(-.64,.64),phase:rand(0,6.28),
       chill:0,slow:0,burn:0,burnDps:0,burnTower:null,flash:0,flashAt:0,hidden:false,hitSum:0,hitAt:0,removed:false,
-      event:waveEvents.get(week),bossPhase:0,frozenAt:0,frozenUntil:0,armorWeakUntil:0,
+      event:waveEvents.get(week),bossPhase:0,semesterBoss:kind==='boss'&&week?++bossSequence:0,
+      frozenAt:0,frozenUntil:0,armorWeakUntil:0,
       speed:info.speed*balance.speed*rand(.93,1.07)};
     enemies.push(mob);
     pose(mob);
@@ -1074,6 +1083,10 @@
         const reward=roundAzn((3+Math.max(0,mob.week-1))*(mob.event?.kind==='session'?1.25:1));
         earn(reward);
         floating(center.clone().add(V(.38,.4,0)),'+'+reward+' AZN','azn');
+        if(mob.semesterBoss) {
+          const points=semester?.bossDefeated(semesterRun,mob.semesterBoss);
+          if(points) floating(center.clone().add(V(.38,1.1,0)),'+'+points+' Semestr Xalı','azn');
+        }
       }
       if(grades.length<32) {
         const mark=new THREE.Mesh(choose(gradeGeos),basic);
@@ -1309,6 +1322,8 @@
     }
     pending.sort((a,b)=>a.when-b.when);
     waveLedger.set(number,entries.length);
+    wavePortalCounts.set(number,new Set(entries.map(entry=>entry.front)).size);
+    semester?.reached(semesterRun,number);
     nextWaveAt=Infinity;
     canRushAt=time+5;
   }
@@ -1317,12 +1332,14 @@
       if(left>0) continue;
       waveLedger.delete(number);
       completedWeeks++;
+      const semesterReward=semester?.clearWave(semesterRun,number,completedWeeks,wavePortalCounts.get(number))??0;
+      wavePortalCounts.delete(number);
       waveEvents.delete(number);
       const tier=tiers[scholarship];
       const reward=roundAzn(tier.payout+gold*tier.interestPercent/100);
       earn(reward);
       playSound('earn');
-      offerExpansion(number,reward);
+      offerExpansion(number,reward,semesterReward);
       return;
     }
     while(pending.length && time>=pending[0].when && enemies.length<160) {
@@ -1353,6 +1370,8 @@
     const result=progress?.finish(progressRun,score,state==='won');
     ui.summaryPoints.hidden=!result;
     if(result) ui.summaryPoints.textContent=result.score+' xal · +'+progress.campusPoints(result.score)+' kampus xalı';
+    ui.summarySemester.hidden=!semesterRun?.uid;
+    if(semesterRun?.uid) ui.summarySemester.textContent='Bu oyunda +'+semester.balance(semesterRun)+' Semestr Xalı';
     ui.resumeEndless.hidden=state!=='won';
     ui.summary.hidden=false;
     ui.replay.focus({preventScroll:true});
@@ -1370,7 +1389,7 @@
     for(const {mark} of grades) scene.remove(mark);
     for(const {node} of popups) node.remove();
     for(const list of [enemies,towers,projectiles,rings,particles,papers,grades,pending,popups]) list.length=0;
-    waveLedger.clear();waveEvents.clear();
+    waveLedger.clear();waveEvents.clear();wavePortalCounts.clear();
     for(const ability of Object.keys(abilityRules)) cooldowns[ability]=0;
     for(const slot of sockets) slot.tower=null;
     resetCampus();
@@ -1390,6 +1409,8 @@
     clearBattle();
     phase='playing';wave=0;gold=startingGold;health=maxLives;kills=0;speed=1;
     completedWeeks=0;startProgressRun(endless?'endless':'campaign');
+    semesterRun=semester?.startRun(progressRun?.player)??null;
+    bossSequence=0;
     runSkin=progressRun?.skin;
     scholarship=0;totalGold=0;totalBuilt=0;nextWaveAt=setupSeconds;canRushAt=0;
     ui.start.hidden=true;ui.summary.hidden=true;ui.top.hidden=false;ui.controls.hidden=false;
@@ -1545,7 +1566,8 @@
   const ui={top:get('topbar'),controls:get('controls'),dock:get('dock'),card:get('tower-card'),abilities:get('abilities'),event:get('wave-event'),
     toast:get('toast'),start:get('start'),startForm:get('start-form'),summary:get('summary'),
     expansion:get('expansion'),expansionWeek:get('expansion-week'),expansionOptions:get('expansion-options'),
-    summaryTitle:get('summary-title'),summaryStats:get('summary-stats'),summaryPoints:get('summary-points'),replay:get('replay'),
+    summaryTitle:get('summary-title'),summaryStats:get('summary-stats'),summaryPoints:get('summary-points'),
+    summarySemester:get('summary-semester'),replay:get('replay'),
     resumeEndless:get('continue'),next:get('next'),sound:get('sound'),gamesReturn:get('games-return'),popups:get('popups')};
   const icons={
     arrow:'<path d="m4 16-1 5 5-1L21 7l-4-4Z"/><path d="m14 6 4 4M4 16l4 4"/>',
@@ -1887,6 +1909,7 @@
       const tier=tiers[scholarship+1];
       if(!tier||gold<tier.cost) return;
       gold=roundAzn(gold-tier.cost);scholarship++;playSound('earn');
+      if(scholarship===tiers.length-1) semester?.maxScholarship(semesterRun);
       notice(tier.name+' təqaüdü aktivdir');
     } else if(slot?.tower) {
       const tower=slot.tower;
@@ -1931,6 +1954,18 @@
   ui.next.onclick=()=>{startWave(true);updateHud();};
   for(const button of speedButtons) button.onclick=()=>{speed=Number(button.dataset.speed);updateHud();};
   ui.sound.onclick=()=>{muted=!muted;if(!muted)playSound('build');updateHud();};
+  const semesterNote=get('semester-account-note');
+  if(semester) {
+    const student=semester.account();
+    semesterNote.hidden=false;
+    if(student) semesterNote.textContent='Semestr Xalı bu brauzerdə '+(student.name||'Tələbə')+
+      ' hesabına yazılır. KƏSR üçün +'+semester.rewards.boss+', 15 tamamlanan dalğa üçün +'+semester.rewards.semester;
+    else {
+      const link=document.createElement('a');
+      link.href='../../#/dashboard';link.textContent='Dashboard-da hesabına daxil ol';
+      semesterNote.append('Profil üçün Semestr Xalı qazanmaq istəyirsənsə, ',link,' və oyunu oradan aç.');
+    }
+  }
   const metaDialog=get('game-meta-dialog');
   get('close-game-meta').onclick=()=>metaDialog.close();
   for(const trigger of document.querySelectorAll('[data-open-meta]')) {
@@ -2199,7 +2234,7 @@
     campaignInput(false);
     syncMapLighting();
   }
-  function offerExpansion(number,reward) {
+  function offerExpansion(number,reward,semesterReward=0) {
     phase='expanding';
     const options=planChoices();
     expansionOffer={options,bounds:includePlots(mapBounds,options)};
@@ -2220,7 +2255,8 @@
         scene.add(marker);plotOutlines.push(marker);
       }
     });
-    ui.expansionWeek.textContent='Həftə '+number+' tamamlandı · +'+reward+' AZN';
+    ui.expansionWeek.textContent='Həftə '+number+' tamamlandı · +'+reward+' AZN'+
+      (semesterReward?' · +'+semesterReward+' Semestr Xalı':'');
     ui.expansionOptions.style.setProperty('--choices',options.length);
     ui.expansionOptions.innerHTML=options.map(({target,name,direction,color,pads,opens,buff},i)=>`
       <button type="button" class="expansion-option" data-expansion="${i}" style="--route-accent:${color}">

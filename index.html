@@ -132,6 +132,7 @@
   <link rel="stylesheet" href="styles/curriculum.css?v=20261122-contrast">
   <link rel="stylesheet" href="styles/gpa.css?v=20261122-contrast">
   <link rel="stylesheet" href="styles/dashboard.css?v=20261123-profile">
+  <link rel="stylesheet" href="styles/semester-dashboard.css?v=20261127-wardrobe">
   <link rel="stylesheet" href="styles/chat.css?v=20261122-contrast">
   <link rel="stylesheet" href="styles/ratings.css?v=20261122-contrast">
   <link rel="stylesheet" href="styles/tokens.css?v=20261122-contrast">
@@ -1011,8 +1012,13 @@
                   <div class="dash-profile-id">
                     <div class="dash-profile-name" id="dash-pname">—</div>
                     <div class="dash-profile-email" id="dash-pemail">—</div>
+                    <div id="dash-semester-title"></div>
                   </div>
                   <button class="icon-btn dash-profile-edit-btn" type="button" onclick="toggleProfileEdit()" aria-label="Profili redaktə et" title="Profili redaktə et" data-i18n-title="dashEditProfileTitle" data-i18n-aria="dashEditProfileTitle"><svg class="ic"><use href="#i-pencil"/></svg></button>
+                </div>
+                <div class="dash-semester-actions">
+                  <span id="dash-semester-balance">0 Semestr Xalı</span>
+                  <button class="btn btn--secondary" type="button" id="open-semester-wardrobe">Tələbə qarderobu</button>
                 </div>
 
                 <!-- Baxış rejimi -->
@@ -1156,6 +1162,7 @@
             </div>
 
           </div>
+          <section class="semester-leaderboard function-panel" id="semester-leaderboard" aria-labelledby="semester-board-title"></section>
         </div>
       </div>
 
@@ -2228,6 +2235,16 @@
 <!-- Share toast -->
 <div class="gpa-share-toast" id="gpa-share-toast">✓ Kopyalandı / Paylaşıldı</div>
 <div id="xp-toast"></div>
+<dialog class="semester-wardrobe" id="semester-wardrobe" aria-labelledby="semester-wardrobe-title">
+  <header><h2 id="semester-wardrobe-title">Tələbə qarderobu</h2><button class="btn btn--secondary" id="semester-wardrobe-close" type="button">Bağla</button></header>
+  <p id="semester-wardrobe-local"></p>
+  <div class="semester-preview" id="semester-preview"></div>
+  <form id="semester-look-form">
+    <div class="semester-fields" id="semester-fields"></div>
+    <label class="semester-avatar-choice"><input type="checkbox" name="avatar"><span id="semester-avatar-label">Modulyar avatarı göstər</span></label>
+    <button class="btn btn--primary" id="semester-look-save" type="submit">Yadda saxla</button>
+  </form>
+</dialog>
 
 <!-- Firebase v9 compat (CDN) -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -2247,11 +2264,13 @@
 <script src="scripts/test-bank.js?v=20261114-radio"></script>
 <script src="scripts/pdf-loader.js?v=20261114-radio"></script>
 <script src="scripts/gpa.js?v=20261120-gpa"></script>
-<script src="scripts/firebase.js?v=20261123-profile"></script>
+<script src="scripts/semester-profile.js?v=20261127-wardrobe"></script>
+<script src="scripts/firebase.js?v=20261127-wardrobe"></script>
 <script src="scripts/chat.js?v=20261106-3"></script>
 <script src="scripts/ratings.js?v=20261113-subjects"></script>
 <script src="scripts/requests.js?v=20261106-3"></script>
-<script src="scripts/dashboard.js?v=20261123-profile"></script>
+<script src="scripts/dashboard.js?v=20261127-wardrobe"></script>
+<script src="scripts/semester-dashboard.js?v=20261127-wardrobe"></script>
 <script src="scripts/payments.js?v=20261106-3"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="scripts/curriculum-progress.js?v=20261106-4"></script>
