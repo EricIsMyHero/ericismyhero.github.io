@@ -16,7 +16,7 @@ const boards = new Set([
     ['easy', 'normal', 'hard'].map(level => 'semester-defense--' + mode + '-' + level)),
   wavesBoard, dailyBoard
 ]);
-const lookFields = ['head', 'outfit', 'accessory', 'palette', 'effect', 'title'];
+const lookFields = ['head', 'outfit', 'accessory', 'palette', 'effect', 'title', 'mood', 'backdrop', 'pet', 'border', 'pose'];
 const safeInt = (value, min, max) => Number.isSafeInteger(value) && value >= min && value <= max;
 const playerId = uid => createHash('sha256').update(uid).digest('hex');
 const collection = board => 'arena_leaderboards/' + board + '/scores';

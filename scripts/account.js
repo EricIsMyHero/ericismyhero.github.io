@@ -15,7 +15,7 @@
   Object.assign(copy.az, { sync: 'Təhsil qeydləri', retry: 'Sinxronlaşdır', syncing: 'Qeydlər hesabınla sinxronlaşdırılır…', saved: 'Qeydlər hesabınla sinxronlaşdırılıb.', pending: 'Qeydlər cihazda saxlanılıb. Sinxronlaşma gözləyir.', errorSync: 'Sinxronlaşma alınmadı. Qeydlər cihazda saxlanılıb; yenidən yoxla.' });
   Object.assign(copy.en, { sync: 'Study records', retry: 'Sync now', syncing: 'Syncing records with your account…', saved: 'Records are synced with your account.', pending: 'Records are saved on this device and waiting to sync.', errorSync: 'Sync failed. Records are saved on this device; please retry.' });
   const text = () => copy[lang] || copy.az;
-  const localKeys = uid => ['favorites', 'unec_compass_saved', 'unec_gpa_subjects', 'unec_gpa_history', 'unec_selected_specialty', 'exam_countdowns', 'unec_completed_' + uid, 'unec_curriculum_overrides_' + uid];
+  const localKeys = uid => ['favorites', 'unec_compass_saved', 'unec_gpa_subjects', 'unec_gpa_history', 'unec_selected_specialty', 'exam_countdowns', 'unec_completed_' + uid, 'unec_curriculum_overrides_' + uid, 'unec_semester_look_v1:' + uid, 'unec_semester_closet_v1:' + uid];
   let busy = false;
   async function call(action, user, extra = {}) {
     const res = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action, idToken: await user.getIdToken(), ...extra }) });

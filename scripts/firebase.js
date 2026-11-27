@@ -443,7 +443,7 @@ function renderAccountAvatar(avatar, name, user, profile) {
   img.alt = '';
   img.referrerPolicy = 'no-referrer';
   img.addEventListener('error', () => {
-    if (img.parentNode === avatar) avatar.textContent = initial;
+    if (img.parentNode === avatar) img.replaceWith(document.createTextNode(initial));
   }, { once: true });
   avatar.replaceChildren(img);
   img.src = photo;

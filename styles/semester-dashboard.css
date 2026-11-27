@@ -168,8 +168,6 @@
   overflow-y: auto;
 }
 .semester-option { display: grid; align-content: start; justify-items: start; gap: 5px; text-align: start; min-width: 0; padding: 6px; }
-.semester-option:disabled { cursor: default; }
-.semester-option:disabled .semester-avatar-svg { opacity: .72; }
 .semester-option-art {
   display: grid;
   place-items: center;
@@ -205,3 +203,24 @@
   .semester-preview-avatar { max-width: 64px; }
   .semester-wardrobe p { margin-block: 4px; }
 }
+.semester-wallet-totals { margin: 10px 0 0; font-size: .8rem; color: var(--color-text-secondary); }
+.semester-wallet-totals strong { color: var(--color-text-primary); }
+#dash-avatar[data-semester-photo-frame] { position: relative; border-radius: 24%; }
+.semester-photo-frame { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.semester-option[data-owned="false"] small { color: var(--accent2); }
+.semester-purchase {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 4px 8px;
+  font-size: .78rem;
+}
+.semester-purchase[hidden], #semester-purchase-status:empty { display: none; }
+.semester-purchase .btn { flex-shrink: 0; }
+#semester-purchase-status { flex-shrink: 0; margin: 6px 0 0; }
+.semester-wardrobe-tabs { scrollbar-width: thin; }

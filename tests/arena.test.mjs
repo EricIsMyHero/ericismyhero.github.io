@@ -35,7 +35,10 @@ function fixture() {
     read: (board, idToken) => call({ action: 'arena-list', board, idToken }),
     submit: (idToken, results) => call({
       action: 'arena-submit', idToken, results, uid: 'impersonated', email: 'forged@example.test',
-      player: 'Fake', gender: 'female', look: { head: 'cap', effect: '<script>', gender: 'female' }
+      player: 'Fake', gender: 'female', look: {
+        head: 'cap', effect: '<script>', gender: 'female', mood: 'smug', backdrop: 'rainy-baku',
+        pet: 'router', border: 'talabaplus', pose: 'diploma'
+      }
     })
   };
 }
@@ -52,6 +55,8 @@ test('anonymous visitors see authenticated global scores using the email prefix 
   const published = JSON.stringify(json);
   assert.doesNotMatch(published, /example\.test|owner-|impersonated|gender|<script>/);
   assert.equal(json.rows[0].look.head, 'cap');
+  const { mood, backdrop, pet, border, pose } = json.rows[0].look;
+  assert.deepEqual([mood, backdrop, pet, border, pose], ['smug', 'rainy-baku', 'router', 'talabaplus', 'diploma']);
   assert.equal((await read('ring-escape--easy', 'a')).json.mine.score, 550);
   assert.equal(records.size, 2);
 });

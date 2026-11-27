@@ -11,9 +11,11 @@
   const fields = get('semester-fields');
   const categories = {
     head: ['Baş geyimi', 'Headwear'], outfit: ['Geyim', 'Outfit'], accessory: ['Aksesuar', 'Accessory'],
+    mood: ['Üz ifadəsi', 'Expression'], backdrop: ['Fon və aura', 'Backdrop & aura'],
+    pet: ['Maskot', 'Companion'], border: ['Çərçivə', 'Frame'], pose: ['Qələbə pozası', 'Victory pose'],
     palette: ['Ad rəngi', 'Name color'], effect: ['Ad effekti', 'Name effect'], title: ['Titul', 'Title']
   };
-  const parts = ['head', 'outfit', 'accessory'];
+  const parts = ['head', 'outfit', 'accessory', 'mood', 'backdrop', 'pet', 'border', 'pose'];
   const games = [
     ['ring-escape', 'target', 'Halqadan çıxış', 'Ring Escape'],
     ['tower-descent', 'layers', 'Qüllə enişi', 'Tower Descent'],
@@ -23,7 +25,10 @@
     az: {
       wardrobe: 'Tələbə qarderobu', balance: 'Semestr Xalı',
       local: 'Bu brauzerdə hesabına bağlı saxlanılır.',
-      variety: '1 000 avatar kombinasiyası · 16 ad rəngi · 16 ad effekti',
+      earned: 'Ümumi qazanılan', spent: 'Xərclənən', availablePoints: 'Xərclənə bilən',
+      buy: price => 'Al · ' + price + ' xal', missing: points => points + ' xal çatmır.',
+      bought: 'Əşya inventara əlavə edildi. Taxmaq üçün görünüşü yadda saxla.',
+      purchaseError: 'Dəyişikliyi yadda saxlamaq olmadı. Yenidən cəhd et.', preview: 'Önizləmə',
       bosses: 'KƏSR-i məğlub et', scholar: 'Əlaçı təqaüdünə yüksəl', fourFronts: 'Dörd aktiv girişli dalğanı tamamla',
       triad: 'Hər üç oyundan xal qazan', available: 'Açıqdır', selected: 'Seçilib',
       avatar: 'Profil şəklimin yerində bu avatarı göstər', save: 'Yadda saxla', close: 'Bağla',
@@ -38,7 +43,10 @@
     en: {
       wardrobe: 'Student Wardrobe', balance: 'Semester Points',
       local: 'Linked to your account in this browser.',
-      variety: '1,000 avatar combinations · 16 name colors · 16 name effects',
+      earned: 'Lifetime earned', spent: 'Spent', availablePoints: 'Available to spend',
+      buy: price => 'Buy · ' + price + ' points', missing: points => points + ' more points needed.',
+      bought: 'Item added to your inventory. Save your look to equip it.',
+      purchaseError: 'Could not save the change. Try again.', preview: 'Preview',
       bosses: 'Defeat a Retake boss', scholar: 'Reach the Honors scholarship tier', fourFronts: 'Clear a wave with four active portals',
       triad: 'Earn points in all three games', available: 'Unlocked', selected: 'Selected',
       avatar: 'Show this avatar in place of my profile photo', save: 'Save', close: 'Close',
@@ -92,8 +100,9 @@
     const view = locale === 'az' ? 2 : 3;
     wallet.innerHTML = `<div class="semester-wallet-heading">
       <div><h2 id="semester-wallet-title">${l.wallet}</h2><p>${l.walletNote}</p></div>
-      <div class="semester-wallet-total">${icon('sparkles')}<strong id="dash-semester-balance">${data.points}</strong><span>${l.balance}</span></div>
+      <div class="semester-wallet-total">${icon('sparkles')}<strong id="dash-semester-balance">${data.available}</strong><span>${l.availablePoints}</span></div>
     </div>
+    <p class="semester-wallet-totals">${l.earned} <strong>${data.points}</strong> · ${l.spent} <strong>${data.spent}</strong> ${l.balance}</p>
     <ul class="semester-wallet-games">${games.map(game => `<li>
       ${icon(game[1])}<span>${game[view]}</span><strong>+${data.byGame[game[0]]}</strong>
     </li>`).join('')}</ul>
@@ -113,9 +122,20 @@
     if (look.avatar) {
       avatar.innerHTML = semester.avatar(look);
       avatar.dataset.semesterAvatar = '';
-    } else if (Object.hasOwn(avatar.dataset, 'semesterAvatar')) {
-      delete avatar.dataset.semesterAvatar;
-      renderAccountAvatar(avatar, name, user, getProfile());
+      delete avatar.dataset.semesterPhotoFrame;
+    } else {
+      if (Object.hasOwn(avatar.dataset, 'semesterAvatar')) {
+        delete avatar.dataset.semesterAvatar;
+        renderAccountAvatar(avatar, name, user, getProfile());
+      }
+      const current = avatar.querySelector('.semester-photo-frame');
+      if (avatar.dataset.semesterPhotoFrame !== look.border || !current) {
+        current?.remove();
+        const frame = wardrobe.photoFrame(look.border);
+        if (frame) avatar.insertAdjacentHTML('beforeend', frame);
+      }
+      if (look.border !== 'none') avatar.dataset.semesterPhotoFrame = look.border;
+      else delete avatar.dataset.semesterPhotoFrame;
     }
     get('dash-pname').innerHTML = semester.nameplate(name, look);
     get('dash-semester-title').innerHTML = badge(semester.title(look, locale));
@@ -124,15 +144,17 @@
   }
 
   function renderPreview() {
-    const { look, name, locale } = editing, l = words[locale];
-    get('semester-preview').innerHTML = `<div class="semester-preview-avatar">${semester.avatar(look)}</div>
-      <div class="semester-preview-id">${identity(name, look, locale)}
+    const { look, trial, section, name, locale } = editing, l = words[locale];
+    const displayed = trial ? { ...look, [section]: trial } : look;
+    get('semester-preview').innerHTML = `<div class="semester-preview-avatar">${semester.avatar(displayed)}</div>
+      <div class="semester-preview-id">${identity(name, displayed, locale)}
+        ${trial ? '<small>' + l.preview + '</small>' : ''}
         <button class="btn btn--secondary" type="button" data-shuffle-look>${l.shuffle}</button>
       </div>`;
   }
   function renderCatalog(focus) {
-    const { section, locale, look, data } = editing, l = words[locale];
-    const scroll = focus === 'item' ? fields.scrollTop : 0;
+    const { section, locale, look, data, trial } = editing, l = words[locale];
+    const scroll = focus === 'item' || focus === 'update' ? fields.scrollTop : 0;
     if (!focus) tabs.innerHTML = Object.entries(categories).map(([key, labels]) => `
       <button type="button" data-section="${key}" aria-pressed="${section === key}">${labels[locale === 'az' ? 0 : 1]}</button>
     `).join('');
@@ -140,32 +162,43 @@
       for (const button of tabs.children) button.setAttribute('aria-pressed', String(button.dataset.section === section));
     }
     fields.innerHTML = Object.entries(semester.collection[section]).map(([id, item]) => {
-      const selected = look[section] === id;
-      const allowed = semester.unlocked(item, data);
-      const hint = selected ? l.selected : allowed ? l.available : item.requirement ? l[item.requirement] : item.points + ' ' + l.balance;
+      const selected = (trial ?? look[section]) === id;
+      const allowed = semester.unlocked(section, id, data);
+      const hint = allowed ? (selected ? l.selected : l.available) : item.requirement ? l[item.requirement] : item.price + ' ' + l.balance;
       const sample = { ...look, [section]: id };
       const art = parts.includes(section) ? semester.avatar(sample) :
         section === 'title' ? (badge(semester.title(sample, locale)) || '—') :
         semester.nameplate(l.sample, section === 'palette' ? { ...sample, effect: 'none' } : sample);
-      return `<button class="semester-option" type="button" data-item="${id}" aria-pressed="${selected}" ${allowed ? '' : 'disabled'}>
+      return `<button class="semester-option" type="button" data-item="${id}" aria-pressed="${selected}" data-owned="${allowed}">
         <span class="semester-option-art" aria-hidden="true">${art}</span>
         <strong>${item[locale]}</strong><small>${allowed ? '' : icon('lock')} ${hint}</small>
       </button>`;
     }).join('');
     fields.scrollTop = scroll;
     if (focus === 'item') fields.querySelector('[aria-pressed="true"]')?.focus({ preventScroll: true });
+    const candidate = trial && semester.collection[section][trial];
+    const missing = candidate ? Math.max(0, candidate.price - data.available) : 0;
+    get('semester-purchase').hidden = !candidate?.price || semester.unlocked(section, trial, data);
+    if (candidate?.price) {
+      const buy = get('semester-buy-item');
+      buy.textContent = l.buy(candidate.price);
+      buy.disabled = !!(missing || editing.pending);
+      get('semester-purchase-description').textContent = missing ? l.missing(missing) : candidate[locale];
+    }
+    get('semester-wardrobe-local').textContent = `${l.availablePoints} ${data.available} · ${l.earned} ${data.points} · ${l.spent} ${data.spent}. ${l.local}`;
   }
   function openWardrobe() {
     const user = userNow();
     if (!user) return;
     const locale = language(), l = words[locale];
     const data = semester.stats(user.uid), look = semester.lookOf(user.uid, data);
-    editing = { uid: user.uid, name: nameNow(user), locale, data, look, section: 'head' };
+    editing = { uid: user.uid, name: nameNow(user), locale, data, look, trial: null, pending: false, section: 'head' };
     get('semester-wardrobe-title').textContent = l.wardrobe;
     get('semester-wardrobe-close').textContent = l.close;
-    get('semester-wardrobe-local').textContent = `${l.variety}. ${data.points} ${l.balance}. ${l.local}`;
+    get('semester-purchase-status').textContent = '';
     get('semester-avatar-label').textContent = l.avatar;
     get('semester-look-save').textContent = l.save;
+    get('semester-look-save').disabled = false;
     form.elements.avatar.checked = look.avatar;
     renderCatalog();
     renderPreview();
@@ -176,39 +209,88 @@
   dialog.addEventListener('close', () => { editing = null; });
   tabs.addEventListener('click', event => {
     const tab = event.target.closest('[data-section]');
-    if (!tab || tab.dataset.section === editing.section) return;
+    if (!tab || editing.pending || tab.dataset.section === editing.section) return;
     editing.section = tab.dataset.section;
+    editing.trial = null;
+    get('semester-purchase-status').textContent = '';
     renderCatalog('tab');
+    renderPreview();
   });
+  function equip(id) {
+    editing.look[editing.section] = id;
+    editing.trial = null;
+    if (parts.includes(editing.section) && editing.section !== 'border') form.elements.avatar.checked = true;
+  }
   fields.addEventListener('click', event => {
     const button = event.target.closest('[data-item]');
-    if (!button || button.disabled) return;
-    editing.look[editing.section] = button.dataset.item;
-    if (parts.includes(editing.section)) form.elements.avatar.checked = true;
+    if (!button || editing.pending) return;
+    const id = button.dataset.item;
+    get('semester-purchase-status').textContent = '';
+    if (semester.unlocked(editing.section, id, editing.data)) equip(id);
+    else editing.trial = id;
+    renderCatalog('item');
+    renderPreview();
+  });
+  get('semester-buy-item').addEventListener('click', async () => {
+    const draft = editing, { uid, section, trial, locale } = draft;
+    draft.pending = true;
+    get('semester-buy-item').disabled = true;
+    get('semester-look-save').disabled = true;
+    let result;
+    try { result = await semester.purchase(uid, section, trial); }
+    catch { result = { status: 'storage' }; }
+    if (editing !== draft) return;
+    const l = words[locale];
+    draft.pending = false;
+    get('semester-look-save').disabled = false;
+    draft.data = semester.stats(uid);
+    if (result.status === 'bought' || result.status === 'owned') {
+      equip(trial);
+      get('semester-purchase-status').textContent = result.status === 'bought' ? l.bought : '';
+    } else if (result.status === 'funds') {
+      get('semester-purchase-status').textContent = l.missing(semester.collection[section][trial].price - draft.data.available);
+    } else {
+      get('semester-purchase-status').textContent = l.purchaseError;
+    }
     renderCatalog('item');
     renderPreview();
   });
   get('semester-preview').addEventListener('click', event => {
-    if (!event.target.closest('[data-shuffle-look]')) return;
+    if (!event.target.closest('[data-shuffle-look]') || editing.pending) return;
+    editing.trial = null;
+    get('semester-purchase-status').textContent = '';
     for (const section of [...parts, 'palette', 'effect']) {
       const available = Object.keys(semester.collection[section]).filter(key =>
-        semester.unlocked(semester.collection[section][key], editing.data));
+        semester.unlocked(section, key, editing.data));
       editing.look[section] = available[Math.floor(Math.random() * available.length)];
     }
     form.elements.avatar.checked = true;
-    renderCatalog();
+    renderCatalog('update');
     renderPreview();
     get('semester-preview').querySelector('[data-shuffle-look]').focus({ preventScroll: true });
   });
-  form.addEventListener('submit', event => {
+  form.addEventListener('submit', async event => {
     event.preventDefault();
-    if (editing && userNow()?.uid === editing.uid) {
-      semester.saveLook(editing.uid, { ...editing.look, avatar: form.elements.avatar.checked });
-    }
-    dialog.close();
+    const draft = editing;
+    if (!draft || draft.pending || userNow()?.uid !== draft.uid) return;
+    draft.pending = true;
+    get('semester-look-save').disabled = true;
+    let result;
+    try {
+      result = await semester.saveLook(draft.uid, { ...draft.look, avatar: form.elements.avatar.checked });
+    } catch { result = { status: 'storage' }; }
+    if (editing !== draft) return;
+    draft.pending = false;
+    get('semester-look-save').disabled = false;
+    if (result.status === 'saved') dialog.close();
+    else get('semester-purchase-status').textContent = words[draft.locale].purchaseError;
   });
   window.addEventListener('unec:semesterchange', () => {
     if (document.body.dataset.route === 'dashboard') render();
+    if (editing && dialog.open && !editing.pending) {
+      editing.data = semester.stats(editing.uid);
+      renderCatalog('update');
+    }
   });
   get('semester-leaderboard').addEventListener('click', event => {
     if (event.target.closest('[data-arena-retry]')) arena.refresh();

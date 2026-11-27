@@ -7,7 +7,7 @@
   const words = {
     az: {
       guide: 'Necə oynanılır', progress: 'Arena rekordları', game: 'Oyun', mode: 'Kateqoriya',
-      score: 'xal', points: 'Semestr Xalı', yourScore: 'Nəticən', completed: 'Qələbə', rank: 'Sıra',
+      score: 'xal', points: 'Semestr Xalı', wallet: 'Xərclənə bilən', yourScore: 'Nəticən', completed: 'Qələbə', rank: 'Sıra',
       global: 'Qlobal sıralamada hər hesabın ən yaxşı nəticəsi görünür. Oyunçu adı e-poçtun @ işarəsindən əvvəlki hissəsidir.',
       login: 'Xal qazanmaq və rekord yazmaq üçün hesabına daxil ol.', dashboard: 'Tələbə paneli',
       loading: 'Qlobal rekordlar yüklənir…', unavailable: 'Qlobal rekordları yükləmək olmadı.',
@@ -22,7 +22,7 @@
     },
     en: {
       guide: 'How to Play', progress: 'Arena records', game: 'Game', mode: 'Category',
-      score: 'points', points: 'Semester Points', yourScore: 'Your result', completed: 'Victory', rank: 'Place',
+      score: 'points', points: 'Semester Points', wallet: 'Available to spend', yourScore: 'Your result', completed: 'Victory', rank: 'Place',
       global: 'The global leaderboard shows each account’s best result under the name before @ in its email address.',
       login: 'Sign in to earn points and set account records.', dashboard: 'Student dashboard',
       loading: 'Loading global records…', unavailable: 'Global records could not be loaded.',
@@ -174,7 +174,7 @@
             <label>${l.mode}<select data-mode></select></label>
           </div>
           <div class="arena-record-metrics">
-            <div><small>${l.points}</small><strong data-points></strong></div>
+            <div><small>${l.wallet}</small><strong data-points></strong></div>
             <div><small>${l.me}</small><strong data-mine></strong></div>
             <div><small>${l.leader}</small><strong data-lead></strong></div>
           </div>
@@ -209,7 +209,7 @@
         .sort(compare)[0] : null;
       const myScore = mine || local ? Math.max(number(mine?.score), number(local?.score)) : null;
       el('[data-record-dashboard]').textContent = account ? l.dashboard : l.login;
-      el('[data-points]').textContent = account ? String(semester.stats(account.uid, runs, rows).points) : '—';
+      el('[data-points]').textContent = account ? String(semester.stats(account.uid, runs, rows).available) : '—';
       el('[data-mine]').textContent = myScore === null ? '—' : myScore + ' ' + l.score;
       el('[data-lead]').textContent = best ? number(best.score) + ' ' + l.score : '—';
       el('[data-arena-day]').hidden = !day;

@@ -1,7 +1,8 @@
 (function () {
   'use strict';
 
-  const item = (az, en, points, legacy) => ({ az, en, points, legacy });
+  const item = (az, en, points, legacy) => ({ az, en, points, legacy,
+    price: points ? Math.min(500, Math.max(50, Math.round(points * 3 / 5) * 5)) : 0 });
   const paletteRows = [
     ['default', 'Kampus Göyü', 'Campus Blue', 0, '#17364c', '#326aa1', '#a9d8ff', 0],
     ['green', 'Zərbəçi Yaşılı', 'Honors Green', 22, '#153d32', '#28866c', '#94efb3', 25],
@@ -88,7 +89,7 @@
     }
   };
   const defaults = { head: 'none', outfit: 'classic', accessory: 'none', palette: 'default',
-    effect: 'none', title: 'none', avatar: false };
+    effect: 'none', title: 'none', mood: 'none', backdrop: 'none', pet: 'none', border: 'none', pose: 'none', avatar: false };
   const stroke = '#152039';
   const hats = {
     none: '',
@@ -127,6 +128,29 @@
     trophy: '<path d="M95 96h16v8q0 7-8 8-8-1-8-8zm6 16h4v5h6v4H95v-4h6z" fill="#f4bc61"/><path d="M95 99h-5q0 7 8 8m13-8h5q0 7-8 8" fill="none" stroke="#ecb667" stroke-width="2"/>'
   };
 
+  const layers = { head: hats, outfit: outfits, accessory: accessories, mood: {}, backdrop: {}, pet: {}, border: {}, pose: {} };
+  const neutral = {
+    mood: ['Təbii ifadə', 'Natural expression'], backdrop: ['Sadə fon', 'Plain backdrop'],
+    pet: ['Maskotsuz', 'No companion'], border: ['Çərçivəsiz', 'No frame'], pose: ['Adi duruş', 'Default pose']
+  };
+  for (const [section, labels] of Object.entries(neutral)) {
+    collection[section] = { none: item(...labels, 0) };
+  }
+  for (const [section, entries] of Object.entries(window.UNECWardrobeCollection)) {
+    for (const [id, az, en, price, art] of entries) {
+      collection[section][id] = { az, en, price };
+      layers[section][id] = art;
+    }
+  }
+  const defaultFace = `<ellipse cx="47" cy="63" rx="7" ry="8.5" fill="#fff6e6"/><ellipse cx="78" cy="63" rx="7" ry="8.5" fill="#fff6e6"/>
+      <ellipse cx="49" cy="64" rx="4" ry="6" fill="#2e304c"/><ellipse cx="76" cy="64" rx="4" ry="6" fill="#2e304c"/>
+      <circle cx="49" cy="62" r="1.5" fill="#fff"/><circle cx="77" cy="62" r="1.5" fill="#fff"/>
+      <path d="M57 76q6 5 12 0" fill="none" stroke="#995d67" stroke-width="2.5" stroke-linecap="round"/>`;
+  function photoFrame(id) {
+    const art = layers.border[id];
+    return art ? `<svg class="semester-photo-frame" viewBox="0 0 128 144" preserveAspectRatio="none" aria-hidden="true">${art}</svg>` : '';
+  }
+
   function avatar(look, large = false) {
     const palette = palettes[look.palette] ?? palettes.default;
     const [base, trim, decoration] = outfits[look.outfit] ?? outfits.classic;
@@ -134,6 +158,7 @@
       <rect x="3" y="4" width="122" height="136" rx="${large ? 28 : 25}" fill="${palette.base}"/>
       <circle cx="64" cy="66" r="49" fill="${palette.mid}" fill-opacity=".43"/>
       <path d="M17 36h12m-6-6v12m78 8h12m-6-6v12M22 103h9m-4-4v8" stroke="${palette.light}" stroke-width="2" stroke-linecap="round" opacity=".63"/>
+      ${layers.backdrop[look.backdrop] ?? ''}
       <ellipse cx="64" cy="132" rx="39" ry="6" fill="#151d2a" opacity=".5"/>
       <path d="M47 119h13v11h-2q-10 7-19 2l1-6zm22 0h13l7 8-1 5q-9 4-18-2h-1z" fill="#29314d" stroke="${stroke}" stroke-width="3"/>
       <path d="M46 88q-13 1-15 17l-3 9q3 7 11 4l6-15h37l7 17q7 2 11-5l-7-17q-4-9-13-11z" fill="${trim}" stroke="${stroke}" stroke-width="3"/>
@@ -144,14 +169,12 @@
       <circle cx="99" cy="64" r="10" fill="#edba91" stroke="${stroke}" stroke-width="3"/>
       <path d="M26 59c0-22 13-35 36-35 23 0 37 13 37 35 0 19-13 33-36 35-21-1-37-15-37-35z" fill="#f5cd9f" stroke="${stroke}" stroke-width="3"/>
       <path d="M24 58c-1-22 13-37 38-37 24 0 40 16 39 37l-8-5-4-12-12 6-6-7-10 8-16-4-6 12z" fill="#423958" stroke="${stroke}" stroke-width="3"/>
-      <ellipse cx="47" cy="63" rx="7" ry="8.5" fill="#fff6e6"/><ellipse cx="78" cy="63" rx="7" ry="8.5" fill="#fff6e6"/>
-      <ellipse cx="49" cy="64" rx="4" ry="6" fill="#2e304c"/><ellipse cx="76" cy="64" rx="4" ry="6" fill="#2e304c"/>
-      <circle cx="49" cy="62" r="1.5" fill="#fff"/><circle cx="77" cy="62" r="1.5" fill="#fff"/>
-      <path d="M57 76q6 5 12 0" fill="none" stroke="#995d67" stroke-width="2.5" stroke-linecap="round"/>
+      ${layers.mood[look.mood] || defaultFace}
       <ellipse cx="36" cy="74" rx="5" ry="2.6" fill="#e7998f"/><ellipse cx="88" cy="74" rx="5" ry="2.6" fill="#e7998f"/>
       ${hats[look.head] ?? ''}${accessories[look.accessory] ?? ''}
+      ${layers.pose[look.pose] ?? ''}${layers.pet[look.pet] ?? ''}${layers.border[look.border] ?? ''}
     </svg>`;
   }
-  const combinations = ['head', 'outfit', 'accessory'].reduce((count, group) => count * Object.keys(collection[group]).length, 1);
-  window.UNECStudentWardrobe = { collection, defaults, palettes, avatar, combinations };
+  const combinations = Object.keys(layers).reduce((count, group) => count * Object.keys(collection[group]).length, 1);
+  window.UNECStudentWardrobe = { collection, defaults, palettes, avatar, photoFrame, combinations };
 })();

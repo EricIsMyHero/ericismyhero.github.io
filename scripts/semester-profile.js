@@ -6,6 +6,7 @@
   const runPrefix = 'unec_semester_run_v1:';
   const scorePrefix = 'unec_games_run_v1:';
   const lookPrefix = 'unec_semester_look_v1:';
+  const closetPrefix = 'unec_semester_closet_v1:';
   const rewards = { boss: 2, semester: 6 };
   const legacyRewards = { boss: 25, semester: 75 };
   const scoreRules = {
@@ -131,7 +132,7 @@
   }
   function stats(uid, rows = records(), scores = gameRecords()) {
     const byGame = { 'ring-escape': 0, 'tower-descent': 0, 'semester-defense': 0 };
-    const data = { points: 0, legacy: 0, bosses: 0, scholar: false, fourFronts: false, triad: false, byGame };
+    const data = { points: 0, legacy: 0, bosses: 0, scholar: false, fourFronts: false, triad: false, byGame, owned: {}, spent: 0, available: 0 };
     if (!uid) return data;
     const credited = new Set();
     for (const run of rows) {
@@ -151,28 +152,72 @@
     }
     data.points = Object.values(byGame).reduce((sum, amount) => sum + amount, 0);
     data.triad = credited.size === Object.keys(byGame).length;
+    data.owned = inventory(storedLook(uid), data);
+    data.spent = Object.values(data.owned).reduce((sum, price) => sum + price, 0);
+    data.available = Math.max(0, data.points - data.spent);
     return data;
   }
-  function unlocked(definition, data) {
-    return definition.requirement ? !!data[definition.requirement] :
-      data.points >= definition.points || (definition.legacy != null && data.legacy >= definition.legacy);
+  function inventory(saved, data) {
+    if (saved?.owned && typeof saved.owned === 'object') {
+      return Object.fromEntries(Object.entries(saved.owned).filter(([id, price]) =>
+        /^[a-z]+:[a-z0-9-]+$/.test(id) && (price === 0 || (integer(price) >= 50 && price <= 500))));
+    }
+    // Preserve the already-equipped look from the previous threshold system.
+    const owned = {};
+    for (const [section, variants] of Object.entries(wardrobe.collection)) {
+      const id = saved?.[section], item = Object.hasOwn(variants, id) ? variants[id] : null;
+      if (item?.points > 0 && (data.points >= item.points || (item.legacy != null && data.legacy >= item.legacy))) {
+        owned[section + ':' + id] = 0;
+      }
+    }
+    return owned;
+  }
+  function unlocked(section, id, data) {
+    const variants = wardrobe.collection[section];
+    if (!variants || !Object.hasOwn(variants, id)) return false;
+    const item = variants[id];
+    return item.requirement ? !!data[item.requirement] :
+      item.price === 0 || Object.hasOwn(data.owned, section + ':' + id);
   }
   function normalizeLook(value, data) {
     const look = { ...wardrobe.defaults, avatar: value?.avatar === true };
-    for (const [category, variants] of Object.entries(wardrobe.collection)) {
-      const selected = value?.[category];
-      if (Object.hasOwn(variants, selected) && unlocked(variants[selected], data)) look[category] = selected;
+    for (const category of Object.keys(wardrobe.collection)) {
+      if (unlocked(category, value?.[category], data)) look[category] = value[category];
     }
     return look;
   }
+  const storedLook = uid => read(closetPrefix + uid) ?? read(lookPrefix + uid);
   function lookOf(uid, data = stats(uid)) {
-    return normalizeLook(uid ? read(lookPrefix + uid) : null, data);
+    const stored = uid ? storedLook(uid) : null;
+    return normalizeLook(stored?.look ?? stored, data);
+  }
+  function keepWardrobe(uid, look, owned) {
+    try {
+      localStorage.setItem(closetPrefix + uid, JSON.stringify({ look, owned }));
+    } catch { return false; }
+    window.dispatchEvent(new CustomEvent('unec:semesterchange'));
+    return true;
+  }
+  function walletChange(uid, operation) {
+    const run = () => account()?.uid === uid && uid ? operation(stats(uid)) : { status: 'account' };
+    return navigator.locks ? navigator.locks.request(closetPrefix + uid, run) : Promise.resolve(run());
+  }
+  function purchase(uid, section, id) {
+    return walletChange(uid, data => {
+      const variants = wardrobe.collection[section];
+      const item = variants && Object.hasOwn(variants, id) ? variants[id] : null;
+      if (!item || !item.price) return { status: 'unavailable' };
+      if (unlocked(section, id, data)) return { status: 'owned' };
+      if (data.available < item.price) return { status: 'funds' };
+      const look = lookOf(uid, data);
+      const owned = { ...data.owned, [section + ':' + id]: item.price };
+      return { status: keepWardrobe(uid, look, owned) ? 'bought' : 'storage' };
+    });
   }
   function saveLook(uid, value) {
-    if (!uid) return null;
-    const look = normalizeLook(value, stats(uid));
-    write(lookPrefix + uid, look);
-    return look;
+    return walletChange(uid, data => ({
+      status: keepWardrobe(uid, normalizeLook(value, data), data.owned) ? 'saved' : 'storage'
+    }));
   }
   function nameplate(name, look) {
     const palette = wardrobe.palettes[look.palette] ?? wardrobe.palettes.default;
@@ -184,13 +229,13 @@
   }
 
   window.addEventListener('storage', event => {
-    if (!event.key || [runPrefix, scorePrefix, lookPrefix].some(prefix => event.key.startsWith(prefix))) {
+    if (!event.key || [runPrefix, scorePrefix, lookPrefix, closetPrefix].some(prefix => event.key.startsWith(prefix))) {
       window.dispatchEvent(new CustomEvent('unec:semesterchange'));
     }
   });
   window.UNECSemesterProfile = {
     account, setAccount, rewards, startRun, reached, clearWave, bossDefeated, maxScholarship, balance,
     records, gameRecords, saveGameRecord, scoreReward, ruleFor, stats, collection: wardrobe.collection,
-    unlocked, lookOf, saveLook, avatar: wardrobe.avatar, nameplate, title, escape
+    unlocked, lookOf, saveLook, purchase, avatar: wardrobe.avatar, nameplate, title, escape
   };
 })();

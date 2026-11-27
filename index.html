@@ -133,7 +133,7 @@
   <link rel="stylesheet" href="styles/gpa.css?v=20261122-contrast">
   <link rel="stylesheet" href="styles/dashboard.css?v=20261123-profile">
   <link rel="stylesheet" href="styles/arena-identity.css?v=20261127-arena">
-  <link rel="stylesheet" href="styles/semester-dashboard.css?v=20261127-global-arena">
+  <link rel="stylesheet" href="styles/semester-dashboard.css?v=20261127-shop">
   <link rel="stylesheet" href="styles/chat.css?v=20261122-contrast">
   <link rel="stylesheet" href="styles/ratings.css?v=20261122-contrast">
   <link rel="stylesheet" href="styles/tokens.css?v=20261122-contrast">
@@ -2258,6 +2258,11 @@
   <form id="semester-look-form">
     <div class="semester-wardrobe-tabs" id="semester-wardrobe-tabs"></div>
     <div class="semester-fields" id="semester-fields"></div>
+    <div class="semester-purchase" id="semester-purchase" hidden>
+      <span id="semester-purchase-description"></span>
+      <button class="btn btn--primary" type="button" id="semester-buy-item"></button>
+    </div>
+    <p id="semester-purchase-status" role="status"></p>
     <div class="semester-wardrobe-footer">
       <label class="semester-avatar-choice"><input type="checkbox" name="avatar"><span id="semester-avatar-label">Modulyar avatarı göstər</span></label>
       <button class="btn btn--primary" id="semester-look-save" type="submit">Yadda saxla</button>
@@ -2283,15 +2288,16 @@
 <script src="scripts/test-bank.js?v=20261114-radio"></script>
 <script src="scripts/pdf-loader.js?v=20261114-radio"></script>
 <script src="scripts/gpa.js?v=20261120-gpa"></script>
-<script src="scripts/student-wardrobe.js?v=20261127-arena"></script>
-<script src="scripts/semester-profile.js?v=20261127-global-arena"></script>
+<script src="scripts/wardrobe-collection.js?v=20261127-shop"></script>
+<script src="scripts/student-wardrobe.js?v=20261127-shop"></script>
+<script src="scripts/semester-profile.js?v=20261127-shop"></script>
 <script src="scripts/arena-records.js?v=20261127-tactics"></script>
-<script src="scripts/firebase.js?v=20261127-global-arena"></script>
+<script src="scripts/firebase.js?v=20261127-shop"></script>
 <script src="scripts/chat.js?v=20261106-3"></script>
 <script src="scripts/ratings.js?v=20261113-subjects"></script>
 <script src="scripts/requests.js?v=20261106-3"></script>
 <script src="scripts/dashboard.js?v=20261127-global-arena"></script>
-<script src="scripts/semester-dashboard.js?v=20261127-global-arena"></script>
+<script src="scripts/semester-dashboard.js?v=20261127-shop"></script>
 <script src="scripts/payments.js?v=20261106-3"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="scripts/curriculum-progress.js?v=20261106-4"></script>
@@ -2309,7 +2315,7 @@
 <script src="data/student-offers.js?v=20261122-offers"></script>
 <script src="data/student-offers-catalog.js?v=20261122-offers"></script>
 <script src="data/student-offer-details.js?v=20261122-offers"></script>
-<script src="scripts/game-progress.js?v=20261127-tactics"></script>
+<script src="scripts/game-progress.js?v=20261127-shop"></script>
 <script src="scripts/tower-scene.js?v=20261127-records"></script>
 <script src="scripts/tower-descent.js?v=20261127-records"></script>
 <script src="scripts/games.js?v=20261127-arena"></script>
@@ -2321,7 +2327,7 @@
 <script src="scripts/policies.js?v=20261127-global-arena"></script>
 <script src="scripts/written-practice.js?v=20261115-premium-limits"></script>
 <script src="scripts/test-access.js?v=20261115-premium-limits"></script>
-<script src="scripts/account.js?v=20261111"></script>
+<script src="scripts/account.js?v=20261127-shop"></script>
 <section class="sheet" id="sheet-account-delete" role="dialog" aria-modal="true" aria-labelledby="accountDeleteTitle" inert>
   <div class="sheet-head"><h2 id="accountDeleteTitle">Hesabımı sil</h2><button class="icon-btn" type="button" data-sheet-close aria-label="Bağla" data-i18n-aria="btnClose">✕</button></div>
   <div class="sheet-body" id="accountDeleteBody"></div>
